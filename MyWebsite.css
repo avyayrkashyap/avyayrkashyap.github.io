@@ -44,11 +44,10 @@ body{
 
 @keyframes namecolour {
 	from {color: black;}
-	20%  {color: #25AAF4;}
-	40%  {color: #FF2626;}
-	60%  {color: #03AB00;}
-	80%  {color: #FFCD00;}
-	100%  {color: black;}
+	25%  {color: #25AAF4;}
+	50%  {color: #FF2626;}
+	75%  {color: #03AB00;}
+	100%  {color: #FFCD00;}
 }
 
 #introduction {
