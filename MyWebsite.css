@@ -20,7 +20,7 @@ body{
 
 #heading{
 	width: 100%;
-	top: 40%;
+	top: 50%;
 	font-family: avenir;
 	font-weight: 600;
 	align-items: center;
@@ -31,7 +31,7 @@ body{
 }
 
 #subheading{
-	top: 41%;
+	top: 51%;
 	transition-duration: all 0.8s;
 	font-family: avenir;
 	font-size: 14pt;
@@ -63,14 +63,13 @@ body{
 .navbarbg{
 	background-image: linear-gradient(to bottom, #f7f7f7, white);
 	height: 75px;
+	width: 100%;
 }
 
 #navbar{
 	
-	
-	margin: auto;
 	width: 80%;
-	
+	margin: auto;
 }
 
 #myname{
@@ -90,6 +89,10 @@ body{
 	font-weight: 400;
 	font-family: avenir,Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
 	
+}
+
+.restofnavbar a{
+	padding: 20px 10px;
 }
 
 .restofnavbar:hover{
@@ -128,6 +131,7 @@ body{
 	width: 50%;
 	float: left;
 	padding: 10px 20px 10px 20px;
+	font-family: avenir, Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
 	
 }
 
@@ -152,6 +156,11 @@ body{
 	font-size: 10pt;
 	margin-top: 12px;
 	
+}
+
+.checkmedium a{
+	text-decoration: none;
+	color: #3C3C3C;
 }
 
 
