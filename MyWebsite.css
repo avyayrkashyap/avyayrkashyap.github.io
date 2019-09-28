@@ -131,6 +131,7 @@ body{
 	width: 50%;
 	float: left;
 	padding: 10px 20px 10px 20px;
+	text-decoration: none;
 	font-family: avenir, Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
 	
 }
