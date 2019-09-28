@@ -58,18 +58,23 @@ body{
 	margin: auto;
 	width: 86%;
 	
+	
 }
 
 .navbarbg{
 	background-image: linear-gradient(to bottom, #f7f7f7, white);
 	height: 75px;
 	width: 100%;
+	
+	
 }
 
 #navbar{
 	
 	width: 80%;
 	margin: auto;
+	
+	
 }
 
 #myname{
@@ -106,6 +111,7 @@ body{
 	margin: auto;
 	width: 80%;
 	padding: 20px;
+	border-bottom: 1px solid #C0C0C0;
 }
 
 .projectbox{
@@ -165,6 +171,19 @@ body{
 	color: #3C3C3C;
 }
 
+.moreprojects{
+	text-align: center;
+	display: inline-block;
+	font-family: avenir, Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+	font-size: 16pt;
+	font-weight: 700;
+	width: 100%;
+	margin: auto;
+	padding: 50px 0;
+	
+	
+}
+
 
 
 
@@ -176,4 +195,5 @@ body{
 	animation-duration: 8s;
 	animation-iteration-count: infinite;
 	margin-bottom: 20px;
+	padding: 30px 0;
 }
