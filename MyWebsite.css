@@ -21,7 +21,7 @@ body{
 #heading{
 	width: 100%;
 	top: 50%;
-	font-family: avenir, Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";;
+	font-family: avenir;
 	font-weight: 600;
 	align-items: center;
 	float: left;
@@ -33,7 +33,7 @@ body{
 #subheading{
 	top: 51%;
 	transition-duration: all 0.8s;
-	font-family: avenir, Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";;
+	font-family: avenir;
 	font-size: 14pt;
 	float:right;
 	align-items: center;
@@ -93,7 +93,8 @@ body{
 	margin: 20px;
 	font-weight: 400;
 	font-family: avenir,Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
-	
+	text-decoration: none;
+	color: black;
 }
 
 .restofnavbar a{
