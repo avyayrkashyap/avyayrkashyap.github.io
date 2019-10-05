@@ -129,6 +129,7 @@ body{
 
 .projectbox:hover{
 	box-shadow: 0px 0px 10px 5px #e2e2e2;
+	padding-right: 15px;
 	transition: 0.8s;
 }
 
