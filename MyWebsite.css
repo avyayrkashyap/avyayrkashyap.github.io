@@ -197,7 +197,29 @@ body{
 	
 }
 
-
+@media only screen and (max-width: 805px) {
+    .content{
+        width: 100%;
+        
+    }
+    .projectbox{
+        height: 450px;
+    }
+    .textforproject{
+        width: 90%;
+        height: 35%;
+    }
+    .imageforproject{
+        height: 50%;
+        width: 100%;
+        padding-top: 40px;
+    }
+    .allimages{
+        height: 100%;
+        float: right;
+        padding-left: 15%;
+    }
+}
 
 
 
