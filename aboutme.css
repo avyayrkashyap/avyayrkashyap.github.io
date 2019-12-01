@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+/* CSS Document */
+
+body{
+    font-family: "Lato", sans-serif;
+}
+
+@keyframes namecolour {
+	from {color: #25AAF4;}
+	25%  {color: #FF2626;}
+	50%  {color: #03AB00;}
+	100%  {color: #FFCD00;}
+}
+
+.container{
+	width: 80%;
+	margin: auto;
+}
+
+#navbarbg{
+	background-image: linear-gradient(to bottom, #f7f7f7, white);
+	height: 75px;
+	width: 100%;
+}
+
+.sticky{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding-top: 100px;
+}
+
+#navbar{
+	width: 80%;
+	margin: auto;
+}
+
+#myname{
+	animation-name: namecolour;
+	animation-duration: 8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	font-weight: 600;
+	margin-right: 40px;
+}
+
+.restofnavbar{
+	align-items: center;
+	float: left;
+	margin: 20px;
+	font-weight: 400;
+	font-family: 'Hind', "sans-serif";
+	text-decoration: none;
+	color: black;
+}
+
+.restofnavbar a{
+	padding: 20px 10px;
+}
+
+.restofnavbar:hover{
+	/*animation-name: namecolour;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;*/
+	font-weight: 700;
+	
+}
+
+.container{
+    width: 75%;
+    margin: auto;
+}
+
+.aboutme{
+    width: 70%;
+    float: right;
+}
+
+h1{
+    font-family: "Hind", sans-serif;
+    font-weight: bold;
+}
+
+
