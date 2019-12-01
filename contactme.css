@@ -1,0 +1,121 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body{
+	font-family: 'Lato', sans-serif;
+	font-size: 12pt;
+	font-weight: 300;
+}
+
+#firsthalf{
+	background-color: #f7f7f7;
+	width: 100vw;
+}
+
+.heart {
+	transition: all 0.3s;
+	color: #25AAF4;
+	animation-name: namecolour;
+	animation-duration: 8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+#heading{
+	width: 100%;
+	top: 50%;
+	font-family: 'Hind', sans-serif;
+	font-weight: bolder;
+	align-items: center;
+	float: left;
+	margin-right: 20px;
+	position: relative;
+	line-height: 1.2;
+}
+
+#subheading{
+	top: 51%;
+	transition-duration: all 0.8s;
+	font-family: 'Hind', sans-serif ;
+	font-size: 14pt;
+	float:right;
+	align-items: center;
+	width: 100%;
+	position: relative;
+	line-height: 1.5;
+}
+
+@keyframes namecolour {
+	from {color: #25AAF4;}
+	25%  {color: #FF2626;}
+	50%  {color: #03AB00;}
+	100%  {color: #FFCD00;}
+}
+
+#introduction {
+	padding-left: 25px;
+    height: 90vh;
+    align-items: center;
+	font-size: 30pt;
+	font-weight: 500;
+	margin: auto;
+	width: 86%;
+	
+	
+}
+
+#navbarbg{
+	background-color: #f7f7f7;
+	height: 75px;
+	width: 100%;
+    
+	
+	
+}
+
+.sticky{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding-top: 100px;
+}
+
+#navbar{
+	
+	width: 80%;
+	margin: auto;
+	
+	
+}
+
+#myname{
+	animation-name: namecolour;
+	animation-duration: 8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	font-weight: 600;
+	margin-right: 40px;
+	
+}
+
+.restofnavbar{
+	align-items: center;
+	float: left;
+	margin: 20px;
+	font-weight: 400;
+	font-family: 'Hind', "sans-serif";
+	text-decoration: none;
+	color: black;
+}
+
+.restofnavbar a{
+	padding: 20px 10px;
+}
+
+.restofnavbar:hover{
+	/*animation-name: namecolour;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;*/
+	font-weight: 700;
+	
+}
