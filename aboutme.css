@@ -13,11 +13,6 @@ body{
 	100%  {color: #FFCD00;}
 }
 
-.container{
-	width: 80%;
-	margin: auto;
-}
-
 #navbarbg{
 	background-image: linear-gradient(to bottom, #f7f7f7, white);
 	height: 75px;
@@ -80,6 +75,16 @@ body{
 h1{
     font-family: "Hind", sans-serif;
     font-weight: bold;
+}
+
+@media only screen and (max-width: 805px) {
+    .container{
+        width: 90%;
+    }
+    .aboutme{
+        width: 100%;
+        float: left;
+    }
 }
 
 
