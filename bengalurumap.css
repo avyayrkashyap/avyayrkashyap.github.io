@@ -1,0 +1,44 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.container{
+    width: 70%;
+    margin: auto;
+}
+
+.space{
+    height: 100px;
+}
+
+p{
+    width: 55%;
+    float: left;
+}
+
+img{
+    width: 75%;
+    border-radius: 10px;
+    float: left;
+}
+
+.imagespace{
+    height: 30px;
+    width: 100%;
+    float: left;
+}
+
+h1{
+    font-family: "Hind", sans-serif;
+    font-weight: bold;
+    font-size: 36pt;
+}
+
+h3{
+    font-family: "Hind", sans-serif;
+    font-size: 10pt;
+    float: left;
+    width: 55%;
+    font-style: italic;
+    font-weight: 100;
+    padding-bottom: 25px;
+}

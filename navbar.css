@@ -1,0 +1,63 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body{
+    font-family: "Lato", sans-serif;
+}
+
+@keyframes namecolour {
+	from {color: #25AAF4;}
+	25%  {color: #FF2626;}
+	50%  {color: #03AB00;}
+	100%  {color: #FFCD00;}
+}
+
+#navbarbg{
+	
+	height: 75px;
+	width: 80%;
+    margin: auto;
+}
+
+#navbar{
+	width: 100%;
+	padding-top: 10px;
+	margin: auto;
+	height: 70px;
+	top: 0;
+	position: fixed;
+	background-color: white;
+	box-shadow: 0 2px 5px 0px #F3F3F3;
+}
+
+#myname{
+	animation-name: namecolour;
+	animation-duration: 8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	font-weight: 600;
+	margin-right: 40px;
+}
+
+.restofnavbar{
+	align-items: center;
+	float: left;
+	margin: 20px;
+	font-weight: 400;
+	font-family: 'Hind', "sans-serif";
+	text-decoration: none;
+	color: black;
+}
+
+.restofnavbar a{
+	padding: 20px 10px;
+}
+
+.restofnavbar:hover{
+	/*animation-name: namecolour;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;*/
+	font-weight: 700;
+	
+}
+
