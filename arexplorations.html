@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AR Explorations</title>
+<link href="bengalurumap.css" rel="stylesheet" type="text/css">
+<link href="navbar.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Hind:bold|Hind:regular&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="navbar">
+        <div class="navbaritems">
+                <a class="restofnavbar" href="index.html" style="text-decoration: none;
+	               color: black;">a<span style="font-size: 9.3pt; font-weight: 900;text-decoration: none;
+	               color: black;">Rk</span></a>
+            	<a class="restofnavbar" href="aboutme.html">About</a>
+            	<a class="restofnavbar" href="contactme.html">Contact</a>
+        </div>
+    </div>
+    <div class="space"></div>
+    <div class="container">
+        <h1>Explorations in AR</h1>
+        <p>Augmented Reality as a medium is quite an interesting. There are many posibilities afforded by being able to manipulate and visualise virtual objects in the space around us. Contextualisation being key inunderstanding the fit of an aobject in one's place. AR allows for this in an effortless manner.</p>
+        <h2>The 3D F1 Visualisation</h2>
+        <p>As a fun exploration, I decided to visualise the championship fight between Sebastian Vettel and Lewis Hamilton in 2018. The data I used was until the Italian Grand Prix. As a Ferrari fan, the season going downhill for Sebastian Vettel post the Italian Grand Prix was quite demotivating and frustrating, and hence made me stop visualising this data set further. But it was quite intriguing to see how the season panned out and how AR allowed me to visualise this in a more effective manner.</p>
+        <p>To start with, I had to decide what parameters I wanted to visualise. Given that I was doing this in AR, I could have more axis for comparison, with the extra dimension afforded by the medium. I decided to compare the summative points scored per race to the position they finished. Now this is direct correlation, but nonetheless, I decided to make it as I had no idea what I was going to see. </p>
+        <p>I sketched out a few variations of this to see what I thought would make sense.</p>
+        
+        <div class="imagespace"></div>
+        <img src="Images/ARpics/Untitled_Artwork 6.jpg">
+        
+        <h3>A 3D area graph with the positions cutting across each other, to let us know who finished ahead in each Grand Prix</h3>
+        
+        <img src="Images/ARpics/Untitled_Artwork 7.jpg">
+        <h3>A point in space connected by lines to see the trajectory of the driavers through the season</h3>
+        
+        <p>Of these two idea, I decided to make the second one. Factors I considered that might hinder the understanding of the graphs were occlusion and ability to distinguish clearly between two races, and compare the positions of the two drivers.</p>
+        
+        <p>A 3D model of to house this graph was made. I tried to keep the essence of Formula 1, with bold highlights, and streaks of red through the visuals.</p>
+        
+        <div class="imagespace"></div>
+        <img src="Images/ARpics/Screenshot 2019-12-04 at 13.16.37.png">
+        <div class="imagespace"></div>
+        
+        <div class="imagespace"></div>
+        <img src="Images/ARpics/Screenshot 2019-12-04 at 13.18.39.png">
+        <div class="imagespace"></div>
+        <p>The lines were colour coded as per the colours of the teams Vettel and Hamilton drive for. Each sphere symbolised the drivers finishing position and cumulative points scored per race. A transluscent red box was added to indicate if the driver finished outside the top ten (outside a points paying position).</p>
+        
+        <div class="imagespace"></div>
+        <img src="Images/ARpics/Screenshot 2019-12-04 at 13.20.42.png">
+        <div class="imagespace"></div>
+        
+        <p>Through marker based AR, I prototyped this visualisation.</p>
+        <p>Initially, to test Vuforia, given that I was new to it, I tried making it play a movie, my favourtie, Rush. Here's the demo of it. I was primarily understanding how good the tracking is, and what are the affordances of a marker based system.</p>
+        
+        <video controls>
+            <source src="Images/ARpics/ScreenRecording_08-30-2018 22-52-24.m4v" type="video/mp4">
+        </video>
+        
+        <p>It wasn't too bad, so I placed my visualisation on the marker and viewed it through my mobile's lenses.</p>
+        
+        <video autoplay loop>
+            <source src="Images/ARpics/IMG_1422.TRIM.m4v" type="video/mp4">
+        </video>
+    
+        <p>Not too shabby, eh? Given the angle, the marker couldnt be seamlessly tracked, and this led to the breaks. But it definitely was quick in recognising the marker again. But clearly there was room for improvement. Next stop: Markerless AR.</p>
+        <p>Before I get on with markerless AR, there were a few things I noticed with the graph, that surely would've been harder to associate if this were a 2D visualisation. As you can see from the image below, Vettel was obviously more on the right side of the graph compared to Hamilton.</p>
+        
+        <div class="imagespace"></div>
+        <img src="Images/ARpics/Screenshot 2019-12-04 at 13.17.33.png" style="width: 50%; margin: auto;">
+        <div class="imagespace"></div>
+        
+        <p> While circumstances and bad luck could explain some of the happenings, such as the crash with Verstappen in China or Bottas in France, it leaves Vettel answerable to a lot of other errors he made throughout the season, such as Germany and Bahrain. Hamilton on the other hand, was a lot more consistent, and hence, the deserved Champion.</p>
+    
+        <h2>Markerless trials at H<span style="color: red">f</span>G</h2>
+        <p>For markerless AR, I switched to ARKit, by Apple. This was at a time when AR Foundation hadn't rolled out yet, and also because of the tremondous support structure I found while on a semester exchange at Germany.</p>
+        <p>More to come...
+        <ul>
+            <li>Markerless trial</li>
+            <li>Touch interactions</li>
+            <li>Marker based trial</li>
+            <li>Combination of Marker based and Markerless</li>
+        </ul>
+        </p>
+        
+        <h3 style="border-top: 1px solid #e4e4e4">Done for the love of AR, and also because I just wanted to...</h3>
+    
+    
+    
+    </div>
+    
+    
+    
+    
+</body>
+</html>
