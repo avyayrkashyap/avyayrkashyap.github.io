@@ -4,6 +4,16 @@
 .container{
     width: 70%;
     margin: auto;
+    height: auto;
+}
+
+.background{
+    background-image: url("Images/POAKY.jpg");
+    height: 100vw;
+	background-size: cover;
+	background-position:top;
+	background-attachment: fixed;
+    z-index: -1000;
 }
 
 .space{
@@ -61,6 +71,14 @@ li{
     width: 100%;
 }
 
+p2{
+    font-family: "Hind", sans-serif;
+    font-weight: bold;
+    font-size: 18pt;
+    float: left;
+    width: 100%;
+}
+
 @media only screen and (max-width: 935px) {
     
     .container{
@@ -82,4 +100,14 @@ li{
     h3{
         width: 100%;
     }
+}
+
+
+
+
+.footer{
+	text-align: center;
+    width: 100%;
+    margin: auto;
+    height: 40px;
 }
