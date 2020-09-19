@@ -2,6 +2,7 @@
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 12pt;
     font-weight: 300;
+    color:#111;
 }
 
 .container{
@@ -14,7 +15,7 @@
     position: relative;
     overflow: hidden;
     font-family: "Barlow", sans-serif;
-    font-weight: 400;
+    font-s;
 }
 
 /* Style the links inside the navigation bar */
@@ -120,11 +121,27 @@
     box-sizing: border-box
 }
 
+.mailto {
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+}
+
+.icons {
+    height: 20px;
+    padding-right: 15px;
+    padding-left: 10px;
+    filter: grayscale(100%);
+}
+
+
+
+
 /* Container needed to position the overlay. Adjust the width as needed */
 .projectcontainer {
     float: left;
     position:relative;
-    width: auto;
+    width: 50%;
     height: 350px;
 }
 
@@ -134,7 +151,7 @@
     margin-left: auto;
     margin-right: auto;
     height: 350px;
-    width: 350px;
+    width: 100%;
     object-fit: cover;
     object-position: center;
 }
@@ -175,7 +192,12 @@
 
 
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 900px) {
+    .container {
+        width: 100%;
+        margin: auto;
+    }
+
     .Introduction{
         height: 55vh;
     }
@@ -209,31 +231,37 @@
 
 
 /* Responsive navigation menu - display links on top of each other instead of next to each other (for mobile devices) */
-@media screen and (max-width: 600px) {
-    .container{
-        width: 93%;
-        margin:auto;
-    }
-}
+
 
 @media (prefers-color-scheme: dark) {
     /* Dark theme styles go here */
-{
-    body
 
-{
+    body{
     color: #eee;
-    background: #121212;
-}
+    background: #121212;}
 
- 
-a {
-    color: #809fff;
-}
+    .Subheading{
+        color:#d3d3d3;
+    }
+    .topnav a{
+        color:#4a4a4a;
+    }
+    .topnav a:hover {
+        color: #fff;
+    }
+    .topnav a.active {
+        color: #fff;
+        font-weight: 600;
+    }
 
-}
-}
+    .mailto {
+        color: white;
+   }
+    .icons{
+        filter:invert(100%);
+    }
+    .image{
+        opacity: 0.75;
+    }
 
-@media (prefers-color-scheme: light) {
-    /* Light theme styles go here */
 }
