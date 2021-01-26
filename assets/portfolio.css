@@ -1,0 +1,173 @@
+﻿body {
+    background-color: #fff;
+    color: #111;
+    font-family: "IBM Plex Sans", 'sans';
+    font-size: 11pt;
+}
+
+.leftnav {
+    position:fixed;
+    float:left;
+    display: block;
+    width:180px;
+    height: 100vh;
+    padding: 20px;
+    text-decoration: none;
+
+
+}
+
+.leftnavelements {
+    padding-bottom:16px;
+    font-size:16pt;
+}
+
+a{
+    text-decoration:none;
+    color:#111;
+}
+
+.container{
+    width:60vw;
+    margin-left:220px;
+}
+
+.Introduction {
+    height: 45vh;
+    align-items: center;
+    font-size: 30pt;
+    font-weight: 500;
+    margin: auto;
+    margin-bottom:20vh;
+    width: 96%;
+}
+
+.Heading {
+    font-family: 'Barlow', sans-serif;
+    font-size: 28pt;
+    font-weight: 700;
+    width: 100%;
+    top: 42%;
+    float: left;
+    margin-right: 20px;
+    position: relative;
+    line-height: 1.2;
+}
+
+.Subheading {
+    top: 45%;
+    transition-duration: all 0.8s;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14pt;
+    font-weight: 300;
+    float: right;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    line-height: 1.5;
+    color: #3a3a3a;
+    padding-top: 12px;
+}
+
+.heart {
+    transition: all 0.3s;
+    color: #25AAF4;
+    animation-name: namecolour;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes namecolour {
+    from {
+        color: #25AAF4;
+    }
+
+    25% {
+        color: #FF2626;
+    }
+
+    50% {
+        color: #03AB00;
+    }
+
+    100% {
+        color: #FFCD00;
+    }
+}
+
+* {
+    box-sizing: border-box
+}
+
+.emphasis {
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+}
+
+.icons {
+    height: 20px;
+    padding-right: 15px;
+    padding-left: 10px;
+    filter: grayscale(100%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.colorspace{
+    height:500px;
+    width:60vw;
+    float: left;;
+    background-color:#3d3d3d;
+    border-bottom: 2px #fff solid;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    /* Dark theme styles go here */
+
+    body {
+        color: #eee;
+        background: #121212;
+    }
+
+    a{
+        color:#eee;
+    }
+
+    .Subheading {
+        color: #d3d3d3;
+    }
+
+    .emphasis {
+        color: white;
+    }
+
+    .icons {
+        filter: invert(100%);
+    }
+}
