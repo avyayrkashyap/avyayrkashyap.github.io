@@ -2,7 +2,7 @@
     background-color: #fff;
     color: #111;
     font-family: "IBM Plex Sans", 'sans';
-    font-size: 12pt;
+    font-size: 10pt;
 }
 
 .leftnav {
@@ -71,7 +71,7 @@ a{
 
 .heart {
     transition: all 0.3s;
-    color: #25AAF4;
+    color: #4A90E2;
     animation-name: namecolour;
     animation-duration: 8s;
     animation-iteration-count: infinite;
@@ -80,19 +80,22 @@ a{
 
 @keyframes namecolour {
     from {
-        color: #25AAF4;
+        color: #4A90E2;
+    }
+    10% {
+        color: #4A90E2;
     }
 
     25% {
-        color: #FF2626;
+        color: #D0021B;
     }
 
     50% {
-        color: #03AB00;
+        color: #FFCC04;
     }
 
-    100% {
-        color: #FFCD00;
+    90% {
+        color: #74C812;
     }
 }
 
@@ -143,25 +146,52 @@ a{
     float: left;
     box-sizing: border-box;
     min-width:300px;
+    min-height:325px;
+    position: relative;
 }
 
 .title{
     font-weight: bold;
     font-size: 16pt;
+    color: #111;
+}
+
+.date{
+    font-size: 8pt;
+    color: #636363;
 }
 
 .description{
     padding:16px 0 0 0;
 }
 
-.link{
+.link {
+    font-size: 8pt;
     float: right;
-    color: blue;
-    padding-top: 24px;
-    text-decoration: underline;
+    color: #636363;
+    position: absolute;
+    bottom: 20px;
+    text-decoration: none;
+    font-weight: 300;
 }
 
+.projectcard:hover .link{
+    color: #4A90E2;
+}
 
+.projectcard:hover .title {
+    color: #4A90E2;
+}
+
+.image {
+    padding-bottom: 10px;
+    width: 100%;
+    -webkit-filter: grayscale(1);
+}
+
+.projectcard:hover .image{
+    -webkit-filter: none;
+}
 
 
 
@@ -225,12 +255,12 @@ a{
     }
 
     .projectcard {
-        background-color: #202020;
-        box-shadow: 0 0 0px #232323;
+        background-color: #121212;
+        box-shadow: 0 0 10px #242424;
     }
 
-    .link {
-        color: #25AAF4;
+    .title{
+        color:#eee;
     }
 }
 
@@ -287,10 +317,10 @@ a{
         }
     }
 
-    @media screen and (max-width: 320px) {
+    @media screen and (max-width: 415px) {
         .Introduction {
-            height: 75vh;
-            margin-top: -160px;
+            height: 120vh;
+            margin-top: -180px;
         }
 
         .icons {
