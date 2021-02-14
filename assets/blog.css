@@ -12,11 +12,9 @@
 
 .backarrow {
     -webkit-filter: grayscale(1);
-    bottom: 18px;
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
     height: 12px;
     margin-right: 12px;
+    bottom: 18px;
 }
 
 .backbutton:hover .backarrow{
