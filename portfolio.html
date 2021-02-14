@@ -14,6 +14,8 @@
     <meta name="theme-color" content="#ffffff">
 
     <link href="assets/portfolio.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
@@ -22,7 +24,7 @@
         <!--left Nav Bar-->
         <div class="leftnav">
 
-            <img src="assets/websiteImages/ARKLogo.png" class="logo">
+            <img src="assets/websiteImages/ARKLogo.png" class="logo" />
             <div class="desktopview">
                 <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons2"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons2"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons2"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons2"></a>
             </div>
@@ -49,26 +51,69 @@
                     Hi there! I'm <span class="heart">Avyay R Kashyap</span>.
                 </div>
                 <div class="Subheading">
-                    I currently work as a UX designer at Reliance Jio.
+                    I am a UX designer at <a href="https://www.jio.com" class="emphasis">Reliance Jio</a>.
                 </div>
                 <div class="Subheading">
-                    I graduated with a Masters in Interaction Design from <a href="http://www.idc.iitb.ac.in"><span style="color:#EE7202">IDC School of Design</span>, IIT Bombay</a>.
+                    I graduated with an Integrated Masters in Interaction Design from <a href="http://www.idc.iitb.ac.in"><span class="emphasis" style="color:#EE7202">IDC School of Design</span>, IIT Bombay</a>.
                 </div>
                 <div class="Subheading">
-                    You can reach out to me at <a href="mailto: avyayrk@gmail.com" class="emphasis">avyayrk@gmail.com</a> or find me on <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
-                </div>
-                <div class="Subheading">
+                    You can reach out to me at <a href="mailto: avyayrk@gmail.com" class="emphasis">avyayrk@gmail.com</a> or on social media.  <!--or find me on <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a> -->
                     My resume can be found <a href="assets/AvyayResume.pdf" class="emphasis">here</a>.
+                </div>
+                <div class="Subheading">
+
                 </div>
 
             </div>
+
+            <div class="projectcard" id="arklid">
+                <div class="image">
+                    <picture>
+                      <img src="assets/projectimages/arklid.png" alt="Logo for ARK Lid containing stylised forms of the letters a r k." class="image">
+                    </picture>
+                </div>
+                <div class="title">
+                </div>
+                <div class="date">
+                    Project | January - June 2020
+                </div>
+                <div class="description">
+                    ARKLid is a concept for an assistive device that enables the visually impaired prepare meals that involve roasting.
+                </div>
+                <div class="link">
+                    Link to "webpage"
+                </div>
+            </div>
+
+            <a href="assets2020src.html">
+                <div class="projectcard" id="assets2020src">
+                    <div class="image">
+                        <picture>
+                        
+                        </picture>
+                    </div>
+                    <div class="title">
+                        Finalist at ASSETS 2020 Student Research Competition
+                    </div>
+                    <div class="date">
+                        Publication | October 2020
+                    </div>
+                    <div class="description">
+                        Published my work at The 22nd International ACM SIGACCESS Conference on Computers and Accessibility in the Student Research Competition.
+                    </div>
+                    <div class="link">
+                        Read more <img src="assets/websiteImages/arrow.png" class="arrow" />
+                    </div>
+                </div>
+            </a>
+            
 
             <div class="projectcard" id="poakme">
                 <div class="image">
                     <picture>
                         <source srcset="assets/projectimages/POAKmedark.png"
-                                media="(prefers-color-scheme: dark)">
-                        <img src="assets/projectimages/POAKme.png" alt="Poak me logo containing four dots coloured red, blue, green and yellow with the text POAKme written next to it">
+                                media="(prefers-color-scheme: dark)" class="image">
+                        <img src="assets/projectimages/POAKme.png" class="image" alt="Poak me logo containing four dots coloured red, blue, green and yellow with the text POAKme written next to it">
                     </picture>
                 </div>
                 <div class="title">
@@ -88,23 +133,21 @@
                 <div class="projectcard" id="physiodot">
                     <div class="image">
                         <picture>
-                            <source srcset="assets/projectimages/physiodot.png"
-                                    media="(prefers-color-scheme: dark)">
-                            <img src="assets/projectimages/physiodot.png" alt="Physiodot logo in blue containing the letter P with a dot to its left">
+                            <img src="assets/projectimages/physiodot.png" class="image" alt="Physiodot logo in blue containing the letter P with a dot to its left">
                         </picture>
                     </div>
                     <div class="title">
 
                     </div>
                     <div class="date">
-                        Exchange Semester @ HfG Schwäbisch Gmünd | October 2018 - January 2019
+                        Exchange Semester @ <span><a href="https://www.hfg-gmuend.de" class="gmuend"> HfG Schwäbisch Gmünd</a></span> | October 2018 - January 2019
                     </div>
                     <div class="description">
                         PhysioDot is an application that allows patients to perform their physiotherapy exercises from the comfort of their homes
                     </div>
 
                     <div class="link">
-                        Read more about it here
+                        Read more about it here <img src="assets/websiteImages/arrow.png" class="arrow" />
                     </div>
 
                 </div>
@@ -185,6 +228,7 @@
 
 
 
+            
 
 
 
@@ -192,6 +236,11 @@
 
 
 
+
+
+            <div class="footer">
+                Avyay Kashyap © 2021 | Made with ❤️ from Bangalore
+            </div>
 
 
 
