@@ -217,7 +217,7 @@ h1 {
     padding-top: 16px;
     text-transform: uppercase;
     font-size: 14pt;
-    color: #656565;
+    color: #666;
 }
 
 h2 {
@@ -239,9 +239,13 @@ h2 {
 
 
 .footer {
+    font-size: 10pt;
+    color: #666;
+    bottom: 0;
+    width: 60vw;
+    margin-left: 200px;
     text-align: center;
     padding: 20px;
-    border-top: 1px solid #666;
 }
 
 
@@ -313,6 +317,11 @@ h2 {
         .container {
             width: 80vw;
             margin-left: 20px;
+        }
+
+        .footer {
+            width:80vw;
+            margin: auto;
         }
 
         .leftnav {
