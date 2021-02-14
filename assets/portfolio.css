@@ -2,7 +2,7 @@
     background-color: #fff;
     color: #111;
     font-family: "IBM Plex Sans", 'sans';
-    font-size: 10pt;
+    font-size: 11pt;
 }
 
 .leftnav {
@@ -154,10 +154,11 @@ a{
     font-weight: bold;
     font-size: 16pt;
     color: #111;
+    padding-bottom: 4px;
 }
 
 .date{
-    font-size: 8pt;
+    font-size: 10pt;
     color: #636363;
 }
 
@@ -165,8 +166,12 @@ a{
     padding:16px 0 0 0;
 }
 
+.gmuend {
+    color: #636363;
+}
+
 .link {
-    font-size: 8pt;
+    font-size: 10pt;
     float: right;
     color: #636363;
     position: absolute;
@@ -175,8 +180,22 @@ a{
     font-weight: 300;
 }
 
+.arrow{
+    height: 8px;
+    -webkit-filter: grayscale(1);
+    bottom:18px;
+}
+
+.projectcard:hover .gmuend{
+    color: red;
+}
+
 .projectcard:hover .link{
     color: #4A90E2;
+}
+
+.projectcard:hover .arrow{
+    -webkit-filter: none;
 }
 
 .projectcard:hover .title {
@@ -184,8 +203,8 @@ a{
 }
 
 .image {
-    padding-bottom: 10px;
-    width: 100%;
+    padding-bottom: 4px;
+    width: 70%;
     -webkit-filter: grayscale(1);
 }
 
@@ -193,6 +212,17 @@ a{
     -webkit-filter: none;
 }
 
+h1 {
+    font-family: 'Merriweather', serif;
+    padding-top: 16px;
+    text-transform: uppercase;
+    font-size: 14pt;
+    color: #656565;
+}
+
+h2 {
+
+}
 
 
 
@@ -208,7 +238,11 @@ a{
 
 
 
-
+.footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #666;
+}
 
 
 
@@ -251,7 +285,7 @@ a{
     }
 
     .icons2 {
-        filter: invert(100%);
+        filter: invert(95%);
     }
 
     .projectcard {
