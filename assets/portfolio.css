@@ -225,9 +225,9 @@ h2 {
 }
 
 p{
-    colour: #121212;
+    color: #121212;
+    font-weight: 200;
 }
-
 
 
 
@@ -245,11 +245,14 @@ p{
 .footer {
     font-size: 10pt;
     color: #666;
-    bottom: 0;
     width: 60vw;
+    height: 70px;
+    float: left;
     margin-left: 200px;
-    text-align: center;
+    text-align: left;
     padding: 20px;
+    position: inherit;
+    bottom: 0;
 }
 
 
@@ -304,10 +307,10 @@ p{
     .title{
         color:#eee;
     }
-    
-    p{
-    colour: #eee;
-}
+
+    p {
+        color: #eee;
+    }
 }
 
 /* Variable width screen size resize */
@@ -366,6 +369,10 @@ p{
             margin-bottom: 20px;
             min-width: 256px;
         }
+
+        .footer {
+            width: 100wv;
+        }
     }
 
     @media screen and (max-width: 415px) {
@@ -381,4 +388,6 @@ p{
         .icons2 {
             padding: 0 8px 0 8px;
         }
+
+
     }
