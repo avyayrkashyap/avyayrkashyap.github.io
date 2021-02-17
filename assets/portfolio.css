@@ -224,6 +224,10 @@ h2 {
 
 }
 
+p{
+    colour: #121212;
+}
+
 
 
 
@@ -300,6 +304,10 @@ h2 {
     .title{
         color:#eee;
     }
+    
+    p{
+    colour: #eee;
+}
 }
 
 /* Variable width screen size resize */
