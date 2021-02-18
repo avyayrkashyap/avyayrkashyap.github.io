@@ -31,11 +31,6 @@
     width: 100%;
 }
 
-.textlink {
-    color: #000;
-    font-weight: 400;
-}
-
 .iframe-container {
     position: relative;
     overflow: hidden;
@@ -53,12 +48,65 @@
     height: 100%;
 }
 
+.posterimage {
+    width: 100%;
+    padding: 20px 0 20px 0;
+}
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+/*Font Descriptions*/
+.title{
+    font-family: 'Merriweather', serif;
+    font-size: 18pt;
+}
+
+h1 {
+    font-family: 'Barlow', sans-serif;
+    padding-top: 16px;
+    text-transform: uppercase;
+    font-size: 14pt;
+    color: #666;
+}
+
+h2 {
+    font-family: 'Barlow', sans-serif;
+    padding-top: 16px;
+    text-transform: uppercase;
+    font-size: 11pt;
+    color: #666;
+}
+
+p {
+    color: #121212;
+    font-weight: 300;
+}
+
+.tldr {
+    color: #333;
+    font-style: italic;
+    font-weight: 100;
+    font-size: 10pt;
+    padding-top: 8px;
+
+}
+
+.date {
+    font-size: 10pt;
+    color: #636363;
+    padding-top: 4px;
+}
 
 
 
@@ -69,8 +117,16 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    .textlink{
-        color: #fff;
+    .title {
+        color: #eee;
+    }
+
+    p {
+        color: #eee;
+    }
+
+    .tldr {
+        color: #ccc;
     }
 }
 
