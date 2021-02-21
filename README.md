@@ -1,4 +1,4 @@
-Hosted on 
+Hosted on  
 ## avyayrk.com
 
 Just a collection of my projects and me :P
