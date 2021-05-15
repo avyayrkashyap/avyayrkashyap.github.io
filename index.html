@@ -21,10 +21,11 @@
 
 </head>
     <body>
-        <!--left Nav Bar-->
-        <div class="leftnav">
 
-            <a href="index.html">
+        <!--left Nav Bar-->
+        <div class="leftnav" id="myLeftNav">
+
+            <a class="logo" href="index.html">
                 <picture>
                     <source srcset="assets/websiteImages/arklogodark.png"
                         media="(prefers-color-scheme: dark)" class="logo">
@@ -32,9 +33,37 @@
                 </picture>
             </a>
 
-            <div class="desktopview">
-                <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons2"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons2"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons2"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons2"></a>
+
+            <div class="overlay" id="myNav">
+
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+                <div class="leftnavelements">
+                    <a class="leftnavitem" id="aboutme">About Me</a>
+                    <a class="leftnavitem">Resumé</a>
+                    <a class="leftnavitem">Fun Stuff</a>
+
+
+                
+                    <div class="desktopview">
+                        <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons2"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons2"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons2"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons2"></a>
+                    </div>
+                </div>
+
             </div>
+
+            <div onclick="openNav()" class="hamburger">&#9776;</div>
+
+            <script>
+                function openNav() {
+                document.getElementById("myNav").style.width = "100%";
+                }
+                function closeNav() {
+                document.getElementById("myNav").style.width = "0%";
+                }
+            </script>
+
+
             <!--
             <div class="leftnavelements">
                 <a href="projects.html">
@@ -48,6 +77,8 @@
                 </a>
             </div>
                  -->
+
+
         </div>
 
 
@@ -56,12 +87,17 @@
 
             <div class="Introduction" id="home">
                 <div class="Heading">
-                    Hi there! I'm <span class="heart">Avyay R Kashyap</span>.
+                    Hi there! I'm <span class="heart">Avyay Kashyap</span>.
                 </div>
 
                 <div class="Subheading">
-                    <h2>About Me</h2>
-                    I am a UX designer at <a href="https://www.jio.com" class="emphasis">Reliance Jio</a>. I studied Interaction Design at <a href="http://www.idc.iitb.ac.in" class="emphasis">IDC School of Design, IIT Bombay</a>.
+                    <h2>About Me <img src="assets/websiteImages/arrow.png" class="arrow" /></h2>
+
+                    I am a UX designer at <a href="https://www.jio.com" class="emphasis">Reliance Jio</a>, working on the design and experience of e-commerce applications.
+                </div>
+
+                <div class="Subheading">
+                    I completed an Integrated Masters in Interaction Design from <a href="http://www.idc.iitb.ac.in" class="emphasis">IDC School of Design, IIT Bombay</a> in 2020.
                 </div>
 
                 <div class="Subheading">
