@@ -172,7 +172,7 @@ a{
     float: left;
     box-sizing: border-box;
     min-width:300px;
-    min-height:275px;
+    min-height:290px;
     position: relative;
 }
 
@@ -252,6 +252,10 @@ h2 {
     text-transform: uppercase;
     font-size: 11pt;
     color: #666;
+}
+
+#active {
+    font-weight: 600;
 }
 
 
@@ -353,7 +357,7 @@ h2 {
 
 /* Variable width screen size resize */
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1124px) {
     .projectcard {
         width: 100%;
         margin: 0;
@@ -435,7 +439,7 @@ h2 {
     }
 
     .leftnavelements .desktopview {
-        float: right;
+        padding:0px 0 60px 20px;
     }
     .logo {
         width: 56px;
