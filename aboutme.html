@@ -1,40 +1,104 @@
-<!doctype html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>About me</title>
-<link href="aboutme.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Hind:bold|Hind:regular&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
-</head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicons/site.webmanifest">
+    <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#4a90e2">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <link href="assets/portfolio.css" rel="stylesheet" />
+    <link href="assets/blog.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <title>Avyay's Portfolio: GR2DC</title>
+</head>
 <body>
-    
-     <div id="navbarbg">
-        	<div id="navbar">
-            	<div class="restofnavbar"><a href="index.html" style="text-decoration: none;
-	color: black;">a<span style="font-size: 9.3pt; font-weight: 900;text-decoration: none;
-	color: black;">Rk</span></a></div>
-            	<a class="restofnavbar" id="myname">About</a>
-            	<a class="restofnavbar" href="contactme.html">Contact</a>
-        	</div>
-		</div>
-    
-    <div class="space"></div>
-    
-    <div class="container">
-        <div class="aboutme"> <h1>Hi! I'm Avyay.</h1>
-        <p>
-            I am currently pursuing a masters in Interaction Design from IDC School of Design, IIT Bombay. Having previously completed four years at IDC as a part of my bachelors, I chose to futher explore the field of design and human computer interactions in an academic atmosphere, by choosing to convert to a Dual Degree.
-        </p>
-        <p>
-        With 5G networking on the horizon, I find the possibilites offered by interconnected devices and data to enrich people's lives to be fascinating. As a designer, entering the industry with this backdrop, I find the potential afforded by such technical advancements immensely exciting. I love tinkering with hardware and figuring out ways to harmoniously match it with a seamless software experience.
-        </p>
-        <p>My interest areas lie in the field of Health-tech medical devices, Tangible interactions, and screenless interfaces. I am the kind of person who prefers doing and showing, as is needed when eliciting interactions with new media devices. The devil is in the details, and my goal is to find the devil. Designing microinteractions, a subject I am extremely passionate about, and after four and a half years of Design School, is now a way of life.</p>
-            <p>Oh! And did I mention I am an avid fan of Formula One, Forza Ferrari! I love watching and playing football, and when I get the time, shooting landscapes.</p>
+    <div class="leftnav">
+
+        <a class="logo" href="index.html">
+            <picture>
+                <source srcset="assets/websiteImages/arklogodark.png"
+                        media="(prefers-color-scheme: dark)" class="logo">
+                <img src="assets/websiteImages/arklogolight.png" class="logo" alt="Poak me logo containing four dots coloured red, blue, green and yellow with the text POAKme written next to it">
+            </picture>
+        </a>
+
+
+        <div class="overlay" id="myNav">
+
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+            <div class="leftnavelements">
+                <a class="leftnavitem" id="active" href="aboutme.html">About Me</a>
+                <a class="leftnavitem" href="assets/files/AvyayResume.pdf">Resumé</a>
+                <a class="leftnavitem">Fun Stuff</a>
+
+
+
+                <div class="desktopview">
+                    <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons2"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons2"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons2"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons2"></a>
+                </div>
+            </div>
+
         </div>
-   
+
+        <div onclick="openNav()" class="hamburger">&#9776;</div>
+
+        <script>function openNav() {
+                document.getElementById("myNav").style.width = "100%";
+                }
+                function closeNav() {
+                document.getElementById("myNav").style.width = "0%";
+                }</script>
+
     </div>
-    
+    <div class="container">
+        <div class="backbuttoncontainer">
+            <a href="index.html">
+                <div class="backbutton">
+                    <img src="assets/websiteImages/backarrow.png" class="backarrow">back
+                </div>
+            </a>
+        </div>
+
+        <!--Content-->
+        <div class="content">
+            <div class="Subheading">
+                <h2>About Me</h2>
+
+                I am a UX designer at <a href="https://www.jio.com" class="emphasis">Reliance Jio</a>, working on the design and experience of e-commerce applications.
+            </div>
+
+            <div class="Subheading">
+                I completed my Integrated Masters in Interaction Design from <a href="http://www.idc.iitb.ac.in" class="emphasis">IDC School of Design, IIT Bombay</a> in 2020.
+            </div>
+
+            <div class="Subheading">
+                I am a huge fan of hope, which is why I support Manchester United in the English Premier League, and Scuderia Ferrari in Formula One.
+                I've recently begun flying drones, love tinkering with hardware, and will spend hours ensuring every detail presented is exactly as intended.
+            </div>
+
+            <div class="Subheading">
+                My interest areas lie in the field of health-tech medical devices, tangible interactions, and screenless interfaces.
+                The devil is in the details, and my goal is to find the devil. Microinteractions is a subject I am extremely
+                passionate about, and after five years of Design School, is a way of life.
+            </div>
+
+            <div class="Subheading" style="padding-bottom: 40px;">
+                You can reach out to me via <a href="mailto: avyayrk@gmail.com" class="emphasis">mail</a> or on social media.  <!--or find me on <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a> -->
+                My resume can be found <a href="assets/files/AvyayResume.pdf" class="emphasis">here</a>.
+            </div>
+        </div>
+
 </body>
 </html>
