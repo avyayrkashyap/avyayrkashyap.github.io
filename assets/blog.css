@@ -2,12 +2,28 @@
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 14pt;
     font-weight: 300;
-    padding:96px 10px 0 10px;
-    position: fixed;
-    float: left;
-    height: 100vh;
-    width: 90px;
-    display: block;
+    padding: 0 0 64px 0;
+    height: 40px;
+    width: auto;
+    display: inline-block;
+
+}
+
+.backbutton {
+    padding: 0 8px 8px 0;
+    border-bottom: solid 2px #ddd;
+}
+
+.button {
+    width: auto;
+    display: inline-block;
+    padding: 8px;
+    border-bottom: solid 2px #ddd;
+}
+
+.button:hover {
+    color: #4A90E2;
+    border-bottom: solid 2px #4A90E2;
 }
 
 .backarrow {
@@ -23,19 +39,19 @@
 
 .backbutton:hover {
     color: #4A90E2;
+    border-bottom: solid 2px #4A90E2;
 }
 
 .content{
-    padding: 138px 10px 10px 10px;
-    margin-left:100px;
+    padding: 96px 10px 10px 10px;
     width: 100%;
 }
 
 .iframe-container {
     position: relative;
     overflow: hidden;
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+    width: 65%;
+    padding-top: 36.5625%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
 }
 
 .responsive-iframe {
@@ -58,7 +74,7 @@
     font-weight: 500;
 }
 
-.quickdetails {
+.grid {
     display: grid;
     grid-template-columns: 33% 33% 33%;
     grid-gap: 8px;
@@ -66,12 +82,30 @@
     padding: 12px;
 }
 
-.quickdetails > div {
+.grid > div {
     padding-bottom: 12px;
 }
 
 .readmore {
     padding-top: 24px;
+}
+
+.grid-blog {
+    display: grid;
+    width: 75%;
+    grid-template-columns: 50% 50%;
+    grid-gap: 8px;
+    justify-content: space-between;
+    padding: 12px;
+}
+
+.grid-images {
+    display: grid;
+    width: 75%;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 8px;
+    justify-content: space-between;
+    padding: 12px;
 }
 
 
@@ -120,7 +154,7 @@ h3 {
 p {
     width: 65%;
     color: #121212;
-    font-weight: 300;
+    font-weight: 400;
 }
 p1 {
     width: inherit;
@@ -146,6 +180,7 @@ p2 {
 }
 
 .fin {
+    margin-top: 48px;
     width: 100%;
     border-top: solid 1px #d3d3d3;
     color: #d3d3d3;
@@ -153,10 +188,18 @@ p2 {
 }
 
 
+/*Image Desicrpitions*/
+.blogimage-small {
+    width: 100%;
+}
+
+#boiling-s3 {
+    grid-column: span 2;
+}
+
 
 
 .footer{
-    margin-left: 90px;
     text-align: left;
 }
 
@@ -165,11 +208,7 @@ p2 {
         color: #eee;
     }
 
-    h3 { 
-        color: #eee;
-    }
-
-    p {
+    h1, h2, h3, p { 
         color: #eee;
     }
 
@@ -185,6 +224,12 @@ p2 {
 }
 
 
+    @media screen and (max-width: 1025px) {
+        .grid-blog, .grid-images {
+            width: 100%;
+        }
+    }
+
     @media screen and (max-width: 768px) {
         .container {
             width: 96%;
@@ -193,10 +238,9 @@ p2 {
 
         .backbuttoncontainer {
             position: relative;
-            padding: 10px;
-            padding-top: 88px;
+            padding: 0 0 64px 0;
             height: 40px;
-            width: 100%;
+            width: auto;
             display: inline-block;
         }
 
@@ -205,31 +249,44 @@ p2 {
             padding-top: 132px;
         }
 
-        iframe {
-            height: 200px;
+        .iframe-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
         }
 
-        p{
+        p {
             width: 100%;
         }
 
-        .tldr{
+        .tldr {
             width: 100%
         }
 
         .footer {
-            margin-left: 0px;
             text-align: left;
         }
 
-        .quickdetails {
+        .grid {
             grid-template-columns: auto auto;
         }
+
+        
     }
 
     @media screen and (max-width: 415px) {
-        .quickdetails {
+        .grid {
             grid-template-columns: auto;
         }
+
+        .grid-blog {
+            grid-template-columns: auto;
+        }
+
+        .grid-images {
+            grid-template-columns: auto auto;
+        }
+        
     }
 
