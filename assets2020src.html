@@ -40,8 +40,8 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
             <div class="leftnavelements">
-                <a class="leftnavitem" id="aboutme">About Me</a>
-                <a class="leftnavitem">Resumé</a>
+                <a class="leftnavitem" id="aboutme" href="aboutme.html">About Me</a>
+                <a class="leftnavitem" href="assets/files/AvyayResume.pdf">Resumé</a>
                 <a class="leftnavitem">Fun Stuff</a>
 
 
@@ -65,11 +65,16 @@
     </div>
     <div class="container">
         <div class="backbuttoncontainer">
-            <a href="index.html">
+            <a onclick="goBack()">
                 <div class="backbutton">
                     <img src="assets/websiteImages/backarrow.png" class="backarrow">back
                 </div>
             </a>
+            <script>
+                function goBack() {
+                window.history.back();
+                }
+            </script>
         </div>
 
         <div class="content">

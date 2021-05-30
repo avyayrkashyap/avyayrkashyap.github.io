@@ -64,11 +64,15 @@
     </div>
     <div class="container">
         <div class="backbuttoncontainer">
-            <a href="index.html">
+            <a onclick="goBack()">
                 <div class="backbutton">
                     <img src="assets/websiteImages/backarrow.png" class="backarrow">back
                 </div>
             </a>
+            <script>function goBack() {
+                    window.history.back();
+                }
+            </script>
         </div>
 
         <!--Content-->
