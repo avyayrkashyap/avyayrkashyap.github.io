@@ -64,25 +64,48 @@
 
     </div>
     <div class="container">
-        <div class="backbuttoncontainer">
-            <a onclick="goBack()">
-                <div class="backbutton">
-                    <img src="assets/websiteImages/backarrow.png" class="backarrow">back
-                </div>
-            </a>
-            <script>
-                function goBack() {
-                window.history.back();
-                }
-            </script>
-        </div>
-
         <div class="content">
+
+            <div class="backbuttoncontainer">
+                <a onclick="goBack()">
+                    <div class="backbutton">
+                        <img src="assets/websiteImages/backarrow.png" class="backarrow">back
+                    </div>
+                </a>
+                <script>function goBack() {
+                        window.history.back();
+                    }</script>
+            </div>
+
             <div class="title">
                 Finalist at ASSETS 2020 Student Research Competition
             </div>
-            <div class="date">
-                Publication | October 2020
+            <div class="projecttype">
+                Publication
+            </div>
+
+            <div class="grid">
+                <div id="role">
+                    <h3>Role</h3>
+                    <p1>Design Researcher</p1>
+                </div>
+                <div id="team">
+                    <h3>Team</h3>
+                    <p1>Individual</p1>
+                </div>
+                <div id="research-methods">
+                    <h3>Research Methods</h3>
+                    <p1>Semistructured Interviews, Video Analysis, Card Sorting</p1>
+                </div>
+                <div id="duration">
+                    <h3>Duration</h3>
+                    <p1>October 2020</p1>
+                </div>
+                <div id="conference">
+                    <h3>Conference</h3>
+                    <p1>The 22nd International ACM SIGACCESS Conference on Computers and Accessibility</p1><br />
+                    <p2>Student Research Competition</p2>
+                </div>
             </div>
 
             <p>
@@ -91,15 +114,16 @@
             <p>
                 Placed 2nd in the Graduate Papers category.
             </p>
+            <p>Below is a condensed presentation of the content within the paper.</p>
 
 
             <h1>Abstract</h1>
             <p>
-                Meal preparation is a complex multisensorial task that requires many decisions to be made based on the appearance of the dish. This alienates individuals with low vision and makes cooking meals independently inaccessible. 
-                Products designed for individuals with low vision rarely aid with tasks that involve application of heat. As people with vision impairments have different requirements for technology, it is imperative that the behaviours 
-                and problems faced are thoroughly understood. A study to understand how users perform tasks involving heat application was conducted. Four cooking techniques commonly used to prepare Indian dishes were identified and 
-                interviews were carried out with a diverse group of visually impaired persons (n=12). The findings include insights about behaviours, problems and strategies employed by visually impaired persons while preparing meals using 
-                the following techniques: Boiling, Simmering, Roasting, and Frying. This work describes factors that affect behaviour during meal preparation by Indian visually impaired persons, and the various strategies used to mitigate 
+                Meal preparation is a complex multisensorial task that requires many decisions to be made based on the appearance of the dish. This alienates individuals with low vision and makes cooking meals independently inaccessible.
+                Products designed for individuals with low vision rarely aid with tasks that involve application of heat. As people with vision impairments have different requirements for technology, it is imperative that the behaviours
+                and problems faced are thoroughly understood. A study to understand how users perform tasks involving heat application was conducted. Four cooking techniques commonly used to prepare Indian dishes were identified and
+                interviews were carried out with a diverse group of visually impaired persons (n=12). The findings include insights about behaviours, problems and strategies employed by visually impaired persons while preparing meals using
+                the following techniques: Boiling, Simmering, Roasting, and Frying. This work describes factors that affect behaviour during meal preparation by Indian visually impaired persons, and the various strategies used to mitigate
                 challenges faced. The findings have been used to propose a set of considerations that have implications on the design of accessibility tools such as assistive devices, rehabilitation programs and strategies.
             </p>
 
@@ -111,26 +135,158 @@
                 <iframe class="responsive-iframe" src="https://www.youtube.com/embed/wS7cXpD5nIs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
 
+            <h1>Context</h1>
             <p>
-                Read the work <a href="https://dl.acm.org/doi/abs/10.1145/3373625.3417083" class="emphasis">here</a>.
+                Preparing a meal is a basic activity needed for survival.
+                It is a complex multi-sensorial task. Many decisions taken when preparing a meal are dependent on sight.
+                Being able to prepare a meal can affect the quality of the life of an individual.
+                There is lowered nutrition levels among Visually Impaired Persons (VIPs) due to their reduced ability to shop and prepare meals independently.
             </p>
             <p>
-                <a href="assets/files/ASSETS2020_SRCDeck_Kashyap.pdf" class="emphasis">View</a> the presentation deck.
+                The body of research dealing with Assistive devices directly related to cooking is slim, with most products considering
+                ergonomic needs, but not focusing on the state of the food being prepared. Given this, an extensive Primary research was conducted.
+            </p>
+
+            <h1>The Study</h1>
+
+            <h2>Structure</h2>
+
+            <div class="grid-blog">
+                <img src="assets/projectimages/ASSETS2020/basicStructure.png" class="blogimage-small" />
+                <p1>
+                    Two rounds of interviews were conducted. Both the interviews followed a semistructured approach that allowed for a conversation to
+                    flow while also developing a rapport with the participant.
+
+                    The first set of interviews was conducted with 7 participants. This was done
+                    primarily to gain an understanding of the space to try and weedle out problems from non-problems.
+
+                    A second set of interviews specifically focussing on four commonly used techniques that involve application of
+                    heat to prepare dishes was conducted with 5 participants.
+                </p1>
+            </div>
+
+            <h2>Format</h2>
+
+            <div class="grid-blog">
+                <p1>
+                    The interviews were conducted as open ended, semi-structured questionnaire, dealing with all the processes involved
+                    in meal preparation, from getting the ingredients, preparing the dish, to cleaning the utensils. The second round of
+                    interviews focused specifically on four cooking techniques that involved the application of heat: Boiling, Simmering, Roasting and Frying.
+                    This was done to allow for the conversation to flow andto develop a rapport with the participant, which enhanced
+                    the quality of the discussion and provided fertile groundsfor richer discorvery of problems faced and strategies
+                    determined for their mitigation.
+                </p1>
+                <img src="assets/projectimages/ASSETS2020/formatsemistructuredinterviews.png" class="blogimage-small" />
+            </div>
+
+            <h2>Analysis</h2>
+
+            <div class="grid-blog">
+                <img src="assets/projectimages/ASSETS2020/studyanalysis.png" class="blogimage-small" />
+                <p1>
+                    The conversations were transcribed and the various discussion points were classified into the categories of
+                    behaviours, problems faced, and strategies. While behaviours were commonly observed across the group, strategies
+                    were specific to the user and their environment, possibly providing a framework for other users to adopt and assimilate as a behaviour.
+                </p1>
+            </div>
+
+            <h1>Findings</h1>
+            <p>
+                The findings are categorised into the cooking techniques of boiling, simmering, roasting and frying. A secondary level of categorisation is also done
+                using colours. Problems are coded in red, behaviours in blue and strategies in green.
+            </p>
+
+            <h2>Boiling</h2>
+            <p>
+                Boiling is the process of cooking food in boiling water, or other water based liquids such as milk. This generally results in vegetables
+                becoming soft and tender, and easy to chew.
+            </p>
+
+            <div class="grid-images">
+                <img src="assets/projectimages/ASSETS2020/boiling/b1.png" class="blogimage-small" />
+                <img src="assets/projectimages/ASSETS2020/boiling/b2.png" class="blogimage-small" />
+                <img src="assets/projectimages/ASSETS2020/boiling/b3.png" class="blogimage-small" />
+                <img src="assets/projectimages/ASSETS2020/boiling/p1.png" class="blogimage-small" />
+                <img src="assets/projectimages/ASSETS2020/boiling/p2.png" class="blogimage-small" />
+                <img src="assets/projectimages/ASSETS2020/boiling/p3.png" class="blogimage-small" />
+                <img src="assets/projectimages/ASSETS2020/boiling/s1.png" class="blogimage-small" id="boiling-s3" />
+                <img src="assets/projectimages/ASSETS2020/boiling/s2.png" class="blogimage-small" />
+                <img src="assets/projectimages/ASSETS2020/boiling/s3.png" class="blogimage-small" />
+            </div>
+
+            <h2>Simmering</h2>
+            <p>
+                Simmering is a process in which foods are cooked in hot liquids just below their boiling temperature. This technique is used to prepare 
+                most Indian gravies.
+
+            </p>
+
+            <h2>Roasting</h2>
+            <p>
+                Roasting is a technique that involves cooking food with dry heat with a small amount of cooking oil applied on the pan to prevent the food 
+                from sticking to it. Foods commonly prepared in this method are rotis, dosas, and processed meats.
+            </p>
+
+            <h2>Frying</h2>
+            <p>
+                Frying is the process of cooking food in oil or any fat. There are many kinds of frying, but for the purpose of this discussion, frying 
+                shall refer to the act of deep frying, which involves immersing the food wholly in the oil/fat. Many foods are prepared using this technique, 
+                such as puris, vadas, pakodas, and other western dishes such as french fries, fried chicken etc.
             </p>
 
 
+
+            <h1>Links</h1>
+
+            <p1 class="button">
+                <a href="https://dl.acm.org/doi/abs/10.1145/3373625.3417083" class="emphasis">Read the work here</a>.
+            </p1>
+            <p1 class="button">
+                <a href="assets/files/ASSETS2020_SRCDeck_Kashyap.pdf" class="emphasis">View the presentation deck.</a>
+            </p1>
+
+
+
+
+
+            <div class="fin">...</div>
+
+        </div>
+
+        <div class="readmore">
+
+            <h1>Read More</h1>
+
+            <a href="arklid.html">
+                <div class="projectcard" id="arklid">
+                    <div class="image">
+                        <picture>
+                            <img src="assets/projectimages/arklid.png" alt="Logo for ARK Lid containing stylised forms of the letters a r k." class="image">
+                        </picture>
+                    </div>
+                    <div class="title">
+                    </div>
+                    <div class="projecttype">
+                        Graduation Thesis Project 2
+                    </div>
+                    <div class="description">
+                        ARKLid is a concept for an assistive device that enables the visually impaired prepare meals that involve roasting.
+                    </div>
+                    <div class="link">
+                        Link to webpage <img src="assets/websiteImages/arrow.png" class="arrow" />
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+            <div class="footer">
+                Avyay Kashyap | 2021 | Made with ❤️ from Bengaluru, India
+            </div>
 
 
 
         </div>
-
-    <div class="footer">
-        Avyay Kashyap | 2021 | Made with ❤️ from Bengaluru, India
-    </div>
-
-
-       
-    </div>
 
 
 
