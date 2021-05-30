@@ -39,7 +39,8 @@
 }
 
 .leftnavitem:hover {
-    font-weight: 600;
+    color: #4A90E2;
+    transition: 0.4s ease-in-out;
 }
 
 .leftnav .hamburger {
@@ -84,6 +85,7 @@ a{
     margin-right: 20px;
     position: relative;
     line-height: 1.2;
+    padding-bottom: 12px;
 }
 
 .Subheading {
@@ -130,6 +132,10 @@ a{
     }
 }
 
+.blue {
+    color: #4A90E2;
+}
+
 * {
     box-sizing: border-box
 }
@@ -168,7 +174,7 @@ a{
     margin-right: 20px;
     margin-bottom: 20px;
     background-color: #fff;
-    box-shadow: 0 0 10px #eee;
+    border-bottom: solid 1px #ddd;
     float: left;
     box-sizing: border-box;
     min-width:300px;
@@ -183,7 +189,7 @@ a{
     padding-bottom: 4px;
 }
 
-.date{
+.projecttype {
     font-size: 10pt;
     color: #636363;
 }
@@ -212,20 +218,24 @@ a{
     bottom:18px;
 }
 
-.projectcard:hover .gmuend{
-    color: red;
+.projectcard:hover {
+    border-bottom: solid 1px #4A90E2;
+    transition: 0.4s ease-in-out;
 }
 
-.projectcard:hover .link{
+.projectcard:hover .link {
     color: #4A90E2;
+    transition: 0.4s ease-in-out;
 }
 
 .projectcard:hover .arrow{
     -webkit-filter: none;
+    transition: 0.4s ease-in-out;
 }
 
 .projectcard:hover .title {
     color: #4A90E2;
+    transition: 0.4s ease-in-out;
 }
 
 .image {
@@ -234,8 +244,9 @@ a{
     -webkit-filter: grayscale(1);
 }
 
-.projectcard:hover .image{
+.projectcard:hover .image {
     -webkit-filter: none;
+    transition: 0.4s ease-in-out;
 }
 
 h1 {
@@ -255,7 +266,11 @@ h2 {
 }
 
 #active {
-    font-weight: 600;
+    color: #4A90E2;
+}
+
+#hide {
+    display: none;
 }
 
 
@@ -342,8 +357,7 @@ h2 {
 
     .projectcard {
         background-color: #121212;
-        box-shadow: 0 0 10px #242424;
-
+        border-bottom: solid 1px #535353;
     }
 
     .title{
@@ -463,6 +477,7 @@ h2 {
 
     .footer {
         width: 100wv;
+        text-align: center;
     }
 
 
@@ -472,5 +487,4 @@ h2 {
             margin-top: 120px;
             margin-bottom: 40px;
         }
-
 }
