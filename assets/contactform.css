@@ -1,0 +1,119 @@
+﻿
+
+/* Defines component width */
+ps-contact-form {
+    width: 100%;
+}
+
+/* Input styles */
+ps-contact-form input {
+    font-family: 'IBM Plex Sans', sans-serif;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 1em;
+    font-size: 1em;
+    outline: none;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+/* Textarea styles */
+ps-contact-form textarea {
+    font-family: 'IBM Plex Sans', sans-serif;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 1em;
+    font-size: 1em;
+    outline: none;
+    width: 100%;
+    height: 150px;
+}
+
+/* Submit button styles */
+ps-contact-form button {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    padding: 1em;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    width: auto;
+    margin-top: 0.75em;
+    color: #636363;
+    background: #fff;
+    float: right;
+}
+
+    ps-contact-form button:hover {
+        cursor: pointer;
+        color: #4A90E2;
+        border-bottom: 2px solid #4A90E2;
+    }
+
+/* Error message styles */
+ps-contact-form .error-message {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: #fadbd8;
+    color: #a2352a;
+    padding: 1em;
+    border-radius: 0.25em;
+}
+
+/* Success message styles */
+ps-contact-form .success-message {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: #d4efdf;
+    color: #1b7a43;
+    padding: 1em;
+    border-radius: 0.25em;
+    height: auto;
+}
+
+/* CSS spinner that appears inside the button during data submission */
+ps-contact-form .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+
+
+
+
+
+
+@media (prefers-color-scheme: dark) {
+    ps-contact-form input {
+        color: #eee;
+        background: #121212;
+    }
+
+    ps-contact-form textarea {
+        color: #eee;
+        background: #121212;
+    }
+
+    ps-contact-form button {
+        color: #eee;
+        background: #121212;
+    }
+}

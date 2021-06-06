@@ -2,11 +2,11 @@
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 14pt;
     font-weight: 300;
-    padding: 0 0 64px 0;
+    padding: 24px 0 64px 0;
     height: 40px;
     width: auto;
     display: inline-block;
-
+    cursor: pointer;
 }
 
 .backbutton {
@@ -231,14 +231,13 @@ p2 {
     }
 
     @media screen and (max-width: 768px) {
-        .container {
+        .main-container {
             width: 96%;
             margin: auto;
         }
 
         .backbuttoncontainer {
             position: relative;
-            padding: 0 0 64px 0;
             height: 40px;
             width: auto;
             display: inline-block;

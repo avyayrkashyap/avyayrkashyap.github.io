@@ -61,7 +61,7 @@ a{
     color:#111;
 }
 
-.container{
+.main-container{
     width:60vw;
     margin-left:220px;
 }
@@ -387,7 +387,7 @@ h2 {
 }
 
 @media screen and (max-width: 768px) {
-    .container {
+    .main-container {
         width: 80vw;
         margin-left: 20px;
     }
@@ -414,12 +414,14 @@ h2 {
     }
 
     .leftnav .hamburger {
+        cursor: pointer;
         display: block;
         float: right;
         font-size: 24px;
     }
 
-    .leftnav .closebtn{
+    .leftnav .closebtn {
+        cursor: pointer;
         display: block;
         float: right;
         color: white;
