@@ -15,12 +15,17 @@
 
     <link href="assets/portfolio.css" rel="stylesheet" />
     <link href="assets/blog.css" rel="stylesheet">
+    <link href="assets/contactform.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
-    <title>Avyay's Portfolio: GR2DC</title>
+    <title>Avyay's Portfolio</title>
+    <script type="module" src="https://unpkg.com/ps-contact-form/dist/ps-contact-form/ps-contact-form.esm.js" async>
+    </script>
+
+
 </head>
 <body>
     <div class="leftnav">
@@ -62,7 +67,7 @@
                 }</script>
 
     </div>
-    <div class="container">
+    <div class="main-container">
 
         <!--Content-->
         <div class="content">
@@ -92,6 +97,17 @@
                 You can reach out to me via <a href="mailto: avyayrk@gmail.com" class="emphasis">mail</a> or on social media.  <!--or find me on <a href="https://www.linkedin.com/in/avyay-r-kashyap-4236635b"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a> -->
                 My resume can be found <a href="assets/files/AvyayResume.pdf" class="emphasis">here</a>.
             </div>
+        </div>
+
+        <div id="contactme">
+            <ps-contact-form integration-key="6700db846225ba5766d6db91a7e4f588c94547956e05395712c727ce7c47d19b"
+                             full-name-placeholder-text="Full Name"
+                             email-placeholder-text="Email"
+                             message-placeholder-text="Message"
+                             submit-button-text="Submit"
+                             success-message="Thank you for contacting me. I will get back to your at the earliest!"
+                             tags="aboutme, endpage">
+            </ps-contact-form>
         </div>
 
         <div class="backbuttoncontainer">
