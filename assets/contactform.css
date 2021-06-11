@@ -64,7 +64,8 @@ ps-contact-form .error-message {
 /* Success message styles */
 ps-contact-form .success-message {
     font-family: 'IBM Plex Sans', sans-serif;
-    background: #d4efdf;
+    font-weight:600;
+    background: none;
     color: #1b7a43;
     padding: 1em;
     border-radius: 0.25em;
