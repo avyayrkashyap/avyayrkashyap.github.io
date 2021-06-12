@@ -36,10 +36,11 @@
     width: 100%;
     display: block;
     padding-bottom: 8px;
+    color: #aaa;
 }
 
 .leftnavitem:hover {
-    color: #4A90E2;
+    color: #111;
     transition: 0.4s ease-in-out;
 }
 
@@ -173,7 +174,6 @@ a{
 }
 
 .projectcard{
-    width: 45%;
     padding: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
@@ -182,7 +182,7 @@ a{
     float: left;
     box-sizing: border-box;
     min-width:300px;
-    min-height:290px;
+    min-height: 275px;
     position: relative;
 }
 
@@ -208,12 +208,23 @@ a{
 
 .link {
     font-size: 10pt;
-    float: right;
     color: #636363;
     position: absolute;
     bottom: 20px;
     text-decoration: none;
     font-weight: 300;
+}
+
+.secondary-link {
+    font-size: 10pt;
+    color: #636363;
+    text-decoration: none;
+    font-weight: 300;
+}
+
+.secondary-link:hover {
+    color: #4A90E2;
+    z-index: 100;
 }
 
 .arrow{
@@ -281,8 +292,13 @@ h2 {
 
 
 
-
-
+/*Grid Cards*/
+.grid-projects {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 8px;
+    justify-content: space-between;
+}
 
 
 
@@ -339,6 +355,10 @@ h2 {
         -webkit-backdrop-filter: blur(20px) saturate(160%) contrast(45%) brightness(26%);
     }
 
+    .leftnavitem:hover {
+        color: #fff;
+    }
+
     a{
         color:#eee;
     }
@@ -374,17 +394,6 @@ h2 {
 }
 
 /* Variable width screen size resize */
-
-@media screen and (max-width: 1124px) {
-    .projectcard {
-        width: 100%;
-        margin: 0;
-        margin-bottom: 20px;
-        min-width: 256px;
-        height: auto;
-    }
-    
-}
 
 @media screen and (max-width: 768px) {
     .main-container {
@@ -475,10 +484,12 @@ h2 {
     }
 
     .projectcard {
-        width: 100%;
-        margin: 0;
-        margin-bottom: 20px;
-        min-width: 256px;
+        min-height: 200px;
+    }
+
+    .grid-projects {
+        grid-template-columns: auto;
+        padding: 0px;
     }
 
     .footer {

@@ -188,12 +188,16 @@ p2 {
 }
 
 
-/*Image Desicrpitions*/
+/*grid details*/
 .blogimage-small {
     width: 100%;
 }
 
 #boiling-s3 {
+    grid-column: span 2;
+}
+
+#conference {
     grid-column: span 2;
 }
 
@@ -224,11 +228,19 @@ p2 {
 }
 
 
-    @media screen and (max-width: 1025px) {
+@media screen and (max-width: 1024px) {
+    .main-container {
+        width: 80vw;
+    }
+
+    p {
+        width: 100%;
+    }
+
         .grid-blog, .grid-images {
             width: 100%;
         }
-    }
+}
 
     @media screen and (max-width: 768px) {
         .main-container {
@@ -285,6 +297,10 @@ p2 {
 
         .grid-images {
             grid-template-columns: auto auto;
+        }
+
+        #conference {
+            grid-column: span 1;
         }
         
     }
