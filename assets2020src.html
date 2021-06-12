@@ -40,9 +40,10 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
             <div class="leftnavelements">
+                <a class="leftnavitem" id="home" href="index.html">Home</a>
                 <a class="leftnavitem" id="aboutme" href="aboutme.html">About Me</a>
                 <a class="leftnavitem" href="assets/files/AvyayResume.pdf">Resumé</a>
-                <a class="leftnavitem">Fun Stuff</a>
+                <a class="leftnavitem" href="">Fun Stuff</a>
 
 
 
@@ -103,17 +104,22 @@
                 </div>
                 <div id="conference">
                     <h3>Conference</h3>
-                    <p1>The 22nd International ACM SIGACCESS Conference on Computers and Accessibility</p1><br />
-                    <p2>Student Research Competition</p2>
+                    <a href="https://assets20.sigaccess.org/index.html"><p1>The 22nd International ACM SIGACCESS Conference on Computers and Accessibility</p1><br /></a>
+                    <a href="https://assets20.sigaccess.org/accepted_src_papers.html"><p2>Student Research Competition</p2></a>
                 </div>
             </div>
 
             <p>
-                Published my work titled "Behaviors, Problems and Strategies of Visually Impaired Persons During Meal Preparation in the Indian Context : Challenges and Opportunities for Design" in the Student Research Competition.
+                Published my work titled "Behaviors, Problems and Strategies of Visually Impaired Persons During Meal Preparation in the Indian Context : Challenges and Opportunities for Design" at ASSETS 2020 and presented it in the Student Research Competition.
             </p>
             <p>
                 Placed 2nd in the Graduate Papers category.
             </p>
+            <a href="assets/files/assets20-53.pdf">
+                <p class="button">
+                    Read the paper here
+                </p>
+            </a>
             <p>Below is a condensed presentation of the content within the paper.</p>
 
 
@@ -216,21 +222,21 @@
 
             <h2>Simmering</h2>
             <p>
-                Simmering is a process in which foods are cooked in hot liquids just below their boiling temperature. This technique is used to prepare 
+                Simmering is a process in which foods are cooked in hot liquids just below their boiling temperature. This technique is used to prepare
                 most Indian gravies.
 
             </p>
 
             <h2>Roasting</h2>
             <p>
-                Roasting is a technique that involves cooking food with dry heat with a small amount of cooking oil applied on the pan to prevent the food 
+                Roasting is a technique that involves cooking food with dry heat with a small amount of cooking oil applied on the pan to prevent the food
                 from sticking to it. Foods commonly prepared in this method are rotis, dosas, and processed meats.
             </p>
 
             <h2>Frying</h2>
             <p>
-                Frying is the process of cooking food in oil or any fat. There are many kinds of frying, but for the purpose of this discussion, frying 
-                shall refer to the act of deep frying, which involves immersing the food wholly in the oil/fat. Many foods are prepared using this technique, 
+                Frying is the process of cooking food in oil or any fat. There are many kinds of frying, but for the purpose of this discussion, frying
+                shall refer to the act of deep frying, which involves immersing the food wholly in the oil/fat. Many foods are prepared using this technique,
                 such as puris, vadas, pakodas, and other western dishes such as french fries, fried chicken etc.
             </p>
 
@@ -238,12 +244,18 @@
 
             <h1>Links</h1>
 
-            <p1 class="button">
-                <a href="https://dl.acm.org/doi/abs/10.1145/3373625.3417083" class="emphasis">Read the work here</a>.
-            </p1>
-            <p1 class="button">
-                <a href="assets/files/ASSETS2020_SRCDeck_Kashyap.pdf" class="emphasis">View the presentation deck.</a>
-            </p1>
+            <a href="https://dl.acm.org/doi/abs/10.1145/3373625.3417083" class="emphasis">
+                <p1 class="button">
+                    Read the work here.
+                </p1>
+            </a>
+
+            <a href="assets/files/ASSETS2020_SRCDeck_Kashyap.pdf" class="emphasis">
+                <p1 class="button">
+                    View the presentation deck.
+                </p1>
+            </a>
+
 
 
 
@@ -257,26 +269,51 @@
 
             <h1>Read More</h1>
 
-            <a href="arklid.html">
-                <div class="projectcard" id="arklid">
+            <div class="grid-projects">
+                <a href="arklid.html">
+                    <div class="projectcard" id="arklid">
+                        <div class="image">
+                            <picture>
+                                <img src="assets/projectimages/arklid.png" alt="Logo for ARK Lid containing stylised forms of the letters a r k." class="image">
+                            </picture>
+                        </div>
+                        <div class="title">
+                        </div>
+                        <div class="projecttype">
+                            Graduation Thesis Project 2
+                        </div>
+                        <div class="description">
+                            ARKLid is a concept for an assistive device that enables the visually impaired prepare meals that involve roasting.
+                        </div>
+                        <div class="link">
+                            Link to webpage <img src="assets/websiteImages/arrow.png" class="arrow" />
+                        </div>
+                    </div>
+                </a>
+
+                <a>
+                <div class="projectcard" id="poakme">
                     <div class="image">
                         <picture>
-                            <img src="assets/projectimages/arklid.png" alt="Logo for ARK Lid containing stylised forms of the letters a r k." class="image">
+                            <source srcset="assets/projectimages/POAKmedark.png"
+                                media="(prefers-color-scheme: dark)" class="image">
+                            <img src="assets/projectimages/POAKme.png" class="image" alt="Poak me logo containing four dots coloured red, blue, green and yellow with the text POAKme written next to it">
                         </picture>
                     </div>
                     <div class="title">
                     </div>
                     <div class="projecttype">
-                        Graduation Thesis Project 2
+                        Graduation Thesis Project 1
                     </div>
                     <div class="description">
-                        ARKLid is a concept for an assistive device that enables the visually impaired prepare meals that involve roasting.
+                        POAKme is a solution that enables individuals with Osteoarthritis of the Knee access care and rehabilitation from their homes.
                     </div>
                     <div class="link">
                         Link to webpage <img src="assets/websiteImages/arrow.png" class="arrow" />
                     </div>
                 </div>
-            </a>
+                </a>
+            </div>
 
         </div>
 
