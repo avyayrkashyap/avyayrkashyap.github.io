@@ -3,6 +3,7 @@
 /* Defines component width */
 ps-contact-form {
     width: 100%;
+    display: grid;
 }
 
 /* Input styles */
@@ -35,25 +36,28 @@ ps-contact-form textarea {
 ps-contact-form button {
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1em;
-    font-weight: 600;
+    font-weight: 400;
     padding: 1em;
-    border: none;
-    border-bottom: 2px solid #ddd;
-    width: auto;
-    margin-top: 0.75em;
-    color: #636363;
-    background: #fff;
     float: right;
+    width: 100%;
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #4A90E2;
+    border-radius: 2px;
+    background: #fff;
+    transition: 0.4s ease-out;
 }
 
-    ps-contact-form button:hover {
-        cursor: pointer;
-        color: #4A90E2;
-        border-bottom: 2px solid #4A90E2;
-    }
+ps-contact-form button:hover {
+    cursor: pointer;
+    color: #fff;
+    background: #4A90E2;
+    transition: 0.4s ease-in-out;
+}
 
 /* Error message styles */
 ps-contact-form .error-message {
+    display: inline-block;
     font-family: 'IBM Plex Sans', sans-serif;
     background: #fadbd8;
     color: #a2352a;
@@ -62,16 +66,16 @@ ps-contact-form .error-message {
 }
 
 /* Success message styles */
-    ps-contact-form .success-message {
-        font-family: 'IBM Plex Sans', sans-serif;
-        font-weight: 600;
-        background: none;
-        color: #1b7a43;
-        background: #E4FAD8;
-        padding: 1em;
-        border-radius: 0.25em;
-        height: auto;
-    }
+ps-contact-form .success-message {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    background: none;
+    color: #1b7a43;
+    background: #E4FAD8;
+    padding: 1em;
+    border-radius: 0.25em;
+    height: auto;
+}
 
 /* CSS spinner that appears inside the button during data submission */
 ps-contact-form .spinner {
@@ -106,16 +110,16 @@ ps-contact-form .spinner {
 @media (prefers-color-scheme: dark) {
     ps-contact-form input {
         color: #eee;
-        background: #121212;
+        background: #040404;
     }
 
     ps-contact-form textarea {
         color: #eee;
-        background: #121212;
+        background: #040404;
     }
 
     ps-contact-form button {
         color: #eee;
-        background: #121212;
+        background: #040404;
     }
 }

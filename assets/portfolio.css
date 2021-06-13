@@ -18,8 +18,8 @@
 
     /*Blur*/
     background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px) saturate(160%) contrast(45%) brightness(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%) contrast(45%) brightness(140%);
+    backdrop-filter: blur(20px) saturate(160%) contrast(100%) brightness(100%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%) contrast(100%) brightness(100%);
 }
 
 .overlay {
@@ -35,12 +35,12 @@
 .leftnavitem {
     width: 100%;
     display: block;
-    padding-bottom: 8px;
+    padding: 12px;
     color: #aaa;
 }
 
 .leftnavitem:hover {
-    color: #111;
+    color: #4A90E2;
     transition: 0.4s ease-in-out;
 }
 
@@ -173,17 +173,18 @@ a{
     margin: auto;
 }
 
-.projectcard{
+.projectcard {
     padding: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
     background-color: #fff;
-    border-bottom: solid 1px #ddd;
     float: left;
     box-sizing: border-box;
-    min-width:300px;
+    min-width: 250px;
     min-height: 275px;
     position: relative;
+    border-radius: 4px;
+    border: 0px solid #4A90E2;
 }
 
 .title{
@@ -215,28 +216,16 @@ a{
     font-weight: 300;
 }
 
-.secondary-link {
-    font-size: 10pt;
-    color: #636363;
-    text-decoration: none;
-    font-weight: 300;
-}
-
-.secondary-link:hover {
-    color: #4A90E2;
-    z-index: 100;
-}
-
 .arrow{
     height: 8px;
     -webkit-filter: grayscale(1);
     bottom:18px;
 }
-
 .projectcard:hover {
-    border-bottom: solid 1px #4A90E2;
-    transition: 0.4s ease-in-out;
+    border: 1px solid #4A90E2;
+    /*box-shadow: 0 0 4px 4px #eee;*/
 }
+
 
 .projectcard:hover .link {
     color: #4A90E2;
@@ -256,13 +245,12 @@ a{
 .image {
     padding-bottom: 4px;
     width: 70%;
-    -webkit-filter: grayscale(1);
 }
 
-.projectcard:hover .image {
+/*.projectcard:hover .image {
     -webkit-filter: none;
     transition: 0.4s ease-in-out;
-}
+}*/
 
 h1 {
     font-family: 'Barlow', sans-serif;
@@ -281,12 +269,14 @@ h2 {
 }
 
 #active {
-    color: #4A90E2;
+    color: #000;
 }
 
 #hide {
     display: none;
 }
+
+
 
 
 
@@ -346,17 +336,13 @@ h2 {
 
     body {
         color: #eee;
-        background: #121212;
+        background: #040404;
     }
 
     .leftnav {
-        background-color: rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(20px) saturate(160%) contrast(45%) brightness(26%);
-        -webkit-backdrop-filter: blur(20px) saturate(160%) contrast(45%) brightness(26%);
-    }
-
-    .leftnavitem:hover {
-        color: #fff;
+        background-color: rgba(0,0,0,0.1);
+        backdrop-filter: blur(20px) saturate(160%) contrast(100%) brightness(90%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%) contrast(100%) brightness(90%);
     }
 
     a{
@@ -380,8 +366,7 @@ h2 {
     }
 
     .projectcard {
-        background-color: #121212;
-        border-bottom: solid 1px #353535;
+        background-color: #040404;
     }
 
     .title{
@@ -390,6 +375,10 @@ h2 {
 
     p {
         color: #eee;
+    }
+
+    #active {
+        color: #fff;
     }
 }
 
@@ -488,7 +477,7 @@ h2 {
     }
 
     .grid-projects {
-        grid-template-columns: auto;
+        grid-template-columns: auto auto;
         padding: 0px;
     }
 
@@ -496,6 +485,12 @@ h2 {
         width: 100wv;
         text-align: center;
     }
+
+@media screen and (max-width: 676px) {
+    .grid-projects {
+        grid-template-columns: auto;
+    }
+}
 
 
 @media screen and (max-width: 415px) {
