@@ -73,9 +73,11 @@
 }
 
 .posterimage {
-    width: 100%;
+    position: relative;
+    overflow: hidden;
+    width: 65%;
+    padding-top: 36.5625%;
     padding: 20px 0 20px 0;
-
 }
 
 .emphasis {
@@ -275,6 +277,12 @@ p2 {
             overflow: hidden;
             width: 100%;
             padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+        }
+
+        .posterimage {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
         }
 
         p {
