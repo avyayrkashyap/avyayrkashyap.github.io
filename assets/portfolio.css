@@ -399,6 +399,14 @@ h2 {
     #active {
         color: #fff;
     }
+
+    .footer-wrapper {
+        border-top: solid 1px #3d3d3d;
+    }
+
+    .grid-footer {
+        border-bottom: solid 1px #3d3d3d;
+    }
 }
 
 /* Variable width screen size resize */
