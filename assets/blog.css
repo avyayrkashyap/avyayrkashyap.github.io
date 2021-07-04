@@ -168,6 +168,14 @@ h3 {
     margin-bottom: 8px;
 }
 
+h4 {
+    margin-top: 4px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 12pt;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
 p {
     font-size: 9pt;
     width: 65%;
@@ -242,7 +250,7 @@ p-wwh {
         color: #eee;
     }
 
-    h1, h2, h3, p { 
+    h1, h2, h3, h4, p { 
         color: #eee;
     }
 
