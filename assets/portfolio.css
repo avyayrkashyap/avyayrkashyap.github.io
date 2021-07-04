@@ -79,7 +79,7 @@ a{
 
 .Heading {
     font-family: 'Barlow', sans-serif;
-    font-size: 28pt;
+    font-size: 48pt;
     font-weight: 700;
     width: 100%;
     float: left;
@@ -407,6 +407,7 @@ h2 {
         padding: 20px;
         text-decoration: none;
         z-index: 1000;
+        border-bottom: 1px solid rgba(128,128,128, 0.05);
     }
 
     .leftnavelements {

@@ -75,8 +75,7 @@
 .posterimage {
     position: relative;
     overflow: hidden;
-    width: 65%;
-    padding-top: 36.5625%;
+    width: 100%;
     padding: 20px 0 20px 0;
 }
 
@@ -89,7 +88,6 @@
     grid-template-columns: 33% 33% 33%;
     grid-gap: 8px;
     justify-content: space-between;
-    padding: 12px;
 }
 
 .grid > div {
@@ -98,6 +96,7 @@
 
 .readmore {
     padding-top: 24px;
+    padding-left: 12px;
 }
 
 .grid-blog {
@@ -107,6 +106,14 @@
     grid-gap: 8px;
     justify-content: space-between;
     padding: 12px;
+}
+
+.wwh {
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto auto auto;
+    grid-gap: 12px;
+    justify-content: space-between;
 }
 
 .grid-images {
@@ -162,16 +169,23 @@ h3 {
 }
 
 p {
+    font-size: 9pt;
     width: 65%;
     color: #121212;
     font-weight: 400;
 }
 p1 {
+    font-size: 9pt;
     width: inherit;
 }
 
 p2 {
+    font-size: 9pt;
     font-style: italic;
+}
+
+p-wwh {
+    font-size: 9pt;
 }
 
 .tldr {
@@ -285,6 +299,10 @@ p2 {
             width: 100%;
         }
 
+        /*.wwh {
+            grid-template-columns: auto auto;
+        }*/
+
         p {
             width: 100%;
         }
@@ -324,6 +342,10 @@ p2 {
 
         .grid-images {
             grid-template-columns: auto auto;
+        }
+
+        .wwh {
+            grid-template-columns: auto;
         }
 
         #conference {
