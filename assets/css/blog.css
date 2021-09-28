@@ -1,0 +1,50 @@
+.backbuttoncontainer {
+    margin-top: 36px;
+}
+
+.blogintro {
+    margin-top: 16px;
+}
+
+.quickdetails {
+    padding-top: 36px;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-gap: 12px;
+    justify-content: space-between;
+    padding-bottom: 36px;
+}
+
+
+
+
+
+/*Section Specs*/
+
+
+
+
+
+/*Responsive Blog*/
+
+@media screen and (max-width:968px) {
+    .quickdetails {
+        grid-template-columns: 50% 50%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 648px) {
+    .quickdetails{
+        grid-template-columns: auto;
+    }
+}
