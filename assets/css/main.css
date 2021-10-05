@@ -142,7 +142,7 @@ nav {
     padding-right: 20px;
     float: left;
     padding-bottom: 20px;
-    animation: visible 2.4s ease-in 1;
+    animation: visible 1.6s ease-in both;
 }
 
 .topofcard {
@@ -175,7 +175,7 @@ nav {
 }
 
 .seemore {
-    display: block;
+    display: inline-block;
 }
 
 .viewmorearrow {
@@ -231,11 +231,13 @@ nav {
 }
 
 @keyframes visible {
-    from {
-        opacity: 0%;
+    0% {
+        transform: translateY(48px);
+        opacity: 0;
     }
-    to {
-        opacity: 100%;
+    100% {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
