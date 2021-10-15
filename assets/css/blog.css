@@ -16,7 +16,45 @@
     padding-bottom: 36px;
 }
 
+.aboutmecontent {
+    display: grid;
+    grid-template-columns: 30% auto;
+    justify-content: left;
+    grid-gap: 16px;
+}
 
+.buttons {
+    margin: auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 16px;
+}
+
+button {
+    font-family: 'IBM-Plex-Sans', sans-serif;
+    font-size: 12pt;
+    color: #fff;
+    width: auto;
+    background: #7FC2EE;
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #7FC2EE;
+    border-radius: 4px;
+    transition: 0.4s ease-out;
+}
+
+button:hover {
+    color: #000;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 2px;
+    transition: 0.4s ease-out;
+
+    cursor: pointer;
+}
 
 
 
@@ -26,26 +64,47 @@
 
 
 
+
+
+
+
+/*About me*/
+.grid-footer {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 16px;
+    justify-content: initial;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+
+
 /*Responsive Blog*/
 
 @media screen and (max-width:968px) {
     .quickdetails {
         grid-template-columns: 50% 50%;
     }
+
+    .aboutmecontent {
+        grid-template-columns: auto;
+    }
 }
-
-
-
-
-
-
-
-
-
 
 
 @media screen and (max-width: 648px) {
     .quickdetails{
+        grid-template-columns: auto;
+    }
+
+    .grid-footer {
+        grid-template-columns: auto auto;
+    }
+}
+
+@media screen and (max-width: 438px) {
+    .grid-footer {
         grid-template-columns: auto;
     }
 }

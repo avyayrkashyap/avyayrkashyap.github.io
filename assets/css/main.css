@@ -100,9 +100,8 @@ nav {
 }
 
 .logo {
-    width: auto;
-    max-height: 56px;
-    margin: auto;
+    height: 56px;
+    float: left;
 }
 
 .icons {
@@ -283,7 +282,7 @@ nav {
         margin: 1rem 0;
     }
 
-    button {
+    hamburger {
         text-decoration: none;
         background-color: #001935;
         border-radius: 4px;
@@ -343,6 +342,8 @@ nav {
     .projcard {
         padding-bottom: 20px;
     }
+
+
 }
 
     

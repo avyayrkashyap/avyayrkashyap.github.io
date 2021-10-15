@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>About Avyay</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+        <link rel="manifest" href="assets/favicons/site.webmanifest">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#4a90e2">
+        <meta name="msapplication-TileColor" content="#ffc40d">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blogimages.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="section" id="nav">
+            <nav>
+                <div class="navbar">
+                    <a href="index.html">
+
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json" style="height: 56px; margin-left: 0;" speed="0.8" autoplay></lottie-player>
+
+                        
+
+                        <!-- 
+                        <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span>
+                        
+                        <picture>
+                            <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo">
+                            <img src="assets/websiteImages/portfolioLogo.png" class="logo">
+                        </picture> -->
+                    </a>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html">Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="#">Play</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="active" href="aboutme.html">About me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
+                        </li>
+                    </ul>
+
+                    <hamburger class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </hamburger>
+
+                    <script>
+                        const hamburger = document.querySelector(".hamburger");
+                        const navMenu = document.querySelector(".nav-menu");
+
+                        hamburger.addEventListener("click", mobileMenu);
+
+                        function mobileMenu() {
+                            hamburger.classList.toggle("active");
+                            navMenu.classList.toggle("active");
+                        }
+
+                        const navLink = document.querySelectorAll(".nav-link");
+
+                        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                        function closeMenu() {
+                            hamburger.classList.remove("active");
+                            navMenu.classList.remove("active");
+                        }
+                    </script>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="section" id="intro">
+            <div class="content-container">
+                <div class="intro">
+                    <p-heading>
+                        Hi! Nice to meet you 👋
+                    </p-heading>
+                    <div class="aboutmecontent">
+                        <!--<img src="assets/websiteImages/lookitsame.png" class="itsame">-->
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_srxwplsm.json"  speed="1" class="itsame" hover loop autoplay></lottie-player>
+                        <p-subheading>
+                            I'm Avyay Kashyap, but you can call me Avy :) <br /><br>
+
+                            I currently work at Jio Platforms Limited on an e-commerce application called JioMart as a UX Designer.
+                            <br /><br>
+
+                            My interest areas lie in the field of health-tech medical devices, accessibilty, and tangible interactions. The 
+                            devil lies in the details, and my goal is to find the devil. Microinteractions is a subject I am extremely passionate about, 
+                            and after five years of Design School, is a way of life.
+                        </p-subheading>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="content-container">
+                <p-centre>
+                    You can reach out to me via <a href="mailto: avyayrk@gmail.com" target="_blank">mail</a> or on social media.
+                </p-centre>
+                <div class="buttons">
+                    <a href="assets/files/AvyayResume.pdf" target="_blank">
+                        <button>
+                            My Resume
+                        </button>
+                    </a>
+                </div>
+
+                <div class="grid-footer">
+                    <div id="education">
+                        <p-h3>Education</p-h3>
+                        <p3>
+                            IDC School of Design, IIT Bombay<br />
+                            2015-2020 <br />
+                            <br>
+                            Dual Degree <br />
+                            Bachelors in Design <br />
+                            Masters in Interaction Design<br />
+                            <br>
+                            Cumulative Performance Index: 8.48/10
+                        </p3>
+                    </div>
+            
+                    <div id="experience">
+                        <p-h3>Experience</p-h3>
+                        <p3>
+                            Jio Platforms Limited<br />
+                            UX Design Manager<br />
+                            August 2020 - present<br />
+                            Navi Mumbai<br />
+                            <br>
+            
+                            IDC School of Design, IIT Bombay<br />
+                            Teaching Assistant at <a href="http://homepages.iitb.ac.in/~vivek.kant/">HFSS Studio</a><br />
+                            August 2019 - July 2020<br />
+                            Mumbai<br />
+                            <br>
+            
+                            Hochschule für Gestaltung Schwäbisch Gmünd<br />
+                            Semester Exchange<br />
+                            August 2018 - February 2019<br />
+                            Schwäbisch Gmünd, Germany<br />
+                            <br>
+            
+                            Philips Innovation Campus<br />
+                            UX Design Intern<br />
+                            May 2018 - July 2018<br />
+                            Bengaluru<br />
+                            <br>
+                        </p3>
+                    </div>
+            
+                    <div id="skills">
+                        <p-h3>Skills</p-h3>
+                        <p3>
+                            User Research<br />
+                            Journey Mapping<br />
+                            Interactive Prototyping<br />
+                            Physical Prototyping<br />
+                            Heuristic Evaluation<br />
+                            User Testing<br />
+                            <br>
+            
+                            Adobe CC Suite (Ps, Ai, XD, Ae)<br />
+                            Sketch, Figma, Principle, ProtoPie, Maze<br />
+                            Basic Arduino Programming<br />
+                            Unity3D<br />
+                            Blender<br />
+                            Final Cut Pro<br />
+                            <br>
+                        </p3>
+                    </div>
+            
+                    <div id="extracurricular">
+                        <p-h3>Extracurriculars</p-h3>
+                        <p-h4>Volunteering</p-h4>
+                        <p3>
+                            INTERACT 2017<br />
+                            IndiaHCI 2016<br />
+                            TypoDay 2019<br />
+                            Cumulus 2015<br />
+                            <br>
+                            English Teacher, Samarthanam Trust, 2016<br />
+                            Graphic Designer, MAYA Organic, 2017<br />
+                            <br>
+                        </p3>
+            
+                        <p-h4>Positions of Responsibility</p-h4>
+                        <p3>
+                            ISMP Mentor, 2017-18<br />
+                            Internship Coordinator, 2017-18<br>
+                            Class Representative, 2015-17<br />
+                        </p3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!--Footer-->
+        <div class="section" id="footer">
+            <div class="content-container">
+                <div class="footer">
+                    <p-footer>
+                        Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
+                    </p-footer>
+                    <div class="mobileview">
+                        <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

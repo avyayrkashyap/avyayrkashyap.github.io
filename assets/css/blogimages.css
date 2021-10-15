@@ -12,6 +12,16 @@
     animation: visible ease-in 1s 1;
 }
 
+.itsame {
+    width: 100%;
+    border-radius: 12px;
+    animation: visible 1.6s 1;
+
+    background-image: url("lookitsame.png");
+    background-size: cover;
+	background-position:center;
+}
+
 
 
 
@@ -24,5 +34,10 @@
 @media screen and (max-width: 960px) {
     .splashcontainer {
         height: 40vh;
+    }
+
+    .itsame {
+        width: 90%;
+        margin: auto;
     }
 }
