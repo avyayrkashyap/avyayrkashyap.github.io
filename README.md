@@ -3,4 +3,4 @@ Hosted on
 
 Just a collection of my projects and me :P  
   
-After all, I need to show colleges something to think I am worthy of their attention, other than my wallet...
+Waves hand desperately to grab attention of viewers, hoping they find my work interesting enough to let me into their college/office
