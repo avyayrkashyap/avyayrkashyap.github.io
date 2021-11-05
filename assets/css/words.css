@@ -80,6 +80,7 @@ p-h2 {
     font-size: 16pt;
     display: block;
     padding-bottom: 8px;
+    color: #666;
 }
 
 p-h3 {
@@ -122,4 +123,13 @@ p-centre {
     text-align: center;
 
     padding-top: 24px;
+}
+
+p-quote {
+    display: block;
+    width: 100%;
+    text-align: centre;
+    font-weight: bold;
+    font-style: italic;
+    padding: 12px 0;
 }
