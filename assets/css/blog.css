@@ -59,7 +59,16 @@ button:hover {
 
 
 /*Section Specs*/
+.moreprojectscontainer {
+    border-top: 1px solid #b2b2b2;
+    padding-top: 16px;
+}
 
+.moreprojects {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
 
 
