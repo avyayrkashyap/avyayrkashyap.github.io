@@ -111,6 +111,15 @@ p2 {
     font-style: italic;
 }
 
+p2-centre {
+    display: block;
+    width: 100%;
+    font-style: italic;
+    font-size: 10pt;
+    color: #666;
+    text-align: center;
+}
+
 p3 {
     font-size: 10pt;
     display: block;
@@ -128,12 +137,12 @@ p-centre {
 p-quote {
     display: block;
     width: 90%;
-    text-align: centre;
     font-weight: bold;
     font-style: italic;
     padding: 12px 0 12px 12px;
     margin: auto;
     align-content: center;
+    text-align: centre;
     border-left: 4px solid #7FC2EE;
     border-radius: 4px;
 }
