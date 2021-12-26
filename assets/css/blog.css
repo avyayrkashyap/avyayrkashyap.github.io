@@ -56,6 +56,22 @@ button:hover {
     cursor: pointer;
 }
 
+/*Assets Images*/
+.assetsgrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 0px;
+    justify-content: space-between;
+}
+.assetsgridimage {
+    width: 100%;
+}
+
+#rect {
+    grid-column: span 2;
+}
+
 
 
 /*Section Specs*/
@@ -69,6 +85,10 @@ button:hover {
     height: auto;
     display: block;
     align-items: center;
+}
+
+#conference {
+    grid-column: span 2;
 }
 
 /*Video*/
@@ -124,6 +144,15 @@ button:hover {
 @media screen and (max-width: 648px) {
     .quickdetails{
         grid-template-columns: auto;
+    }
+
+    #conference {
+        grid-column: span 1;
+    }
+
+    .assetsgrid{
+        grid-template-columns: auto auto;
+        grid-gap: 8px;
     }
 
     .grid-footer {
