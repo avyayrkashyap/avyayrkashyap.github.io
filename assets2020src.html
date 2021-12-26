@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Avyay's Portfolio: ASSETS 2020 SRC</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+        <link rel="manifest" href="assets/favicons/site.webmanifest">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#4a90e2">
+        <meta name="msapplication-TileColor" content="#ffc40d">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blogimages.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-5H0XW19JC3');
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="section" id="nav">
+            <nav>
+                <div class="navbar">
+                    <a href="index.html">
+
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json" style="height: 56px; margin-left: 0;" speed="0.8" autoplay></lottie-player>
+
+                        
+
+                        <!-- 
+                        <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span>
+                        
+                        <picture>
+                            <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo">
+                            <img src="assets/websiteImages/portfolioLogo.png" class="logo">
+                        </picture> -->
+                    </a>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html">Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="#">Play</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="aboutme.html">About me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
+                        </li>
+                    </ul>
+
+                    <hamburger class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </hamburger>
+
+                    <script>
+                        const hamburger = document.querySelector(".hamburger");
+                        const navMenu = document.querySelector(".nav-menu");
+
+                        hamburger.addEventListener("click", mobileMenu);
+
+                        function mobileMenu() {
+                            hamburger.classList.toggle("active");
+                            navMenu.classList.toggle("active");
+                        }
+
+                        const navLink = document.querySelectorAll(".nav-link");
+
+                        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                        function closeMenu() {
+                            hamburger.classList.remove("active");
+                            navMenu.classList.remove("active");
+                        }
+                    </script>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="section" id="hero">
+            <div class="content-container">
+                <div class="backbuttoncontainer">
+                    <a onclick="goBack()">
+                        <div class="seemore">
+                            <img src="assets/websiteImages/leftarrow.png" class="viewmorearrow">
+                            <p-seemore>
+                                Back
+                            </p-seemore> 
+                        </div>
+                    </a>
+                    <script>function goBack() {
+                            window.history.back();
+                        }</script>
+                </div>
+                <div class="blogintro">
+                    <div class="topofcard">
+                        <div class="projimage">
+                            <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
+                        </div>
+                        <div class="titleinfo">
+                            <p-title>
+                                Finalist at ASSETS 2020 Student Research Competition
+                            </p-title>
+                            <p-subtitle>
+                                Publication
+                            </p-subtitle>
+                        </div>
+                    </div>
+                    <div class="quickdetails">
+                        <div id="role">
+                            <p-h3>Role</p-h3>
+                            <p1>Design Researcher</p1>
+                        </div>
+                        <div id="team">
+                            <p-h3>Team</p-h3>
+                            <p1>Individual</p1>
+                        </div>
+                        <div id="research-methods">
+                            <p-h3>Research Methods</p-h3>
+                            <p1>Semistructured Interviews, Video Analysis, Card Sorting</p1>
+                        </div>
+                        <div id="duration">
+                            <p-h3>Duration</p-h3>
+                            <p1>October 2020</p1>
+                        </div>
+                        <div id="conference">
+                            <p-h3>Conference</p-h3>
+                            <a href="https://assets20.sigaccess.org/index.html"><p1>The 22nd International ACM SIGACCESS Conference on Computers and Accessibility
+                            </p1></a>
+                            <a href="https://assets20.sigaccess.org/accepted_src_papers.html"><p1>Student Research Competition</p1></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="section" id="body">
+            <div class="content-container">
+                <div>
+                    <p2>
+                        Published my work titled "Behaviors, Problems and Strategies of Visually Impaired Persons During Meal Preparation in the Indian Context : Challenges and Opportunities for Design" at ASSETS 2020 and presented it in the Student Research Competition. Placed 2nd in the Graduate Papers category.</p2><br />
+                </div>
+                <div class="buttons">
+                    <a href="assets/files/assets20-53.pdf" target="_blank">
+                        <button>Read the paper here</button>
+                    </a>
+                </div>
+    
+                <div>
+                    <p-h1>Context</p-h1>
+                    <p1>Preparing a meal is a basic activity needed for survival. It involves multiple senses giving feedback about different aspects of a meal's preparedness. Many of these feedbacks provided are visual and are highly dependent on sight. Research has shown that being able to prepare a meal independently can affect the quality of life of an individual [1]. There are also studies that reveal that there is a prevalence of lowered nutrition levels among Visually Impaired Persons (VIPs) due to their reduced ability to shop for and prepare meals independently [2]. Given this, it is imperative to delve deeper into problems plaguing the community in preparing meals and outline potential pathways to aid in kitchen independence.</p1><br>
+
+                    <div>
+                        <p-h1>Research Overview</p-h1>
+                        <div class="iframe-container">
+                            <iframe class="responsive-iframe" src="https://www.youtube.com/embed/wS7cXpD5nIs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div><br>
+                    <div>
+
+                    <p-h1>The Study</p-h1>
+                    <img src="assets/projectImages/assets2020/study.png" class="blogimage">
+                    <p1>The study was conducted in two parts. The first round of primary research was conducted with 7 participants of varying levels of blindness and experience in the kitchen to understand broadly the specific nature of the problems they encounter. This helped gain a perspective of the area and eliminate many activities, primarily those that are mechanical in nature.</p1><br>
+                    <p1>The second round of semi-structured interviews was held with five participants. The decision to follow a semi-structured approach was taken to build rapport with the participants and to allow for the conversation to flow. The participant list is mentioned below. The questions in this round focused on four cooking techniques commonly used to prepare Indian dishes, namely, boiling, simmering, roasting and frying.</p1><br>
+                    <p1>The interviews were then transcribed and the discussion points were classified into three categories: behaviours, problems faced, and strategies. While behaviours were commonly observed across the group, strategies were specific to the user and their environment, potentially providing a framework for other individuals to adopt similar approaches.</p1><br/>
+                    <img src="assets/projectImages/assets2020/participants.png" class="blogimage">
+                    <p2-centre>Participant list</p2-centre><br>
+                </div>
+
+                <div>
+                    <p-h1>Findings</p-h1>
+                    <p1>The findings are categorised into the cooking techniques of boiling, simmering, roasting and frying. A secondary level of categorisation is also done using colours. Problems are coded in red, behaviours in blue and strategies in green.</p1><br>
+
+                    <p-h2>Boiling</p-h2>
+                    <p1>Boiling is the process of cooking food in boiling water, or other water based liquids such as milk. This generally results in vegetables becoming soft and tender, and easy to chew.</p1><br>
+                    <div class="assetsgrid">
+                        <img src="assets/projectImages/assets2020/boiling/b1.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/boiling/b2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/boiling/b3.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/boiling/p1.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/boiling/p2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/boiling/p3.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/boiling/s1.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/boiling/s2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/boiling/s3.png" class="assetsgridimage">
+                    </div><br>
+
+                    <p-h2>Simmering</p-h2>
+                    <p1>Simmering is a process in which foods are cooked in hot liquids just below their boiling temperature. This technique is used to prepare most Indian gravies.</p1><br>
+                    <div class="assetsgrid">
+                        <img src="assets/projectImages/assets2020/simmering/k1.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/simmering/b1.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/simmering/b2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/simmering/p1.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/simmering/p2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/simmering/p3.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/simmering/p4.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/simmering/s1.png" class="assetsgridimage" id="rect">
+                    </div><br>
+
+                    <p-h2>Roasting</p-h2>
+                    <p1>Roasting is a technique that involves cooking food with dry heat with a small amount of cooking oil applied on the pan to prevent the food from sticking to it. Foods commonly prepared in this method are rotis, dosas, and processed meats.</p1><br>
+                    <div class="assetsgrid">
+                        <img src="assets/projectImages/assets2020/roasting/b1.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/roasting/p1.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/roasting/p2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/roasting/p3.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/roasting/p4.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/roasting/p5.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/roasting/s1.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/roasting/s2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/roasting/s3.png" class="assetsgridimage">
+                    </div><br>
+
+                    <p-h2>Frying</p-h2>
+                    <p1>Frying is the process of cooking food in oil or any fat. There are many kinds of frying, but for the purpose of this discussion, frying shall refer to the act of deep frying, which involves immersing the food wholly in the oil/fat. Many foods are prepared using this technique, such as puris, vadas, pakodas, and other western dishes such as french fries, fried chicken etc.</p1><br>
+                    <div class="assetsgrid">
+                        <img src="assets/projectImages/assets2020/frying/b1.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/frying/p1.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/frying/p2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/frying/p3.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/frying/p4.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/frying/s1.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/frying/s2.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/frying/s3.png" class="assetsgridimage">
+                    </div><br>
+
+                    <p-h2>Implications for Design</p-h2>
+                    <p1>Many considerations need to be taken when developing solutions that lower the entry barrier to preparing meals independently.</p1><br>
+                    <div class="assetsgrid">
+                        <img src="assets/projectImages/assets2020/designimps/d1.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/designimps/d2.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/designimps/d3.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/designimps/d4.png" class="assetsgridimage">
+                        <img src="assets/projectImages/assets2020/designimps/d5.png" class="assetsgridimage" id="rect">
+                        <img src="assets/projectImages/assets2020/designimps/d6.png" class="assetsgridimage" id="rect">
+                    </div><br>
+                </div>
+
+                <div>
+                    <p-h1>Conclusion</p-h1>
+                    <p1>More in depth study of the cooking techniques in various contexts and user environments is necessitated before designing and developing assistive devices. This is partly due the lack of work in the area. However, the lack of substantial research in this area gives scope for novel designs to surface and potentially make a large impact on the quality of life of the individuals.</p1><br>
+
+                    <p-h1>Links</p-h1>
+                    <a href="https://dl.acm.org/doi/abs/10.1145/3373625.3417083" target="_blank">
+                        <button>View on ACM</button>
+                    </a>
+                    <a href="assets/files/ASSETS2020_SRCDeck_Kashyap.pdf" target="_blank">
+                        <button>View the presentation deck</button>
+                    </a>
+
+                </div><br>
+
+                <div>
+                    <p-h1>References</p-h1>
+                    <p1>
+                        <ol>
+                            <li>Kostyra, Eliza, et al. "Food shopping, sensory determinants of food choice and meal preparation by impaired people. Obstacles and expectations in daily food experiences." Appetite 113 (2017): 14-22.</li>
+                            <li>Lamoureux, E. L., Hassell, J. B., & Keeffe, J. E. (2004). The determinants of participation in activities of daily living in people with impaired vision. American journal of ophthalmology, 137(2), 265-270.</li>
+                        </ol>
+                    </p1><br>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <!--More projects-->
+        <div class="section" id="moreprojects">
+            <div class="content-container">
+                <div class="moreprojectscontainer">
+                    <p-h1>More Projects</p-h1>
+                    <div class="moreprojects">
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/poakme.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/physioDot.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/philips.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/gr2dc.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/physicalmicrointeractions.png" class="projimagespecs">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Footer-->
+        <div class="section" id="footer">
+            <div class="content-container">
+                <div class="footer">
+                    <p-footer>
+                        Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
+                    </p-footer>
+                    <div class="mobileview">
+                        <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
