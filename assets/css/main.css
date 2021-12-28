@@ -219,7 +219,7 @@ nav {
 
 
 
-/*Fade animations*/
+/*Fade animations
 @keyframes fadebgblack {
     from {
         background-color: white;
@@ -238,7 +238,7 @@ nav {
         transform: translateY(0);
         opacity: 1;
     }
-}
+}*/
 
 
 /*Responsive*/
