@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Avyay's Portfolio: Poakme</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+        <link rel="manifest" href="assets/favicons/site.webmanifest">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#4a90e2">
+        <meta name="msapplication-TileColor" content="#ffc40d">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blogimages.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-5H0XW19JC3');
+        </script>
+
+    </head>
+    <body>
+        <div class="section" id="nav">
+            <nav>
+                <div class="navbar">
+                    <a href="index.html">
+
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json" style="height: 56px; margin-left: 0;" speed="0.8" autoplay></lottie-player>
+
+                        
+
+                        <!-- 
+                        <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span>
+                        
+                        <picture>
+                            <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo">
+                            <img src="assets/websiteImages/portfolioLogo.png" class="logo">
+                        </picture> -->
+                    </a>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html">Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="#">Play</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="aboutme.html">About me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
+                        </li>
+                    </li>
+
+                    <hamburger class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </hamburger>
+
+                    <script>
+                        const hamburger = document.querySelector(".hamburger");
+                        const navMenu = document.querySelector(".nav-menu");
+
+                        hamburger.addEventListener("click", mobileMenu);
+
+                        function mobileMenu() {
+                            hamburger.classList.toggle("active");
+                            navMenu.classList.toggle("active");
+                        }
+
+                        const navLink = document.querySelectorAll(".nav-link");
+
+                        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                        function closeMenu() {
+                            hamburger.classList.remove("active");
+                            navMenu.classList.remove("active");
+                        }
+                    </script>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="section" id="hero">
+            <div class="splashcontainer">
+                <img src="assets/projectImages/philips/cover.png" class="splashimage">
+            </div>
+            <div class="content-container">
+                <div class="backbuttoncontainer">
+                    <a onclick="goBack()">
+                        <div class="seemore">
+                            <img src="assets/websiteImages/leftarrow.png" class="viewmorearrow">
+                            <p-seemore>
+                                Back
+                            </p-seemore> 
+                        </div>
+                    </a>
+                    <script>function goBack() {
+                            window.history.back();
+                        }</script>
+                </div>
+                <div class="blogintro">
+                    <div class="topofcard">
+                        <div class="projimage">
+                            <img src="assets/homepageProjectImages/philips.png" class="projimagespecs">
+                        </div>
+                        <div class="titleinfo">
+                            <p-title>
+                                Emotion Sensing in Healthcare
+                            </p-title>
+                            <p-subtitle>
+                                UX Designer Internship
+                            </p-subtitle>
+                            <p-subsubtitle>
+                                Worked on a concept project to detect early signs of Conduct Disorder in children through emotion sensing technologies and IoT.
+                            </p-subsubtitle>
+                        </div>
+                    </div>
+                    <div class="quickdetails">
+                        <div id="role">
+                            <p-h3>Role</p-h3>
+                            <p1>UX Researcher and Designer</p1>
+                        </div>
+                        <div id="team">
+                            <p-h3>Team</p-h3>
+                            <p1>Group</p1>
+                        </div>
+                        <div id="research-methods">
+                            <p-h3>Design & Research Methods</p-h3>
+                            <p1>Market research,
+                                Affinity mapping,
+                                Journey mapping,
+                                Rapid prototyping</p1>
+                        </div>
+                        <div id="tools">
+                            <p-h3>Tools</p-h3>
+                            <p1>Unity, Arduino, Sketch</p1>
+                        </div>
+                        <div id="duration">
+                            <p-h3>Duration</p-h3>
+                            <p1>May 2018 - July 2018</p1>
+                        </div>
+                        <div id="Guide">
+                            <p-h3>Place</p-h3>
+                            <a href="https://www.philips.co.in/a-w/about-philips/philips-innovation-center.html"><p1>Philips Innovation Campus, Bangalore</p1></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+
+        <div class="section" id="body">
+            <div class="content-container">
+                <p2>
+                    This project was completed in partial fulfilment of credits for the Integrated Masters Program in Interaction Design at IDC School of Design, IIT Bombay. The internship was at Philips Innovation Campus, Bangalore. The duration of the project was from May 2018 to July 2018.
+                </p2>
+
+                <div class="quickdetails">
+                    <div>
+                        <p-h1>Why</p-h1>
+                        <p1>Emotions are episodes of interrelated, synchronised changes in the state of the body to stimuli inducing events relevant to the individual. In some children, these stimuli inducing events occur often, with the child responding with irrational outbursts of anger or emotions with negative valence. This is one of the symptoms of Conduct Disorder. Detecting the symptoms early and enrolling in therapy are effectives methods of dealing with the condition and helping the child the family.
+                        </p1>
+                    </div>
+                    <div>
+                        <p-h1>What</p-h1>
+                        <p1>A solution to help connect the child to their parents and psychologists through Internet Communication Technologies was thought of. The goal was to provide the psychologist with as much data as possible from across the day in the child’s life, when outside therapy. While therapy was in session, games used during Cognitive Behavioural Therapy would help replicate real life situations on the parent app and the psychologist would be able to gauge the physiological reactions on the web app to aid in the therapy.
+                        </p1>
+                    </div>
+                    <div>
+                        <p-h1>How</p-h1>
+                        <p1>Through IoT and biosensors, we designed a concept that can detect the changes in physiology of the child that might indicate heightened emotional responses. This data is streamed to the psychologist’s web app to help them correlate the class/events that might have been occurring at the time of the outburst to help the child work through their emotions during therapy. A separate parent app would enable remote therapy, with camera based affective computing along with biosensor data, streamed to the psychologist to help replicate real life events through situational games.
+                        </p1>
+                    </div>
+                </div>
+
+                <p-h1>Sensing Emotions</p-h1>
+                <p-quote>“Emotions are episodes of interrelated, synchronised changes in the state of the body to internal or external stimuli inducing events relevant to the major concerns of the individual.”</p-quote><br>
+
+                <p1>They produce physiological, behavioural and cognitive changes in the way we respond to our environment. Humans have an innate ability to pick up on subtle cues to gauge what a person is feeling. We also understand that emotions are not discrete. But this makes it hard to train machines to understand and pick up affective cues.</p1><br>
+
+                <p1>Robert Plutchik developed a system to classify emotions into discrete, universally recognised expressions, called the Wheel of Emotions, as seen below.</p1><br>
+                <img src="assets/projectImages/philips/plutchik.png" class="blogimage">
+
+                <p1>Each of these discrete expressions have a physiological response that can be correlated with the emotion and individual is feeling at a given point in time. I have mapped these physiological responses to their respective emotion below.</p1>
+                <img src="assets/projectImages/philips/physiologicalResponse.png" class="blogimage">
+
+                <p1>With this forming the base for our approach to determining the emotion, we explored potential biosensors such as muscle sensors, pulse sensors, galvanic skin temperature sensors, force sensors and affective facial recognition sensor such as Affectiva.</p1><br>
+
+                <p-h1>The Problem</p-h1>
+                <p1>Possible areas where emotion sensing can intervene were explored. The ideas could be categorised into the following areas:</p1>
+                <img src="assets/projectImages/philips/healthcareAreas.png" class="blogimage">
+
+                <p1>We decided to focus on Mother & Childcare, specifically looking at tackling Conduct Disorder.</p1><br>
+
+                <p-h2>Conduct Disorder</p-h2>
+                <img src="assets/projectImages/philips/conductDisorder.png" class="blogimage">
+                <p1>After a few conversations with doctors and parents alike, the symptoms of conduct were listed:</p1>
+                <p1>
+                    <ul>
+                        <li>Children bully, they show traits of aggressive, dominating and impulsive behaviour</li>
+                        <li>They lack attention and feel neglect from parents</li>
+                        <li>They're copying others</li>
+                        <li>They lack skills</li>
+                        <li>They want independence</li>
+                        <li>They can’t control their emotions</li>
+                        <li>They want power and control</li>
+                        <li>They might have underlying mental health issues</li>
+                        <li>Bullying can have a wide spectrum of effects on a student including anger, depression, stress and suicide</li>
+                    </ul>
+                </p1>
+
+                <p1>These reasons compelled us to go with conduct disorder as an area of intervention for emotion sensing technologies to be used. The problem statement was defined as</p1><br>
+                <p-quote>“How can we aid psychologists in understanding emotions of their patients with Conduct Disorder  through emotion sensing technologies and IoT?</p-quote><br>
+
+                <p-h1>Journey Mapping</p-h1>
+                <p1>A journey map of all the activities, touchpoints, emotional valence, pain points and goals were mapped out.</p1>
+                <div class="buttons">
+                    <a href="assets/projectImages/philips/JourneyMap.pdf" target="_blank">
+                        <button>View Journey Map</button>
+                    </a>
+                </div><br>
+
+                <p-h1>Final Concept</p-h1>
+                <p1>The final concept is a three part solution that involves the child, their parents, and the psychologist. Physiological changes of the child are measured through a collar with a heart rate monitor and temperature sensor. We chose to put the sensors in the collar as it is the most discrete place which is privy to a lot of physiological data. This transmits data to a psychologist’s web application. During therapy, an app on the parent’s phone/tablet will replicate triggers the child faced in real life, to gauge the emotional response.</p1>
+                <img src="assets/projectImages/philips/systeminteraction.png" class="blogimage">
+
+                <p1>Given that children with Conduct Disorder have tendencies to destroy objects, the game on the parent app tests their patience, self control and teaches them compassion and empathy. These are commonly used as a part of Cognitive Behavioural Therapy. If the child displays traits of self control during the game, they are rewarded, as dictated by Reward Therapy. If the child gets distracted, they lose points. The emotions in the game are determined by a facial affective camera, using the Affectiva API.</p1><br>
+
+                <p1>The game we designed was called Beat the Clock. The goal is build a specific pattern using the blocks available and not to destroy the animals walking across the screen. If the child destroys the animals instead of building the block pattern, a coin is lost. A timer is put on the animals, so the child know how long they have to wait to be rewarded if they choose to not squish it. Below is a basic wireframe of the application.</p1>
+                <img src="assets/projectImages/philips/gamewireframe.png" class="blogimage">
+
+                <p1>The psychologist’s web application is an analytics tool. It displays information about the child’s emotions during the week corresponding to the time of day. This lets the psychologist know when and potentially what the triggers for the child might have been. The psychologist can also access a video stream of the child playing the game during therapy, potentially taking the therapy to a remote setting if necessary. Based on this information, the psychologist can guide the child and the parent through the therapy sessions and across life.</p1>
+                <img src="assets/projectImages/philips/psychoapp.png" class="blogimage">
+
+                <p-h1>Conclusion</p-h1>
+                <p1>Emotion sensing is an area that is new to me and a lot of time went in understanding how emotions, physiology and sensor data can be correlated. While the use case we chose is a real problem to many, I personally felt a bit disconnected to the problem given the myriad of other use cases that have greater potential for social good such as helping autistic children or with senior citizen care, or even patient monitoring during times of distress.</p1><br>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--More projects-->
+        <div class="section" id="moreprojects">
+            <div class="content-container">
+                <div class="moreprojectscontainer">
+                    <p-h1>More Projects</p-h1>
+                    <div class="moreprojects">
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="arklid.html">
+                                <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="assets2020src.html">
+                                <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/physioDot.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/philips.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/gr2dc.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/physicalmicrointeractions.png" class="projimagespecs">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Footer-->
+        <div class="section" id="footer">
+            <div class="content-container">
+                <div class="footer">
+                    <p-footer>
+                        Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
+                    </p-footer>
+                    <div class="mobileview">
+                        <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
