@@ -6,12 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Avyay's Portfolio: ARKLid</title>
 
+        
         <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
         <link rel="manifest" href="assets/favicons/site.webmanifest">
-        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#4a90e2">
-        <meta name="msapplication-TileColor" content="#ffc40d">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#7fc2ee">
+        <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
 
         <link href="assets/css/main.css" rel="stylesheet">
@@ -403,6 +404,33 @@
             </div>
         </div>
 
+        
+        <div class="buttons" id="time">
+            <button onclick="topFunction()" id="myBtn" title="Go to top">Go to top of the page</button>
+        </div>
+        
+        <script>
+            //Get the button:
+            mybutton = document.getElementById("myBtn");
+
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function() {scrollFunction()};
+
+            function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+            }
+
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }
+        </script>
+        
 
         <!--Footer-->
         <div class="section" id="footer">
