@@ -271,7 +271,6 @@ nav {
         width: 96%;
         text-align: center;
         transition: 0.3s;
-        border-bottom: 1px solid #7f7f7f;
     }
 
     .nav-menu.active {

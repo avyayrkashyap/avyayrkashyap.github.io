@@ -103,6 +103,7 @@ p-h4 {
 p1 {
     display: block;
     width: 100%;
+    line-height: 18pt;
 }
 
 p2 {
@@ -145,4 +146,8 @@ p-quote {
     text-align: centre;
     border-left: 4px solid #7FC2EE;
     border-radius: 4px;
+}
+
+li {
+    padding: 4px 0;
 }
