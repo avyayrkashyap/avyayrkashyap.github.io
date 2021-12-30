@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Avyay's Portfolio: Gestural Interactions</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+        <link rel="manifest" href="assets/favicons/site.webmanifest">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#7fc2ee">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blogimages.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-5H0XW19JC3');
+        </script>
+
+    </head>
+    <body>
+        <div class="section" id="nav">
+            <nav>
+                <div class="navbar">
+                    <a href="index.html">
+
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json" style="height: 56px; margin-left: 0;" speed="0.8" autoplay></lottie-player>
+
+                        
+
+                        <!-- 
+                        <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span>
+                        
+                        <picture>
+                            <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo">
+                            <img src="assets/websiteImages/portfolioLogo.png" class="logo">
+                        </picture> -->
+                    </a>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html">Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="#">Play</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="aboutme.html">About me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
+                        </li>
+                    </ul>
+
+                    <hamburger class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </hamburger>
+
+                    <script>
+                        const hamburger = document.querySelector(".hamburger");
+                        const navMenu = document.querySelector(".nav-menu");
+
+                        hamburger.addEventListener("click", mobileMenu);
+
+                        function mobileMenu() {
+                            hamburger.classList.toggle("active");
+                            navMenu.classList.toggle("active");
+                        }
+
+                        const navLink = document.querySelectorAll(".nav-link");
+
+                        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                        function closeMenu() {
+                            hamburger.classList.remove("active");
+                            navMenu.classList.remove("active");
+                        }
+                    </script>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="section" id="hero">
+            <div class="splashcontainer">
+                <img src="assets/projectImages/gestures/cover.png" class="splashimage">
+            </div>
+            <div class="content-container">
+                <div class="backbuttoncontainer">
+                    <a onclick="goBack()">
+                        <div class="seemore">
+                            <img src="assets/websiteImages/leftarrow.png" class="viewmorearrow">
+                            <p-seemore>
+                                Back
+                            </p-seemore> 
+                        </div>
+                    </a>
+                    <script>function goBack() {
+                            window.history.back();
+                        }</script>
+                </div>
+                <div class="blogintro">
+                    <div class="topofcard">
+                        <div class="projimage">
+                            <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
+                        </div>
+                        <div class="titleinfo">
+                            <p-title>
+                                Gestural Interactions
+                            </p-title>
+                            <p-subtitle>
+                                Bachelor Thesis Project
+                            </p-subtitle>
+                            <p-subsubtitle>
+                                An exploratory project on understanding gestural interactions and their potential application real world scenarios.
+                            </p-subsubtitle>
+                        </div>
+                    </div>
+                    <div class="quickdetails">
+                        <div id="role">
+                            <p-h3>Role</p-h3>
+                            <p1>UX Researcher and Designer</p1>
+                        </div>
+                        <div id="team">
+                            <p-h3>Team</p-h3>
+                            <p1>Group</p1>
+                        </div>
+                        <div id="research-methods">
+                            <p-h3>Design & Research Methods</p-h3>
+                            <p1>Literature review, rapid prototyping, scenario building, contextual enquiry</p1>
+                        </div>
+                        <div id="tools">
+                            <p-h3>Design Tools</p-h3>
+                            <p1>Unity, Arduino, Sketch, Adobe AfterEffects</p1>
+                        </div>
+                        <div id="duration">
+                            <p-h3>Duration</p-h3>
+                            <p1>February 2019 - June 2019</p1>
+                        </div>
+                        <div id="Guide">
+                            <p-h3>Guide</p-h3>
+                            <a href="http://www.idc.iitb.ac.in/people/faculty/poovaiah-ravi"><p1>Prof. Ravi Poovaiah</p1></a>
+                            <a href="http://info-design-lab.github.io"><p1>Prof. Venkatesh R</p1></a>
+                            <a href="http://www.idc.iitb.ac.in"><p1>IDC School of Design, IIT Bombay</p1></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+
+        <div class="section" id="body">
+            <div class="content-container">
+                <p2>
+                    This project was completed in partial fulfilment of credits for the Integrated Masters Program in Interaction Design at IDC School of Design, IIT Bombay. The duration of the project was from February 2019 to June 2019.
+                </p2>
+
+                <div class="quickdetails">
+                    <div>
+                        <p-h1>Why</p-h1>
+                        <p1>Gestures are innate to humans. As infants, we learn to gesticulate before using speech. Speech is formed as an association of gestures to words. Gestures also act as a complementary reinforcement to our dialogue. Using gestures as an input in HCI would massively add to the richness of our communication, while also making interacting with computers more accessible.</p1>
+                    </div>
+                    <div>
+                        <p-h1>What</p-h1>
+                        <p1>The goal of the project is to explore different methods gestural input methods and expand upon a few scenarios to determine the utility of gestures as a tool for performing primary tasks and possibility to increase efficiency while performing secondary or minor tasks.</p1>
+                    </div>
+                    <div>
+                        <p-h1>How</p-h1>
+                        <p1>Two scenarios were explored. The first, at an office place where gestures could be used as a means of exercising while not hindering the work the employees need to do. This was shown as a Wizard or Oz prototype. The second, to teach social gestures to autistic children through social stories whose narrative is controlled by gestures.</p1>
+                    </div>
+                </div>
+
+                <p-h1>What are gestures?</p-h1>
+                <p1>Gestures can be defined as a form of nonverbal communication in which bodily actions are used to communicate messages either in place off or in conjunction with speech. Any discernible movement that can be captured and classified falls under the umbrella of gestures.</p1><br>
+
+                <p-h2>Where can gestures be used?</p-h2>
+                <p1>An initial study of use cases gave me a brief sense of where gestures are being implemented. These various use cases could be classified into four categories: Hygiene, Safety, and Fun.</p1>
+                <img src="assets/projectImages/gestures/usecases.png" class="blogimage">
+
+                <p-h1>What are gestural interactions?</p-h1>
+                <p1>Gestural Interactions encompass a variety of input modalities. They can be captured by a large number of sensors to accommodate for the myriad of ways humans interact with the world around them. There are three broad techniques through which gestures are input into a computer:</p1>
+                <img src="assets/projectImages/gestures/touchgestures.png" class="blogimage">
+                <p2-centre>Touch based gestures</p2-centre><br>
+                <img src="assets/projectImages/gestures/motiongestures.png" class="blogimage">
+                <p2-centre>Motion based gestures</p2-centre><br>
+                <img src="assets/projectImages/gestures/sensorgestures.png" class="blogimage">
+                <p2-centre>Sensor based gestures</p2-centre><br>
+
+                <p1>This is the basic protocol for how a computer understands a gestures.</p1>
+                <img src="assets/projectImages/gestures/gesturemodel.png" class="blogimage">
+
+
+                <p-h1>Literature review</p-h1>
+                <p1>Three types of papers were reviewed. Elicitation studies [1, 2, 3, 4, 5, 6], Classification of gestures [1, 7, 8], and Sensing methods [9, 10, 11]. While Sensing methods includes touch as a sensory input [12, 13], I chose not to take this route as it would align with the design process yielding a more conventional solution and would undermine the goal of the project which was to explore and learn through trials.</p1><br>
+
+                <p1>I chose to explore the potential for sensor based gestures as I also wanted to get grasp of Arduino and build a working prototype. This was also done to get an idea about the limitations of the information sensors can capture.</p1><br>
+
+                <p-h1>Explorations</p-h1>
+                <p1>There were two phases to the explorations. The first phase involved experimenting with sensors.</p1><br>
+                <img src="assets/projectImages/gestures/sensors.png" class="blogimage">
+                <p2-centre>Sensors explored for prototyping basic gestures</p2-centre><br>
+
+                <p1>The second with scenarios where gestures could play a significant role. Initially, the scenarios looked at were situations where gestures could be used to perform a secondary task.</p1>
+                <img src="assets/projectImages/gestures/scenarios.png" class="blogimage">
+                <p2-centre>Scenarios explored for gesture use cases</p2-centre><br>
+
+                <p1>But the feedback I received for these were that I was attempting to solve problems that probes didn’t exist, and that there was a lack of social concern.</p1><br>
+
+                <p-h1>Fnial concept</p-h1>
+                <p1>The goal was to take forward my learnings from my exploration of the sensors and feedback from the initial round of scenario ideation forward and develop it. I decided to explore two situations: one where gestures are used more naturally and one where the use is forced.</p1><br>
+
+                <p-h2>Gestures to aid autistic children in learning socially accepted gestures</p-h2>
+                <p1>Autism is a developmental disorder that seriously impairs the individual’s ability to communicate and interact with others. It is known as Autism Spectrum Disorder in the medical community. It impacts the nervous system and affects the overall cognitive, emotional, social and physical health of the affected individual. Children in this group often find it difficult to comprehend and initiate social interactions. One of these social cues is gesturing to others.</p1><br>
+
+                <p1>Children learn socially accepted gestures through imitating adults. They copy other’s actions, interactions with objects, body movements and sounds during infancy. This helps them learn how to express interest, share emotions in their caregiver and others around them. Children with autism face difficulty in imitating people around them and this affects their language, play skills, peer play and joint attention development.</p1><br>
+
+                <p1>One commonly used method of teaching autistic children gestures and other social cues is through social stories. Social stories is a technique invented by Carol Gray to help autistic children learn social skills through simple stories. These stories are directed at teaching children how to perform one particular action, and by repeated showing of these stories, children just might pick up on the behaviour.</p1><br>
+
+                <p1>The social story I chose to prototype is one where a child learns how to ask for toys at school. This scenario can be extended to situations of children asking for all their needs from caregivers. The gestures prototyped are from Natural Behaviour Therapy. Currently, this is quickly becoming an outdated approach, with newer research having refined methods to help autistic children express themselves. However, with the limited timeframe of the project, I decided to use this after consulting with therapists.</p1><br>
+
+                <p1>The narrative follows a Dora the Explorer style form of story telling, where the child has to answer questions to move the story forward. The questions are framed such that the answer corresponds to a gesture, which the system recognises when input correctly, to move the story forward. Below is the flow of the story.</p1><br>
+
+                <img src="assets/projectImages/gestures/socialstorypt1.png" class="blogimage">
+                <p2-centre>The scenario of this being play time is established with Rahul being asked to point and pick the toy he wants to play with</p2-centre><br>
+
+                <img src="assets/projectImages/gestures/socialstorypt2.png" class="blogimage">
+                <p2-centre>He now has to indicate which ball he wants with a hand gesture</p2-centre><br>
+
+                <img src="assets/projectImages/gestures/socialstorypt3.png" class="blogimage">
+                <p2-centre>After he receives the ball, he can say thank you by throwing his hands in the air</p2-centre><br>
+
+                <p1>The gestures were input with an MPU6050 accelerometer Gyroscope connected to an Arduino Nano. The story was animated using Adobe AfterEffects and prototyped on Unity.</p1><br>
+
+
+                <p-h2>Gestures to increase mobility during office hours</p-h2>
+                <p1>This scenario involved forced use of gestures to allow for exercising of muscles during work hours. Most desk jobs involve people sitting at their desks, typing away on their computers for long hours. This can lead to several problems including carpal tunnel syndrome and full body stiffness. The goal was to provide relief through another commonly used tool in office spaces, a stress ball, by using it as a gestural input device.</p1><br>
+
+
+                <div class="iframe-container">
+                    <iframe class="responsive-iframe" src="https://youtu.be/dzloMbLlFwk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div><br>
+
+                <p1>While the Wizard of Oz prototype shows what is possible, a major drawback was that the ball could have been replaced by any other object and the interactions would largely have remained the same. Future iterations on this idea would include using the ball in a more natural manner, interacting with it by squishing, bouncing, rolling, and spinning among others for increased scope of possible solutions.</p1><br>
+
+
+                <p-h1>Conclusion</p-h1>
+                <p1>Gestures are a heavily researched upon space and will continue to be so. There are several problems with pursuing gestural research like memorability of gestures, discrete classification, and more that need to be solved. With the maturing use of Machine Learning in this space, we are likely to see gestures beyond the touch surfaces of our phones become more common place. Additionally, we will also see gestures become an important tool to help bridge the gap in communicating with people with different abilities.</p1><br>
+
+                <p1>Personally, from this project, I am glad I got to prototype and build my first interactive Proof of Concept. While I was unable to integrate subtler gestures into my design due the lack of prototyping skills, it is a topic that has me pumped and rearing to return to it after I gain more knowledge in prototyping such interactions.</p1><br> 
+
+                <p-h1>References</p-h1>
+                <p1>
+                    <ol>
+                        <li>“User-Defined Gestures for Surface Computing - University of ...." 9 Apr. 2009,  https://faculty.washington.edu/wobbrock/pubs/chi-09.02.pdf</li>
+                        <li>"User Elicitation on Single-hand Microgestures - ACM Digital Library." 7 May. 2016, https://dl.acm.org/citation.cfm?id=2858589</li>
+                        <li>"User-defined gestures for augmented reality - ACM Digital Library." 27 Apr. 2013, https://dl.acm.org/citation.cfm?id=2468527</li>
+                        <li>"Gesture Elicitation Studies for Mid-Air Interaction: A Review - MDPI." 29 Sep. 2018, https://www.mdpi.com/2414-4088/2/4/65/pdf</li>
+                        <li>"Pen + Mid-Air Gestures: Eliciting Contextual ... - ACM Digital Library." 2 Oct. 2018, https://dl.acm.org/citation.cfm?id=3242979</li>
+                        <li>"A study on the use of semaphoric gestures to support secondary task ...." 2 Apr. 2005, http://doi.org/10.1145/1056808.1057067</li>
+                        <li>"Understanding Mid-Air Hand Gestures: A Study of Human Preferences ...." 7 Nov. 2012, https://www.microsoft.com/en-us/research/publication/understanding-mid-air-h and-gestures-a-study-of-human-preferences-in-usage-of-gesture-types-for-hci/</li>
+                        <li>"A taxonomy of Gestures in Human Computer Interaction - ePrints Soton." https://eprints.soton.ac.uk/261149/1/GestureTaxonomyJuly21.pdf</li>
+                        <li>"ViBand (2016) — Future Interfaces Group."  http://www.figlab.com/viband-2016</li>
+                        <li>"DIRECT: Making Touch Tracking on Ordinary Surfaces Practical with ...." 6 Nov.2016, https://www.figlab.com/s/direct.pdf </li>
+                        <li>"Wall++ (2018) - Future Interfaces Group." https://www.figlab.com/wall-2018/</li>
+                        <li>"ShoeSense - ACM Digital Library - Association for Computing Machinery." 5 May.2012,h ttps://dl.acm.org/citation.cfm?id=2208576</li>
+                        <li>"An Augmented Exhibition Podium with Free-hand Gesture Interfaces."  https://dl.acm.org/ft_gateway.cfm?id=2818464&type=pdf</li>
+                    </ol>
+                </p1><br>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <!--More projects-->
+        <div class="section" id="moreprojects">
+            <div class="content-container">
+                <div class="moreprojectscontainer">
+                    <p-h1>More Projects</p-h1>
+                    <div class="moreprojects">
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="arklid.html">
+                                <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="assets2020src.html">
+                                <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="poakme.html">
+                                <img src="assets/homepageProjectImages/poakme.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="philips.html">
+                                <img src="assets/homepageProjectImages/philips.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <img src="assets/homepageProjectImages/physioDot.png" class="projimagespecs">
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://avyay.medium.com/getting-rid-of-2d-chaos-tackling-the-traffic-congestion-in-mumbai-dd3c76de449f" target="_blank">
+                                <img src="assets/homepageProjectImages/gr2dc.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://medium.com/physical-microinteractions/classification-of-physical-microinteractions-a-collaborative-design-project-c58b261ad1f" target="_blank">
+                                <img src="assets/homepageProjectImages/physicalmicrointeractions.png" class="projimagespecs">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons" id="time">
+            <button onclick="topFunction()" id="myBtn" title="Go to top">Go to top of the page</button>
+        </div>
+        
+        <script>
+            //Get the button:
+            mybutton = document.getElementById("myBtn");
+
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function() {scrollFunction()};
+
+            function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+            }
+
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }
+        </script>
+
+        <!--Footer-->
+        <div class="section" id="footer">
+            <div class="content-container">
+                <div class="footer">
+                    <p-footer>
+                        Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
+                    </p-footer>
+                    <div class="mobileview">
+                        <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
