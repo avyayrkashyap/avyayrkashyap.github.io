@@ -1,0 +1,21 @@
+.playprojectcontainer {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+    justify-content: start;
+}
+
+
+
+
+
+/*text*/
+h1 {
+    padding-top: 24px;
+}
+
+p-playtitle {
+    font-size: 18pt;
+    font-weight: 600;
+    color: #666;
+}
