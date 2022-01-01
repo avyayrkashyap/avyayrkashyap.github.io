@@ -304,10 +304,26 @@
                 <img src="assets/projectImages/poakme/flow2.png" class="blogimage">
 
                 <p1>The exercise is a simple follow along accompanied by music, which is not included in this prototype. Post the exercise, the user is asked to rate the pain they felt.</p1>
-                <div style="display: grid; grid-template-columns: auto auto; grid-gap: 12px; justify-content: space-evenly; padding: 12px 0;">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/5_v7s1W_Flo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <img src="assets/projectImages/poakme/flow3.png" style="width: 100%; height: auto; max-height: 455px;">
+                <div class="doubleimage" style="display: grid; grid-template-columns: auto auto; grid-gap: 12px; justify-content: space-evenly; padding: 12px 0;">
+                    <iframe class="iframedouble" src="https://www.youtube.com/embed/5_v7s1W_Flo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <img src="assets/projectImages/poakme/flow3.png" style="width: auto; height: auto; max-height: 455px;">
                 </div>
+
+                <style>
+                    .doubleimage {
+                        display: grid; 
+                        grid-template-columns: auto auto; 
+                        grid-gap: 12px; justify-content: space-evenly; 
+                        padding: 12px 0;
+                    }
+
+                    .iframedouble {
+                        width: auto;
+                        height: 100%;
+                        max-height: 455px;
+
+                    }
+                </style>
 
                 <p1>An overview of the exercises done by the patient is shown in the exercises tab. This is to help motivate the person as they see their metrics acrue. Each movement done in every exercise is recorded and available for revieiw, with incorrect movements shown in red.</p1>
                 <img src="assets/projectImages/poakme/flow4.png" class="blogimage">
