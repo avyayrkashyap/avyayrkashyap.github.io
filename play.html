@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Avyay's idea of fun</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+        <link rel="manifest" href="assets/favicons/site.webmanifest">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#7fc2ee">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blogimages.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
+        <link href="assets/css/play.css" rel="stylesheet">
+        <link href="assets/JavaScript/show-on-scroll.js" rel="JavaScript">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-5H0XW19JC3');
+        </script>
+
+    </head>
+    <body>
+        <div class="section" id="nav">
+            <nav>
+                <div class="navbar">
+                    <a href="index.html">
+
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json"  background="transparent" style="height: 56px; align-items: flex-start;" speed="0.8" autoplay></lottie-player>
+
+                        
+
+                        <!-- 
+                        <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span>
+                        
+                        <picture>
+                            <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo">
+                            <img src="assets/websiteImages/portfolioLogo.png" class="logo">
+                        </picture> -->
+                    </a>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html">Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="active" href="play.html">Play</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="aboutme.html">About me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
+                        </li>
+                    </ul>
+
+                    <hamburger class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </hamburger>
+
+                    <script>
+                        const hamburger = document.querySelector(".hamburger");
+                        const navMenu = document.querySelector(".nav-menu");
+
+                        hamburger.addEventListener("click", mobileMenu);
+
+                        function mobileMenu() {
+                            hamburger.classList.toggle("active");
+                            navMenu.classList.toggle("active");
+                        }
+
+                        const navLink = document.querySelectorAll(".nav-link");
+
+                        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                        function closeMenu() {
+                            hamburger.classList.remove("active");
+                            navMenu.classList.remove("active");
+                        }
+                    </script>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="section" id="intro">
+            <div class="content-container">
+                <div class="intro">
+                    <p-heading>
+                        Welcome to Play ▶️
+                    </p-heading>
+                    <p-subheading>
+                        This is stuff I do outside of my projects.
+                    </p-subheading>
+                </div>
+            </div>
+        </div>
+
+            <!--Projects-->
+            <!--
+            <div class="navgroup">
+                <a class="nav-item" id="active" href="index.html">Work</a>
+                <a class="nav-item" href="">Play</a>
+                <a class="nav-item" id="aboutme" href="aboutme.html">About Me</a>
+                <a class="nav-item" href="assets/files/AvyayResume.pdf">Resumé</a>
+            </div>
+            -->
+        <div class="section" id="projects">
+            <div class="content-container"> 
+                <h1>Data Visualisation</h1>   
+                <div class="playprojectcontainer">
+                    <div class="projcard" id="geoviz">
+                        <div class="topofcard">
+                            <div class="projimage">
+                                <img src="assets/projectImages/play/geoviz.png" class="projimagespecs">
+                            </div>
+                            <div class="titleinfo">
+                                <p-playtitle>
+                                    The Great Sichuan Earthquake
+                                </p-playtitle>
+                            </div>
+                        </div>
+                        <div class="bottomofcard">
+                            <p-about>
+                                A geo-visualisation data story of the Sichuan earthquake of 2008 and how it came to be.
+                            </p-about>
+                            <a href="https://avyayrk.com/GeoViz/">
+                                <div class="seemore">
+                                    <p-seemore>
+                                        View visualisation
+                                    </p-seemore>
+                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="projcard" id="rolesindv">
+                        <div class="topofcard">
+                            <div class="projimage">
+                                <img src="assets/projectImages/play/rolesindv.png" class="projimagespecs">
+                            </div>
+                            <div class="titleinfo">
+                                <p-playtitle>
+                                    Roles in Data Viz
+                                </p-playtitle>
+                            </div>
+                        </div>
+                        <div class="bottomofcard">
+                            <p-about>
+                                Roles in Data Viz is a declarative data story on the various professions people involved in data visualisation take up and how they stack up against each other. Feel free to explore and make your own stories!
+                            </p-about>
+                            <a href="rolesindv.html">
+                                <div class="seemore">
+                                    <p-seemore>
+                                        View visualisation
+                                    </p-seemore>
+                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="projcard" id="f1">
+                        <div class="topofcard">
+                            <div class="projimage">
+                                <img src="assets/projectImages/play/f1ar.png" class="projimagespecs">
+                            </div>
+                            <div class="titleinfo">
+                                <p-playtitle>
+                                    F1 2018 WDC battle
+                                </p-playtitle>
+                            </div>
+                        </div>
+                        <div class="bottomofcard">
+                            <p-about>
+                                An attempt at visualising the F1 2018 championship fight between Vettel and Hamilton in AR.
+                            </p-about>
+                            <a href="f1ar.html">
+                                <div class="seemore">
+                                    <p-seemore>
+                                        Read more
+                                    </p-seemore>
+                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+            <div class="buttons" id="time">
+                <button onclick="topFunction()" id="myBtn" title="Go to top">Go to top of the page</button>
+            </div>
+            
+            <script>
+                //Get the button:
+                mybutton = document.getElementById("myBtn");
+    
+                // When the user scrolls down 20px from the top of the document, show the button
+                window.onscroll = function() {scrollFunction()};
+    
+                function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    mybutton.style.display = "block";
+                } else {
+                    mybutton.style.display = "none";
+                }
+                }
+    
+                // When the user clicks on the button, scroll to the top of the document
+                function topFunction() {
+                document.body.scrollTop = 0; // For Safari
+                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+                }
+            </script>
+
+            <div class="section" id="footer">
+                <div class="content-container">
+                    <div class="footer">
+                        <p-footer>
+                            Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
+                        </p-footer>
+                        <div class="mobileview">
+                            <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </body>
+    </html>

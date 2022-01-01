@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Avyay's Portfolio: Jio</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+        <link rel="manifest" href="assets/favicons/site.webmanifest">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#7fc2ee">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blogimages.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-5H0XW19JC3');
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="section" id="nav" style="border-radius: 0 0 20px 20px;">
+            <nav>
+                <div class="navbar">
+                    <a href="index.html">
+
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json" style="height: 56px; margin-left: 0;" speed="0.8" autoplay></lottie-player>
+
+                        
+
+                        <!-- 
+                        <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span>
+                        
+                        <picture>
+                            <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo">
+                            <img src="assets/websiteImages/portfolioLogo.png" class="logo">
+                        </picture> -->
+                    </a>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html">Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="play.html">Play</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="aboutme.html">About me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
+                        </li>
+                    </ul>
+
+                    <hamburger class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </hamburger>
+
+                    <script>
+                        const hamburger = document.querySelector(".hamburger");
+                        const navMenu = document.querySelector(".nav-menu");
+
+                        hamburger.addEventListener("click", mobileMenu);
+
+                        function mobileMenu() {
+                            hamburger.classList.toggle("active");
+                            navMenu.classList.toggle("active");
+                        }
+
+                        const navLink = document.querySelectorAll(".nav-link");
+
+                        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                        function closeMenu() {
+                            hamburger.classList.remove("active");
+                            navMenu.classList.remove("active");
+                        }
+                    </script>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="section" id="hero">
+            <div class="content-container">
+                <div class="backbuttoncontainer">
+                    <a onclick="goBack()">
+                        <div class="seemore">
+                            <img src="assets/websiteImages/leftarrow.png" class="viewmorearrow">
+                            <p-seemore>
+                                Back
+                            </p-seemore> 
+                        </div>
+                    </a>
+                    <script>function goBack() {
+                            window.history.back();
+                        }</script>
+                </div>
+                <div class="blogintro">
+                    <div class="topofcard">
+                        <div class="projimage">
+                            <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
+                        </div>
+                        <div class="titleinfo">
+                            <p-title>
+                                Jio Platforms Limited
+                            </p-title>
+                            <p-subtitle>
+                                UX DESIGNER
+                            </p-subtitle>
+                            <p-subsubtitle>I am a UX designer at Jio Platforms Limited, currently working on an e-commerce application called JioMart.</p-subsubtitle>
+                        </div>
+                    </div>
+                    <div class="quickdetails">
+                        <div id="role">
+                            <p-h3>Role</p-h3>
+                            <p1>UX Designer</p1>
+                        </div>
+                        <div id="team">
+                            <p-h3>Team</p-h3>
+                            <p1>JioMart Design Team</p1>
+                        </div>
+                        <div id="duration">
+                            <p-h3>Duration</p-h3>
+                            <p1>August 2020 - present</p1>
+                        </div>
+                        <div id="conference">
+                            <p-h3>Team Lead</p-h3>
+                            <p1>Nirmal Biswas</p1>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="section" id="body">
+            <div class="content-container">
+                <p1>I have worked on several products since joining Jio. Initially, I worked with the System of Interactions team in creating an information architecture and wireframes for a website that will host Jio’s design guidelines. The goal was to be able to convey the necessary ideas to new designers, allow developers to grab code snippets, and make transparent to product managers the vision for the Jio Design System.</p1><br>
+
+                <p1>Midway through this project, I was given the opportunity to collaborate on a business facing HR platform. Through this project, I learnt my first tenets of people management as I began collaborating with business, product and technical teams in a product role. Once the project had reached a pace everyone was comfortable with, I chose to move between teams and joined the JioMart team to gain experience working on a consumer facing application.</p1><br>
+
+                <p-h1>JioMart</p-h1>
+                <img src="assets/projectImages/jio/jiomartlogo.png" class="blogimage">
+                <p1>Although my job title at JioMart would have you believe I am “UX Designer”, in reality, I am what might be called a <i>full-stack designer</i>, if you will. I work on all aspects of the product, from discussing with the product managers which features to develop, competitor analysis and primary research, designing the journeys and wireframes, to making high fidelity prototypes.</p1><br>
+
+                <p1>Reading the latest in e-commerce concepts and ideating ways to include and test the newest theories on a user base that is primarily located in tier 2 and tier 3 cities is both challenging and fun.</p1><br>
+
+                <p1>JioMart is a product that is still in Beta, and as such, one of the major tasks is integrating new verticals onto the platforms. While it functions primarily on grocery for now, I have been working on homologating the experience for newer verticals such as Home, Furniture, Books and Electronics.</p1><br>
+
+                <p1>I am also involved in maintaining and improving the internal design system for the app. Changes made to these components are seen and used by millions of customers, and as such, decisions regarding them are made after a lot of deliberation and testing.</p1><br>
+
+                <p1>With a growing team, I contribute towards improving our existing working framework for greater collaboration across multiple product and business teams, while also consolidating the customer journey to improve design consistency.</p1><br>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <!--More projects-->
+        <div class="section" id="moreprojects">
+            <div class="content-container">
+                <div class="moreprojectscontainer">
+                    <p-h1>More Projects</p-h1>
+                    <div class="moreprojects">
+                        <div class="moreprojimage">
+                            <a href="arklid.html">
+                                <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="assets2020src.html">
+                                <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="poakme.html">
+                                <img src="assets/homepageProjectImages/poakme.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="gestures.html">
+                                <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://avyay.medium.com/the-case-for-remote-physiotherapy-physiodot-b8ff79bab212">
+                                <img src="assets/homepageProjectImages/physioDot.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="philips.html">
+                                <img src="assets/homepageProjectImages/philips.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://avyay.medium.com/getting-rid-of-2d-chaos-tackling-the-traffic-congestion-in-mumbai-dd3c76de449f" target="_blank">
+                                <img src="assets/homepageProjectImages/gr2dc.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://medium.com/physical-microinteractions/classification-of-physical-microinteractions-a-collaborative-design-project-c58b261ad1f" target="_blank">
+                                <img src="assets/homepageProjectImages/physicalmicrointeractions.png" class="projimagespecs">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons" id="time">
+            <button onclick="topFunction()" id="myBtn" title="Go to top">Go to top of the page</button>
+        </div>
+        
+        <script>
+            //Get the button:
+            mybutton = document.getElementById("myBtn");
+
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function() {scrollFunction()};
+
+            function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+            }
+
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }
+        </script>
+
+
+        <!--Footer-->
+        <div class="section" id="footer">
+            <div class="content-container">
+                <div class="footer">
+                    <p-footer>
+                        Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
+                    </p-footer>
+                    <div class="mobileview">
+                        <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
