@@ -9,11 +9,6 @@
     grid-column: span 2;
 }
 
-
-a:hover {
-    box-shadow: 4px 6px #e5e5e5;
-}
-
 /*Image gallery*/
 .playimagegallery {
     display: grid;
