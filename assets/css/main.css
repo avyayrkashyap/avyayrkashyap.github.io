@@ -178,8 +178,8 @@ nav {
 }
 
 .viewmorearrow {
-    margin: 4px 4px 0 4px;
-    height: 14px;
+    margin: 4px 4px -1px 4px;
+    height: 12px;
 }
 
 .seemore:hover .viewmorearrow{
