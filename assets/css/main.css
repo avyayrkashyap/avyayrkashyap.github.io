@@ -175,6 +175,8 @@ nav {
 
 .seemore {
     display: inline-block;
+    margin: 4px 4px -1px 4px;
+    height: 12px;
 }
 
 .viewmorearrow {
