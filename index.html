@@ -16,9 +16,11 @@
 
         <link href="assets/css/main.css" rel="stylesheet">
         <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
         <link href="assets/JavaScript/show-on-scroll.js" rel="JavaScript">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
@@ -100,13 +102,21 @@
         <div class="section" id="intro">
             <div class="content-container">
                 <div class="intro">
-                    <p-heading>
+                    <p-heading class="tooltip">
                         Hello there! I'm Avyay.
+                        <span class="tooltiptext">General Kenobi</span>
                     </p-heading>
                     <p-subheading>
-                        I am currently pursuing a second Masters in Human Computer Interaction at <a href="https://hcid.luddy.indiana.edu" id="clickable" target="_blank">Indiana University Bloomington</a>, with research interests in health informatics and designing for engagement. I previously worked as a UX Designer at <a href="https://www.jio.com/en-in/apps/jio-mart" id="clickable" target="_blank">Jio Platforms Limited</a> on the JioMart e-commerce application for 2 years. I completed an Integrated Masters in Interaction Design from <a href="http://www.idc.iitb.ac.in" id="clickable" target="_blank">IDC School of Design, IIT Bombay</a> in 2020. <br />
+                        I will find out why you do what you do, by any means necessary.
+                        <br /><br>
+                        I am currently pursuing a second Masters in Human Computer Interaction at <a href="https://hcid.luddy.indiana.edu" id="clickable" target="_blank">Indiana University Bloomington</a>, with research interests in health informatics and designing for engagement.
+                        <br />
                         <br>
-                        You can reach out to me via <a href="mailto: avyayrk@gmail.com" id="clickable" target="_blank">mail</a> or on social media. My resume can be found <a href="assets/files/AvyayResume.pdf" id="clickable" target="_blank">here</a>.
+                        <div>
+                            <a href="mailto: avykashy@iu.edu" target="_blank">
+                                <button style="color: #121212;"><span style="font-size: 16pt;">✉️ </span>Send me a mail</button>
+                            </a>
+                        </div>
                     </p-subheading>
                 </div>
             </div>
@@ -122,10 +132,169 @@
             </div>
             -->
         <div class="section" id="projects">
-            <div class="content-container">    
-                <div class="projects">
+            <div class="content-container">
 
-                    <div class="projcard" id="jio">
+                <div class="projects">
+                    <div class="projcardwide hometitle">
+                        <p-hometitle>Projects</p-hometitle>
+                    </div>
+                    <div class="projcard" id="arklid">
+                        <div class="imageoncard">
+                            <a href="arklid.html">
+                                <img src="assets/projectImages/ARKLid/ARKLidSexyLook.png" class="imageoncarddimensions">
+                            </a>
+                        </div>
+                        <div class="topofcard">
+                            <!--<div class="projimage">
+                                <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
+                            </div>-->
+                            <div class="titleinfo">
+                                <p-title>
+                                    ARKLid
+                                </p-title>
+                                <p-subtitle>
+                                    Graduation Thesis Project 2
+                                </p-subtitle>
+                                <p-subsubtitle>
+                                    January - June 2020
+                                </p-subtitle>
+                            </div>
+                        </div>
+                        <div class="bottomofcard">
+                            <p-about>
+                                ARKLid is a concept for an assistive device that enables the visually impaired prepare meals that involve roasting.
+                            </p-about>
+                            <a href="arklid.html">
+                                <div class="seemore">
+                                    <p-seemore>
+                                        View Project
+                                    </p-seemore>
+                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="projcard" id="assets2020">
+                        <div class="imageoncard">
+                            <a href="assets2020src.html">
+                                <img src="assets/projectImages/assets2020/homepageImage.png" class="imageoncarddimensions">
+                            </a>
+                        </div>
+                        <div class="topofcard">
+                            <!--<div class="projimage">
+                                <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
+                            </div>-->
+                            <div class="titleinfo">
+                                <p-title>
+                                    ASSETS 2020 SRC
+                                </p-title>
+                                <p-subtitle>
+                                    Publication
+                                </p-subtitle>
+                                <p-subsubtitle>
+                                    October 2020
+                                </p-subtitle>
+                            </div>
+                        </div>
+                        <div class="bottomofcard">
+                            <p-about>
+                                Published my work at The 22nd International ACM SIGACCESS Conference on Computers and Accessibility in the Student Research Competition.
+                            </p-about>
+                            <a href="assets2020src.html">
+                                <div class="seemore">
+                                    <p-seemore>
+                                        View Project
+                                    </p-seemore>
+                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="projcard" id="poakme">
+                        <div class="imageoncard">
+                            <a href="poakme.html">
+                                <img src="assets/projectImages/poakme/coverimage.png" class="imageoncarddimensions">
+                            </a>
+                        </div>
+                        <div class="topofcard">
+                            <!--<div class="projimage">
+                                <img src="assets/homepageProjectImages/poakme.png" class="projimagespecs">
+                            </div>-->
+                            <div class="titleinfo">
+                                <p-title>
+                                    POAK<span style="font-weight: lighter;">me</span>
+                                </p-title>
+                                <p-subtitle>
+                                    Graduation Thesis Project 1
+                                </p-subtitle>
+                                <p-subsubtitle>
+                                    July - November 2019
+                                </p-subtitle>
+                            </div>
+                        </div>
+                        <div class="bottomofcard">
+                            <p-about>
+                                POAKme is a solution that enables individuals with Osteoarthritis of the Knee access care and rehabilitation from their homes.
+                            </p-about>
+                            <a href="poakme.html">
+                                <div class="seemore">
+                                    <p-seemore>
+                                        View project
+                                    </p-seemore>
+                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="projcard" id="gestures">
+                        <div class="imageoncard">
+                            <a href="gestures.html">
+                                <img src="assets/projectImages/gestures/homepageImage.png" class="imageoncarddimensions">
+                            </a>
+                        </div>
+                        <div class="topofcard">
+                            <!--<div class="projimage">
+                                <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
+                            </div>-->
+                            <div class="titleinfo">
+                                <p-title>
+                                    Gestural Interactions
+                                </p-title>
+                                <p-subtitle>
+                                    Bachelor Thesis Project
+                                </p-subtitle>
+                                <p-subsubtitle>
+                                    February - June 2019
+                                </p-subtitle>
+                            </div>
+                        </div>
+                        <div class="bottomofcard">
+                            <p-about>
+                                An exploratory project on understanding gestural interactions and their potential application real world scenarios.
+                            </p-about>
+                            <a href="gestures.html">
+                                <div class="seemore">
+                                    <p-seemore>
+                                        View project
+                                    </p-seemore>
+                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!--Work Ex-->
+
+                    <div class="projectcardwide space"></div>
+
+                    <div class="projcardwide hometitle">
+                        <p-hometitle>Work Experience</p-hometitle>
+                    </div>
+
+                    <div class="projcardwide" id="jio">
                         <div class="topofcard">
                             <div class="projimage">
                                 <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
@@ -157,132 +326,12 @@
                         </div>
                     </div>
 
-                    <div class="projcard" id="arklid">
-                        <div class="topofcard">
-                            <div class="projimage">
-                                <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
-                            </div>
-                            <div class="titleinfo">
-                                <p-title>
-                                    ARKLid
-                                </p-title>
-                                <p-subtitle>
-                                    Graduation Thesis Project 2
-                                </p-subtitle>
-                                <p-subsubtitle>
-                                    January - June 2020
-                                </p-subtitle>
-                            </div>
-                        </div>
-                        <div class="bottomofcard">
-                            <p-about>
-                                ARKLid is a concept for an assistive device that enables the visually impaired prepare meals that involve roasting.
-                            </p-about>
-                            <a href="arklid.html">
-                                <div class="seemore">
-                                    <p-seemore>
-                                        View Project
-                                    </p-seemore>
-                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    <!--Other projects-->
 
-                    <div class="projcard" id="assets2020">
-                        <div class="topofcard">
-                            <div class="projimage">
-                                <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
-                            </div>
-                            <div class="titleinfo">
-                                <p-title>
-                                    Finalist at ASSETS 2020 SRC
-                                </p-title>
-                                <p-subtitle>
-                                    Publication
-                                </p-subtitle>
-                                <p-subsubtitle>
-                                    October 2020
-                                </p-subtitle>
-                            </div>
-                        </div>
-                        <div class="bottomofcard">
-                            <p-about>
-                                Published my work at The 22nd International ACM SIGACCESS Conference on Computers and Accessibility in the Student Research Competition.
-                            </p-about>
-                            <a href="assets2020src.html">
-                                <div class="seemore">
-                                    <p-seemore>
-                                        View Project
-                                    </p-seemore>
-                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    <div class="projectcardwide space"></div>
 
-                    <div class="projcard" id="poakme">
-                        <div class="topofcard">
-                            <div class="projimage">
-                                <img src="assets/homepageProjectImages/poakme.png" class="projimagespecs">
-                            </div>
-                            <div class="titleinfo">
-                                <p-title>
-                                    POAK<span style="font-weight: lighter;">me</span>
-                                </p-title>
-                                <p-subtitle>
-                                    Graduation Thesis Project 1
-                                </p-subtitle>
-                                <p-subsubtitle>
-                                    July - November 2019
-                                </p-subtitle>
-                            </div>
-                        </div>
-                        <div class="bottomofcard">
-                            <p-about>
-                                POAKme is a solution that enables individuals with Osteoarthritis of the Knee access care and rehabilitation from their homes.
-                            </p-about>
-                            <a href="poakme.html">
-                                <div class="seemore">
-                                    <p-seemore>
-                                        View project
-                                    </p-seemore>
-                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="projcard" id="gestures">
-                        <div class="topofcard">
-                            <div class="projimage">
-                                <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
-                            </div>
-                            <div class="titleinfo">
-                                <p-title>
-                                    Gestural Interactions
-                                </p-title>
-                                <p-subtitle>
-                                    Bachelor Thesis Project
-                                </p-subtitle>
-                                <p-subsubtitle>
-                                    February - June 2019
-                                </p-subtitle>
-                            </div>
-                        </div>
-                        <div class="bottomofcard">
-                            <p-about>
-                                An exploratory project on understanding gestural interactions and their potential application real world scenarios.
-                            </p-about>
-                            <a href="gestures.html">
-                                <div class="seemore">
-                                    <p-seemore>
-                                        View project
-                                    </p-seemore>
-                                    <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                </div>
-                            </a>
-                        </div>
+                    <div class="projcardwide hometitle">
+                        <p-hometitle>Case Studies</p-hometitle>
                     </div>
 
                     <div class="projcard" id="physioDot">
