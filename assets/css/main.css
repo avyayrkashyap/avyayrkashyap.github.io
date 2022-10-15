@@ -130,10 +130,13 @@ nav {
     grid-template-columns: auto auto;
     grid-gap: 20px;
     justify-content: start;
-
     padding: 10vh 0;
 }
 
+.hometitle {
+    padding: 0px 24px 24px 0; 
+    margin: auto;
+}
 
 /*Project Card*/
 .projcard {
@@ -144,12 +147,37 @@ nav {
     animation: visible 1.6s ease-in both;
 }
 
+.projcardwide {
+    grid-column: span 2;    
+}
+
+.space {
+    height: 48px;
+    width: 100%;
+}
+
+.imageonocard {
+    max-width: 460px;
+}
+
+.imageoncarddimensions {
+    max-width: 460px;
+    border-radius: 8px;
+    transition: 0.3s ease-out;
+}
+
+.imageoncarddimensions:hover {
+    box-shadow: 0 4px #7FC2EE;
+    transition: 0.3s ease-out;
+}
+
 .topofcard {
     width: 100%;
     display: grid;
     grid-template-columns: auto auto;
     grid-gap: 16px;
     justify-content: start;
+    padding-top: 24px;
 }
 
 .projimage {
@@ -157,8 +185,8 @@ nav {
 }
 
 .projimagespecs {
-    width: 140px;
-    height: 140px;
+    width: 108px;
+    height: 108px;
     border-radius: 8px;
 }
 
@@ -191,18 +219,18 @@ nav {
 /*section specs*/
 
 #nav {
-    background-color: #001935;
+    background-color: #121212;
     animation: fadebgblack 1.6s 1;
 }
 
 #intro {
-    background-color: #001935;
+    background-color: #121212;
     animation: fadebgblack 1.6s 1;
     border-radius: 0 0 20px 20px;
 }
 
 #footer {
-    background-color: #001935;
+    background-color: #121212;
     padding: 36px 0;
     border-radius: 20px 20px 0 0;
 }
@@ -215,6 +243,49 @@ nav {
     justify-content: space-around;
     padding-bottom: 24px 0;
 }
+
+#jio {
+    padding: 8px 24px 24px 24px;
+    background-color: #F6F6F6;
+    border-radius: 8px;
+    transition: 0.3s ease-out;
+}
+
+#jio:hover {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    transition: 0.3s ease-out;
+}
+
+
+/*Jokes*/
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #252525;
+    color: #616161;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 10pt;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
 
 
 
@@ -248,6 +319,10 @@ nav {
         width: 95%;
     }
 
+    .intro {
+        width: 100%;
+    }
+
     nav {
         width: 100%;
     }
@@ -267,7 +342,7 @@ nav {
         left: -120%;
         top: 84px;
         flex-direction: column;
-        background-color: #001935;
+        background-color: #121212;
         width: 96%;
         text-align: center;
         transition: 0.3s;
@@ -283,7 +358,7 @@ nav {
 
     hamburger {
         text-decoration: none;
-        background-color: #001935;
+        background-color: #121212;
         border-radius: 4px;
         border: none;
     }
@@ -331,15 +406,61 @@ nav {
     .topofcard{
         grid-template-columns: auto;
     }
+    .projcard {
+        width: 100vw;
+    }
 }
 
 @media screen and (max-width: 648px) {
+    .content-container {
+        width: 96%;
+    }
+
     .projects {
         grid-template-columns: auto;
     }
 
+    .projcardwide {
+        grid-column: span 1;    
+    }
+
     .projcard {
+        width: 100vw;
         padding-bottom: 20px;
+    }
+
+
+}
+
+@media screen and (max-width: 416px) {
+    .content-container {
+        width: 96%;
+    }
+
+    .intro {
+        width: 100%;
+    }
+
+    .projects {
+        width: 100%;
+        margin: auto;
+    }
+
+    .projcardwide {
+        grid-column: span 1;    
+    }
+
+    .projcard {
+        max-width: 414px;
+        padding-bottom: 20px;
+    }
+
+    .imageoncarddimensions {
+        max-width: 414px;
+    }
+
+    .projcardwide {
+        max-width: 414px;
     }
 
 

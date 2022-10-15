@@ -5,8 +5,9 @@ body {
 }
 
 p-heading {
-    font-size: 48pt;
-    font-weight: bold;
+    font-family: "Merriweather", Helvetica, sans-serif;
+    font-size: 64pt;
+    font-weight: 900;
     color: #7FC2EE;
     display: block;
     padding-bottom: 16px;
@@ -24,9 +25,17 @@ p-subheading{
     animation: visible 1.6s 1;
 }
 
+p-hometitle {
+    font-family: "Merriweather", Helvetica, sans-serif;
+    font-size: 28pt;
+    font-weight: 900;
+    border-bottom: 4px solid #7FC2EE;
+}
+
 p-title {
+    font-family: "Merriweather", Helvetica, sans-serif;
     font-size: 24pt;
-    font-weight: bold;
+    font-weight: 900;
     padding-bottom: 8px;
     display: block;
 }
@@ -69,21 +78,26 @@ p-footer {
 
 /*Blog*/
 p-h1 {
+    font-family: "Merriweather", Helvetica, sans-serif;
     font-weight: bold;
     font-size: 18pt;
-    display: block;
-    padding-bottom: 8px;
+    display: inline-block;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-bottom: 4px solid #7FC2EE;
 }
 
 p-h2 {
+    font-family: "Merriweather", Helvetica, sans-serif;
     font-weight: bold;
     font-size: 16pt;
+    margin: 16px 0 8px 0;
     display: block;
-    padding-bottom: 8px;
     color: #666;
 }
 
 p-h3 {
+    font-family: "Merriweather", Helvetica, sans-serif;
     font-weight: bold;
     display: block;
     text-transform: uppercase;
@@ -91,6 +105,7 @@ p-h3 {
 }
 
 p-h4 {
+    font-family: "Merriweather", Helvetica, sans-serif;
     font-size: 10pt;
     font-weight: bold;
     padding-bottom: 4px;
@@ -136,6 +151,7 @@ p-centre {
 }
 
 p-quote {
+    font-family: "Merriweather", Helvetica, sans-serif;
     display: block;
     width: 90%;
     font-weight: bold;

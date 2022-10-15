@@ -8,12 +8,14 @@
 }
 
 .quickdetails {
-    padding-top: 36px;
+    padding: 36px;
     display: grid;
     grid-template-columns: 33% 33% 33%;
     grid-gap: 16px;
     justify-content: space-between;
-    padding-bottom: 36px;
+    background-color: #f6f6f6;
+    border-radius: 24px;
+    margin: 36px 0;
 }
 
 .aboutmecontent {
