@@ -252,7 +252,7 @@ nav {
 }
 
 #jio:hover {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     transition: 0.3s ease-out;
 }
 
