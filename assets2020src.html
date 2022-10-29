@@ -31,6 +31,10 @@
             gtag('config', 'G-5H0XW19JC3');
         </script>
 
+         <!--Bootstrap-->
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
     </head>
 
     <body>
@@ -158,6 +162,37 @@
             </div>
         </div>
 
+
+
+        <div class="space"></div>
+        <nav id="projectNav" class="navbar navbar-expand-sm fixNavbar">
+            <div class="container-fluid alignItems">
+              <ul class="navbar-nav">
+                <li class="nav-item2 ">
+                  <a class="nav-link activeNav" href="#context">Context</a>
+                </li>
+                <li class="nav-item2">
+                  <a class="nav-link" href="#research">Overview</a>
+                </li>
+                <li class="nav-item2">
+                  <a class="nav-link" href="#study">Study</a>
+                </li>
+                <li class="nav-item2">
+                    <a class="nav-link" href="#findings">Findings</a>
+                  </li>
+                <li class="nav-item2">
+                <a class="nav-link" href="#conclusion">Conclusion</a>
+                </li>
+                  <!-- <li class="nav-item2">
+                    <a class="nav-link" href="#conclusion">Conclusion</a>
+                  </li> -->
+              </ul>
+            </div>
+          </nav>
+          <div class="space"></div>
+
+
+
         <div class="section" id="body">
             <div class="content-container">
                 <div>
@@ -170,10 +205,14 @@
                     </a>
                 </div>
     
+
+                <div class="space" id="context"></div>
                 <div>
                     <p-h1>Context</p-h1>
                     <p1>Preparing a meal is a basic activity needed for survival. It involves multiple senses giving feedback about different aspects of a meal's preparedness. Many of these feedbacks provided are visual and are highly dependent on sight. Research has shown that being able to prepare a meal independently can affect the quality of life of an individual [1]. There are also studies that reveal that there is a prevalence of lowered nutrition levels among Visually Impaired Persons (VIPs) due to their reduced ability to shop for and prepare meals independently [2]. Given this, it is imperative to delve deeper into problems plaguing the community in preparing meals and outline potential pathways to aid in kitchen independence.</p1><br>
 
+
+                    <div class="space" id="research"></div>
                     <div>
                         <p-h1>Research Overview</p-h1>
                         <div class="iframe-container">
@@ -181,6 +220,8 @@
                         </div><br>
                     <div>
 
+
+                    <div class="space" id="study"></div>
                     <p-h1>The Study</p-h1>
                     <img src="assets/projectImages/assets2020/study.png" class="blogimage">
                     <p1>The study was conducted in two parts. The first round of primary research was conducted with 7 participants of varying levels of blindness and experience in the kitchen to understand broadly the specific nature of the problems they encounter. This helped gain a perspective of the area and eliminate many activities, primarily those that are mechanical in nature.</p1><br>
@@ -190,6 +231,8 @@
                     <p2-centre>Participant list</p2-centre><br>
                 </div>
 
+
+                <div class="space" id="findings"></div>
                 <div>
                     <p-h1>Findings</p-h1>
                     <p1>The findings are categorised into the cooking techniques of boiling, simmering, roasting and frying. A secondary level of categorisation is also done using colours. Problems are coded in red, behaviours in blue and strategies in green.</p1><br>
@@ -260,6 +303,8 @@
                     </div><br>
                 </div>
 
+
+                <div class="space" id="conclusion"></div>
                 <div>
                     <p-h1>Conclusion</p-h1>
                     <p1>More in depth study of the cooking techniques in various contexts and user environments is necessitated before designing and developing assistive devices. This is partly due the lack of work in the area. However, the lack of substantial research in this area gives scope for novel designs to surface and potentially make a large impact on the quality of life of the individuals.</p1><br>
@@ -276,6 +321,8 @@
 
                 </div><br>
 
+
+                <div class="space"></div>
                 <div>
                     <p-h1>References</p-h1>
                     <p1>
@@ -381,6 +428,20 @@
                 </div>
             </div>
         </div>
+
+
+        <script>
+            var header = document.getElementById("projectNav");
+            var btns = header.getElementsByClassName("nav-link");
+            for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("activeNav");
+            current[0].className = current[0].className.replace(" activeNav", "");
+            this.className += " activeNav";
+            });
+            }
+        </script>
+
 
     </body>
 </html>

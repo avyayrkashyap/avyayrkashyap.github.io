@@ -32,8 +32,15 @@
         gtag('config', 'G-5H0XW19JC3');
         </script>
 
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
     </head>
     <body>
+
+
         <div class="section" id="nav">
             <nav>
                 <div class="navbar">
@@ -166,6 +173,43 @@
             </div>
         </div>
 
+
+        
+
+
+
+        <div class="space"></div>
+        <nav id="projectNav" class="navbar navbar-expand-sm fixNavbar">
+            <div class="container-fluid alignItems">
+              <ul class="navbar-nav">
+                <li class="nav-item2 ">
+                  <a class="nav-link activeNav" href="#background">Background</a>
+                </li>
+                <li class="nav-item2">
+                  <a class="nav-link" href="#research">Research</a>
+                </li>
+                <li class="nav-item2">
+                  <a class="nav-link" href="#roasting">Process of Roasting</a>
+                </li>
+                <li class="nav-item2">
+                    <a class="nav-link" href="#finalConcept">Final Concept</a>
+                  </li>
+                  <li class="nav-item2">
+                    <a class="nav-link" href="#limitations">Limitations</a>
+                  </li>
+                  <!-- <li class="nav-item2">
+                    <a class="nav-link" href="#conclusion">Conclusion</a>
+                  </li> -->
+              </ul>
+            </div>
+          </nav>
+          <div class="space"></div>
+
+
+
+
+
+
         <div class="section" id="body">
             <div class="content-container">
                 <p2>
@@ -190,6 +234,7 @@
                     </div>
                 </div>
 
+                <div class="space" id="background"></div>
                 <div>
                     <p-h1>Background</p-h1>
                     <p1>Preparing a meal is a basic activity needed for survival, involving multi-sensorial feedback, primarily relying on sight for many consequential decisions. Research has shown correlations between an individual’s ability to prepare a meal and quality of life [1], with lowered nutritions levels present among Visually Impaired Persons (VIPs) resulting from their lowered ability to shop for and prepare meals independently [2].</p1><br>
@@ -201,6 +246,8 @@
                         
                     The goal of this project was to understand and define the problems plaguing the vision impaired as they prepare a meal, and design an assistive device that enables independence in the kitchen while taking into consideration various aspects of safety, cost, and conformity with everyday objects and tasks</p1><br>
                 </div>
+
+                <div class="space" id="research"></div>
                 <div>
                     <p-h1>Research</p-h1>
                     <img src="assets/projectImages/ARKLid/researchStructure.png" class="blogimage">
@@ -242,6 +289,8 @@
                     <p-quote>How can I make the process of roasting foods in Indian kitchens accessible to Visually Impaired Persons?</p-quote><br>
                     <!--<p1>Boiling and simmering are fairly comparable, with low levels of hesitancy shown by VIPs in performing the activities. Roasting and frying on the other hand have a much greater necessity for potential designs to be explored given the graveness of the activity and the importance of the staples prepared using this method. The activity chosen for further design intervention was roasting due to greater willingness on the part of VIPs to attempt the cooking technique.</p1><br>-->
                 </div>
+
+                <div class="space" id="roasting"></div>
                 <div>
                     <p-h1>Roasting</p-h1>
                     <p1>Roasting is a technique that involves cooking food with dry heat resulting in caramelisation on the surface of the food. When roasting in a pan, generally a small amount of cooking oil is used to prevent the food from sticking to the pan. Foods commonly prepared in this method are rotis, dosas, and processed meats.</p1>
@@ -272,6 +321,7 @@
                     <p1>Mechanical solutions for placing items in the centre of the pan were ideated in the second round. As for heating items on both sides, toasters, hotplate lid cooktops, and folding handles were sketched out.</p1><br>
                 </div>
 
+                <div class="space" id="finalConcept"></div>
                 <div>
                     <p-h1>Final Concept</p-h1>
                     <p1>The ideas taken forward to design the final concept were based on the self defined constraints of maintaining user safety, ensuring ease of use, establishing familiarity to objects used in the kitchen space, and keeping a costs in check.</p1>
@@ -281,7 +331,8 @@
                     <p1>The chosen ideas were the lid with the hotplate for the safenet it provides to users while maintaining familiarity to daily objects. Mechanical solutions for accessing the centre were ditched in favour of the ultrasonic sensors as it allowed for greater autonomy of the user, while being comparatively less cumbersome.</p1><br>
                 </div>
 
-                <div>
+                <div class="space"></div>
+                <div id="prototype">
                     <p-h1>Prototype</p-h1>
                     <img src="assets/projectImages/ARKLid/pocElectronics.png" class="blogimage">
                     <p1>The proof of concept for the hotplate was made with thermoelectric generators acting as the heating element, a sliding potentiometer for controlling the heat, and a vibration DC motor to provide the feedback. For gauging the centre, a lego construction using ultrasonic sensors was prototyped.</p1>
@@ -293,7 +344,9 @@
                     <p1>There were a few details on the lid, such as the placement of the control panel, and the interactions a user would have with it that were yet to be finalised. A few sketches were made and paper prototypes tested in order to decide on the control panel for the lid.</p1><br>
                 </div>
 
-                <div>
+
+                <div class="space"></div>
+                <div id="arkLid">
                     <p-h1>The ARKLid</p-h1>
                     <p1>ARKLid is a lid for Assisted Roasting in Kitchen. It is designed to work with a standard 28cm diameter pan.</p1>
                     <img src="assets/projectImages/ARKLid/ARKLidFinalDesignImages/1.png" class="blogimage">
@@ -310,16 +363,21 @@
                     <img src="assets/projectImages/ARKLid/ARKLidFinalDesignImages/12.png" class="blogimage"><br>
                 </div><br>
 
+                <div class="space" id="limitations"></div>
                 <div>
                     <p-h1>Limitations</p-h1>
                     <p1>Many facets of the design have been left open to interpretation. Formal and material aspects weren’t looked at in great detail. Efficacy of thermoelectric generators and the power source required to run it are still untested. </p1><br>
                     <p1>The biggest caveat of all is this design came about during the beginning of the pandemic, when lockdowns were in place. This lead to the creation of a concept based purely on theoretical hypotheses. Further testing of mock-ups would help determine not only the potency of the design, but also contribute in understanding if the direction to develop a holistic assistive device over smaller, task-specific assistive aids was the right choice.</p1><br>
 
+
+                    <div class="space"></div>
                     <p-h1>What does the future hold?</p-h1>
                     <p1>Limited research in the area of cooking for VIPs, especially in specialised contexts, opens up a multitude of opportunities for designers and researchers. </p1><br>
                     <p1>With regards to ARKLid, more experimentation with formal and material aspects could lend to the creation of an elevated experience. </p1><br>
                     <p1>And lastly, as is true with nearly every accessibility focused design, the use cases for assistive devices do not stop with persons with disabilities. The ARKLid has potential to be used by a myriad of users, ranging from the elderly to those with arm injuries.</p1><br>
 
+                    
+                    <div class="space"></div>
                     <p-h1>Links</p-h1>
                     <div>
                         <a href="assets/projectImages/ARKLid/files/Project_3_Thesis_Avyay_Kashyap.pdf" target="_blank">
@@ -328,15 +386,19 @@
                     </div><br>
                     
                 </div>
+
+                <div class="space"></div>
                 
-                <div>
+                <div id="videoSummary">
                     <p-h1>Video Summary</p-h1>
                     <div class="iframe-container">
                         <iframe class="responsive-iframe" src="https://www.youtube.com/embed/sy5XDbO_VWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div><br>
                 <div>
 
-                <div>
+                
+                <div class="space"></div>
+                <div id="references">
                     <p-h1>References</p-h1>
                     <p1>
                         <ol>
@@ -452,5 +514,22 @@
             </div>
         </div>
 
+
+
+
+
+        <script>
+            var header = document.getElementById("projectNav");
+            var btns = header.getElementsByClassName("nav-link");
+            for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("activeNav");
+            current[0].className = current[0].className.replace(" activeNav", "");
+            this.className += " activeNav";
+            });
+            }
+        </script>
+
     </body>
+
 </html>

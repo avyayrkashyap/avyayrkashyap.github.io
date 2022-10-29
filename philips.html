@@ -31,6 +31,10 @@
         gtag('config', 'G-5H0XW19JC3');
         </script>
 
+         <!--Bootstrap-->
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
     </head>
     <body>
         <div class="section" id="nav">
@@ -168,6 +172,34 @@
         </div>
 
 
+        <div class="space"></div>
+        <nav id="projectNav" class="navbar navbar-expand-sm fixNavbar">
+            <div class="container-fluid alignItems">
+              <ul class="navbar-nav">
+                <li class="nav-item2 ">
+                  <a class="nav-link activeNav" href="#background">Background</a>
+                </li>
+                <li class="nav-item2">
+                  <a class="nav-link" href="#problem">Problem Area</a>
+                </li>
+                <!-- <li class="nav-item2">
+                  <a class="nav-link" href="#explorations">Explorations</a>
+                </li> -->
+                <li class="nav-item2">
+                    <a class="nav-link" href="#finalConcept">Final Concept</a>
+                  </li>
+                  <li class="nav-item2">
+                    <a class="nav-link" href="#conclusion">Conclusion</a>
+                  </li>
+                  <!-- <li class="nav-item2">
+                    <a class="nav-link" href="#conclusion">Conclusion</a>
+                  </li> -->
+              </ul>
+            </div>
+          </nav>
+          <div class="space"></div>
+
+
         <div class="section" id="body">
             <div class="content-container">
                 <p2>
@@ -192,6 +224,8 @@
                     </div>
                 </div>
 
+
+                <div class="space" id="background"></div>
                 <p-h1>Sensing Emotions</p-h1>
                 <p-quote>“Emotions are episodes of interrelated, synchronised changes in the state of the body to internal or external stimuli inducing events relevant to the major concerns of the individual.”</p-quote><br>
 
@@ -205,6 +239,8 @@
 
                 <p1>With this forming the base for our approach to determining the emotion, we explored potential biosensors such as muscle sensors, pulse sensors, galvanic skin temperature sensors, force sensors and affective facial recognition sensor such as Affectiva.</p1><br>
 
+
+                <div class="space" id="problem"></div>
                 <p-h1>The Problem</p-h1>
                 <p1>Possible areas where emotion sensing can intervene were explored. The ideas could be categorised into the following areas:</p1>
                 <img src="assets/projectImages/philips/healthcareAreas.png" class="blogimage">
@@ -231,6 +267,8 @@
                 <p1>These reasons compelled us to go with conduct disorder as an area of intervention for emotion sensing technologies to be used. The problem statement was defined as</p1><br>
                 <p-quote>“How can we aid psychologists in understanding emotions of their patients with Conduct Disorder  through emotion sensing technologies and IoT?</p-quote><br>
 
+
+                <div class="space"></div>
                 <p-h1>Journey Mapping</p-h1>
                 <p1>A journey map of all the activities, touchpoints, emotional valence, pain points and goals were mapped out.</p1>
                 <div class="buttons">
@@ -239,6 +277,8 @@
                     </a>
                 </div><br>
 
+
+                <div class="space" id="finalConcept"></div>
                 <p-h1>Final Concept</p-h1>
                 <p1>The final concept is a three part solution that involves the child, their parents, and the psychologist. Physiological changes of the child are measured through a collar with a heart rate monitor and temperature sensor. We chose to put the sensors in the collar as it is the most discrete place which is privy to a lot of physiological data. This transmits data to a psychologist’s web application. During therapy, an app on the parent’s phone/tablet will replicate triggers the child faced in real life, to gauge the emotional response.</p1>
                 <img src="assets/projectImages/philips/systeminteraction.png" class="blogimage">
@@ -251,6 +291,8 @@
                 <p1>The psychologist’s web application is an analytics tool. It displays information about the child’s emotions during the week corresponding to the time of day. This lets the psychologist know when and potentially what the triggers for the child might have been. The psychologist can also access a video stream of the child playing the game during therapy, potentially taking the therapy to a remote setting if necessary. Based on this information, the psychologist can guide the child and the parent through the therapy sessions and across life.</p1>
                 <img src="assets/projectImages/philips/psychoapp.png" class="blogimage">
 
+
+                <div class="space" id="conclusion"></div>
                 <p-h1>Conclusion</p-h1>
                 <p1>Emotion sensing is an area that is new to me and a lot of time went in understanding how emotions, physiology and sensor data can be correlated. While the use case we chose is a real problem to many, I personally felt a bit disconnected to the problem given the myriad of other use cases that have greater potential for social good such as helping autistic children or with senior citizen care, or even patient monitoring during times of distress.</p1><br>
 
@@ -362,6 +404,20 @@
                 </div>
             </div>
         </div>
+
+
+        <script>
+            var header = document.getElementById("projectNav");
+            var btns = header.getElementsByClassName("nav-link");
+            for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("activeNav");
+            current[0].className = current[0].className.replace(" activeNav", "");
+            this.className += " activeNav";
+            });
+            }
+        </script>
+
 
     </body>
 </html>
