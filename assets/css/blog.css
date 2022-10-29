@@ -171,3 +171,52 @@ button:hover {
         grid-template-columns: auto;
     }
 }
+
+
+/*floating navbar*/
+
+.fixNavbar {
+    position: sticky !important;
+    top: 8px !important;
+    z-index: 1;
+    border-radius: 16px;
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 0 8px rgba(69, 69, 69, 0.1);
+
+}
+
+.alignItems {
+    display: block !important;
+    justify-content: space-between !important;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+}
+
+.nav-item2 {
+    padding: 0px 8px !important;
+    font-size: 12pt;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 400;
+
+
+    width: 100%;
+    display: inline-block;
+    padding: 12px;
+    text-decoration: none;
+    color: #7f7f7f;
+}
+
+
+@media screen and (max-width: 968px) {
+    .fixNavbar {
+        display: none !important;
+    }
+}
+
+
+.activeNav, .nav-link:hover {
+    color: #7FC2EE !important;
+
+  }
