@@ -15,6 +15,7 @@
 .itsame {
     width: 100%;
     border-radius: 12px;
+    margin-right: 24px;
 }
 
 .blogimage {
@@ -42,7 +43,9 @@
     }
 
     .itsame {
-        width: 90%;
+        width: 75%;
         margin: auto;
+        margin-top: 8vh;
+        margin-bottom: 8vh;
     }
 }

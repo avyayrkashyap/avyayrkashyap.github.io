@@ -20,9 +20,10 @@
 
 .aboutmecontent {
     display: grid;
-    grid-template-columns: 30% auto;
+    grid-template-columns: auto 30%;
     justify-content: left;
-    grid-gap: 16px;
+    grid-gap: 24px;
+    margin-bottom: 36px;
 }
 
 .buttons {

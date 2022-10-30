@@ -4,6 +4,11 @@ body {
     font-weight: 400;
 }
 
+.tags {
+    display: block;
+    margin: 4px 0;
+}
+
 p-heading {
     font-family: "Merriweather", Helvetica, sans-serif;
     font-size: 64pt;
@@ -44,9 +49,20 @@ p-subtitle {
     font-size: 12pt;
     text-transform: uppercase;
     padding-bottom: 4px;
-    color: #4a4a4a;
+    color: #212121;
     display: block;
     font-weight: 300;
+}
+
+p-subtitlebg {
+    font-size: 12pt;
+    text-transform: uppercase;
+    padding: 4px 0px;
+    border-radius: 4px;
+    color: #909090;
+    /* background-color: #f6f6f6; */
+    display: inline-block;
+    font-weight: 600;
 }
 
 p-subsubtitle {
