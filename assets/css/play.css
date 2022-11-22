@@ -9,6 +9,14 @@
     grid-column: span 2;
 }
 
+.playimageoncard {
+  max-width: 428px;
+  height: 260px;
+  overflow-y: hidden;
+  border-radius: 12px;
+  
+}
+
 /*Image gallery*/
 .playimagegallery {
     display: grid;

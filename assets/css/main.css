@@ -130,21 +130,76 @@ nav {
 }
 
 .projects {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-gap: 20px;
+    width: 100%;
     justify-content: start;
-    padding: 10vh 0;
-}
-
-.hometitle {
-    padding: 0px 24px 24px 0; 
-    margin: auto;
 }
 
 /*Project Card*/
 .projcard {
-    max-width: 460px;
+    display: grid;
+    grid-template-columns: auto 428px;
+    grid-gap: 36px;
+    justify-content: space-between;
+    margin: 96px 0;
+    /* border: 1px solid #e5e5e5; */
+}
+
+.fullwidth {
+    padding: 0px; 
+    grid-template-columns: auto;
+    margin: 48px 0;
+}
+
+.imageonocard {
+    max-width: 428px;
+}
+
+.imageoncarddimensions {
+    max-width: 428px;
+    border-radius: 8px;
+    transition: 0.3s ease-out;
+}
+
+.imageoncarddimensions:hover {
+    box-shadow: 0 4px #7FC2EE;
+    transition: 0.3s ease-out;
+}
+
+.projimage {
+    float: left;
+    margin-right: 16px;
+}
+
+.projimagespecs {
+    width: 108px;
+    height: 108px;
+    border-radius: 8px;
+}
+
+.topofcard {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 16px;
+    justify-content: start;
+    padding-top: 24px;
+}
+
+.bottomofcard {
+    width: 100%;
+    float: left;
+    display: block;
+    padding-top: 8px;
+}
+
+.space {
+    height: 64px;
+    width: 100%;
+}
+
+
+
+/* .projcard {
     padding-right: 20px;
     float: left;
     padding-bottom: 20px;
@@ -155,10 +210,7 @@ nav {
     grid-column: span 2;    
 }
 
-.space {
-    height: 48px;
-    width: 100%;
-}
+
 
 .imageonocard {
     max-width: 460px;
@@ -203,7 +255,7 @@ nav {
     float: left;
     display: block;
     padding-top: 8px;
-}
+} */
 
 .seemore {
     display: inline-block;
@@ -248,17 +300,17 @@ nav {
     padding-bottom: 24px 0;
 }
 
-#jio {
+.bg-grey {
     padding: 8px 24px 24px 24px;
     background-color: #F6F6F6;
     border-radius: 8px;
     transition: 0.3s ease-out;
 }
 
-#jio:hover {
+/* .bg-grey:hover {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     transition: 0.3s ease-out;
-}
+} */
 
 #uxchange {
     padding: 24px 24px 24px 24px;

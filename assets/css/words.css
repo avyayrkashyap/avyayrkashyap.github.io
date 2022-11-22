@@ -32,9 +32,11 @@ p-subheading{
 
 p-hometitle {
     font-family: "Merriweather", Helvetica, sans-serif;
-    font-size: 28pt;
+    font-size: 32pt;
     font-weight: 900;
     border-bottom: 4px solid #7FC2EE;
+    align-content: center;
+    margin: auto;
 }
 
 p-title {
@@ -116,7 +118,7 @@ p-h2 {
     font-family: "Merriweather", Helvetica, sans-serif;
     font-weight: bold;
     font-size: 16pt;
-    margin: 16px 0 8px 0;
+    margin: 32px 0 16px 0;
     display: block;
     color: #666;
 }
