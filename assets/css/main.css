@@ -144,6 +144,10 @@ nav {
     /* border: 1px solid #e5e5e5; */
 }
 
+.reverse {
+    grid-template-columns: 428px auto;
+}
+
 .fullwidth {
     padding: 0px; 
     grid-template-columns: auto;
