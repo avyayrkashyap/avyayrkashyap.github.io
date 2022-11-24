@@ -487,6 +487,10 @@ nav {
         grid-template-columns: auto;
     }
 
+    .projcard {
+        grid-template-columns: auto;
+    }
+
     .projcardwide {
         grid-column: span 1;    
     }

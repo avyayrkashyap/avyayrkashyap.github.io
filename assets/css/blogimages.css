@@ -30,7 +30,7 @@
 
 .imageincolumns {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 1fr);
     justify-content: left;
     grid-gap: 16px;
     margin: 24px 0;
