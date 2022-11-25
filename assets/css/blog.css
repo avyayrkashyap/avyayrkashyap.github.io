@@ -45,7 +45,7 @@ button {
     display: inline-block;
     padding: 8px 16px;
     border: 1px solid #7FC2EE;
-    border-radius: 4px;
+    border-radius: 48px !important; 
     transition: 0.4s ease-out;
 }
 
@@ -53,7 +53,7 @@ button:hover {
     color: #000;
     background: #fff;
     border: 1px solid #000;
-    border-radius: 2px;
+    border-radius: 48px;
     transition: 0.4s ease-out;
 
     cursor: pointer;

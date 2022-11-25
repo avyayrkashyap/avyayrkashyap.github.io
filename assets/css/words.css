@@ -191,6 +191,21 @@ p-quote {
     border-radius: 4px;
 }
 
+p-psquote {
+    font-family: "Merriweather", Helvetica, sans-serif;
+    display: block;
+    width: 90%;
+    color: #064067;
+    font-size: 24pt;
+    font-weight: 900;
+    font-style: italic;
+    padding: 12px;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+
+}
+
 li {
     padding: 4px 0;
 }
