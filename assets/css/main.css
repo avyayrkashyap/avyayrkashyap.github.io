@@ -169,6 +169,15 @@ nav {
     transition: 0.3s ease-out;
 }
 
+.no-hover:hover {
+    box-shadow: none;
+}
+
+.iframedouble {
+    width: 100%;
+    height: auto;
+}
+
 .projimage {
     float: left;
     margin-right: 16px;
