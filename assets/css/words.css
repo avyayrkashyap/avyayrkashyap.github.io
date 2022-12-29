@@ -218,6 +218,10 @@ p-textImage {
     background-color: #f6f6f6;
 }
 
+ul {
+    padding: 0 0 0 16px;
+}
+
 li {
     padding: 4px 0;
 }
