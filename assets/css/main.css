@@ -209,6 +209,8 @@ nav {
 .space {
     height: 64px;
     width: 100%;
+    text-align: center;
+    font-size: 24pt;
 }
 
 
