@@ -104,6 +104,19 @@
                 </ul>
                 </div>
             </nav>
+
+            <script>
+                var header = document.getElementById("projectNav");
+                var btns = header.getElementsByClassName("nav-link");
+                for (var i = 0; i < btns.length; i++) {
+                btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("activeNav");
+                current[0].className = current[0].className.replace(" activeNav", "");
+                this.className += " activeNav";
+                });
+                }
+            </script>
+            
         </div>
 
         <div class="container">
@@ -587,7 +600,7 @@
 
         </div>
 
-        <div class="black">
+        <div class="grey">
             <div class="container">
                 <div class="grid-footer">
                     <div id="education">
@@ -624,7 +637,7 @@
                             <br>
             
                             IDC School of Design, IIT Bombay<br />
-                            Teaching Assistant at <a href="http://homepages.iitb.ac.in/~vivek.kant/" class="white">HFSS Studio</a><br />
+                            Teaching Assistant at <a href="http://homepages.iitb.ac.in/~vivek.kant/" class="black">HFSS Studio</a><br />
                             August 2019 - July 2020<br />
                             Mumbai<br />
                             <br>
@@ -694,28 +707,6 @@
                 <img src="assets/websiteImages2/home.png" class="home-icon">
             </a>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-        <script>
-            var header = document.getElementById("projectNav");
-            var btns = header.getElementsByClassName("nav-link");
-            for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function() {
-            var current = document.getElementsByClassName("activeNav");
-            current[0].className = current[0].className.replace(" activeNav", "");
-            this.className += " activeNav";
-            });
-            }
-        </script>
 
     </body>
 
