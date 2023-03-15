@@ -163,8 +163,7 @@ body {
     grid-gap: 16px;
     justify-content: initial;
     padding: 36px 0;
-    color: #fff;
-    border-bottom: 2px solid #fff;
+    color: #000;
 }
 
 
@@ -545,6 +544,10 @@ nav {
       .inline-tags {
         display: none;
       }
+
+      .grid-footer {
+        grid-template-columns: 1fr;
+    }
 }
 
 
