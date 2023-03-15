@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Avyay's Portfolio</title>
 
+        
+        <!--Favicons-->
         <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
@@ -14,13 +16,10 @@
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
 
-        <link href="assets/css/main.css" rel="stylesheet">
-        <link href="assets/css/words.css" rel="stylesheet">
-        <link href="assets/css/blog.css" rel="stylesheet">
+        <!--Stylesheets-->
+        <link href="assets/css/style.css" rel="stylesheet">
         <link href="assets/JavaScript/show-on-scroll.js" rel="JavaScript">
         <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
@@ -41,572 +40,684 @@
             })(window, document, "clarity", "script", "erbt9g6tlf");
         </script>
 
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
     </head>
+
+
     <body>
-        <div class="section" id="nav">
-            <nav>
-                <div class="navbar">
-                    <a href="index.html">
+        <div class="intro container" id="intro">
+            <div>
+                <img src="assets/websiteImages2/memoji.png" class="center home-photo">
+                <p-title>Designing for action, delighting with details.</p-title>
+                <p-subtitle>I’m Avyay, a humanist researcher and detail oriented designer, working at the intersection of engagement & behaviour change. My background in design enables me to leverage a variety of methods and theories to develop innovative & novel solutions that drive lasting change.</p-subtitle>
+                <p-subtitle>I am currently a student at <a href="https://hcid.luddy.indiana.edu" class="text-button">Indiana University Bloomington</a> pursuing an MS in Human Computer Interaction Design.</p-subtitle>
+            </div>
 
-                        <!-- <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json"  background="transparent" style="height: 56px; align-items: flex-start;" speed="0.8" autoplay></lottie-player> -->
+            <div class="space"></div>
 
-                        
+            <div class="in-line-buttons center">
+                <a href="https://twitter.com/avyayrkashyap" class="icon-button">
+                    <img src="assets/websiteImages2/twitter.png" class="center home-icon">
+                </a>
+                <a href="https://medium.com/@avyay" class="icon-button">
+                    <img src="assets/websiteImages2/medium.png" class="center home-icon">
+                </a>
+                <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" class="icon-button">
+                    <img src="assets/websiteImages2/linkedin.png" class="center home-icon">
+                </a>
+                <a href="https://www.instagram.com/avyayyy/" class="icon-button">
+                    <img src="assets/websiteImages2/insta.png" class="center home-icon">
+                </a>
+                <a href="mailto: avykashy@iu.edu?subject=Lorem ipsum dolor, can we talk about this, Avyay?" class="icon-button">
+                    <img src="assets/websiteImages2/mail.png" class="center home-icon">
+                </a>
+            </div>
+        </div>
 
-                        
-                        <!-- <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span> -->
-                        
-                        <picture>
-                            <!-- <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo"> -->
-                            <img src="assets/websiteImages/logo.png" class="logo">
-                        </picture>
-                    </a>
+        <div class="space"></div>
 
-                    <ul class="nav-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" id="active" href="index.html">Work</a>
+        <div class="navContainer container">
+            <nav id="projectNav" class="navbar navbar-expand-sm fixNavbar">
+                <div class="container-fluid alignItems">
+                <ul class="navbar-nav">
+                    <li class="nav-item ">
+                    <a class="nav-link" href="#recentWork">Recent Work</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#blogs">More Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#fun">Data Play</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="clickable" href="play.html">Play</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="clickable" href="aboutme.html">About me</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
-                        </li>
-                    </ul>
-
-                    <hamburger class="hamburger">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </hamburger>
-
-                    <script>
-                        const hamburger = document.querySelector(".hamburger");
-                        const navMenu = document.querySelector(".nav-menu");
-
-                        hamburger.addEventListener("click", mobileMenu);
-
-                        function mobileMenu() {
-                            hamburger.classList.toggle("active");
-                            navMenu.classList.toggle("active");
-                        }
-
-                        const navLink = document.querySelectorAll(".nav-link");
-
-                        navLink.forEach(n => n.addEventListener("click", closeMenu));
-
-                        function closeMenu() {
-                            hamburger.classList.remove("active");
-                            navMenu.classList.remove("active");
-                        }
-                    </script>
-
-                </div> 
+                    <!-- <li class="nav-item2">
+                        <a class="nav-link" href="#conclusion">Conclusion</a>
+                    </li> -->
+                </ul>
+                </div>
             </nav>
         </div>
 
-        <div class="section" id="intro">
-            <div class="content-container">
-                <div class="intro">
-                    <div class="aboutmecontent">
-                        <p-heading class="tooltip">
-                            Hello there! I'm Avyay
-                            <span class="tooltiptext">General Kenobi</span>
-                        </p-heading>
-                        <img src="assets/css/axrkmemoji.png" style="width: 80%;">
+        <div class="container">
+            <div class="space" id="recentWork"></div>
+            <p-h1 id="recentWork">Recent Work</p-h1>
+            <div class="project-list">
+                <div class="projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2>Reliance Jio</p-h2>
+                            <p1>My work at Jio included revamping the employee service portal and creating fun and engaging experiences on the JioMart e-commerce app.</p1>
+                            <div class="inline-tags">
+                                <p-tags>Research</p-tags>
+                                <p-tags>Design</p-tags>
+                                <p-tags>Collaboration</p-tags>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <a href="jio.html">
+                                <div class="primary-button">View project</div>
+                            </a>
+                        </div>
                     </div>
-                    <p-subheading>
-                        I focus on the small details and generate big impact. As an HCI researcher and designer, my work primarily lies at the intersection of humans, technology, health and engagement.<br /><br>
-                    </p-subheading>
-                    <p-subheading>I am currently pursuing my Masters in Human Computer Interaction Design at <a href="https://hcid.luddy.indiana.edu" id="clickable" target="_blank">Indiana University Bloomington</a>.</p-subheading><br /><br>
 
-                    <div>
-                        <a href="mailto: avykashy@iu.edu?subject=Lorem ipsum dolor reply to me, Avyay!" target="_blank">
-                            <button style="color: #121212;">Send me a mail</button>
+                    <!-- <div class="rightSide">
+                        <a href="arklid.html">
+                            <img src="assets/projectImages/ARKLid/ARKLidSexyLook.png" class="home-fill">
+                        </a>
+                    </div> -->
+                </div>
+
+                <div class="projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2>ARKLid</p-h2>
+                            <p1>ARKLid is an assistive device that enables the visually impaired prepare meals that involve roasting. A design was conceptualised and prototyped.</p1>
+                            <div class="inline-tags">
+                                <p-tags>Research</p-tags>
+                                <p-tags>Design</p-tags>
+                                <p-tags>Prototyping</p-tags>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <a href="arklid.html">
+                                <div class="primary-button">View project</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="rightSide">
+                        <a href="arklid.html">
+                            <img src="assets/projectImages/ARKLid/ARKLidSexyLook.png" class="home-fill">
                         </a>
                     </div>
-                    
                 </div>
-            </div>
-        </div>
 
-            <!--Projects-->
-            <!--
-            <div class="navgroup">
-                <a class="nav-item" id="active" href="index.html">Work</a>
-                <a class="nav-item" href="">Play</a>
-                <a class="nav-item" id="aboutme" href="aboutme.html">About Me</a>
-                <a class="nav-item" href="assets/files/AvyayResume.pdf">Resumé</a>
-            </div>
-            -->
-        <div class="section" id="projects">
-            <div class="content-container">
-
-                <div class="projects">
-                    <!-- <div class="projcard fullwidth">
-                        <p-hometitle>Projects</p-hometitle>
-                    </div> -->
-
-                    <div class="projcard bg-grey fullwidth">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <a href="jio.html">
-                                    <div class="projimage">
-                                        <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
-                                    </div>
-                                </a>
-                                <div class="titleinfo">
-                                    <p-title>
-                                        Jio Platforms Limited
-                                    </p-title>
-                                    <p-subtitle>
-                                        UX Designer
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        August 2020 - July 2022
-                                    </p-subtitle>
-                                </div>
-                            </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    My work at Jio included revamping the employee service portal and creating fun and engaging experiences on the JioMart e-commerce app.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Design • Collaboration
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="jio.html">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            Read more
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
-                                </a>
+                <div class="projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2>POAKme</p-h2>
+                            <p1>POAKme is a solution that enables individuals with Osteoarthritis of the Knee access care and rehabilitation from their homes.</p1>
+                            <div class="inline-tags">
+                                <p-tags>Research</p-tags>
+                                <p-tags>Design</p-tags>
+                                <p-tags>Prototyping</p-tags>
+                                <p-tags>Testing</p-tags>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="projcard" id="arklid">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <!--<div class="projimage">
-                                    <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
-                                </div>-->
-                                <div class="titleinfo">
-                                    <p-title>
-                                        ARKLid
-                                    </p-title>
-                                    <p-subtitle>
-                                        Graduation Thesis Project
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        January - June 2020
-                                    </p-subtitle>
-                                </div>
-                            </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    ARKLid is an assistive device that enables the visually impaired prepare meals that involve roasting. A design was conceptualised and prototyped. 
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Design • Prototyping
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="arklid.html">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            View Project
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="imageoncard">
-                            <a href="arklid.html">
-                                <img src="assets/projectImages/ARKLid/ARKLidSexyLook.png" class="imageoncarddimensions">
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="projcard" id="poakme">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <!--<div class="projimage">
-                                    <img src="assets/homepageProjectImages/poakme.png" class="projimagespecs">
-                                </div>-->
-                                <div class="titleinfo">
-                                    <p-title>
-                                        POAK<span style="font-weight: lighter;">me</span>
-                                    </p-title>
-                                    <p-subtitle>
-                                        Graduation Thesis Project
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        July - November 2019
-                                    </p-subtitle>
-                                </div>
-                            </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    POAKme is a solution that enables individuals with Osteoarthritis of the Knee access care and rehabilitation from their homes.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Design • Prototyping • Testing
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="poakme.html">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            View project
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="imageoncard">
+                        <div class="bottom">
                             <a href="poakme.html">
-                                <img src="assets/projectImages/poakme/coverimage.png" class="imageoncarddimensions">
+                                <div class="primary-button">View project</div>
                             </a>
                         </div>
                     </div>
 
-                    <div class="projcard" id="gestures">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <!--<div class="projimage">
-                                    <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
-                                </div>-->
-                                <div class="titleinfo">
-                                    <p-title>
-                                        Gestural Interactions
-                                    </p-title>
-                                    <p-subtitle>
-                                        Bachelor Thesis Project
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        February - June 2019
-                                    </p-subtitle>
-                                </div>
-                            </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    An exploratory project on understanding gestures as an interactive modality and their potential application in real world scenarios .
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Design • Prototyping
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="gestures.html">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            View project
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="imageoncard">
-                            <a href="gestures.html">
-                                <img src="assets/projectImages/gestures/homepageImage.png" class="imageoncarddimensions">
-                            </a>
-                        </div>
+                    <div class="rightSide">
+                        <a href="poakme.html">
+                            <img src="assets/projectImages/poakme/homepagecover.png" class="home-fill">
+                        </a>
                     </div>
+                </div>
 
-                    <!--Publication-->
-
-                    <div class="projcard fullwidth space"></div>
-                    <div class="projcard fullwidth">
-                        <p-hometitle>Publication</p-hometitle>
-                    </div>
-
-                    <div class="projcard" id="assets2020" style="margin-top: 48px;">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <!--<div class="projimage">
-                                    <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
-                                </div>-->
-                                <div class="titleinfo">
-                                    <p-title>
-                                        ASSETS 2020 SRC
-                                    </p-title>
-                                    <p-subtitle>
-                                        Publication
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        October 2020
-                                    </p-subtitle>
-                                </div>
-                            </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    Published my work at The 22nd International ACM SIGACCESS Conference on Computers and Accessibility in the Student Research Competition.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="assets2020src.html">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            View Project
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
-                                </a>
+                <div class="projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2>ASSETS 2020 Student Research Competition</p-h2>
+                            <p1>Published my work at The 22nd International ACM SIGACCESS Conference on Computers and Accessibility in the Student Research Competition.</p1>
+                            <div class="inline-tags">
+                                <p-tags>Research</p-tags>
+                                <p-tags>Publication</p-tags>
+                                <!-- <p-tags>Collaboration</p-tags> -->
                             </div>
                         </div>
-                        <div class="imageoncard">
+                        <div class="bottom">
                             <a href="assets2020src.html">
-                                <img src="assets/projectImages/assets2020/homepageImage.png" class="imageoncarddimensions">
+                                <div class="primary-button">Read more</div>
                             </a>
                         </div>
                     </div>
 
-                    <!--Other projects-->
+                    <div class="rightSide">
+                        <a href="assets2020src.html">
+                            <img src="assets/projectImages/assets2020/homepageImage.png" class="home-fill">
+                        </a>
+                    </div>
+                </div>
 
-                    <div class="projcard fullwidth space"></div>
-                    <div class="projcard fullwidth">
-                        <p-hometitle>Coursework & other projects</p-hometitle>
+                <!-- <div class="projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2>Gestural Interactions</p-h2>
+                            <p1>An exploratory project on understanding gestures as an interactive modality and their potential application in real world scenarios .</p1>
+                            <div class="inline-tags">
+                                <p-tags>Research</p-tags>
+                                <p-tags>Design</p-tags>
+                                <p-tags>Prototyping</p-tags>
+                                <p-tags>Collaboration</p-tags>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <a href="gestures.html">
+                                <div class="primary-button">Read more</div>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="projcard bg-grey fullwidth" style="padding-top: 8px;">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <!-- <a href="jio.html">
-                                    <div class="projimage">
-                                        <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
-                                    </div>
-                                </a> -->
-                                <div class="titleinfo">
-                                    <p-title>
-                                        Do you want to make a small UX change?
-                                    </p-title>
-                                    <!-- <p-subtitle>
-                                        UX Designer
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        August 2020 - July 2022
-                                    </p-subtitle> -->
-                                </div>
+                    <div class="rightSide">
+                        <a href="gestures.html">
+                            <img src="assets/projectImages/gestures/homepageImage.png" class="home-fill">
+                        </a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+
+        <!-- Blogs -->
+        <div>
+            <div class="space" id="blogs"></div>
+            <p-h1 id="recentWork">Read some more...</p-h1>
+            <div class="container">
+                <div class="projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2>Gestural Interactions</p-h2>
+                            <p1>An exploratory project on understanding gestures as an interactive modality and their potential application in real world scenarios .</p1>
+                            <div class="inline-tags">
+                                <p-tags>Research</p-tags>
+                                <p-tags>Design</p-tags>
+                                <!-- <p-tags>Prototyping</p-tags>
+                                <p-tags>Collaboration</p-tags> -->
                             </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    Some small changes that I think can make a big (or small, who am I to say?) difference to the experience of an application.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Design
-                                    </p-subtitlebg>
-                                </div>
+                        </div>
+                        <div class="bottom">
+                            <a href="gestures.html">
+                                <div class="primary-button">Read more</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="rightSide">
+                        <a href="gestures.html">
+                            <img src="assets/projectImages/gestures/homepageImage.png" class="home-fill">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="horizontalMobileScroll grey">
+                <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
                                 <a href="uxchange.html">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            Read more
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
+                                    <img src="assets/projectImages/uxchange/Artboard Copy 103.png" class="horizontalImage">
+                                </a>
+                                <p-h2>UX Changes</p-h2>
+                                <p1>Some small changes that I think can make a big (or small, who am I to say?) difference to the experience of an application.</p1>
+                                <div class="inline-tags">
+                                    <!-- <p-tags>Research</p-tags> -->
+                                    <p-tags>Design</p-tags>
+                                    <!-- <p-tags>Collaboration</p-tags> -->
+                                </div>
+                            </div>
+                            <div class="bottom">
+                                <a href="uxchange.html">
+                                    <div class="primary-button">Read more</div>
                                 </a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="projcard fullwidth" id="physioDot">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <div class="projimage">
-                                    <img src="assets/homepageProjectImages/physioDot.png" class="projimagespecs">
-                                </div>
-                                <div class="titleinfo">
-                                    <p-title>
-                                        PhysioDot
-                                    </p-title>
-                                    <p-subtitle>
-                                        Course Project
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        Exchange Semester | HfG Schwä­bisch Gmünd
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        September 2018 - February 2019
-                                    </p-subtitle>
+                <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
+                                <a href="https://avyay.medium.com/the-case-for-remote-physiotherapy-physiodot-b8ff79bab212">
+                                    <img src="assets/projectImages/more/physiodot.png" class="horizontalImage">
+                                </a>
+                                <p-h2>PhysioDot</p-h2>
+                                <p1>PhysioDot is an application that allows patients to perform their physiotherapy exercises from the comfort of their homes.</p1>
+                                <div class="inline-tags">
+                                    <p-tags>Research</p-tags>
+                                    <p-tags>Design</p-tags>
+                                    <!-- <p-tags>Collaboration</p-tags> -->
                                 </div>
                             </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    PhysioDot is an application that allows patients to perform their physiotherapy exercises from the comfort of their homes.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Design • Prototyping
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="https://avyay.medium.com/the-case-for-remote-physiotherapy-physiodot-b8ff79bab212" target="_blank">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            Read on Medium
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
+                            <div class="bottom">
+                                <a href="https://avyay.medium.com/the-case-for-remote-physiotherapy-physiodot-b8ff79bab212">
+                                    <div class="primary-button">Medium ➡️</div>
                                 </a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="projcard fullwidth" id="philips">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <div class="projimage">
-                                    <img src="assets/homepageProjectImages/philips.png" class="projimagespecs">
-                                </div>
-                                <div class="titleinfo">
-                                    <p-title>
-                                        Emotion Sensing in Healthcare
-                                    </p-title>
-                                    <p-subtitle>
-                                        UX Design Internship
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        May - July 2018
-                                    </p-subtitle>
-                                </div>
-                            </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    Worked on a concept project to detect early signs of Conduct Disorder in children through emotion sensing technologies and IoT.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Design
-                                    </p-subtitlebg>
-                                </div>
+                <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
                                 <a href="philips.html">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            View project
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
+                                    <img src="assets/projectImages/more/philiips.png" class="horizontalImage">
+                                </a>
+                                <p-h2>Emotion Sensing</p-h2>
+                                <p1>Worked on a concept project to detect early signs of Conduct Disorder in children through affective computing and IoT.</p1>
+                                <div class="inline-tags">
+                                    <p-tags>Research</p-tags>
+                                    <p-tags>Design</p-tags>
+                                    <p-tags>Internship</p-tags>
+                                </div>
+                            </div>
+                            <div class="bottom">
+                                <a href="philips.html">
+                                    <div class="primary-button">Read more</div>
                                 </a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="projcard fullwidth" id="gr2dc">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <div class="projimage">
-                                    <img src="assets/homepageProjectImages/gr2dc.png" class="projimagespecs">
-                                </div>
-                                <div class="titleinfo">
-                                    <p-title>
-                                        Getting Rid of 2D Chaos
-                                    </p-title>
-                                    <p-subtitle>
-                                        Course Project
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        September 2017
-                                    </p-subtitle>
+                <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
+                                <a href="https://avyay.medium.com/getting-rid-of-2d-chaos-tackling-the-traffic-congestion-in-mumbai-dd3c76de449f">
+                                    <img src="assets/projectImages/more/gr2dc.png" class="horizontalImage">
+                                </a>
+                                <p-h2>GR2DC</p-h2>
+                                <p1>GR2DC is an application that enables individual drivers to improve their on-road driving through real-time and post journey feedback.</p1>
+                                <div class="inline-tags">
+                                    <p-tags>Research</p-tags>
+                                    <p-tags>Design</p-tags>
+                                    <p-tags>Testing</p-tags>
+                                    <!-- <p-tags>Collaboration</p-tags> -->
                                 </div>
                             </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    GR2DC is an application that enables individual drivers to improve their on-road driving through real-time and post journey feedback.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Design • Testing
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="https://avyay.medium.com/getting-rid-of-2d-chaos-tackling-the-traffic-congestion-in-mumbai-dd3c76de449f" target="_blank">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            Read on Medium
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
+                            <div class="bottom">
+                                <a href="https://avyay.medium.com/getting-rid-of-2d-chaos-tackling-the-traffic-congestion-in-mumbai-dd3c76de449f">
+                                    <div class="primary-button">Medium ➡️</div>
                                 </a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="projcard fullwidth" id="physicalmicrointeractions" target="_blank">
-                        <div class="projcardcontent">
-                            <div class="topofcard">
-                                <div class="projimage">
-                                    <img src="assets/homepageProjectImages/physicalmicrointeractions.png" class="projimagespecs">
-                                </div>
-                                <div class="titleinfo">
-                                    <p-title>
-                                        Physical Microinteractions
-                                    </p-title>
-                                    <p-subtitle>
-                                        Course Project
-                                    </p-subtitle>
-                                    <p-subsubtitle>
-                                        November 2017
-                                    </p-subtitle>
+                <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
+                                <a href="https://medium.com/@avyay">
+                                    <img src="assets/projectImages/more/medium.png" class="horizontalImage">
+                                </a>
+                                <p-h2>Medium</p-h2>
+                                <p1>I'm both highly cogent and incomprehensibly incoherent. Depends on your next click.</p1>
+                                <div class="inline-tags">
+                                    <p-tags>Writings</p-tags>
+                                    <!-- <p-tags>Design</p-tags>
+                                    <p-tags>Testing</p-tags> -->
+                                    <!-- <p-tags>Collaboration</p-tags> -->
                                 </div>
                             </div>
-                            <div class="bottomofcard">
-                                <p-about>
-                                    Studied microinteractions in the physical world and created a framework and to aid in their classification along with an interface to help imagine these new interactions.
-                                </p-about>
-                                <div class="tags">
-                                    <p-subtitlebg>
-                                        Research • Process Design • Blog
-                                    </p-subtitlebg>
-                                </div>
-                                <a href="https://medium.com/physical-microinteractions/classification-of-physical-microinteractions-a-collaborative-design-project-c58b261ad1f" target="_blank">
-                                    <div class="seemore">
-                                        <p-seemore>
-                                            Read on Medium
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
-                                </a>
-                                <a href="https://www.behance.net/gallery/60925511/Physical-Microinteractions-a-taxonomy" target="_blank">
-                                    <div class="seemore" style="float: right;">
-                                        <p-seemore>
-                                            View on Behance
-                                        </p-seemore>
-                                        <img src="assets/websiteImages/rightarrow.png" class="viewmorearrow"> 
-                                    </div>
+                            <div class="bottom">
+                                <a href="https://medium.com/@avyay">
+                                    <div class="primary-button">Read on Medium ➡️</div>
                                 </a>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="projcard fullwidth space"></div>
+                <!-- <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
+                                <img src="assets/projectImages/gestures/homepageImage.png" class="horizontalImage">
+                                <p-h2>Physical Microinteractions</p-h2>
+                                <p1>Studied microinteractions in the physical world and created a framework and to aid in their classification along with an interface to help imagine these new interactions.</p1>
+                                <div class="inline-tags">
+                                    <p-tags>Research</p-tags>
+                                    <p-tags>Design Framework</p-tags>
+                                    <p-tags>Collaboration</p-tags>
+                                </div>
+                            </div>
+                            <div class="bottom">
+                                <a href="gestures.html">
+                                    <div class="primary-button">Read more</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
 
+            </div>
+        </div>
+
+
+        <!-- Fun -->
+        <div>
+            <div class="space" id="fun"></div>
+            <p-h1 id="recentWork">Dwell in <span style="background-color: #000; color: #fff; padding: 0 8px; border-radius: 4px;">data</span></p-h1>
+            <div class="container">
+                <div class="projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2>Accidents in Mumbai 2014 ― '18</p-h2>
+                            <p1>This website brings to light the many deaths and injuries that result from the accidents that are so commonplace in India. There is a general lack of awareness about deaths, injuries and livelihoods lost resulting from accidents that are not traffic or railways related.</p1>
+                            <!-- <div class="inline-tags">
+                                <p-tags>Research</p-tags>
+                                <p-tags>Visualisation</p-tags>
+                                <p-tags>Prototyping</p-tags>
+                                <p-tags>Collaboration</p-tags>
+                            </div> -->
+                        </div>
+                        <div class="bottom">
+                            <a href="https://homepages.iitb.ac.in/~vivek.kant/indian-disasters/mumbai/">
+                                <div class="primary-button">Read more</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="rightSide">
+                        <a href="https://homepages.iitb.ac.in/~vivek.kant/indian-disasters/mumbai/">
+                            <img src="assets/projectImages/play/mumbaidisasters.png" class="home-fill">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="horizontalMobileScroll grey two">
+                <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
+                                <a href="https://avyayrk.com/GeoViz/">
+                                    <img src="assets/projectImages/more/geoeviz.png" class="horizontalImage">
+                                </a>
+                                <p-h2>The Great Sichuan Earthquake</p-h2>
+                                <p1>A geo-visualisation data story of the Sichuan earthquake of 2008 and how it came to be.</p1>
+                                <!-- <div class="inline-tags">
+                                    <p-tags>Research</p-tags>
+                                    <p-tags>Design</p-tags>
+                                    <p-tags>Collaboration</p-tags>
+                                </div> -->
+                            </div>
+                            <div class="bottom">
+                                <a href="https://avyayrk.com/GeoViz/">
+                                    <div class="primary-button">Read more</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
+                                <a href="f1ar.html">
+                                    <img src="assets/projectImages/more/f1ar.png" class="horizontalImage">
+                                </a>
+                                <p-h2>F1 2018 Driver's championship battle</p-h2>
+                                <p1>An attempt at visualising the F1 2018 championship fight between Vettel and Hamilton in AR.</p1>
+                                <!-- <div class="inline-tags">
+                                    <p-tags>Research</p-tags>
+                                    <p-tags>Design</p-tags>
+                                    <p-tags>Collaboration</p-tags>
+                                </div> -->
+                            </div>
+                            <div class="bottom">
+                                <a href="f1ar.html">
+                                    <div class="primary-button">Read more</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="horizontalMobileScroll__cell">
+                    <div class="projectCardSmall">
+                        <div class="leftSide" style="padding: 32px 36px 32px 36px;">
+                            <div class="top">
+                                <img src="assets/projectImages/more/gr2dc.png" class="horizontalImage">
+                                <p-h2>GR2DC</p-h2>
+                                <p1>GR2DC is an application that enables individual drivers to improve their on-road driving through real-time and post journey feedback.</p1>
+                                <div class="inline-tags">
+                                    <p-tags>Research</p-tags>
+                                    <p-tags>Design</p-tags>
+                                    <p-tags>Testing</p-tags>
+                                    <p-tags>Collaboration</p-tags>
+                                </div>
+                            </div>
+                            <div class="bottom">
+                                <a href="https://avyay.medium.com/getting-rid-of-2d-chaos-tackling-the-traffic-congestion-in-mumbai-dd3c76de449f">
+                                    <div class="primary-button">Read on Medium ➡️</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+
+            <!-- slideshow -->
+
+        </div>
+
+        <div>
+            <div class="space" id="about"></div>
+            <p-h1 id="recentWork">Welcome to my <span style="color: white; background-color: #000; padding: 0 8px; border-radius: 4px;">world</span></p-h1>
+            <div class="black" style="padding: 24px 0;">
+                <div class="container projectCard">
+                    <div class="leftSide">
+                        <div class="top">
+                            <p-h2 style="color: #fff;">Hi, I'm Avyay.</p-h2>
+                            <p1 style="color: #fff; margin: 8px 0;">But you can call me Avy :)</p1>
+                            <p1 style="color: #fff; margin: 8px 0;">I’m a Masters student at IUB, with 2 years of of experience as a UX Designer at Reliance Jio and a couple of degrees from IIT Bombay.</p1>
+                            <p1 style="color: #fff; margin: 8px 0;">Doodling Ferraris on my high school tables sparked a passion for designing meaningful and engaging experiences with emergent technologies. Through my research in human-computer interaction, I have gained valuable insights into designing solutions that benefit marginalized communities. My interests include building for health-tech, operationalising user delight & designing for engagement. As a designer, I find solace in paying attention to the smallest details and crafting meaningful microinteractions. I am constantly driven to learn more about the intersection between human behavior and technology, as I believe this understanding is crucial in creating effective and impactful designs.</p1>
+                        </div>
+                    </div>
+                    <div class="rightSide" style="border-radius: 0px;">
+                        <img src="assets/websiteImages2/avyay.png" class="home-fill">
+                    </div>
+                </div>
+            </div>
+
+            <div class="container pad36">
+                <p-hcentre>Things I do outside of design</p-hcentre>
+                <div class="in-line-buttons center">
+                    <img src="assets/websiteImages2/about/run.png" class="home-about">
+                    <img src="assets/websiteImages2/about/drone.png" class="home-about">
+                    <img src="assets/websiteImages2/about/hike.png" class="home-about">
+                    <img src="assets/websiteImages2/about/arduino.png" class="home-about">
+                    <img src="assets/websiteImages2/about/coffee.png" class="home-about">
+                </div>
+            </div>
+
+            <div class="grey pad36">
+                <div class="container">
+                    <p-hcentre>Things that cause me grief</p-hcentre>
+                    <div class="in-line-buttons center">
+                        <img src="assets/websiteImages2/about/sf.png" class="home-about">
+                        <img src="assets/websiteImages2/about/manutd.png" class="home-about">
+                        <img src="assets/websiteImages2/about/rcb.png" class="home-about">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pad36">
+                <div class="container">
+                    <p-hcentre>Things I read to escape from the grief</p-hcentre>
+                    <div class="in-line-buttons center">
+                        <img src="assets/websiteImages2/about/donnorman.png" class="home-about">
+                        <img src="assets/websiteImages2/about/microinteractions.png" class="home-about">
+                        <img src="assets/websiteImages2/about/action.png" class="home-about">
+                        <img src="assets/websiteImages2/about/designway.png" class="home-about">
+                    </div>
+                </div>
+            </div>
+
+            <!-- slideshow -->
+
+        </div>
+
+        <div class="black">
+            <div class="container">
+                <div class="grid-footer">
+                    <div id="education">
+                        <p-h3>Education</p-h3>
+                        <p3>
+                                Indiana University Bloomington<br />
+                            2022 - present <br />
+                            Master of Science<br />
+                            Human Computer Interaction Design<br /><br>
+                        </p3>
+                        <p3>
+                                IDC School of Design, IIT Bombay<br />
+                            2015-2020 <br />
+                            Dual Degree in Interaction Design<br />
+                            Cumulative Performance Index: 8.48/10<br /><br>
+                        </p3>
+
+                        <p3>
+                            Hochschule für Gestaltung Schwäbisch Gmünd<br />
+                            Semester Exchange<br />
+                            August 2018 - February 2019<br />
+                            Schwäbisch Gmünd, Germany<br />
+                            <br>
+                        </p3>
+                    </div>
+            
+                    <div id="experience">
+                        <p-h3>Experience</p-h3>
+                        <p3>
+                            Jio Platforms Limited<br />
+                            UX Design Manager<br />
+                            August 2020 - present<br />
+                            Navi Mumbai<br />
+                            <br>
+            
+                            IDC School of Design, IIT Bombay<br />
+                            Teaching Assistant at <a href="http://homepages.iitb.ac.in/~vivek.kant/" class="white">HFSS Studio</a><br />
+                            August 2019 - July 2020<br />
+                            Mumbai<br />
+                            <br>
+            
+                            Philips Innovation Campus<br />
+                            UX Design Intern<br />
+                            May 2018 - July 2018<br />
+                            Bengaluru<br />
+                            <br>
+                        </p3>
+                    </div>
+            
+                    <div id="skills">
+                        <p-h3>Skills</p-h3>
+                        <p3>
+                            User Research<br />
+                            Journey Mapping<br />
+                            Interactive Prototyping<br />
+                            Physical Prototyping<br />
+                            Heuristic Evaluation<br />
+                            User Testing<br />
+                            <br>
+            
+                            Adobe CC Suite (Ps, Ai, XD, Ae)<br />
+                            Sketch, Figma, Principle, ProtoPie, Maze<br />
+                            Basic Arduino Programming<br />
+                            Unity3D<br />
+                            Blender<br />
+                            Final Cut Pro<br />
+                            <br>
+                        </p3>
+                    </div>
+            
+                    <div id="extracurricular">
+                        <p-h3>Extracurriculars</p-h3>
+                        <p-h4>Volunteering</p-h4>
+                        <p3>
+                            INTERACT 2017<br />
+                            IndiaHCI 2016<br />
+                            TypoDay 2019<br />
+                            Cumulus 2015<br />
+                            <br>
+                            English Teacher, Samarthanam Trust, 2016<br />
+                            Graphic Designer, MAYA Organic, 2017<br />
+                            <br>
+                        </p3>
+            
+                        <p-h4>Positions of Responsibility</p-h4>
+                        <p3>
+                            ISMP Mentor, 2017-18<br />
+                            Internship Coordinator, 2017-18<br>
+                            Class Representative, 2015-17<br />
+                        </p3>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="section" id="footer">
-            <div class="content-container">
-                <div class="footer">
-                    <p-footer>
-                        Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
-                    </p-footer>
-                    <div class="mobileview">
-                        <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
-                    </div>
-                </div>
+        <div class="black pad36">
+            <div class="container">
+                <p-subtitle class="white">Built with ❤️ & 🥲 from Bloomington, IN | © Avyay Ravi Kashyap | 2023</p-subtitle>
             </div>
         </div>
-        
+
+        <div class="fixed-button">
+            <a href="#intro">
+                <img src="assets/websiteImages2/home.png" class="home-icon">
+            </a>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <script>
+            var header = document.getElementById("projectNav");
+            var btns = header.getElementsByClassName("nav-link");
+            for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("activeNav");
+            current[0].className = current[0].className.replace(" activeNav", "");
+            this.className += " activeNav";
+            });
+            }
+        </script>
+
     </body>
+
+
 </html>
