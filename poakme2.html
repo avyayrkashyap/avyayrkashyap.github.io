@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Avyay's Portfolio: Poakme</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+        <link rel="manifest" href="assets/favicons/site.webmanifest">
+        <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#7fc2ee">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="assets/css/main.css" rel="stylesheet">
+        <link href="assets/css/words.css" rel="stylesheet">
+        <link href="assets/css/blogimages.css" rel="stylesheet">
+        <link href="assets/css/blog.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5H0XW19JC3"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-5H0XW19JC3');
+        </script>
+
+        <!--Clarity-->
+        <script type="text/javascript">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "erbt9g6tlf");
+        </script>
+
+         <!--Bootstrap-->
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    </head>
+    <body>
+        <div class="section" id="nav">
+            <nav>
+                <div class="navbar">
+                    <a href="index.html">
+
+                        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                        <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_rambaxea.json" style="height: 56px; margin-left: 0;" speed="0.8" autoplay></lottie-player>
+
+                        
+
+                        <!-- 
+                        <span style="font-size: 16px; text-transform: uppercase; font-weight: 500;">Avyay Kashyap</span>
+                        
+                        <picture>
+                            <source srcset="assets/websiteImages/portfolioLogoDark.png" media="(prefers-color-scheme: dark)" class="logo">
+                            <img src="assets/websiteImages/portfolioLogo.png" class="logo">
+                        </picture> -->
+                    </a>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html#recentWork">Work</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html#fun">Play</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="index.html#about">About me</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="clickable" href="assets/files/AvyayResume.pdf" target="_blank">Resume</a>
+                        </li>
+                    </ul>
+
+                    <hamburger class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </hamburger>
+
+                    <script>
+                        const hamburger = document.querySelector(".hamburger");
+                        const navMenu = document.querySelector(".nav-menu");
+
+                        hamburger.addEventListener("click", mobileMenu);
+
+                        function mobileMenu() {
+                            hamburger.classList.toggle("active");
+                            navMenu.classList.toggle("active");
+                        }
+
+                        const navLink = document.querySelectorAll(".nav-link");
+
+                        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+                        function closeMenu() {
+                            hamburger.classList.remove("active");
+                            navMenu.classList.remove("active");
+                        }
+                    </script>
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="section" id="hero">
+            <div class="splashcontainer">
+                <img src="assets/projectImages/poakme/coverimage.png" class="splashimage">
+            </div>
+            <div class="content-container">
+                <div class="backbuttoncontainer">
+                    <a onclick="goBack()">
+                        <div class="seemore">
+                            <img src="assets/websiteImages/leftarrow.png" class="viewmorearrow">
+                            <p-seemore>
+                                Back
+                            </p-seemore> 
+                        </div>
+                    </a>
+                    <script>function goBack() {
+                            window.history.back();
+                        }</script>
+                </div>
+                <div class="blogintro">
+                    <div class="topofcard">
+                        <div class="projimage">
+                            <img src="assets/homepageProjectImages/poakme.png" class="projimagespecs">
+                        </div>
+                        <div class="titleinfo">
+                            <p-title>
+                                POAK<span style="font-weight: lighter;">me</span>: Telephysiotherapy for patients with Osteoarthritis Knee
+                            </p-title>
+                            <p-subtitle>
+                                Graduation Thesis Project
+                            </p-subtitle>
+                            <p-subsubtitle>
+                                POAKme is a solution that enables individuals with Osteoarthritis of the Knee access care and rehabilitation from their homes.
+                            </p-subsubtitle>
+                        </div>
+                    </div>
+
+                    <div class="space"></div>
+
+                    <div class="projcard" style="margin-bottom: 12px;">
+                        <div class="projcardcontent">
+                            <p1>Enabling accessible and affordable healthcare by eliminating physical and logistical barriers can greatly improve health outcomes. Osteoarthritis of the Knee requires long-term and frequent engagement with healthcare providers. Tele-physiotherapy is proposed as a solution to help patients exercise from the comfort of their homes and facilitate meaningful and richer conversations with their healthcare providers. Patients can access rehabilitation exercises from their smartphones using the POAKme mobile app, which connects to the on-body motion sensor POAKY, to track in real-time, record and analyse exercise performance. This information is presented in a graphical format to help visualise recovery and long-term trend changes, which can also act as additional motivation.</p1><br>
+                            
+                            <a href="https://cloud.protopie.io/p/a39b4dcaea" target="_blank">
+                                <button>View the prototype here</button>
+                            </a>
+                        </div>
+                        <div class="imageoncard">
+                            <img src="assets/projectImages/poakme/tldr.png" class="imageoncarddimensions no-hover">
+                        </div>
+                    </div>
+
+                    <div class="quickdetails">
+                        <div id="role">
+                            <p-h3>Role</p-h3>
+                            <p1>UX Researcher and Designer</p1>
+                        </div>
+                        <div id="team">
+                            <p-h3>Team</p-h3>
+                            <p1>Individual</p1>
+                        </div>
+                        <div id="research-methods">
+                            <p-h3>Research Methods</p-h3>
+                            <p1>Contextual Enquiry,
+                                Fly on the wall,
+                                Expert interviews for evaluation,
+                                SUS based descriptive qualitative analysis</p1>
+                        </div>
+                        <div id="tools">
+                            <p-h3>Tools</p-h3>
+                            <p1>Unity, Arduino, Sketch, Protopie, Adobe AfterEffects</p1>
+                        </div>
+                        <div id="duration">
+                            <p-h3>Duration</p-h3>
+                            <p1>July 2019 - November 2019</p1>
+                        </div>
+                        <div id="Guide">
+                            <p-h3>Guide</p-h3>
+                            <a href="http://www.idc.iitb.ac.in/people/faculty/pal-swati"><p1>Prof. Swati Pal</p1></a>
+                            <a href="http://www.idc.iitb.ac.in"><p1>IDC School of Design, IIT Bombay</p1></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+
+        <div class="space"></div>
+        <nav id="projectNav" class="navbar navbar-expand-sm fixNavbar">
+            <div class="container-fluid alignItems">
+              <ul class="navbar-nav">
+                <li class="nav-item2 ">
+                  <a class="nav-link activeNav" href="#background">Introduction</a>
+                </li>
+                <li class="nav-item2">
+                  <a class="nav-link" href="#research">Research</a>
+                </li>
+                <li class="nav-item2">
+                  <a class="nav-link" href="#explorations">Explorations</a>
+                </li>
+                <li class="nav-item2">
+                    <a class="nav-link" href="#pilot">Pilot Study</a>
+                  </li>
+                <li class="nav-item2">
+                    <a class="nav-link" href="#finalConcept">Final Concept</a>
+                  </li>
+                  <li class="nav-item2">
+                    <a class="nav-link" href="#conclusion">Conclusion</a>
+                  </li>
+                  <!-- <li class="nav-item2">
+                    <a class="nav-link" href="#conclusion">Conclusion</a>
+                  </li> -->
+              </ul>
+            </div>
+          </nav>
+
+
+
+        <div class="section" id="body">
+            <div class="content-container">
+
+                <!-- <div class="quickdetails">
+                    <div>
+                        <p-h1-pqd>Why</p-h1-pqd>
+                        <p1>Enabling access to affordable healthcare while also reducing the burden on healthcare workers is a necessity. Osteoarthritis of the Knee severely deteriorate the quality of life an individual, physically and economically. Providing the opportunity to engage with physiotherapy without any physical constraints will vastly improve individual and societal outcomes.
+                        </p1>
+                    </div>
+                    <div>
+                        <p-h1-pqd>What</p-h1-pqd>
+                        <p1>With the eruption of new smartphone users, remote physiotherapy and tele-medicine solutions have an opportunity to disrupt the rehabilitative care industry. Providing access to the exercises patients need to do on their mobiles and monitoring the performance enables them to do the exercises from the comfort of their homes and frees up the doctor’s schedule to tend to patients in greater need of medical attention.
+                        </p1>
+                    </div>
+                    <div>
+                        <p-h1-pqd>How</p-h1-pqd>
+                        <p1>Through the use of a monitoring device fitted on the leg connected to a smartphone, the execution of the exercises recommended for Osteoarthritis of the Knee was recorded. This data was shown to patients to help them improve their movement. The data was also cross checked by their physiotherapist, who has the option to contact the patient if any corrective measures to be applied.
+                        </p1>
+                    </div>
+                </div> -->
+
+                <div class="space" id="background"></div>
+                <p-h1>Introduction</p-h1>
+                <p1>Providing accessible and affordable healthcare is fundamental to the development of a country. As the general population ages, the risk of injury is high. In such cases, the ability of an individual to maintain their quality of life becomes vital to their well being. Physiotherapy is one technique by which this can be achieved.</p1><br>
+                
+                <p1>But physiotherapy comes with its own pitfalls. Patients often need to sign up for sessions that take place multiple times over weeks, if not months. This places a strain on them as commuting during injury is an arduous task. This also adds to the overall affordability of the treatment when all the overheads are considered. Additionally, patients often see a drop in motivation to continue with the exercises either when they begin to feel fine, but aren’t fully recovered, or when immediate improvement is not visible. Availability of physiotherapists as per needs/schedules of patients is also another aspect that needs to be taken in account. All these factors result in a loss in quality of care.
+                </p1><br>
+
+                <p1>Physiotherapists face an entirely different set of problems. Each therapist is often dealing with over 50 patients a day, in government hospitals, where the treatment is free or at minimal costs. They also need to reassess patients when they show up to understand which stage of recovery they are in, as adherence to the prescribed exercises at home is unclear. The only means of knowing whether a patient has done the exercises at home in between sessions is by word of mouth, which makes progressing in the treatment difficult. Patients might sometimes leave a long gap between sessions, which necessitates lengthy conversations about the Do’s and Don’ts when performing the movements.</p1><br>
+
+                <p-h2>Why Osteoarthritis of the Knee?</p-h2>
+                <p1>Osteoarthritis of the Knee (OA Knee) is a degenerative injury in which the natural cushioning between the joints - cartilage - wears away. It often occurs due to excessive wear and tear of the joints, but can also be hereditary. Treatment in such cases is lifelong and starting early is easiest way to ensure a higher quality of life. The initial onset, especially when it occurs in younger people, is usually not painful and is normally ignored until it starts to hamper daily activities.</p1><br>
+
+                <p-h2>Telerehabilitation</p-h2>
+                <p1>Telerehabilitation is the delivery of rehabilitation through the use of telecommunication technologies [1]. India is home to one of the fastest growing smartphone markets in the world [2]. This, combined with the widespread proliferation of internet access, provides an opportunity to better the quality of life of individuals at scale.</p1><br>
+
+
+                <div class="space" id="research"></div>
+                <p-h1>Secondary Research</p-h1>
+                <p1>
+                    <ul>
+                        <li>Existing solutions for osteoarthritis of the knee are expensive, clinic facing, and require large substantial infrastructure. These factors are not suited for resource constrained Indian contexts [3, 4, 5].</li>
+                        <li>Most studies that deal with home program based solutions have been developed for a western countries, and similar adoption behaviours might not exist amongst patients in India and the same needs to be studied.</li>
+                        <li>There is a dearth of solutions tailored for motivating patients with chronic disorders through visualisations, both real time and post exercise. The delivery of such information in a manner that will make sense to this audience will have to be studied [6, 7].</li>
+                    </ul>
+                </p1><br>
+
+
+                <div class="space"></div>
+                <p-h1>Primary Research</p-h1>
+                <p1>The primary research was conducted at B.Y.L Nair Hospital, Mumbai, under the guidance of Dr. Chhaya Verma and Dr. Krutika Bhosale. Given that I had chosen to work with patients undergoing therapy for OA Knee, I was able to interact and observe a limited set of patients and focus on their problems in greater depth.</p1>
+                <div class="imageincolumns">
+                    <p-textImage>Contextual enquiry</p-textImage>
+                    <p-textImage>Fly on the wall</p-textImage>
+                    <p-textImage>Expert interviews</p-textImage>
+                </div>
+                <p1>There were two kinds of patients visiting the hospital for OA Knee therapy:</p1>
+                <img src="assets/projectImages/poakme/patientsvisiting.png" class="blogimage">
+                <p1>To scope the project down further, I decided to focus on patients who were also professionals with desk jobs or home-makers whose daily activities aren’t hampered by the injury.</p1><br>
+
+                <p-h2>Insights</p-h2>
+                <p1>Insights gathered can be placed in four broad categories.</p1>
+                <img src="assets/projectImages/poakme/insightspoakme.png" class="blogimage">
+
+                <p1>The physiotherapists firmly believe that if the individual chooses to commit to doing therapy, it is important they do it regularly and correctly. For not, the only way to ensure that happens is to regularly check-in at the clinic. The physiotherapists often tell the patients:</p1><br>
+                <p-psquote>"Not doing the exercise is better than doing it incorrectly."</p-psquote><br>
+
+
+                <div class="space"></div>
+                <p-h1>Problem Statement</p-h1>
+                <p1>The problem statement was defined as:</p1><br>
+                <p-quote>How can I provide an <b>affordable</b> means of performing physiotherapy exercises for patients with Osteoarthritis of the Knee from the comfort of the their homes, while addressing issues such as <b>ensuring correct practice</b> of exercises and <b>motivation</b> through visualisations?</p-quote><br>
+
+
+                <div class="space"></div>
+                <p-h1>Objectives</p-h1>
+                <p1>
+                    <ul>
+                        <li>Develop a low-cost device that can give real time feedback for in session correction of exercise.</li>
+                        <li>Generate post exercise visualisations that will allow for analysis of parameters used to measure improvements.</li>
+                    </ul>
+                </p1><br>
+
+
+                <div class="space"></div>
+                <p-h1>Understanding OA Knee therapy</p-h1>
+                <p1>There are 10 key exercises, of which 6 are dynamic exercises - involving movement of the injured joint - and 4 are static exercises - involving internal contraction and extension of muscles. The point to keep in mind when doing these exercises is to ensure there is movement only along one plane with minimal rotational movement.
+                </p1>
+                <img src="assets/projectImages/poakme/exercises.png" class="blogimage">
+                <p2-centre>Exercises prescribed by doctors for OA Knee</p2-centre><br>
+
+
+                <div class="space" id="explorations"></div>
+                <p-h1>Explorations</p-h1>
+                <p1>Ideation for a solution for remote physiotherapy was broken down into three parts. First, I needed to figure out which sensors would help track the movement most accurately. Secondly, what type of feedback would be the most appropriate for performing the exercises. The feedback would need to let the user know what they are doing when compared with what they are doing and, most importantly, let them know when they go wrong and how they are going wrong. And lastly, what kind of wearable would help track and provide the feedback most accurately.</p1><br>
+
+                <p-h2>Sensors</p-h2>
+                <p1>Ultrasonic sensors (HC-SR04) and accelerometer gyroscope sensors (MPU6050) were explored. The HC-SR04 allowed for the leg to be completely free when exercising, where as, the MPU6050 provided the greatest clarity of signal when positioned in the positions shown below.</p1>
+                <img src="assets/projectImages/poakme/sensors.png" class="blogimage">
+                <p2-centre>Sensors prototypes explored: Ultrasonic sensors and Accelerometer-gyroscope</p2-centre><br>
+
+                <p-h2>Feedback</p-h2>
+                <p1>The main considerations when deciding which feedback mechanisms to use were:</p1>
+                <ul>
+                    <li>Ability to control the feedback input duration to prevent overexercising.</li>
+                    <li>Easy and intuitive elements to reduce cognitive load.</li>
+                    <li>Ability to provide feedback of rotational movement to prevent incorrect practice.</li>
+                </ul>
+                <img src="assets/projectImages/poakme/feedback.png" class="blogimage">
+                <p1>Visual, auditory and haptic feedback solutions were designed. Haptic feedback was harder to discern, and so was ditched in favour of a combination of visual and auditory feedback.</p1><br>
+
+                <p-h2>Wearables</p-h2>
+                <p1>Various methods to keep the MPU6050 positioned accurately throughout the duration of the exercise ideated.</p1>
+                <img src="assets/projectImages/poakme/wearablePositioning.png" class="blogimage">
+
+
+
+                <div class="space" id="pilot"></div>
+                <p-h1>Pilot Study</p-h1>
+                <p1>The pilot was conducted at B.Y.L Nair hospital. The Informed Consent Document was based on the Declaration of Helsinki and was given to all participants. Two out of the six dynamic exercises were chosen and designed for. These were Dynamic Quadriceps and Straight leg Raising. Pre and post experimental measures of strength were taken by hand and self reported pain on the <b>0th day and 7th day</b> were recorded.</p1><br>
+                <img src="assets/projectImages/poakme/experimentParticipants.png" class="blogimage">
+
+                <p-h2>Prototype</p-h2>
+                <p1>The wearable device was built with an MPU6050 connected to a NodeMCU. A mobile app communicated with the NodeMCU to transmit information to be stored in the database. Feedback was given through the mobile app built using Unity. The data collected from the MPU6050 was displayed as a graph on a website the patient and doctor could access.</p1>
+
+                <img src="assets/projectImages/poakme/footplusapp.png" class="blogimage">
+                <p2-centre>Prototype and Unity application</p2-centre><br>
+
+                <video width="100%" height="560" style="margin: 24px auto;" controls>
+                    <source src="assets/projectImages/poakme/FollowQuad.mov" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p2-centre>Realtime feedback when connected to the device</p2-centre><br>
+
+                <img src="assets/projectImages/poakme/websitepoakme.png" class="blogimage">
+                <p2-centre>Website for post exercise feedback</p2-centre><br>
+
+                <img src="assets/projectImages/poakme/architecture.png" class="blogimage">
+                <p2-centre>System architecture</p2-centre><br>
+
+                <p-h2>Results</p-h2>
+                <p1>I was able to get the consent of only one individual to participate in the experimental group and another individual in the control group. The limited time frame within which the experiment was conducted and lack of participation means nothing conclusive can be drawn from this.</p1>
+                <img src="assets/projectImages/poakme/experimentresults.png" class="blogimage">
+
+
+
+                <div class="space" id="finalConcept"></div>
+                <p-h1>Final Concept</p-h1>
+                <img src="assets/projectImages/poakme/poakmelanding.png" class="blogimage">
+                <p1>POAKme is the culmination of this design process. It is an app that, in conjunction with a wearable device called POAKY that comes a in a sleek packaging, helps patients perform physiotherapy from the comfort of their homes. The collected data is used to generate visualisations to help the user visualise their performance in the exercises prescribed.</p1><br>
+
+                <div class="buttons">
+                    <a href="https://cloud.protopie.io/p/a39b4dcaea" target="_blank">
+                        <button>View the prototype here</button>
+                    </a>
+                </div><br>
+
+                <p1>Here are some salient points of POAKme:</p1>
+                <div class="projcard" style="margin-top: 36px;">
+                    <div class="projcardcontent">
+                        <p-h2 style="line-height: 1.5em; color: black;">Quick, easy and affordable to use</p-h2>
+                        <ul>
+                            <li>Designing the device and strap to be independent of each other makes the strap easy to adjust and customise, while also making it quick to place on the foot</li>
+                            <li>The guiding toe loop helps position the sensor accurately with the least amount of effort</li>
+                            <li>The same device can be used by multiple users by pairing it with the mobile application</li>
+                        </ul>
+                    </div>
+                    <div class="imageoncard">
+                        <img src="assets/projectImages/poakme/quickpoakme.png" class="imageoncarddimensions no-hover">
+                    </div>
+                </div>
+
+                <div class="projcard reverse">
+                    <div class="imageoncard">
+                        <img src="assets/projectImages/poakme/quickonboarding.png" class="imageoncarddimensions no-hover">
+                    </div>
+                    <div class="projcardcontent">
+                        <p-h2 style="line-height: 1.5em; color: black;">Easy and interactive onboarding</p-h2>
+                        <ul>
+                            <li>The guided onboarding helps set up the device and pair it with the POAKme app</li>
+                            <li>The profile is created by the user's physiotherapist, so the moment they log in, they are ready to use the app</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="projcard" style="margin-top: 36px;">
+                    <div class="projcardcontent">
+                        <p-h2 style="line-height: 1.5em; color: black;">Customised exercises and descriptions</p-h2>
+                        <ul>
+                            <li>Each exercise list is customised to the user's needs, down to the detail of sets and repetitions</li>
+                            <li>All the exercises have a more descriptive explaination about how the exercise needs to be done</li>
+                        </ul>
+                    </div>
+                    <div class="imageoncard">
+                        <img src="assets/projectImages/poakme/quickexercise.png" class="imageoncarddimensions no-hover">
+                    </div>
+                </div>
+
+                <div class="projcard reverse">
+                    <div class="imageoncard">
+                        <iframe class="iframedouble" src="https://www.youtube.com/embed/5_v7s1W_Flo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="projcardcontent">
+                        <p-h2 style="line-height: 1.5em; color: black;">Real-time monitoring of exercises</p-h2>
+                        <ul>
+                            <li>The device on the foot talks with the mobile app to provide feedback on various metrics in real-time</li>
+                            <li> Feedback about the vertical and rotational movement is provided</li>
+                            <li>The user can rate the effort it took them to complete the exercise</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="projcard" style="margin-top: 36px;">
+                    <div class="projcardcontent">
+                        <p-h2 style="line-height: 1.5em; color: black;">Reflecting on the rehabilitation</p-h2>
+                        <ul>
+                            <li>An overview of provides stats on how long the user has been at the recovery journey</li>
+                            <li>Improvements are shown by the reduction in pain felt during exercises and increase in strength</li>
+                            <li>Each and every individual exercise can be viewed as graphs, along with how each repetition was performed</li>
+                            <li>Incorrect movements are recorded to inform the user about what movement they did and why it was incorrect</li>
+                        </ul>
+                    </div>
+                    <div class="imageoncard">
+                        <img src="assets/projectImages/poakme/quickreflection.png" class="imageoncarddimensions no-hover">
+                    </div>
+                </div>
+
+                <!-- <p1>The flow of the app is described below.</p1><br>
+
+                <p1>Onboarding involves pairing the device, Poaky, with the app and then choosing the leg the device will be worn on during the exercises.</p1>
+                <img src="assets/projectImages/poakme/flow1.png" class="blogimage">
+                
+
+                <p1>The homepage shows a list of exercises assigned to you by your physiotherapist. Selecting the exercise lets you know about the exercise and why you will be doing it. Before the exercise begins, a set of quick instructions to follow pop-up, which includes the movement to be done and what the representation of rotational movement will be.</p1>
+                <img src="assets/projectImages/poakme/flow2.png" class="blogimage">
+
+                <p1>The exercise is a simple follow along accompanied by music, which is not included in this prototype. Post the exercise, the user is asked to rate the pain they felt.</p1>
+                <div class="doubleimage" style="display: grid; grid-template-columns: auto auto; grid-gap: 12px; justify-content: space-evenly; padding: 12px 0;">
+                    <iframe class="iframedouble" src="https://www.youtube.com/embed/5_v7s1W_Flo" title="Ankle toe movement real-time feedback" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <img src="assets/projectImages/poakme/flow3.png" style="width: auto; height: auto; max-height: 455px;">
+                </div> -->
+
+                <style>
+                    .doubleimage {
+                        display: grid; 
+                        grid-template-columns: auto auto; 
+                        grid-gap: 12px; justify-content: space-evenly; 
+                        padding: 12px 0;
+                    }
+
+                    .iframedouble {
+                        width: 100%;
+                        height: 428px;
+                        max-height: 455px;
+
+                    }
+
+                    @media screen and (max-width:968px) {
+                        .doubleimage {
+                            width: 100%;
+                            overflow: scroll;
+                        }
+                    }
+                </style>
+
+                <!-- <p1>An overview of the exercises done by the patient is shown in the exercises tab. This is to help motivate the person as they see their metrics acrue. Each movement done in every exercise is recorded and available for revieiw, with incorrect movements shown in red.</p1>
+                <img src="assets/projectImages/poakme/flow4.png" class="blogimage">
+
+                <p1>Advanced users can opt for more complex visuals that show more data upfront. There is also a device manager to help the user manage all the poaky devices they might buy. This offers scope for expanding the solution from being targeted for OA Knee to other musculoskeletal injuries as well.</p1>
+                <img src="assets/projectImages/poakme/flow5.png" class="blogimage"> -->
+
+
+                <div class="space"></div>
+                <p-h1>Evaluations</p-h1>
+                <p1>System Usability Scale based qualitative descriptive analysis through semi-structured interviews were conducted to evaluate the prototype and application with patients and doctors. The prototype was evaluated for the usability of the device, application and realtime and post physio visualisations. The concept application was evaluated for the momentary and episodic perceptions, along with the usability of the two visualisations.</p1><br>
+                <p1>Both the qualitative evaluations resulted in positive responses towards the applications. The users said the app had appealing visuals that would encourage them to come back to perform the exercises. They also found the visualisations useful on the prototype website and concept applications and found the integration of the app with the device to be intuitive.</p1>
+                <p1>Physiotherapists found the application to be a good alternative to the Home Program, a sheet with a list of all the prescribed exercises and how to do them. The felt it complemented the offline physiotherapy sessions quite well. The prototype and concept application were well received, with the therapists finding the visualisations novel and useful.</p1><br>
+
+
+                <div class="space" id="conclusion"></div>
+                <p-h1>Conclusion</p-h1>
+                <p1>Telerehabilitation is a field with potential for massive disruption in rehabilitative medical care. This project aimed at minimising clinical contact while maximising remotely supervised home care. This is extremely important in areas that have poor access to quality care. In light of the Covid pandemic, interventions that can provide care remotely, similar to those received at the clinic, have become important even to those in urban centres. With the mobile and Internet infrastructure only improving from here on, the potential and need for such solutions in the market will grow.</p1><br>
+
+                <div class="space"></div>
+                <p2 class="bg-grey" style = "padding-top: 24px;">
+                    This project was completed in partial fulfillment of credits for the Integrated Masters Program in Interaction Design at IDC School of Design, IIT Bombay. The duration of the project was from January 2020 to June 2020.
+                </p2><br>
+
+                <div class="space"></div>
+                <div>
+                    <p-h1>Links</p-h1>
+                    <div>
+                        <a href="assets/projectImages/poakme/P2 report-4.pdf" target="_blank">
+                            <button>Read the project report here</button>
+                        </a>
+                    </div>
+                </div><br>
+
+                
+                
+
+                <div class="space"></div>
+                <p-h1>References</p-h1>
+                    <p1>
+                        <ol>
+                            <li>Palazzo, C., Klinger, E., Dorner, V., Kadri, A., Thierry, O., Boumenir, Y., ... & Ville, I. (2016). Barriers to home-based exercise program adherence with chronic low back pain: Patient expectations regarding new technologies. Annals of physical and rehabilitation medicine, 59(2), 107-113.</li>
+                            <li>"India Now Fastest Growing Smartphone Market With Double ...." 14 Aug. 2019, https://inc42.com/buzz/india-now-fastest-growing-smartphone-market-with-double-digit-growth/ . Accessed 16 Nov 2019.</li>
+                            <li>Brennan, D. M., Mawson, S., & Brownsell, S. (2009). Telerehabilitation: enabling the remote delivery of healthcare, rehabilitation, and self management. Stud Health Technol Inform, 145(231), 48.</li>
+                            <li>Caro, K., Tentori, M., Martinez-Garcia, A. I., & Zavala-Ibarra, I. (2017). FroggyBobby: An exergame to support children with motor problems practicing motor coordination exercises during therapeutic interventions. Computers in Human Behavior, 71, 479-498.</li>
+                            <li>Pyae, A., Liukkonen, T. N., Luimula, M., & Smed, J. (2017). Investigating the Finnish elderly people’s user experiences in playing digital game-based skiing exercise: A usability study. Gerontechnology Journal, 16(2), 65-80.</li>
+                            <li>Chandra, H., Oakley, I., & Silva, H. (2012, October). Designing to support prescribed home exercises: understanding the needs of physiotherapy patients. In Proceedings of the 7th Nordic Conference on Human-Computer Interaction: Making Sense Through Design (pp. 607-616). ACM</li>
+                            <li>Petursdottir, U., Arnadottir, S. A., & Halldorsdottir, S. (2010). Facilitators and barriers to exercising among people with osteoarthritis: a phenomenological study. Physical therapy, 90(7), 1014-1025.</li>
+                        </ol>
+                    </p1>
+            </div>
+        </div>
+
+        <!--More projects-->
+        <div class="section" id="moreprojects">
+            <div class="content-container">
+                <div class="moreprojectscontainer">
+                    <p-h1>More Projects</p-h1>
+                    <div class="moreprojects">
+                        <div class="moreprojimage">
+                            <a href="jio.html">
+                                <img src="assets/homepageProjectImages/jio.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="arklid.html">
+                                <img src="assets/homepageProjectImages/arklid.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="assets2020src.html">
+                                <img src="assets/homepageProjectImages/assets2020.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="gestures.html">
+                                <img src="assets/homepageProjectImages/gestures.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://avyay.medium.com/the-case-for-remote-physiotherapy-physiodot-b8ff79bab212" target="_blank">
+                                <img src="assets/homepageProjectImages/physioDot.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="philips.html">
+                                <img src="assets/homepageProjectImages/philips.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://avyay.medium.com/getting-rid-of-2d-chaos-tackling-the-traffic-congestion-in-mumbai-dd3c76de449f" target="_blank">
+                                <img src="assets/homepageProjectImages/gr2dc.png" class="projimagespecs">
+                            </a>
+                        </div>
+                        <div class="moreprojimage">
+                            <a href="https://medium.com/physical-microinteractions/classification-of-physical-microinteractions-a-collaborative-design-project-c58b261ad1f" target="_blank">
+                                <img src="assets/homepageProjectImages/physicalmicrointeractions.png" class="projimagespecs">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons" id="time">
+            <button onclick="topFunction()" id="myBtn" title="Go to top">Go to top of the page</button>
+        </div>
+        
+        <script>
+            //Get the button:
+            mybutton = document.getElementById("myBtn");
+
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function() {scrollFunction()};
+
+            function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+            }
+
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }
+        </script>
+
+        <!--Footer-->
+        <div class="section" id="footer">
+            <div class="content-container">
+                <div class="footer">
+                    <p-footer>
+                        Made with ♥︎ from Bengaluru, India | © Avyay Kashyap
+                    </p-footer>
+                    <div class="mobileview">
+                        <a href="https://www.linkedin.com/in/avyay-kashyap-4236635b/" target="_blank"><img src="assets/websiteImages/linkedinIcon.png" class="icons"></a><a href="https://dribbble.com/avyayrk" target="_blank"><img src="assets/websiteImages/dribbbleIcon.png" class="icons"></a><a href="https://www.instagram.com/avyayyy/" target="_blank"><img src="assets/websiteImages/instaIcon.png" class="icons"></a><a href="https://medium.com/@avyay" target="_blank"><img src="assets/websiteImages/mediumIcon.png" class="icons"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            var header = document.getElementById("projectNav");
+            var btns = header.getElementsByClassName("nav-link");
+            for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("activeNav");
+            current[0].className = current[0].className.replace(" activeNav", "");
+            this.className += " activeNav";
+            });
+            }
+        </script>
+
+
+    </body>
+</html>
