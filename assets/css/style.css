@@ -420,7 +420,7 @@ p-title {
 p-subtitle {
     font-family: 'Alegreya', serif;
     font-size: 16pt;
-    font-weight: lighter;
+    font-weight: 400;
 
     width: 80%;
     margin: auto;
@@ -434,8 +434,9 @@ p-subtitle {
 p-h1 {
     width: 100%;
     font-family: 'Lexend Deca', sans-serif;
-    font-size: 36pt;
-    font-weight: 700;
+    font-size: 24pt;
+    font-weight: 100;
+    text-transform: uppercase;
 
     display: block;
     text-align: center;
@@ -495,7 +496,7 @@ p-hcentre {
     width: 100%;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 20pt;
-    font-weight: 700;
+    font-weight: 100;
 
     display: block;
     text-align: center;
@@ -514,10 +515,10 @@ p1 {
 p1i {
     display: block;
     width: 100%;
-    font-family: 'Alegreya', serif;
-    font-style: italic;
-    font-size: 12pt;
-    font-weight: 400;
+    font-family: 'Lexend Deca', sans-serif;
+    text-transform: uppercase;
+    font-size: 10pt;
+    font-weight: 200;
     margin-bottom: 12px;
 }
 
