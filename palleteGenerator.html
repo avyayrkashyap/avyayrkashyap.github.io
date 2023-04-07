@@ -82,9 +82,36 @@
         <!--create a button that generates a random colour-->
         <button id="btn">Generate Palette</button>
 
-        <script>
+        <script>            
+            // set the background of primary1 to a random colour on page load
+            window.onload = function() {
+                generateColor();
+            }
+
             // set the background of primary1 to a random colour on #btn click
             document.getElementById("btn").addEventListener("click", function() {
+                //run function generateColor
+                generateColor();
+            });
+
+            // take input from the text field and set the background of div to the input
+            document.getElementById("primary1Text").addEventListener("input", function() {
+                document.getElementById("primary1").style.backgroundColor = document.getElementById("primary1Text").value;
+            });
+            document.getElementById("primary2Text").addEventListener("input", function() {
+                document.getElementById("primary2").style.backgroundColor = document.getElementById("primary2Text").value;
+            });
+            document.getElementById("primary3Text").addEventListener("input", function() {
+                document.getElementById("primary3").style.backgroundColor = document.getElementById("primary3Text").value;
+            });
+            document.getElementById("contrast1Text").addEventListener("input", function() {
+                document.getElementById("contrast1").style.backgroundColor = document.getElementById("contrast1Text").value;
+            });
+            document.getElementById("contrast2Text").addEventListener("input", function() {
+                document.getElementById("contrast2").style.backgroundColor = document.getElementById("contrast2Text").value;
+            });
+
+            function generateColor() {
                 //create a random hex colour
                 var randomColor = Math.floor(Math.random()*16777215).toString(16);
                 // get brightness of randomColor
@@ -99,7 +126,6 @@
                 var oppColor1 = (parseInt(brightness, 16) > 127) ? "000000" : "ffffff";
                 // create secColor that is a good secondary colour to randomColor
                 var secColor = (parseInt(hue, 16) + 42).toString(16) + randomColor.substring(0, 2, 4, 6);
-
 
                 //set the background of primary1 to the random colour
                 document.getElementById("primary2").style.backgroundColor = "#" + randomColor;
@@ -116,8 +142,10 @@
                 document.getElementById("primary3Text").value = "#" + newColor2;
                 document.getElementById("contrast1Text").value = "#" + oppColor1;
                 document.getElementById("contrast2Text").value = "#" + secColor;
-                
-            });
+            }
+
+
+            
         </script>
 
 
