@@ -1,0 +1,43 @@
+---
+// src/components/Sidebar.astro
+const pathname = Astro.url.pathname;
+
+const navItems = [
+  { label: 'Home',        href: '/',            idx: 0 },
+  { label: 'About',       href: '/about',       idx: 1 },
+  { label: 'Experiments', href: '/experiments', idx: 2 },
+  { label: 'Now',         href: '/now',         idx: 3 },
+];
+---
+
+<aside class="sidebar">
+  <!-- Logo: 9 pill/circle shapes from design -->
+  <div class="logo">
+    <!-- circles -->
+    <div class="logo-dot" style="--i: 0; --l: 0px; --t: 22px;"></div>
+    <div class="logo-dot" style="--i: 1; --l: 43px; --t: 15px;"></div>
+    <div class="logo-dot" style="--i: 2; --l: 84px; --t: 15px;"></div>
+    <div class="logo-dot" style="--i: 3; --l: 64px; --t: 23px;"></div>
+    <!-- long pills -->
+    <div class="logo-dot" style="--i: 4; --h: 32px; --tr: 8px 4px; --r: 330deg; --rt: 360deg;"></div>
+    <div class="logo-dot" style="--i: 5; --h: 32px; --tr: 58px 14px; --r: 30deg;"></div>
+    <div class="logo-dot" style="--i: 6; --h: 32px; --tr: 99px 14px; --r: 30deg;"></div>
+    <!-- short pills -->
+    <div class="logo-dot" style="--i: 7; --h: 16px; --tr: 30px 18px; --r: 330deg; --rt: 360deg;"></div>
+    <div class="logo-dot" style="--i: 8; --h: 16px; --tr: 85px 28px; --r: 150deg;"></div>
+  </div>
+
+  <!-- Nav: tick field + labels -->
+  <nav class="sidebar-nav" id="sidebarNav">
+    <div class="tick-field" id="tickField"></div>
+    {navItems.map(item => (
+      <a
+        href={item.href}
+        class={`nav-link${pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)) ? ' active' : ''}`}
+        data-idx={item.idx}
+      >{item.label}</a>
+    ))}
+  </nav>
+</aside>
+
+<script src="../scripts/sidebar.js"></script>

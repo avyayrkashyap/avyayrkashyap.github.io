@@ -1,0 +1,49 @@
+---
+// src/components/Hero.astro
+---
+<section class="hero">
+  <button class="hamburger-btn" id="sidebar-toggle" aria-label="Toggle sidebar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  <img class="hero-avatar" src="/assets/index/avatar.png" alt="Avyay" width="160" height="160" />
+  <div class="hero-content">
+    <h1 class="hero-title" style="min-height: 1.05em;">
+      <span id="typewriter"></span><span class="cursor">|</span>
+    </h1>
+    <p class="hero-body">I am Avyay, a detail oriented product designer, crafting familiar, yet novel experiences that enable critical thinking.</p>
+  </div>
+</section>
+
+<style>
+  .cursor {
+    font-weight: 400;
+    color: #1A6CF0; /* matching the brand blue */
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  .hamburger-btn {
+    position: absolute;
+    top: clamp(24px, 4vh, 40px);
+    left: clamp(32px, 4vw, 40px);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #1A6CF0;
+    z-index: 20;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+  .hamburger-btn:hover {
+    background-color: rgba(26, 108, 240, 0.1);
+  }
+</style>
+
+<script src="../scripts/hero.js"></script>

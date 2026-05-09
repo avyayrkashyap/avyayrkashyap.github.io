@@ -1,0 +1,251 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+}
+
+body {
+  background-color: #F8F6F1;
+}
+
+/* ── Sidebar ── */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 258px;
+  height: 100vh;
+  background-color: #1A6CF0;
+  overflow: hidden;
+  z-index: 10;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+body.sidebar-closed .sidebar {
+  transform: translateX(-100%);
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  top: 36px;
+  left: 36px;
+  width: 106px;
+  height: 46px;
+}
+
+.logo-dot {
+  position: absolute;
+  background-color: #196BED;
+  border-radius: 9999px;
+  outline: 1px solid #F8F6F1;
+  transform-origin: 0% 0%;
+  transition: all 0.4s ease-in-out;
+
+  width: 8px;
+  height: 8px;
+  top: 20px;
+  left: calc(var(--i) * 12px);
+  rotate: var(--rt, 0deg);
+  translate: 0px 0px;
+}
+
+.logo:hover .logo-dot {
+  width: var(--w, 8px);
+  height: var(--h, 8px);
+  top: var(--t, 0px);
+  left: var(--l, 0px);
+  rotate: var(--r, 0deg);
+  translate: var(--tr, 0px 0px);
+}
+
+/* Nav: tick field + labels */
+.sidebar-nav {
+  position: absolute;
+  top: 114px;
+  left: 36px;
+  width: 222px;
+  height: 160px;
+}
+
+.tick-field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.tick {
+  height: 2px;
+  width: 14px;
+  background-color: #75A3F0;
+  border-radius: 9999px;
+  transition: width 70ms ease-out, background-color 70ms ease-out;
+}
+
+.nav-link {
+  position: absolute;
+  left: 48px;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  color: #F8F6F1;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.nav-link.active {
+  opacity: 1;
+  font-weight: 800;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+/* ── Main ── */
+
+.main {
+  position: relative;
+  margin-left: 258px;
+  background-color: #F8F6F1;
+  transition: margin-left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.main>* {
+  max-width: 914px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+body.sidebar-closed .main {
+  margin-left: 0;
+}
+
+/* Hero */
+.hero {
+  padding: clamp(80px, 10vh, 120px) clamp(40px, 9vw, 122px) 24px;
+  min-height: 80svh;
+  gap: space-evenly;
+}
+
+.hero-avatar {
+  display: block;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  margin-bottom: 32px;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 680px;
+}
+
+.hero-title {
+  font-family: 'Lexend', system-ui, sans-serif;
+  font-size: clamp(36px, 4.2vw, 60px);
+  font-weight: 700;
+  color: #1C1C1E;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.hero-body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #1C1C1E;
+  opacity: 0.65;
+  margin-bottom: 12px;
+  max-width: 520px;
+}
+
+.hero-cta:hover {
+  opacity: 0.7;
+}
+
+/* ── Work section ── */
+
+.work-section {
+  padding: clamp(60px, 8vh, 100px) clamp(40px, 9vw, 122px) clamp(80px, 10vh, 120px);
+}
+
+.case-study-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+}
+
+.case-study-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.case-study-index {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 10px;
+  line-height: 1.3;
+  color: #999999;
+}
+
+.case-study-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.case-study-title {
+  font-family: system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 30px;
+}
+
+.case-study-desc {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #1C1C1E;
+  opacity: 0.65;
+  margin-bottom: 12px;
+}
+
+.case-study-tags {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 10px;
+  line-height: 1.3;
+  color: #1A6CF0;
+}
+
+.case-study-img {
+  display: block;
+  width: 100%;
+  max-width: 680px;
+  height: 284px;
+  object-fit: cover;
+  border-radius: 4px;
+}
