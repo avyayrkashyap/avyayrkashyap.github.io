@@ -1,6 +1,7 @@
 ---
 // src/components/Sidebar.astro
 const pathname = Astro.url.pathname;
+const isCaseStudy = pathname.startsWith('/gep');
 
 const navItems = [
   { label: 'Home',        href: '/',            idx: 0 },
@@ -8,9 +9,20 @@ const navItems = [
   { label: 'Experiments', href: '/experiments', idx: 2 },
   { label: 'Now',         href: '/now',         idx: 3 },
 ];
+
+const gepSections = [
+  { label: 'Overview',         href: '#overview' },
+  { label: 'Business Impact',  href: '#impact' },
+  { label: 'Final Design',     href: '#final-design' },
+  { label: 'Domain Research',  href: '#domain-research' },
+  { label: 'Stakeholders',     href: '#stakeholders' },
+  { label: 'Problem',          href: '#problem-statement' },
+  { label: 'Process',          href: '#process' },
+  { label: 'Learnings',        href: '#learnings' },
+];
 ---
 
-<aside class="sidebar">
+<aside class={`sidebar${isCaseStudy ? ' has-subnav' : ''}`}>
   <!-- Logo: 9 pill/circle shapes from design -->
   <div class="logo">
     <!-- circles -->
@@ -28,7 +40,7 @@ const navItems = [
   </div>
 
   <!-- Nav: tick field + labels -->
-  <nav class="sidebar-nav" id="sidebarNav">
+  <nav class="sidebar-nav" id="sidebarNav" data-subnav={isCaseStudy ? 'true' : 'false'}>
     <div class="tick-field" id="tickField"></div>
     {navItems.map(item => (
       <a
@@ -38,6 +50,14 @@ const navItems = [
       >{item.label}</a>
     ))}
   </nav>
+
+  {isCaseStudy && (
+    <nav class="cs-subnav" id="csSubnav">
+      {gepSections.map(s => (
+        <a href={s.href} class="cs-subnav-link">{s.label}</a>
+      ))}
+    </nav>
+  )}
 </aside>
 
 <script src="../scripts/sidebar.js"></script>

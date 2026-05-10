@@ -24,10 +24,12 @@
       <div class="cs-bg-dark"></div>
 
       <!-- Hover-only overlays fade in -->
-      <div class="cs-table"></div>
-      <div class="cs-cards"></div>
+      <div class="cs-table cs-table-top"></div>
+      <div class="cs-cards cs-cards-center"></div>
+      <div class="cs-table cs-table-bottom"></div>
+      <div class="cs-cards cs-cards-right"></div>
 
-      <!-- Laptop: single element, animates transform on hover -->
+      <!-- Laptop: fades out and rotates on hover -->
       <div class="cs-laptop"></div>
 
       <!-- Logo: always on top, never moves -->
@@ -96,7 +98,7 @@
     rotate: 17.81deg;
   }
 
-  /* ── Hover-only overlays ── */
+  /* ── Hover-only overlays (match PE-0 layout exactly) ── */
   .cs-table,
   .cs-cards {
     position: absolute;
@@ -107,16 +109,13 @@
   .case-study-link:hover .cs-table,
   .case-study-link:hover .cs-cards { opacity: 1; }
 
-  .cs-table {
-    top: 45px; left: 0;
-    width: 340px; height: 133px;
-    background-image: url('/assets/index/gep-table.png');
-  }
-  .cs-cards {
-    top: 4px; left: 465px;
-    width: 198px; height: 595px;
-    background-image: url('/assets/index/gep-cards.png');
-  }
+  .cs-table { background-image: url('/assets/index/gep-table.png'); width: 340px; height: 133px; }
+  .cs-cards { background-image: url('/assets/index/gep-cards.png'); width: 198px; height: 595px; }
+
+  .cs-table-top    { left: -73px; top: 45px; }
+  .cs-table-bottom { left: 0;     top: 178px; }
+  .cs-cards-center { left: 267px; top: -132px; }
+  .cs-cards-right  { left: 465px; top: 4px; }
 
   /* ── Logo: always on top ── */
   .cs-logo {

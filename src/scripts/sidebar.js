@@ -1,20 +1,22 @@
 (function () {
-    const TICK_COUNT = 18;
-    const TICK_STEP = 8;    // 2px height + 6px gap
-    const MIN_W = 16;
-    const MAX_W = 32;
-    const SIGMA = 24;
-    const NAV_TOP = 114;  // sidebar-nav top offset within sidebar
+    const sidebarNav = document.getElementById('sidebarNav');
+    const tickField  = document.getElementById('tickField');
+    const sidebar    = document.querySelector('.sidebar');
+    const navLinks   = document.querySelectorAll('.nav-link');
 
-    // Y positions of each nav label within the tick field (0 = top tick)
-    const NAV_Y = [8, 48, 88, 128];
+    if (!tickField || !sidebar || !sidebarNav) return;
 
-    // Read elements only when standard structure mounts
-    const tickField = document.getElementById('tickField');
-    const sidebar = document.querySelector('.sidebar');
-    const navLinks = document.querySelectorAll('.nav-link');
+    const hasSubnav = sidebarNav.dataset.subnav === 'true';
 
-    if (!tickField || !sidebar) return;
+    // NAV_Y: Y positions of each main nav label within the tick field
+    // On case study pages, About/Experiments/Now are pushed down to make room for sub-nav
+    const NAV_Y      = hasSubnav ? [8, 252, 292, 332] : [8, 48, 88, 128];
+    const TICK_COUNT = hasSubnav ? 44 : 18;
+    const TICK_STEP  = 8;
+    const MIN_W      = 16;
+    const MAX_W      = 32;
+    const SIGMA      = 24;
+    const NAV_TOP    = 114;
 
     // Build ticks
     const ticks = [];
@@ -25,9 +27,9 @@
         ticks.push(el);
     }
 
-    // Position labels vertically
+    // Position main nav labels vertically
     navLinks.forEach((link, i) => {
-        link.style.top = (NAV_Y[i] - 8) + 'px'; // -8 to center 16px text on tick
+        link.style.top = (NAV_Y[i] - 8) + 'px';
     });
 
     function gaussian(dist) {
@@ -37,13 +39,12 @@
     function setWidths(targetY) {
         ticks.forEach((tick, i) => {
             const cy = i * TICK_STEP + 1;
-            const g = gaussian(Math.abs(cy - targetY));
-            const w = MIN_W + (MAX_W - MIN_W) * g;
+            const g  = gaussian(Math.abs(cy - targetY));
+            const w  = MIN_W + (MAX_W - MIN_W) * g;
             tick.style.width = w + 'px';
-
-            const r = Math.round(117 + (255 - 117) * g);
+            const r  = Math.round(117 + (255 - 117) * g);
             const gr = Math.round(163 + (255 - 163) * g);
-            const b = Math.round(240 + (255 - 240) * g);
+            const b  = Math.round(240 + (255 - 240) * g);
             tick.style.backgroundColor = `rgb(${r}, ${gr}, ${b})`;
         });
     }
@@ -53,14 +54,16 @@
     navLinks.forEach((link, i) => {
         if (link.classList.contains('active')) activeIdx = i;
     });
+
+    // activeTickY: the Y the ticks rest at when not hovering.
+    // Starts at the active main-nav item; updated by sub-nav scroll.
+    let activeTickY = NAV_Y[activeIdx];
     let hovering = false;
 
-    setWidths(NAV_Y[activeIdx]);
+    setWidths(activeTickY);
 
     navLinks.forEach((link, i) => {
-        link.addEventListener('mouseenter', () => {
-            activeIdx = i;
-        });
+        link.addEventListener('mouseenter', () => { activeIdx = i; });
     });
 
     sidebar.addEventListener('mousemove', (e) => {
@@ -71,6 +74,50 @@
 
     sidebar.addEventListener('mouseleave', () => {
         hovering = false;
-        setWidths(NAV_Y[activeIdx]);
+        setWidths(activeTickY);
     });
+
+    // ── Sub-nav: highlight active section on scroll ──
+    if (!hasSubnav) return;
+    const subLinks = document.querySelectorAll('.cs-subnav-link');
+
+    const sections = Array.from(subLinks).map(link => {
+        const id = link.getAttribute('href').replace('#', '');
+        return { link, el: document.getElementById(id) };
+    }).filter(s => s.el);
+
+    // Measure each sub-nav link's Y center relative to the tick field top.
+    // Done after layout settles (requestAnimationFrame).
+    let subTickYs = [];
+    requestAnimationFrame(() => {
+        const tfTop = tickField.getBoundingClientRect().top;
+        subLinks.forEach(link => {
+            const r = link.getBoundingClientRect();
+            subTickYs.push(r.top + r.height / 2 - tfTop);
+        });
+        // Set initial resting position to first sub-nav item
+        if (subTickYs.length) {
+            activeTickY = subTickYs[0];
+            if (!hovering) setWidths(activeTickY);
+        }
+    });
+
+    function onScroll() {
+        const scrollY = window.scrollY + window.innerHeight * 0.25;
+        let activeI = 0;
+        for (let i = 0; i < sections.length; i++) {
+            if (sections[i].el.offsetTop <= scrollY) activeI = i;
+        }
+        subLinks.forEach(l => l.classList.remove('active'));
+        sections[activeI].link.classList.add('active');
+
+        // Update resting tick position to match active sub-nav link
+        if (subTickYs[activeI] !== undefined) {
+            activeTickY = subTickYs[activeI];
+            if (!hovering) setWidths(activeTickY);
+        }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 })();
