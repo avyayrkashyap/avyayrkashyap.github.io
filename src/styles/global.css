@@ -313,9 +313,31 @@ body.sidebar-closed .main {
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s ease;
+  transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
 }
 .sidebar-toggle:hover { opacity: 0.85; }
+
+.btn-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.btn-icon--arrow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.75);
+}
+
+/* When sidebar is open: swap to arrow */
+body:not(.sidebar-closed) .sidebar-toggle .btn-icon--menu {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.75);
+}
+body:not(.sidebar-closed) .sidebar-toggle .btn-icon--arrow {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
 
 /* Overlay behind open sidebar on mobile */
 .sidebar-overlay {
@@ -349,6 +371,11 @@ body.sidebar-closed .main {
   body:not(.sidebar-closed) .sidebar-overlay {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  /* Slide hamburger to sit just right of the open sidebar */
+  body:not(.sidebar-closed) .sidebar-toggle {
+    left: calc(258px + 12px);
   }
 
   /* Tighten hero padding on mobile */
