@@ -9,7 +9,24 @@
       <line x1="3" y1="18" x2="21" y2="18"></line>
     </svg>
   </button>
-  <img class="hero-avatar" src="/assets/index/avatar.png" alt="Avyay" width="160" height="160" />
+
+  <!-- Intro card -->
+  <div class="intro-card">
+    <span class="intro-name">Avyay Kashyap</span>
+    <span class="intro-values">Clarity / Delight / Curiosity</span>
+    <img class="intro-memoji" src="/assets/index/memoji.png" alt="Avyay memoji" />
+    <span class="intro-location">Moody's Ratings • New York</span>
+    <div class="intro-social">
+      <a href="https://www.linkedin.com/in/avyaykashyap/" target="_blank" rel="noopener" class="intro-icon-btn" aria-label="LinkedIn">
+        <img src="/assets/index/icon-linkedin.png" alt="LinkedIn" width="16" height="16" />
+      </a>
+      <a href="https://x.com/avyayrk" target="_blank" rel="noopener" class="intro-icon-btn" aria-label="X (Twitter)">
+        <img src="/assets/index/icon-x.png" alt="X" width="16" height="16" />
+      </a>
+      <a href="#" class="intro-resume" aria-label="Resume">Resume</a>
+    </div>
+  </div>
+
   <div class="hero-content">
     <h1 class="hero-title" style="min-height: 1.05em;">
       <span id="typewriter"></span><span class="cursor">|</span>
@@ -21,13 +38,14 @@
 <style>
   .cursor {
     font-weight: 400;
-    color: #1A6CF0; /* matching the brand blue */
+    color: #1A6CF0;
     animation: blink 1s step-end infinite;
     margin-left: 2px;
   }
   @keyframes blink {
     50% { opacity: 0; }
   }
+
   .hamburger-btn {
     position: absolute;
     top: clamp(24px, 4vh, 40px);
@@ -44,6 +62,110 @@
   .hamburger-btn:hover {
     background-color: rgba(26, 108, 240, 0.1);
   }
+
+  /* ── Intro Card ── */
+  .intro-card {
+    position: relative;
+    width: 100%;
+    max-width: 914px;
+    aspect-ratio: 1092 / 536;
+    background-color: #F8F6F1;
+    border: 1px solid #1A6CF0;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+
+  .intro-name {
+    position: absolute;
+    top: 4.7%;   /* 25/536 */
+    left: 2.3%;  /* 25/1092 */
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: clamp(10px, 1.1vw, 12px);
+    color: #1C1C1E;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .intro-values {
+    position: absolute;
+    top: 4.7%;
+    right: 2.3%;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: clamp(10px, 1.1vw, 12px);
+    color: #1C1C1E;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .intro-memoji {
+    position: absolute;
+    /* centered horizontally: left ~407/1092 ≈ 37.3%, width ~278/1092 ≈ 25.5% */
+    left: 50%;
+    top: 24%;   /* ~129/536 */
+    transform: translateX(-50%);
+    width: 25.5%;
+    height: auto;
+    display: block;
+  }
+
+  .intro-location {
+    position: absolute;
+    bottom: 5%;   /* ~27/536 */
+    left: 2.3%;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: clamp(10px, 1.1vw, 12px);
+    color: #1C1C1E;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .intro-social {
+    position: absolute;
+    bottom: 5%;
+    right: 2.3%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .intro-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #FFFFFF;
+    border-radius: 9999px;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+  }
+  .intro-icon-btn:hover { opacity: 0.7; }
+  .intro-icon-btn img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+  }
+
+  .intro-resume {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 0 16px;
+    background: #FFFFFF;
+    border-radius: 9999px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: clamp(10px, 1.1vw, 12px);
+    color: #1C1C1E;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+  }
+  .intro-resume:hover { opacity: 0.7; }
 </style>
 
 <script src="../scripts/hero.js"></script>
