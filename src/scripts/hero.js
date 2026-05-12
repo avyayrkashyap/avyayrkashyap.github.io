@@ -49,9 +49,3 @@ if (el) {
     setTimeout(typeWriter, 300);
 }
 
-const toggleBtn = document.getElementById('sidebar-toggle');
-if (toggleBtn) {
-  toggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('sidebar-closed');
-  });
-}

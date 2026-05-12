@@ -1,4 +1,33 @@
 (function () {
+    // ── Mobile sidebar toggle ──────────────────────────────────────────────
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    const overlay   = document.getElementById('sidebar-overlay');
+
+    // Start closed on mobile
+    if (window.innerWidth <= 768) {
+        document.body.classList.add('sidebar-closed');
+    }
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('sidebar-closed');
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            document.body.classList.add('sidebar-closed');
+        });
+    }
+
+    // Re-open sidebar automatically when resizing back to desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            document.body.classList.remove('sidebar-closed');
+        }
+    });
+
+
     const sidebarNav = document.getElementById('sidebarNav');
     const tickField  = document.getElementById('tickField');
     const sidebar    = document.querySelector('.sidebar');

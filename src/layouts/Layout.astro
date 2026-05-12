@@ -21,6 +21,18 @@ const { title } = Astro.props;
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <!-- Hamburger: visible on mobile only -->
+  <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="3" y1="6"  x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+
+  <!-- Overlay: tapping it closes the sidebar on mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
   <Sidebar />
   <main class="main">
     <slot />

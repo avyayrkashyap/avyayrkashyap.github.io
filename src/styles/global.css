@@ -168,15 +168,27 @@ body.sidebar-closed .sidebar {
   width: 100%;
 }
 
+/* Hero breaks out of the 914px cap to fill available main width */
+.main>.hero {
+  max-width: none;
+  width: 100%;
+}
+
 body.sidebar-closed .main {
   margin-left: 0;
 }
 
 /* Hero */
 .hero {
-  padding: clamp(80px, 10vh, 120px) clamp(40px, 9vw, 122px) 24px;
+  padding-top: clamp(80px, 10vh, 120px);
+  padding-bottom: 24px;
   min-height: 80svh;
   gap: space-evenly;
+}
+
+/* Card spans full hero width; text content gets the horizontal padding */
+.hero-content {
+  padding: 0 clamp(40px, 9vw, 122px);
 }
 
 .hero-avatar {
@@ -283,4 +295,72 @@ body.sidebar-closed .main {
   height: 284px;
   object-fit: cover;
   border-radius: 4px;
+}
+
+/* ── Sidebar toggle button (mobile only) ── */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+  background-color: #1A6CF0;
+  color: #F8F6F1;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+.sidebar-toggle:hover { opacity: 0.85; }
+
+/* Overlay behind open sidebar on mobile */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 9;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* ── Mobile breakpoint ── */
+@media (max-width: 768px) {
+  /* Show hamburger */
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  /* Sidebar overlays the content instead of pushing it */
+  .sidebar {
+    z-index: 20;
+  }
+
+  /* Main always full-width on mobile */
+  .main {
+    margin-left: 0 !important;
+  }
+
+  /* Show overlay when sidebar is open */
+  body:not(.sidebar-closed) .sidebar-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Tighten hero padding on mobile */
+  .hero {
+    padding-top: clamp(72px, 10vh, 100px);
+  }
+
+  /* Tighten card + content margins */
+  .intro-card-wrap,
+  .hero-content {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+    width: calc(100% - 32px) !important;
+  }
 }
