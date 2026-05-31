@@ -270,8 +270,8 @@
     // Tilt: normalise to –1 … +1 from card centre
     const nx = (e.clientX - rect.left  - rect.width  / 2) / (rect.width  / 2);
     const ny = (e.clientY - rect.top   - rect.height / 2) / (rect.height / 2);
-    tgtY =  nx * MAX_ROT_Y;
-    tgtX = -ny * MAX_ROT_X;
+    tgtY = -nx * MAX_ROT_Y;
+    tgtX =  ny * MAX_ROT_X;
 
     // Ripple: spawn when cursor has moved enough
     const rx = e.clientX - rect.left;
