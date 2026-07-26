@@ -71,9 +71,9 @@
             const g  = gaussian(Math.abs(cy - targetY));
             const w  = MIN_W + (MAX_W - MIN_W) * g;
             tick.style.width = w + 'px';
-            const r  = Math.round(117 + (255 - 117) * g);
-            const gr = Math.round(163 + (255 - 163) * g);
-            const b  = Math.round(240 + (255 - 240) * g);
+            const r  = Math.round(200 + (26  - 200) * g);
+            const gr = Math.round(220 + (108 - 220) * g);
+            const b  = Math.round(250 + (240 - 250) * g);
             tick.style.backgroundColor = `rgb(${r}, ${gr}, ${b})`;
         });
     }

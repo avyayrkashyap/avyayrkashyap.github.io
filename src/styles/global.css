@@ -22,18 +22,20 @@ body {
 
 .sidebar {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 16px;
+  left: 16px;
   width: 258px;
-  height: 100vh;
-  background-color: #1A6CF0;
+  height: calc(100vh - 32px);
+  background-color: #F8F6F1;
   overflow: hidden;
   z-index: 10;
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(26, 108, 240, 0.12), 0 1px 4px rgba(26, 108, 240, 0.08);
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 body.sidebar-closed .sidebar {
-  transform: translateX(-100%);
+  transform: translateX(calc(-100% - 16px));
 }
 
 /* Logo */
@@ -47,9 +49,9 @@ body.sidebar-closed .sidebar {
 
 .logo-dot {
   position: absolute;
-  background-color: #196BED;
+  background-color: #1A6CF0;
   border-radius: 9999px;
-  outline: 1px solid #F8F6F1;
+  outline: 1px solid rgba(26, 108, 240, 0.2);
   transform-origin: 0% 0%;
   transition: all 0.4s ease-in-out;
 
@@ -92,7 +94,7 @@ body.sidebar-closed .sidebar {
 .tick {
   height: 2px;
   width: 14px;
-  background-color: #75A3F0;
+  background-color: rgba(26, 108, 240, 0.2);
   border-radius: 9999px;
   transition: width 70ms ease-out, background-color 70ms ease-out;
 }
@@ -103,7 +105,7 @@ body.sidebar-closed .sidebar {
   font-family: 'Manrope', system-ui, sans-serif;
   font-size: 16px;
   line-height: 1;
-  color: #F8F6F1;
+  color: #1A6CF0;
   text-decoration: none;
   white-space: nowrap;
   opacity: 0.4;
@@ -143,7 +145,7 @@ body.sidebar-closed .sidebar {
   font-family: 'Manrope', system-ui, sans-serif;
   font-size: 11px;
   line-height: 1;
-  color: #F8F6F1;
+  color: #1A6CF0;
   text-decoration: none;
   opacity: 0.35;
   padding: 5px 0;
@@ -157,7 +159,7 @@ body.sidebar-closed .sidebar {
 
 .main {
   position: relative;
-  margin-left: 258px;
+  margin-left: 290px;
   background-color: #F8F6F1;
   transition: margin-left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -375,7 +377,7 @@ body:not(.sidebar-closed) .sidebar-toggle .btn-icon--arrow {
 
   /* Slide hamburger to sit just right of the open sidebar */
   body:not(.sidebar-closed) .sidebar-toggle {
-    left: calc(258px + 12px);
+    left: calc(16px + 258px + 12px);
   }
 
   /* Tighten hero padding on mobile */
