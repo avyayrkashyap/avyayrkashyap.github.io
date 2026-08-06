@@ -11,17 +11,29 @@ const links = [
 <section class="hero">
   {/*
     ThinkingOrb paints grayscale ink only (no colour prop), so the orb is
-    recoloured by mapping every painted pixel to the accent blue while
-    keeping its alpha. Lives on the wrapper because Astro's scoped styles
-    don't reach elements rendered inside a React island.
+    recoloured by mapping every painted pixel to the accent while keeping
+    its alpha. Lives on the wrapper because Astro's scoped styles don't
+    reach elements rendered inside a React island. feColorMatrix can't read
+    a CSS variable, so each theme's accent gets its own filter and the
+    wrapper swaps between them.
   */}
   <svg class="hero-orb-defs" aria-hidden="true" focusable="false">
-    <filter id="orbBlue" color-interpolation-filters="sRGB">
+    <!-- --color-accent light: #1A6CF0 -->
+    <filter id="orbAccentLight" color-interpolation-filters="sRGB">
       <feColorMatrix
         type="matrix"
         values="0 0 0 0 0.10196
                 0 0 0 0 0.42353
                 0 0 0 0 0.94118
+                0 0 0 1 0" />
+    </filter>
+    <!-- --color-accent dark: #5C97FF -->
+    <filter id="orbAccentDark" color-interpolation-filters="sRGB">
+      <feColorMatrix
+        type="matrix"
+        values="0 0 0 0 0.36078
+                0 0 0 0 0.59216
+                0 0 0 0 1
                 0 0 0 1 0" />
     </filter>
   </svg>
@@ -65,11 +77,12 @@ const links = [
     font-size: 15px;
     font-weight: 500;
     line-height: 1;
-    color: #1A6CF0;
+    color: var(--color-accent);
     margin-bottom: 14px;
+    transition: color 0.3s ease;
   }
 
-  /* Zero-size holder for the tint filter */
+  /* Zero-size holder for the tint filters */
   .hero-orb-defs {
     position: absolute;
     width: 0;
@@ -81,7 +94,11 @@ const links = [
     display: inline-flex;
     flex-shrink: 0;
     line-height: 0;
-    filter: url(#orbBlue);
+    filter: url(#orbAccentLight);
+  }
+
+  :global(html[data-theme='dark']) .hero-orb {
+    filter: url(#orbAccentDark);
   }
 
   /* Sized against the ~670px content column, not the viewport */
@@ -91,17 +108,19 @@ const links = [
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.035em;
-    color: #1C1C1E;
+    color: var(--color-text);
+    transition: color 0.3s ease;
   }
 
   .hero-body {
     font-family: 'Manrope', system-ui, sans-serif;
     font-size: 17px;
     line-height: 1.65;
-    color: #1C1C1E;
+    color: var(--color-text);
     opacity: 0.65;
     max-width: 50ch;
     margin-top: 20px;
+    transition: color 0.3s ease;
   }
 
   /* ── Link pills ── */
@@ -118,22 +137,23 @@ const links = [
     gap: 8px;
     height: 38px;
     padding: 0 16px;
-    background: #FFFFFF;
+    background: var(--color-bg-secondary);
     border-radius: 9999px;
-    box-shadow: 0 1px 2px rgba(26, 108, 240, 0.06), 0 4px 16px rgba(26, 108, 240, 0.08);
+    box-shadow: 0 1px 2px var(--color-shadow-soft), 0 4px 16px var(--color-shadow);
     font-family: 'Manrope', system-ui, sans-serif;
     font-size: 14px;
     font-weight: 500;
-    color: #1C1C1E;
+    color: var(--color-text);
     text-decoration: none;
     white-space: nowrap;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease,
+      background-color 0.3s ease;
   }
 
   .hero-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(26, 108, 240, 0.08), 0 8px 24px rgba(26, 108, 240, 0.14);
-    color: #1A6CF0;
+    box-shadow: 0 2px 4px var(--color-shadow), 0 8px 24px var(--color-shadow);
+    color: var(--color-accent);
   }
 
   .hero-link-arrow {
