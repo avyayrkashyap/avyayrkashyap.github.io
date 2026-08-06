@@ -1,4 +1,17 @@
 (function () {
+    // ── Dark mode toggle ────────────────────────────────────────────────────
+    const themeToggle = document.getElementById('themeToggle');
+    const themeChangeListeners = [];
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const next = isDark ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeChangeListeners.forEach(fn => fn());
+        });
+    }
+
     // ── Mobile sidebar toggle ──────────────────────────────────────────────
     const toggleBtn = document.getElementById('sidebar-toggle');
     const overlay   = document.getElementById('sidebar-overlay');
@@ -66,14 +79,17 @@
     }
 
     function setWidths(targetY) {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const idle   = isDark ? [90, 100, 120]  : [200, 220, 250];
+        const active = isDark ? [92, 151, 255] : [26, 108, 240];
         ticks.forEach((tick, i) => {
             const cy = i * TICK_STEP + 1;
             const g  = gaussian(Math.abs(cy - targetY));
             const w  = MIN_W + (MAX_W - MIN_W) * g;
             tick.style.width = w + 'px';
-            const r  = Math.round(200 + (26  - 200) * g);
-            const gr = Math.round(220 + (108 - 220) * g);
-            const b  = Math.round(250 + (240 - 250) * g);
+            const r  = Math.round(idle[0] + (active[0] - idle[0]) * g);
+            const gr = Math.round(idle[1] + (active[1] - idle[1]) * g);
+            const b  = Math.round(idle[2] + (active[2] - idle[2]) * g);
             tick.style.backgroundColor = `rgb(${r}, ${gr}, ${b})`;
         });
     }
@@ -90,6 +106,7 @@
     let hovering = false;
 
     setWidths(activeTickY);
+    themeChangeListeners.push(() => setWidths(activeTickY));
 
     navLinks.forEach((link, i) => {
         link.addEventListener('mouseenter', () => { activeIdx = i; });
