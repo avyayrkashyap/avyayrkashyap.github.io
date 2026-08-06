@@ -1,1 +1,1 @@
-{"name":"paper-folio","type":"module","version":"1.0.0","scripts":{"dev":"astro dev","build":"astro build","preview":"astro preview"},"dependencies":{"astro":"4.16.19"}}
+{"name":"paper-folio","type":"module","version":"1.0.0","scripts":{"dev":"astro dev","build":"astro build","preview":"astro preview"},"dependencies":{"@astrojs/react":"^3.6.3","@types/react":"^18.3.31","@types/react-dom":"^18.3.7","astro":"4.16.19","react":"^19.2.8","react-dom":"^19.2.8","thinking-orbs":"^0.2.0"}}

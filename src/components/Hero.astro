@@ -1,319 +1,192 @@
 ---
 // src/components/Hero.astro
+import { ThinkingOrb } from 'thinking-orbs';
+
+const links = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/avyaykashyap/' },
+  { label: 'X', href: 'https://x.com/avyayrk' },
+  { label: 'Resume', href: '/assets/files/resume.pdf' },
+];
 ---
 <section class="hero">
-  <!-- Intro card -->
-  <div class="intro-card-wrap" id="introWrap">
-  <div class="intro-card" id="introCard">
+  {/*
+    ThinkingOrb paints grayscale ink only (no colour prop), so the orb is
+    recoloured by mapping every painted pixel to the accent while keeping
+    its alpha. Lives on the wrapper because Astro's scoped styles don't
+    reach elements rendered inside a React island. feColorMatrix can't read
+    a CSS variable, so each theme's accent gets its own filter and the
+    wrapper swaps between them.
+  */}
+  <svg class="hero-orb-defs" aria-hidden="true" focusable="false">
+    <!-- --color-accent light: #1A6CF0 -->
+    <filter id="orbAccentLight" color-interpolation-filters="sRGB">
+      <feColorMatrix
+        type="matrix"
+        values="0 0 0 0 0.10196
+                0 0 0 0 0.42353
+                0 0 0 0 0.94118
+                0 0 0 1 0" />
+    </filter>
+    <!-- --color-accent dark: #5C97FF -->
+    <filter id="orbAccentDark" color-interpolation-filters="sRGB">
+      <feColorMatrix
+        type="matrix"
+        values="0 0 0 0 0.36078
+                0 0 0 0 0.59216
+                0 0 0 0 1
+                0 0 0 1 0" />
+    </filter>
+  </svg>
 
-    <!-- Static tick marks (nav motif) -->
-    <svg class="intro-ticks" aria-hidden="true" viewBox="0 0 1000 490" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <rect x="38" y="92"  width="28" height="2" rx="1" fill="rgba(26,108,240,0.18)"/>
-      <rect x="38" y="114" width="20" height="2" rx="1" fill="rgba(26,108,240,0.13)"/>
-      <rect x="38" y="136" width="24" height="2" rx="1" fill="rgba(26,108,240,0.09)"/>
-      <rect x="38" y="158" width="16" height="2" rx="1" fill="rgba(26,108,240,0.06)"/>
-      <rect x="38" y="180" width="22" height="2" rx="1" fill="rgba(26,108,240,0.04)"/>
-      <rect x="38" y="202" width="18" height="2" rx="1" fill="rgba(26,108,240,0.03)"/>
+  <p class="hero-eyebrow">
+    <span class="hero-orb" aria-hidden="true">
+      <ThinkingOrb client:load state="breathing" size={20} theme="light" aria-hidden={true} />
+    </span>
+    Hi, I am Avyay
+  </p>
+  <h1 class="hero-title">Making Complex Experiences Intuitive</h1>
+  <p class="hero-body">I'm detail oriented product builder, crafting familiar, yet novel experiences that enable critical thinking.</p>
 
-      <rect x="882" y="282" width="24" height="2" rx="1" fill="rgba(26,108,240,0.16)"/>
-      <rect x="882" y="304" width="16" height="2" rx="1" fill="rgba(26,108,240,0.11)"/>
-      <rect x="882" y="326" width="20" height="2" rx="1" fill="rgba(26,108,240,0.07)"/>
-      <rect x="882" y="348" width="14" height="2" rx="1" fill="rgba(26,108,240,0.05)"/>
-      <rect x="882" y="370" width="18" height="2" rx="1" fill="rgba(26,108,240,0.03)"/>
-    </svg>
-
-    <!-- Ripple canvas -->
-    <canvas id="introCanvas" class="intro-canvas" aria-hidden="true"></canvas>
-
-    <!-- Card content -->
-    <span class="intro-name">Avyay Kashyap</span>
-    <span class="intro-values">Clarity<br />Delight<br />Curiosity</span>
-    <img class="intro-memoji" src="/assets/index/memoji.png" alt="Avyay memoji" />
-    <span class="intro-location">Moody's Ratings</span>
-    <div class="intro-social">
-      <a href="https://www.linkedin.com/in/avyaykashyap/" target="_blank" rel="noopener" class="intro-icon-btn" aria-label="LinkedIn">
-        <img src="/assets/index/icon-linkedin.png" alt="LinkedIn" width="16" height="16" />
+  <div class="hero-links">
+    {links.map(({ label, href }) => (
+      <a class="hero-link" href={href} target="_blank" rel="noopener">
+        {label}
+        <svg class="hero-link-arrow" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.5 8.5 8.5 3.5" />
+          <path d="M4.25 3.5H8.5V7.75" />
+        </svg>
       </a>
-      <a href="/assets/files/resume.pdf" target="_blank" rel="noopener" class="intro-resume" aria-label="Resume">Resume</a>
-      <a href="https://x.com/avyayrk" target="_blank" rel="noopener" class="intro-icon-btn" aria-label="X (Twitter)">
-        <img src="/assets/index/icon-x.png" alt="X" width="16" height="16" />
-      </a>
-    </div>
-    <img class="intro-skyline" src="/assets/index/nyc-skyline.png" alt="" aria-hidden="true" />
-  </div>
-  </div>
-
-  <div class="hero-content">
-    <h1 class="hero-title" style="min-height: 1.05em;">
-      <span id="typewriter"></span><span class="cursor">|</span>
-    </h1>
-    <p class="hero-body">I am Avyay, a detail oriented product designer, crafting familiar, yet novel experiences that enable critical thinking.</p>
+    ))}
   </div>
 </section>
 
 <style>
-  .cursor {
-    font-weight: 400;
-    color: var(--color-accent);
-    animation: blink 1s step-end infinite;
-    margin-left: 2px;
-  }
-  @keyframes blink {
-    50% { opacity: 0; }
+  .hero {
+    padding: clamp(96px, 16vh, 168px) clamp(40px, 9vw, 122px) clamp(64px, 9vh, 104px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
   }
 
-  /* ── Intro Card ── */
-  .intro-card-wrap {
-    perspective: 900px;
-    margin: 32px;
-    margin-bottom: 40px;
-  }
-
-  .intro-card {
-    position: relative;
-    width: 100%;
-    max-width: none;
-    height: 68vh;
-    background-color: var(--color-bg);
-    border: 1px solid var(--color-accent);
-    border-radius: 8px;
-    overflow: hidden;
-    will-change: transform;
-    transform-style: preserve-3d;
-    transform: rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-  }
-
-  .intro-ticks {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .intro-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* Content above canvas */
-  .intro-name,
-  .intro-values,
-  .intro-memoji,
-  .intro-location,
-  .intro-social {
-    position: absolute;
-    z-index: 2;
-  }
-
-  .intro-name {
-    top: 4.7%;
-    left: 2.3%;
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: clamp(10px, 1.1vw, 12px);
-    color: var(--color-text);
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  .intro-values {
-    top: 4.7%;
-    right: 2.3%;
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: clamp(10px, 1.1vw, 12px);
-    color: var(--color-text);
-    line-height: 1.3;
-    text-align: right;
-  }
-
-  .intro-memoji {
-    left: 50%;
-    top: 24%;
-    transform: translateX(-50%);
-    width: clamp(160px, 18%, 278px);
-    height: auto;
-    display: block;
-  }
-
-  .intro-location {
-    bottom: 5%;
-    left: 2.3%;
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: clamp(10px, 1.1vw, 12px);
-    color: var(--color-text);
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  .intro-social {
-    bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
+  .hero-eyebrow {
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--color-accent);
+    margin-bottom: 14px;
+    transition: color 0.3s ease;
   }
 
-  .intro-icon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: var(--color-bg-secondary);
-    border-radius: 9999px;
-    text-decoration: none;
+  /* Zero-size holder for the tint filters */
+  .hero-orb-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .hero-orb {
+    display: inline-flex;
     flex-shrink: 0;
-    transition: opacity 0.2s ease, background-color 0.3s ease;
-  }
-  .intro-icon-btn:hover { opacity: 0.7; }
-  .intro-icon-btn img {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
+    line-height: 0;
+    filter: url(#orbAccentLight);
   }
 
-  .intro-resume {
+  :global(html[data-theme='dark']) .hero-orb {
+    filter: url(#orbAccentDark);
+  }
+
+  /* Sized against the ~670px content column, not the viewport */
+  .hero-title {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: clamp(34px, 3.6vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    color: var(--color-text);
+    transition: color 0.3s ease;
+  }
+
+  .hero-body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-text);
+    opacity: 0.65;
+    max-width: 50ch;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+  }
+
+  /* ── Link pills ── */
+  .hero-links {
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 36px;
+  }
+
+  .hero-link {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    height: 32px;
+    gap: 8px;
+    height: 38px;
     padding: 0 16px;
     background: var(--color-bg-secondary);
     border-radius: 9999px;
+    box-shadow: 0 1px 2px var(--color-shadow-soft), 0 4px 16px var(--color-shadow);
     font-family: 'Manrope', system-ui, sans-serif;
-    font-size: clamp(10px, 1.1vw, 12px);
+    font-size: 14px;
+    font-weight: 500;
     color: var(--color-text);
     text-decoration: none;
     white-space: nowrap;
-    flex-shrink: 0;
-    transition: opacity 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-  }
-  .intro-resume:hover { opacity: 0.7; }
-
-  /* NYC skyline — bottom-right corner, blend multiply */
-  .intro-skyline {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: clamp(80px, 10.8%, 118px);
-    height: auto;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 2;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease,
+      background-color 0.3s ease;
   }
 
-  :global(html[data-theme='dark']) .intro-skyline {
-    mix-blend-mode: screen;
-    opacity: 0.6;
+  .hero-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px var(--color-shadow), 0 8px 24px var(--color-shadow);
+    color: var(--color-accent);
   }
 
-  /* ── Hero content: matches card width, centred ── */
-  .hero-content {
-    width: calc(100% - 64px);
-    max-width: none;
-    margin: 0 32px;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .hero-link-arrow {
+    width: 12px;
+    height: 12px;
+    opacity: 0.45;
+    transition: opacity 0.2s ease;
+  }
+
+  .hero-link:hover .hero-link-arrow {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    /* Horizontal padding stays in sync with .work-section so both align */
+    .hero {
+      padding-top: clamp(72px, 12vh, 112px);
+      padding-bottom: 56px;
+    }
+
+    .hero-body {
+      font-size: 16px;
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-link,
+    .hero-link-arrow {
+      transition: none;
+    }
+    .hero-link:hover {
+      transform: none;
+    }
   }
 </style>
-
-<script src="../scripts/hero.js"></script>
-
-<script>
-  const wrap   = document.getElementById('introWrap') as HTMLDivElement;
-  const card   = document.getElementById('introCard') as HTMLDivElement;
-  const canvas = document.getElementById('introCanvas') as HTMLCanvasElement;
-  if (!wrap || !card || !canvas) throw new Error('missing');
-
-  const ctx = canvas.getContext('2d')!;
-
-  // ── Canvas resize ──────────────────────────────────────────────────────────
-  function resize() {
-    canvas.width  = card.offsetWidth;
-    canvas.height = card.offsetHeight;
-  }
-  resize();
-  new ResizeObserver(resize).observe(card);
-
-  // ── Tilt state ─────────────────────────────────────────────────────────────
-  const MAX_ROT_X = 8;   // degrees
-  const MAX_ROT_Y = 12;  // degrees
-  const LERP_IN   = 0.10;
-  const LERP_OUT  = 0.07;
-
-  let tgtX = 0, tgtY = 0;
-  let curX = 0, curY = 0;
-  let hovering = false;
-
-  function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
-
-  // ── Ripple state ───────────────────────────────────────────────────────────
-  interface Ripple { x: number; y: number; r: number; alpha: number }
-  const ripples: Ripple[] = [];
-  const MAX_R     = 130;
-  const SPEED     = 2.0;
-  const FADE      = 0.011;
-  const SPAWN_GAP = 12;
-  let lastX = -9999, lastY = -9999;
-
-  // ── Events ─────────────────────────────────────────────────────────────────
-  wrap.addEventListener('mouseenter', () => { hovering = true; });
-  wrap.addEventListener('mouseleave', () => { hovering = false; tgtX = 0; tgtY = 0; });
-
-  wrap.addEventListener('mousemove', (e: MouseEvent) => {
-    const rect = card.getBoundingClientRect();
-
-    // Tilt: normalise to –1 … +1 from card centre
-    const nx = (e.clientX - rect.left  - rect.width  / 2) / (rect.width  / 2);
-    const ny = (e.clientY - rect.top   - rect.height / 2) / (rect.height / 2);
-    tgtY = -nx * MAX_ROT_Y;
-    tgtX =  ny * MAX_ROT_X;
-
-    // Ripple: spawn when cursor has moved enough
-    const rx = e.clientX - rect.left;
-    const ry = e.clientY - rect.top;
-    if (Math.hypot(rx - lastX, ry - lastY) >= SPAWN_GAP) {
-      ripples.push({ x: rx, y: ry, r: 0, alpha: 0.42 });
-      lastX = rx; lastY = ry;
-    }
-  });
-
-  // ── Unified animation loop ─────────────────────────────────────────────────
-  function tick() {
-    // Lerp tilt
-    const t = hovering ? LERP_IN : LERP_OUT;
-    curX = lerp(curX, tgtX, t);
-    curY = lerp(curY, tgtY, t);
-
-    const scale = hovering ? lerp(1, 1.018, LERP_IN) : 1;
-    card.style.transform =
-      `rotateX(${curX}deg) rotateY(${curY}deg) scale3d(${scale},${scale},${scale})`;
-
-    // Draw ripples
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = ripples.length - 1; i >= 0; i--) {
-      const rip = ripples[i];
-      rip.r    += SPEED;
-      rip.alpha -= FADE;
-      if (rip.alpha <= 0 || rip.r > MAX_R) { ripples.splice(i, 1); continue; }
-      ctx.beginPath();
-      ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(26, 108, 240, ${rip.alpha})`;
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
-    }
-
-    requestAnimationFrame(tick);
-  }
-  tick();
-</script>
