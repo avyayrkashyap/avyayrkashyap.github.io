@@ -137,22 +137,20 @@ const links = [
     gap: 8px;
     height: 38px;
     padding: 0 16px;
-    background: var(--color-bg-secondary);
+    background: transparent;
     border-radius: 9999px;
-    box-shadow: 0 1px 2px var(--color-shadow-soft), 0 4px 16px var(--color-shadow);
     font-family: 'Manrope', system-ui, sans-serif;
     font-size: 14px;
     font-weight: 500;
     color: var(--color-text);
     text-decoration: none;
     white-space: nowrap;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease,
-      background-color 0.3s ease;
+    transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
   }
 
   .hero-link:hover {
     transform: translateY(-2px);
-    box-shadow: 0 2px 4px var(--color-shadow), 0 8px 24px var(--color-shadow);
+    background: var(--color-bg-secondary);
     color: var(--color-accent);
   }
 
