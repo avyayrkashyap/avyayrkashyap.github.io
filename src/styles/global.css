@@ -170,66 +170,11 @@ body.sidebar-closed .sidebar {
   width: 100%;
 }
 
-/* Hero breaks out of the 914px cap to fill available main width */
-.main>.hero {
-  max-width: none;
-  width: 100%;
-}
-
 body.sidebar-closed .main {
   margin-left: 0;
 }
 
-/* Hero */
-.hero {
-  padding-top: clamp(80px, 10vh, 120px);
-  padding-bottom: 24px;
-  min-height: 80svh;
-  gap: space-evenly;
-}
-
-/* Card spans full hero width; text content gets the horizontal padding */
-.hero-content {
-  padding: 0 clamp(40px, 9vw, 122px);
-}
-
-.hero-avatar {
-  display: block;
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
-  margin-bottom: 32px;
-}
-
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: 680px;
-}
-
-.hero-title {
-  font-family: 'Lexend', system-ui, sans-serif;
-  font-size: clamp(36px, 4.2vw, 60px);
-  font-weight: 700;
-  color: #1C1C1E;
-  letter-spacing: -0.05em;
-  line-height: 1.05;
-}
-
-.hero-body {
-  font-family: 'Manrope', system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.75;
-  color: #1C1C1E;
-  opacity: 0.65;
-  margin-bottom: 12px;
-  max-width: 520px;
-}
-
-.hero-cta:hover {
-  opacity: 0.7;
-}
+/* Hero styles live in src/components/Hero.astro */
 
 /* ── Work section ── */
 
@@ -380,16 +325,4 @@ body:not(.sidebar-closed) .sidebar-toggle .btn-icon--arrow {
     left: calc(16px + 258px + 12px);
   }
 
-  /* Tighten hero padding on mobile */
-  .hero {
-    padding-top: clamp(72px, 10vh, 100px);
-  }
-
-  /* Tighten card + content margins */
-  .intro-card-wrap,
-  .hero-content {
-    margin-left: 16px !important;
-    margin-right: 16px !important;
-    width: calc(100% - 32px) !important;
-  }
 }
