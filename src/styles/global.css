@@ -167,8 +167,10 @@ body.sidebar-closed .sidebar {
 
 .cs-subnav {
   position: absolute;
-  top: 148px;   /* just below Home link */
-  left: 84px;   /* aligned with nav-link text */
+  top: 148px;
+  /* just below Home link */
+  left: 84px;
+  /* aligned with nav-link text */
   max-height: 168px;
   overflow-y: auto;
   display: flex;
@@ -176,7 +178,10 @@ body.sidebar-closed .sidebar {
   gap: 2px;
   scrollbar-width: none;
 }
-.cs-subnav::-webkit-scrollbar { display: none; }
+
+.cs-subnav::-webkit-scrollbar {
+  display: none;
+}
 
 .cs-subnav-link {
   font-family: 'Manrope', system-ui, sans-serif;
@@ -189,8 +194,15 @@ body.sidebar-closed .sidebar {
   white-space: nowrap;
   transition: opacity 0.15s ease;
 }
-.cs-subnav-link:hover { opacity: 0.8; }
-.cs-subnav-link.active { opacity: 1; font-weight: 700; }
+
+.cs-subnav-link:hover {
+  opacity: 0.8;
+}
+
+.cs-subnav-link.active {
+  opacity: 1;
+  font-weight: 700;
+}
 
 /* ── Theme toggle (bottom of sidebar) ──
    A track + thumb switch. The thumb's hover/press "pill stretch" is ported
@@ -212,7 +224,10 @@ body.sidebar-closed .sidebar {
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
-.theme-toggle:hover { opacity: 0.85; }
+
+.theme-toggle:hover {
+  opacity: 0.85;
+}
 
 .theme-track {
   position: relative;
@@ -238,10 +253,17 @@ html[data-theme='dark'] .theme-track {
 }
 
 /* The icon matching the active theme picks up the accent blue; the other stays muted */
-.theme-toggle-icon--sun { color: var(--color-accent); }
+.theme-toggle-icon--sun {
+  color: var(--color-accent);
+}
 
-html[data-theme='dark'] .theme-toggle-icon--sun { color: var(--color-text-muted); }
-html[data-theme='dark'] .theme-toggle-icon--moon { color: var(--color-accent); }
+html[data-theme='dark'] .theme-toggle-icon--sun {
+  color: var(--color-text-muted);
+}
+
+html[data-theme='dark'] .theme-toggle-icon--moon {
+  color: var(--color-accent);
+}
 
 .theme-thumb {
   position: absolute;
@@ -261,12 +283,24 @@ html[data-theme='dark'] .theme-thumb {
 }
 
 /* Hover: thumb pill-extends 2px toward the track center */
-.theme-toggle:hover .theme-thumb { width: 18px; }
-html[data-theme='dark'] .theme-toggle:hover .theme-thumb { left: 14px; }
+.theme-toggle:hover .theme-thumb {
+  width: 18px;
+}
+
+html[data-theme='dark'] .theme-toggle:hover .theme-thumb {
+  left: 14px;
+}
 
 /* Press: thumb squishes wider and shorter, still centered vertically */
-.theme-toggle:active .theme-thumb { width: 20px; height: 12px; top: 4px; }
-html[data-theme='dark'] .theme-toggle:active .theme-thumb { left: 12px; }
+.theme-toggle:active .theme-thumb {
+  width: 20px;
+  height: 12px;
+  top: 4px;
+}
+
+html[data-theme='dark'] .theme-toggle:active .theme-thumb {
+  left: 12px;
+}
 
 /* ── Main ── */
 
@@ -323,13 +357,18 @@ body.sidebar-closed .main {
 }
 
 .case-study-title {
-  font-family: system-ui, sans-serif;
+  font-family: 'Lexend', system-ui, sans-serif;
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-text);
   line-height: 1.15;
+  letter-spacing: -0.056em;
   flex-shrink: 0;
   max-width: 320px;
+}
+
+.case-study-card:hover .case-study-title {
+  color: var(--color-accent);
 }
 
 .case-study-desc {
@@ -388,7 +427,10 @@ body.sidebar-closed .main {
   justify-content: center;
   transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, background-color 0.3s ease, color 0.3s ease;
 }
-.sidebar-toggle:hover { opacity: 0.85; }
+
+.sidebar-toggle:hover {
+  opacity: 0.85;
+}
 
 .btn-icon {
   position: absolute;
@@ -397,6 +439,7 @@ body.sidebar-closed .main {
   transform: translate(-50%, -50%) scale(1);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
+
 .btn-icon--arrow {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.75);
@@ -407,6 +450,7 @@ body:not(.sidebar-closed) .sidebar-toggle .btn-icon--menu {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.75);
 }
+
 body:not(.sidebar-closed) .sidebar-toggle .btn-icon--arrow {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
@@ -425,6 +469,7 @@ body:not(.sidebar-closed) .sidebar-toggle .btn-icon--arrow {
 
 /* ── Mobile breakpoint ── */
 @media (max-width: 768px) {
+
   /* Show hamburger */
   .sidebar-toggle {
     display: flex;
