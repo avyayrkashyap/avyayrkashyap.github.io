@@ -44,8 +44,19 @@ const links = [
     </span>
     Hi, I am Avyay
   </p>
-  <h1 class="hero-title">Making Complex Experiences Intuitive</h1>
-  <p class="hero-body">I'm detail oriented product builder, crafting familiar, yet novel experiences that enable critical thinking.</p>
+  <h1 class="hero-title">I make complexity intuitive through AI-native design processes that drive business impact.</h1>
+
+  <div class="hero-logos">
+    <img class="hero-logo hero-logo--light" src="/assets/index/logo-moodys.png" alt="Moody's" />
+    <img class="hero-logo hero-logo--dark" src="/assets/index/logo-moodys-dark.png" alt="Moody's" />
+    <span class="hero-logo-dot" aria-hidden="true"></span>
+    <img class="hero-logo hero-logo--light" src="/assets/index/logo-gep.png" alt="GEP" />
+    <img class="hero-logo hero-logo--dark" src="/assets/index/logo-gep-dark.png" alt="GEP" />
+    <span class="hero-logo-dot" aria-hidden="true"></span>
+    <img class="hero-logo" src="/assets/index/logo-jio.png" alt="Jio" />
+    <span class="hero-logo-dot" aria-hidden="true"></span>
+    <img class="hero-logo" src="/assets/index/logo-philips.png" alt="Philips" />
+  </div>
 
   <div class="hero-links">
     {links.map(({ label, href }) => (
@@ -71,7 +82,8 @@ const links = [
 
   .hero-eyebrow {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
     gap: 8px;
     font-family: 'Manrope', system-ui, sans-serif;
     font-size: 15px;
@@ -104,23 +116,49 @@ const links = [
   /* Sized against the ~670px content column, not the viewport */
   .hero-title {
     font-family: 'Lexend', system-ui, sans-serif;
-    font-size: clamp(34px, 3.6vw, 48px);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.035em;
+    font-size: clamp(28px, 3.6vw, 36px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.056em;
     color: var(--color-text);
     transition: color 0.3s ease;
   }
 
-  .hero-body {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 17px;
-    line-height: 1.65;
-    color: var(--color-text);
-    opacity: 0.65;
-    max-width: 50ch;
-    margin-top: 20px;
-    transition: color 0.3s ease;
+  /* ── Client logos ── */
+  .hero-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .hero-logo {
+    height: 16px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  /* Moody's, GEP, and Jio ship separate dark-mode marks; swap by theme
+     instead of tinting so each keeps its intended brand color. */
+  .hero-logo--dark {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .hero-logo--light {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .hero-logo--dark {
+    display: block;
+  }
+
+  .hero-logo-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--color-border);
+    flex-shrink: 0;
   }
 
   /* ── Link pills ── */
@@ -128,7 +166,7 @@ const links = [
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 36px;
+    margin-top: 32px;
   }
 
   .hero-link {
@@ -170,11 +208,6 @@ const links = [
     .hero {
       padding-top: clamp(72px, 12vh, 112px);
       padding-bottom: 56px;
-    }
-
-    .hero-body {
-      font-size: 16px;
-      max-width: none;
     }
   }
 
