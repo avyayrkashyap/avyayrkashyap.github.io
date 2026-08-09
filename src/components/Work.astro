@@ -1,129 +1,45 @@
 ---
 // src/components/Work.astro
+import CaseStudyCard from './CaseStudyCard.astro';
 ---
 <section id="work" class="work-section">
-  <a href="/gep" class="case-study-link">
-  <article class="case-study-card">
-    <div class="case-study-header">
-      <span class="case-study-index">/01</span>
-      <div class="case-study-info">
-        <h2 class="case-study-title">Redesigning S2C Cost Analytics</h2>
-        <p class="case-study-desc">Bridged the gap between market volatility and strategic action by redesigning a cost analytics platform that increased product stickiness and user likability by 16%.</p>
-      </div>
-      <div class="case-study-tags">
-        <span>Internship</span>
-        <span>•</span>
-        <span>Product Design</span>
-        <span>•</span>
-        <span>3 months</span>
-      </div>
-    </div>
-    <div class="cs-frame" aria-hidden="true">
-      <!-- Backgrounds cross-fade -->
-      <div class="cs-bg-light"></div>
-      <div class="cs-bg-dark"></div>
+  <div class="work-list">
+    <CaseStudyCard
+      index="/01"
+      title="Moody's Ratings"
+      description="Led end-to-end design for Moody's first structured finance applications, reducing analyst errors by up to 33% and improving clarity of tools in a 0→1 enterprise environment."
+      tags={["Product Design", "AI-assisted development", "Sep 2024 - Present"]}
+      href="/moodys"
+      image="/assets/moodys/moodys-cover.png"
+      imageAlt="Moody's Structured Workflow Analytics dashboard"
+      imageBg="#091264"
+    />
 
-      <!-- Hover-only overlays fade in -->
-      <div class="cs-table cs-table-top"></div>
-      <div class="cs-cards cs-cards-center"></div>
-      <div class="cs-table cs-table-bottom"></div>
-      <div class="cs-cards cs-cards-right"></div>
+    <hr class="work-divider" />
 
-      <!-- Laptop: fades out and rotates on hover -->
-      <div class="cs-laptop"></div>
-
-      <!-- Logo: always on top, never moves -->
-      <div class="cs-logo"></div>
-    </div>
-  </article>
-  </a>
+    <CaseStudyCard
+      index="/02"
+      title="GEP Cost Analytics"
+      description="Bridged the gap between market volatility and strategic action by redesigning a cost analytics platform that increased product stickiness and user likability by 16%."
+      tags={["Internship", "Product Design", "3 months"]}
+      href="/gep"
+      image="/assets/gep/gep-cover.png"
+      imageAlt="GEP Cost Model dashboard"
+      imageBg="#001E4F"
+    />
+  </div>
 </section>
 
 <style>
-  .case-study-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
+  .work-list {
+    display: flex;
+    flex-direction: column;
   }
 
-  .cs-frame {
-    position: relative;
-    width: 100%;
-    max-width: 680px;
-    height: 284px;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  /* ── Backgrounds ── */
-  .cs-bg-light,
-  .cs-bg-dark {
-    position: absolute;
-    inset: 0;
-  }
-  .cs-bg-light { background: #CCE2F3; opacity: 1; }
-  .cs-bg-dark  { background: #060506; opacity: 0; }
-
-  .case-study-link:hover .cs-bg-light { opacity: 0; }
-  .case-study-link:hover .cs-bg-dark  { opacity: 1; }
-
-  /* ── Laptop: single element, transitions from upright → rotated ── */
-  .cs-laptop {
-    position: absolute;
-    background-image: url('/assets/index/gep-laptop.png');
-    background-size: cover;
-    background-position: 50%;
-
-    /* Default: centered, upright */
-    width: 371px;
-    height: 328px;
-    left: 50%;
-    top: 55px;
-    translate: -50% 0px;
-    rotate: 0deg;
-
-    transition:
-      width   0.5s ease,
-      height  0.5s ease,
-      top     0.5s ease,
-      translate 0.5s ease,
-      rotate  0.5s ease;
-  }
-
-  .case-study-link:hover .cs-laptop {
-    width: 512px;
-    height: 453px;
-    top: 50%;
-    translate: -50% calc(-50% + 84px);
-    rotate: 17.81deg;
-  }
-
-  /* ── Hover-only overlays (match PE-0 layout exactly) ── */
-  .cs-table,
-  .cs-cards {
-    position: absolute;
-    background-size: cover;
-    background-position: 50%;
-    opacity: 0;
-  }
-  .case-study-link:hover .cs-table,
-  .case-study-link:hover .cs-cards { opacity: 1; }
-
-  .cs-table { background-image: url('/assets/index/gep-table.png'); width: 340px; height: 133px; }
-  .cs-cards { background-image: url('/assets/index/gep-cards.png'); width: 198px; height: 595px; }
-
-  .cs-table-top    { left: -73px; top: 45px; }
-  .cs-table-bottom { left: 0;     top: 178px; }
-  .cs-cards-center { left: 267px; top: -132px; }
-  .cs-cards-right  { left: 465px; top: 4px; }
-
-  /* ── Logo: always on top ── */
-  .cs-logo {
-    position: absolute;
-    top: 16px; left: 16px;
-    width: 48px; height: 16px;
-    background-image: url('/assets/index/gep-logo.png');
-    background-size: cover;
-    background-position: 50%;
+  .work-divider {
+    border: none;
+    border-top: 1px solid var(--color-divider);
+    margin: 80px 0;
+    transition: border-color 0.3s ease;
   }
 </style>

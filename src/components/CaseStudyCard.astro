@@ -1,0 +1,90 @@
+---
+// src/components/CaseStudyCard.astro
+interface Props {
+  index: string;
+  title: string;
+  description: string;
+  tags: string[];
+  href: string;
+  image?: string;
+  imageAlt?: string;
+  imageBg?: string;
+  frameMaxWidth?: string;
+}
+
+const { index, title, description, tags, href, image, imageAlt = '', imageBg, frameMaxWidth } = Astro.props;
+---
+<a href={href} class="case-study-link">
+  <article class="case-study-card">
+    <div class="cs-frame" style={{ background: imageBg, maxWidth: frameMaxWidth }}>
+      <slot>
+        {image && <img src={image} alt={imageAlt} class="cs-cover-img" />}
+      </slot>
+    </div>
+    <div class="case-study-header">
+    <div class="case-study-header-top">
+      <span class="case-study-index">{index}</span>
+      <div class="case-study-tags">
+        {tags.map((tag) => <span>{tag}</span>)}
+      </div>
+    </div>
+      <div class="case-study-info">
+        <h2 class="case-study-title">{title}</h2>
+        <p class="case-study-desc">{description}</p>
+      </div>
+    </div>
+  </article>
+</a>
+
+<style>
+  .case-study-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cs-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2.43;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-radius 0.4s ease;
+  }
+
+  .cs-frame:hover {
+    translate: 0 -4px 0.4s ease-in-out;
+  }
+
+  .case-study-link:hover .cs-frame {
+    border-radius: 16px;
+  }
+
+  .cs-cover-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .case-study-link:hover .cs-cover-img {
+    transform: scale(1.02);
+  }
+
+  .case-study-header-top {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 16px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cs-frame,
+    .cs-cover-img {
+      transition: none;
+    }
+  }
+</style>

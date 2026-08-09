@@ -3,11 +3,13 @@
     const themeToggle = document.getElementById('themeToggle');
     const themeChangeListeners = [];
     if (themeToggle) {
+        themeToggle.setAttribute('aria-checked', document.documentElement.getAttribute('data-theme') === 'dark');
         themeToggle.addEventListener('click', () => {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             const next = isDark ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
+            themeToggle.setAttribute('aria-checked', String(!isDark));
             themeChangeListeners.forEach(fn => fn());
         });
     }

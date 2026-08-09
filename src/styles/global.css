@@ -192,48 +192,81 @@ body.sidebar-closed .sidebar {
 .cs-subnav-link:hover { opacity: 0.8; }
 .cs-subnav-link.active { opacity: 1; font-weight: 700; }
 
-/* ── Theme toggle (bottom of sidebar) ── */
+/* ── Theme toggle (bottom of sidebar) ──
+   A track + thumb switch. The thumb's hover/press "pill stretch" is ported
+   from a Base UI + Framer Motion reference component, reimplemented here
+   with plain CSS transitions so the site stays dependency-free — no
+   Tailwind, no framer-motion, no Base UI. The thumb is always anchored to
+   whichever edge matches the current theme, so growth on hover/press reads
+   as squishing toward the center rather than drifting off the track. */
 .theme-toggle {
   position: absolute;
   bottom: 32px;
   left: 36px;
-  width: 40px;
-  height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: var(--color-accent-soft);
-  border: 1px solid var(--color-accent-outline);
-  border-radius: 9999px;
-  cursor: pointer;
+  gap: 10px;
+  background: none;
+  border: none;
   padding: 0;
-  transition: background-color 0.3s ease, border-color 0.3s ease, opacity 0.2s ease;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
-.theme-toggle:hover { opacity: 0.8; }
+.theme-toggle:hover { opacity: 0.85; }
 
-.theme-icon {
+.theme-track {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  width: 34px;
+  height: 20px;
+  border-radius: 9999px;
+  background: var(--color-accent-soft);
+  transition: background-color 0.16s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html[data-theme='dark'] .theme-track {
+  background: var(--color-accent);
+}
+
+.theme-toggle-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition: color 0.3s ease;
+}
+
+/* The icon matching the active theme picks up the accent blue; the other stays muted */
+.theme-toggle-icon--sun { color: var(--color-accent); }
+
+html[data-theme='dark'] .theme-toggle-icon--sun { color: var(--color-text-muted); }
+html[data-theme='dark'] .theme-toggle-icon--moon { color: var(--color-accent); }
+
+.theme-thumb {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  font-size: 20px;
-  color: var(--color-accent);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: left 0.16s cubic-bezier(0.32, 0.72, 0, 1), width 0.16s cubic-bezier(0.32, 0.72, 0, 1),
+    height 0.16s cubic-bezier(0.32, 0.72, 0, 1), top 0.16s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.theme-icon--dark {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.6);
+html[data-theme='dark'] .theme-thumb {
+  left: 16px;
 }
 
-html[data-theme='dark'] .theme-icon--light {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.6);
-}
-html[data-theme='dark'] .theme-icon--dark {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
+/* Hover: thumb pill-extends 2px toward the track center */
+.theme-toggle:hover .theme-thumb { width: 18px; }
+html[data-theme='dark'] .theme-toggle:hover .theme-thumb { left: 14px; }
+
+/* Press: thumb squishes wider and shorter, still centered vertically */
+.theme-toggle:active .theme-thumb { width: 20px; height: 12px; top: 4px; }
+html[data-theme='dark'] .theme-toggle:active .theme-thumb { left: 12px; }
 
 /* ── Main ── */
 
@@ -245,7 +278,7 @@ html[data-theme='dark'] .theme-icon--dark {
 }
 
 .main>* {
-  max-width: 914px;
+  max-width: 1100px;
   margin: 0 auto;
   width: 100%;
 }
@@ -265,14 +298,14 @@ body.sidebar-closed .main {
 .case-study-card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 680px;
+  gap: 20px;
+  max-width: 100%;
 }
 
 .case-study-header {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 16px;
 }
 
 .case-study-index {
@@ -284,25 +317,29 @@ body.sidebar-closed .main {
 
 .case-study-info {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
 }
 
 .case-study-title {
   font-family: system-ui, sans-serif;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--color-text);
-  line-height: 30px;
+  line-height: 1.15;
+  flex-shrink: 0;
+  max-width: 320px;
 }
 
 .case-study-desc {
   font-family: 'Manrope', system-ui, sans-serif;
-  font-size: 12px;
-  line-height: 1.3;
+  font-size: 14px;
+  line-height: 1.5;
   color: var(--color-text);
   opacity: 0.65;
-  margin-bottom: 12px;
+  flex: 1;
+  max-width: 480px;
 }
 
 .case-study-tags {
@@ -310,18 +347,27 @@ body.sidebar-closed .main {
   align-items: center;
   gap: 4px;
   font-family: 'Manrope', system-ui, sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.3;
   color: var(--color-accent);
 }
 
-.case-study-img {
-  display: block;
-  width: 100%;
-  max-width: 680px;
-  height: 284px;
-  object-fit: cover;
-  border-radius: 4px;
+.case-study-tags span:not(:last-child)::after {
+  content: '•';
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .case-study-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .case-study-title,
+  .case-study-desc {
+    max-width: none;
+  }
 }
 
 /* ── Sidebar toggle button (mobile only) ── */
