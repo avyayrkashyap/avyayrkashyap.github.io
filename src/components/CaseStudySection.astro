@@ -1,0 +1,66 @@
+---
+// src/components/CaseStudySection.astro
+interface Props {
+  label: string;
+  body: string;
+  image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+}
+
+const { label, body, image, imageAlt = '', imageWidth, imageHeight } = Astro.props;
+const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+---
+<section class="cs-block" id={id}>
+  <div class="cs-block-header">
+    <span class="cs-block-label">{label}</span>
+    <p class="cs-block-body">{body}</p>
+  </div>
+  {image && (
+    <div class="cs-block-visual">
+      <img src={image} alt={imageAlt} width={imageWidth} height={imageHeight} />
+    </div>
+  )}
+</section>
+
+<style>
+  .cs-block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .cs-block-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cs-block-label {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .cs-block-body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .cs-block-visual {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .cs-block-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

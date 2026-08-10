@@ -1,8 +1,291 @@
 ---
 // src/pages/moodys.astro
 import Layout from '../layouts/Layout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import CaseStudySection from '../components/CaseStudySection.astro';
+
+const themes = [
+  {
+    id: 'building-swan',
+    title: 'Building Swan from 0 → 1',
+    body: "Swan is Moody's structured finance platform. For much of the past two years, I've been one of its foundational designers, defining the interaction patterns, analytical process flows, and information representation that later features would inherit. With no existing product to reference, early decisions here often became the default answer for everything that came after.",
+  },
+];
 ---
 <Layout title="Moody's Ratings — Avyay">
-  <ComingSoon note="This page is still under review. Estimated rating: Aa-almost-there." />
+  <article class="case-study">
+
+    <header class="ms-banner">
+      <img
+        class="ms-banner-img"
+        src="/assets/moodys/moodys-cover.png"
+        alt="Moody's Ratings structured workflow analytics product screenshot"
+        width="2060"
+        height="848"
+        transition:name="moodys-cover"
+      />
+    </header>
+
+    <div class="ms-content">
+    <section class="ms-intro">
+      <div class="ms-intro-main">
+        <h1 class="ms-title">Moody's Ratings</h1>
+        <p class="ms-body">I joined Moody's Ratings in September 2024 and work on a variety of projects, ranging from deep product work in the structured finance domain - solving interface problems and bridging the gap between business and user goals - to redefining what responsibilities a designer should own in a product. As the organization transitions to an agent-first workflow, my role has morphed to also include equipping agents to do product design and help introduce agentic design processes to various product and development teams.</p>
+      </div>
+
+      <dl class="ms-meta">
+        <div class="ms-meta-item">
+          <dt>Role</dt>
+          <dd>Sr. UX Designer</dd>
+        </div>
+        <div class="ms-meta-item">
+          <dt>Team</dt>
+          <dd>XD, Product, Process, Business & Development</dd>
+        </div>
+        <div class="ms-meta-item">
+          <dt>Timeline</dt>
+          <dd>Sep 2024 - present</dd>
+        </div>
+      </dl>
+    </section>
+
+    <p class="ms-callout">This is a high-level overview of the work I have done and continue to execute at Moody's. Detailed case studies to come soon.</p>
+
+    <section class="ms-columns">
+      <div class="ms-col">
+        <h2 class="ms-h2">What does Moody's do?</h2>
+        <p class="ms-body">Moody's is one of the world's leading credit rating agencies, assessing the creditworthiness of companies, governments, and financial instruments that investors and institutions rely on to make decisions. I work within Structured Finance, where Moody's rates securities backed by pooled assets sitting at the intersection of complex financial instruments and the analysts who need to act on them quickly and confidently.</p>
+      </div>
+      <div class="ms-col">
+        <h2 class="ms-h2">My Role</h2>
+        <p class="ms-body">As a Senior UX Designer on the Structured Finance team, I own the end-to-end design of tools used by analysts to rate and monitor structured securities. This involves translating dense financial workflows, often shaped by regulatory and legacy constraints, into interfaces that reduce time-to-decision and cut down on analyst error under pressure.</p>
+        <p class="ms-body">As Moody's transitions to an agent-first workflow, I've also taken on the onus of equipping agents to do product design themselves, helping introduce agentic design processes across product and development teams.</p>
+      </div>
+    </section>
+
+    <section class="ms-themes">
+      <p class="ms-body">Fitting two years of work into a cohesive narrative is quite hard. Here are three themes that best capture where the work was concentrated and what impact it had.</p>
+
+      <div class="ms-theme-list">
+        {themes.map(({ id, title, body }) => (
+          <div class="ms-theme" id={id}>
+            <h3 class="ms-theme-title">{title}</h3>
+            <p class="ms-body">{body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <div class="ms-section-gap">
+      <CaseStudySection
+        label="Introduction"
+        body="Majority of the work involved translating workflows that existed on spreadsheets into patterns that could leverage web-based interactions unavailable on spreadsheets. This involved redefining the intent of the analysts, and how they could execute their goal in more intuitive ways."
+        image="/assets/moodys/swan-excel-intro.png"
+        imageAlt="Comparison of the old Excel-based ABSROM triggers workflow next to the new Swan Configure Triggers interface"
+        imageWidth={3268}
+        imageHeight={1280}
+      />
+      <CaseStudySection
+        label="Waterfall"
+        body="The first project I worked on was to redesign the process of creating a Waterfall, the last and most complex step in defining the Cashflow. Waterfalls determine the order in which tranches would be repaid. Analysts were used to keying in the priority order and payment sources for all necessary targets. Finding targets in a massive exhaustive list and mentioning a priority number was cognitively taxing, often leading to mistakes. I asked the question what if the steps could be defined in the order in which they were going to be executed, which changed the interaction paradigm and made defining complex, multi-step waterfalls with numerous conditional triggers simple. This adhered to my principle of never letting tools hinder thought process. We also leveraged web based interaction patterns such as drag-and-drop to make the task intuitive and fun."
+        image="/assets/moodys/swan-waterfall-cover.png"
+        imageAlt="Screenshot of the new Swan Waterfall interface"
+        imageWidth={3268}
+        imageHeight={1280}
+      />
+      <CaseStudySection
+        label="Dashboards"
+        body="Dashboards were a new addition, made possible once the shift to web let summaries from multiple tools live in one place for the first time. I defined what information was visible at each of the three zoom levels analysts could view the application from. The sensitivity dashboard, in particular, became the primary source of analysis-level status, improving visibility across all individual tools."
+        image="/assets/moodys/swan-dashboards-cover.png"
+        imageAlt="Screenshot of the new Swan Dashboard interface"
+        imageWidth={3268}
+        imageHeight={1280}
+      />
+      <CaseStudySection
+        label="Reference Rate"
+        body="Reference Rate was already designed and built by the dev team before I joined the SFG team, but analysts could still select combinations that produced incalculable outputs. I redesigned the tool around error prevention rather than error recovery, using progressive disclosure to eliminate invalid selections. This improved analysts' confidence in the assumptions they were inputting, and reduced reliance on custom components, making the codebase easier to maintain. I also took on the front-end implementation myself, cutting dev effort by 70% and speeding up delivery."
+        image="/assets/moodys/swan-refrate-cover.png"
+        imageAlt="Screenshot of the new Swan Reference Rate interface"
+        imageWidth={3268}
+        imageHeight={1280}
+      />
+      <CaseStudySection
+        label="Autorun"
+        body="Autorun was a capability introduced in Swan to dramatically speed up how quickly stressed analyses could be executed. I worked closely with the dev team to define when analysts could trigger these runs, and what visibility they'd have into system status while a run was in progress. That collaboration led to a parallel run architecture: a single workstream's execution time dropped from 25 minutes to 3 minutes, an 88% reduction, and because runs executed in parallel, analysing multiple workstreams took no longer than analysing one."
+        image="/assets/moodys/swan-autorun-cover.png"
+        imageAlt="Screenshot of the Swan Autorun interface"
+        imageWidth={3268}
+        imageHeight={1280}
+      />
+    </div>
+    </div>
+
+  </article>
 </Layout>
+
+<script src="../scripts/moodys.js"></script>
+
+<style>
+  .case-study {
+    max-width: 1100px;
+    padding: 0 clamp(40px, 9vw, 122px) 120px;
+  }
+
+  /* ── Banner ── */
+  .ms-banner {
+    margin: 96px clamp(-40px, -9vw, -122px) 56px;
+  }
+
+  .ms-banner-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2060 / 848;
+    object-fit: cover;
+  }
+
+  /* ── Intro ── */
+  .ms-intro {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 64px;
+    padding-bottom: 40px;
+  }
+
+  .ms-intro-main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ms-title {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: clamp(24px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.05em;
+    line-height: 1.05;
+  }
+
+  .ms-body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--color-text);
+  }
+
+  .ms-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+    padding-top: 10px;
+  }
+
+  .ms-meta-item dt {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .ms-meta-item dd {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.4;
+    max-width: 220px;
+  }
+
+  /* ── Callout ── */
+  .ms-callout {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text);
+    background: var(--color-bg-secondary);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 56px;
+  }
+
+  /* ── Columns ── */
+  .ms-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+
+  .ms-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 24px;
+  }
+
+  .ms-h2 {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+    padding: 8px 0px;
+    letter-spacing: -0.03em;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* ── Themes ── */
+  .ms-themes {
+    padding-top: 48px;
+    margin-top: 8px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .ms-theme-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .ms-theme {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+  }
+
+  .ms-theme-title {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--color-text);
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+    flex-shrink: 0;
+    max-width: 180px;
+  }
+
+  .ms-theme .ms-body {
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .ms-intro {
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .ms-columns {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .ms-theme {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+</style>

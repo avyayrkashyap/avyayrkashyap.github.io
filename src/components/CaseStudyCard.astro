@@ -10,15 +10,16 @@ interface Props {
   imageAlt?: string;
   imageBg?: string;
   frameMaxWidth?: string;
+  transitionName?: string;
 }
 
-const { index, title, description, tags, href, image, imageAlt = '', imageBg, frameMaxWidth } = Astro.props;
+const { index, title, description, tags, href, image, imageAlt = '', imageBg, frameMaxWidth, transitionName } = Astro.props;
 ---
 <a href={href} class="case-study-link">
   <article class="case-study-card">
     <div class="cs-frame" style={{ background: imageBg, maxWidth: frameMaxWidth }}>
       <slot>
-        {image && <img src={image} alt={imageAlt} class="cs-cover-img" />}
+        {image && <img src={image} alt={imageAlt} class="cs-cover-img" transition:name={transitionName} />}
       </slot>
     </div>
     <div class="case-study-header">
@@ -41,7 +42,19 @@ const { index, title, description, tags, href, image, imageAlt = '', imageBg, fr
     display: block;
     text-decoration: none;
     color: inherit;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   }
+
+  .case-study-link.cs-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  .case-study-link:nth-of-type(2) { transition-delay: 0.1s; }
+  .case-study-link:nth-of-type(3) { transition-delay: 0.2s; }
+  .case-study-link:nth-of-type(4) { transition-delay: 0.3s; }
 
   .cs-frame {
     position: relative;
@@ -84,6 +97,12 @@ const { index, title, description, tags, href, image, imageAlt = '', imageBg, fr
   @media (prefers-reduced-motion: reduce) {
     .cs-frame,
     .cs-cover-img {
+      transition: none;
+    }
+
+    .case-study-link {
+      opacity: 1;
+      transform: none;
       transition: none;
     }
   }

@@ -204,6 +204,11 @@ body.sidebar-closed .sidebar {
   font-weight: 700;
 }
 
+.cs-subnav-link--child {
+  padding-left: 14px;
+  font-size: 10px;
+}
+
 /* ── Theme toggle (bottom of sidebar) ──
    A track + thumb switch. The thumb's hover/press "pill stretch" is ported
    from a Base UI + Framer Motion reference component, reimplemented here

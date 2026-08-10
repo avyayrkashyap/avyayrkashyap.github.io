@@ -1,4 +1,8 @@
-(function () {
+// Re-run on every ClientRouter navigation (not just the first load) since
+// this rebuilds the tick field and rebinds listeners against the swapped-in
+// sidebar DOM. astro:page-load also fires once on the initial hard load, so
+// this replaces the old run-once-immediately IIFE entirely.
+document.addEventListener('astro:page-load', () => {
     // ── Dark mode toggle ────────────────────────────────────────────────────
     const themeToggle = document.getElementById('themeToggle');
     const themeChangeListeners = [];
@@ -168,4 +172,4 @@
 
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-})();
+});

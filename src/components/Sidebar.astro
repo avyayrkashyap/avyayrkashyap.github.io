@@ -1,7 +1,6 @@
 ---
 // src/components/Sidebar.astro
 const pathname = Astro.url.pathname;
-const isCaseStudy = pathname.startsWith('/gep');
 
 const navItems = [
   { label: 'Home',        href: '/',            idx: 0 },
@@ -10,16 +9,42 @@ const navItems = [
   { label: 'Now',         href: '/now',         idx: 3 },
 ];
 
-const gepSections = [
-  { label: 'Overview',         href: '#overview' },
-  { label: 'Business Impact',  href: '#impact' },
-  { label: 'Final Design',     href: '#final-design' },
-  { label: 'Domain Research',  href: '#domain-research' },
-  { label: 'Stakeholders',     href: '#stakeholders' },
-  { label: 'Problem',          href: '#problem-statement' },
-  { label: 'Process',          href: '#process' },
-  { label: 'Learnings',        href: '#learnings' },
-];
+// Case-study sub-nav: a flat list of anchors, optionally nested one level
+// deep via `children`. Keyed by the route prefix that should show it.
+const caseStudySections: Record<string, { label: string; href: string; children?: { label: string; href: string }[] }[]> = {
+  '/gep': [
+    { label: 'Overview',         href: '#overview' },
+    { label: 'Business Impact',  href: '#impact' },
+    { label: 'Final Design',     href: '#final-design' },
+    { label: 'Domain Research',  href: '#domain-research' },
+    { label: 'Stakeholders',     href: '#stakeholders' },
+    { label: 'Problem',          href: '#problem-statement' },
+    { label: 'Process',          href: '#process' },
+    { label: 'Learnings',        href: '#learnings' },
+  ],
+  '/moodys': [
+    {
+      label: 'Building Swan from 0 → 1',
+      href: '#building-swan',
+      children: [
+        { label: 'Introduction',    href: '#introduction' },
+        { label: 'Waterfall',       href: '#waterfall' },
+        { label: 'Dashboards',      href: '#dashboards' },
+        { label: 'Reference Rate',  href: '#reference-rate' },
+        { label: 'Autorun',         href: '#autorun' },
+      ],
+    },
+  ],
+};
+
+const activeCaseStudy = Object.keys(caseStudySections).find((key) => pathname.startsWith(key));
+const isCaseStudy = activeCaseStudy !== undefined;
+const subnavLinks = activeCaseStudy
+  ? caseStudySections[activeCaseStudy].flatMap((s) => [
+      { label: s.label, href: s.href, isChild: false },
+      ...(s.children ?? []).map((c) => ({ ...c, isChild: true })),
+    ])
+  : [];
 ---
 
 <aside class={`sidebar${isCaseStudy ? ' has-subnav' : ''}`}>
@@ -53,8 +78,8 @@ const gepSections = [
 
   {isCaseStudy && (
     <nav class="cs-subnav" id="csSubnav">
-      {gepSections.map(s => (
-        <a href={s.href} class="cs-subnav-link">{s.label}</a>
+      {subnavLinks.map(s => (
+        <a href={s.href} class={`cs-subnav-link${s.isChild ? ' cs-subnav-link--child' : ''}`}>{s.label}</a>
       ))}
     </nav>
   )}
