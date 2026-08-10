@@ -185,7 +185,7 @@ body.sidebar-closed .sidebar {
 
 .cs-subnav-link {
   font-family: 'Manrope', system-ui, sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1;
   color: var(--color-accent);
   text-decoration: none;
@@ -206,7 +206,6 @@ body.sidebar-closed .sidebar {
 
 .cs-subnav-link--child {
   padding-left: 14px;
-  font-size: 10px;
 }
 
 /* ── Theme toggle (bottom of sidebar) ──
