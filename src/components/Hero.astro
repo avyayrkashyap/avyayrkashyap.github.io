@@ -126,25 +126,6 @@ const links = [
     transition: color 0.3s ease;
   }
 
-  .hero-cursor {
-    color: var(--color-accent);
-    font-weight: 400;
-    margin-left: 2px;
-    animation: hero-cursor-blink 1s step-end infinite;
-  }
-
-  .hero-cursor--done {
-    animation: hero-cursor-blink 1s step-end 3, hero-cursor-fade 0.3s ease 3s forwards;
-  }
-
-  @keyframes hero-cursor-blink {
-    50% { opacity: 0; }
-  }
-
-  @keyframes hero-cursor-fade {
-    to { opacity: 0; }
-  }
-
   /* ── Client logos ── */
   .hero-logos {
     display: flex;

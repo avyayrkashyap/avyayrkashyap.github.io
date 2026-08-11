@@ -43,14 +43,8 @@ document.addEventListener('astro:page-load', () => {
     const textSpan = document.createElement('span');
     textSpan.setAttribute('aria-hidden', 'true');
 
-    const cursor = document.createElement('span');
-    cursor.className = 'hero-cursor';
-    cursor.setAttribute('aria-hidden', 'true');
-    cursor.textContent = '|';
-
     el.textContent = '';
     el.appendChild(textSpan);
-    el.appendChild(cursor);
 
     const SPEED_MS = 20;
     let i = 0;
@@ -61,7 +55,6 @@ document.addEventListener('astro:page-load', () => {
         i++;
         setTimeout(tick, SPEED_MS);
       } else {
-        cursor.classList.add('hero-cursor--done');
         revealOneByOne();
       }
     }
