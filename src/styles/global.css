@@ -109,10 +109,28 @@ body.sidebar-closed .sidebar {
   translate: var(--tr, 0px 0px);
 }
 
+/* Scrollable region between the logo and the theme toggle. Both of those
+   stay absolutely positioned against .sidebar itself, so they always keep
+   their own space and this is the only part that ever scrolls. */
+.sidebar-scroll {
+  position: absolute;
+  top: 114px;
+  left: 0;
+  right: 0;
+  bottom: 80px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* Nav: tick field + labels */
 .sidebar-nav {
   position: absolute;
-  top: 114px;
+  top: 0;
   left: 36px;
   width: 222px;
   height: 160px;
@@ -160,38 +178,27 @@ body.sidebar-closed .sidebar {
 
 /* ── Case study sub-nav (section links) ── */
 
-/* When a case study sub-nav is present, expand sidebar-nav height */
-.sidebar.has-subnav .sidebar-nav {
-  height: 360px;
-}
-
 .cs-subnav {
   position: absolute;
-  top: 148px;
-  /* just below Home link */
+  top: 34px;
+  /* just below Home link, relative to .sidebar-scroll */
   left: 84px;
   /* aligned with nav-link text */
-  max-height: 168px;
-  overflow-y: auto;
+  max-width: 160px;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  scrollbar-width: none;
-}
-
-.cs-subnav::-webkit-scrollbar {
-  display: none;
 }
 
 .cs-subnav-link {
   font-family: 'Manrope', system-ui, sans-serif;
   font-size: 12px;
-  line-height: 1;
+  line-height: 1.35;
   color: var(--color-accent);
   text-decoration: none;
   opacity: 0.35;
   padding: 5px 0;
-  white-space: nowrap;
+  white-space: normal;
   transition: opacity 0.15s ease;
 }
 

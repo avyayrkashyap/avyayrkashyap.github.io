@@ -34,6 +34,16 @@ const caseStudySections: Record<string, { label: string; href: string; children?
         { label: 'Autorun',         href: '#autorun' },
       ],
     },
+    {
+      label: 'Translating single deal interactions into Portfolios',
+      href: '#portfolio',
+      children: [
+        { label: 'Discovery & Research', href: '#discovery-research' },
+        { label: 'Defining Individual vs Bulk Defaults', href: '#defining-individual-vs-bulk-defaults' },
+        { label: 'Toolbar Definition', href: '#toolbar-definition' },
+        { label: 'Bulk Edit', href: '#bulk-edit' },
+      ],
+    },
   ],
 };
 
@@ -64,25 +74,30 @@ const subnavLinks = activeCaseStudy
     <div class="logo-dot" style="--i: 8; --h: 16px; --tr: 85px 28px; --r: 150deg;"></div>
   </div>
 
-  <!-- Nav: tick field + labels -->
-  <nav class="sidebar-nav" id="sidebarNav" data-subnav={isCaseStudy ? 'true' : 'false'}>
-    <div class="tick-field" id="tickField"></div>
-    {navItems.map(item => (
-      <a
-        href={item.href}
-        class={`nav-link${pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)) ? ' active' : ''}`}
-        data-idx={item.idx}
-      >{item.label}</a>
-    ))}
-  </nav>
-
-  {isCaseStudy && (
-    <nav class="cs-subnav" id="csSubnav">
-      {subnavLinks.map(s => (
-        <a href={s.href} class={`cs-subnav-link${s.isChild ? ' cs-subnav-link--child' : ''}`}>{s.label}</a>
+  <!-- Scrollable nav region: everything between the logo and the theme
+       toggle lives here, so it scrolls as one unit instead of clipping when
+       a case study's sub-nav content grows taller than the sidebar. -->
+  <div class="sidebar-scroll">
+    <!-- Nav: tick field + labels -->
+    <nav class="sidebar-nav" id="sidebarNav" data-subnav={isCaseStudy ? 'true' : 'false'}>
+      <div class="tick-field" id="tickField"></div>
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class={`nav-link${pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)) ? ' active' : ''}`}
+          data-idx={item.idx}
+        >{item.label}</a>
       ))}
     </nav>
-  )}
+
+    {isCaseStudy && (
+      <nav class="cs-subnav" id="csSubnav">
+        {subnavLinks.map(s => (
+          <a href={s.href} class={`cs-subnav-link${s.isChild ? ' cs-subnav-link--child' : ''}`}>{s.label}</a>
+        ))}
+      </nav>
+    )}
+  </div>
 
   <button class="theme-toggle" id="themeToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode">
     <svg class="theme-toggle-icon theme-toggle-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

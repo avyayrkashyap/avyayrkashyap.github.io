@@ -8,6 +8,87 @@ const themes = [
     id: 'building-swan',
     title: 'Building Swan from 0 → 1',
     body: "Swan is Moody's structured finance platform. For much of the past two years, I've been one of its foundational designers, defining the interaction patterns, analytical process flows, and information representation that later features would inherit. With no existing product to reference, early decisions here often became the default answer for everything that came after.",
+    sections: [
+      {
+        label: 'Introduction',
+        body: "Majority of the work involved translating workflows that existed on spreadsheets into patterns that could leverage web-based interactions unavailable on spreadsheets. This involved redefining the intent of the analysts, and how they could execute their goal in more intuitive ways.",
+        image: '/assets/moodys/swan-excel-intro.png',
+        imageAlt: 'Comparison of the old Excel-based ABSROM triggers workflow next to the new Swan Configure Triggers interface',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+      {
+        label: 'Waterfall',
+        body: "The first project I worked on was to redesign the process of creating a Waterfall, the last and most complex step in defining the Cashflow. Waterfalls determine the order in which tranches would be repaid. Analysts were used to keying in the priority order and payment sources for all necessary targets. Finding targets in a massive exhaustive list and mentioning a priority number was cognitively taxing, often leading to mistakes. I asked the question what if the steps could be defined in the order in which they were going to be executed, which changed the interaction paradigm and made defining complex, multi-step waterfalls with numerous conditional triggers simple. This adhered to my principle of never letting tools hinder thought process. We also leveraged web based interaction patterns such as drag-and-drop to make the task intuitive and fun.",
+        image: '/assets/moodys/swan-waterfall-cover.png',
+        imageAlt: 'Screenshot of the new Swan Waterfall interface',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+      {
+        label: 'Dashboards',
+        body: "Dashboards were a new addition, made possible once the shift to web let summaries from multiple tools live in one place for the first time. I defined what information was visible at each of the three zoom levels analysts could view the application from. The sensitivity dashboard, in particular, became the primary source of analysis-level status, improving visibility across all individual tools.",
+        image: '/assets/moodys/swan-dashboards-cover.png',
+        imageAlt: 'Screenshot of the new Swan Dashboard interface',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+      {
+        label: 'Reference Rate',
+        body: "Reference Rate was already designed and built by the dev team before I joined the SFG team, but analysts could still select combinations that produced incalculable outputs. I redesigned the tool around error prevention rather than error recovery, using progressive disclosure to eliminate invalid selections. This improved analysts' confidence in the assumptions they were inputting, and reduced reliance on custom components, making the codebase easier to maintain. I also took on the front-end implementation myself, cutting dev effort by 70% and speeding up delivery.",
+        image: '/assets/moodys/swan-refrate-cover.png',
+        imageAlt: 'Screenshot of the new Swan Reference Rate interface',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+      {
+        label: 'Autorun',
+        body: "Autorun was a capability introduced in Swan to dramatically speed up how quickly stressed analyses could be executed. I worked closely with the dev team to define when analysts could trigger these runs, and what visibility they'd have into system status while a run was in progress. That collaboration led to a parallel run architecture: a single workstream's execution time dropped from 25 minutes to 3 minutes, an 88% reduction, and because runs executed in parallel, analysing multiple workstreams took no longer than analysing one.",
+        image: '/assets/moodys/swan-autorun-cover.png',
+        imageAlt: 'Screenshot of the Swan Autorun interface',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+    ],
+  },
+  {
+    id: 'portfolio',
+    title: 'Translating single deal interactions into Portfolios',
+    body: "Portfolio in Swan is where individual analyses come together. Analysts here manage many securities at once instead of one at a time. Most of Swan's early patterns were built for single-item workflows, so when we started work on portfolios, a lot of the conversations hinged around how information would be consumed and defining what a group or bulk action should even mean inside the product, and where the line sat between what was technically achievable and what would feel natural to an analyst doing the work.",
+    sections: [
+      {
+        label: 'Discovery & Research',
+        body: "Work on Portfolios started with multiple discovery sessions with analysts across the globe to understand their processes, and specific regulatory and analytical nuances that were necessary in their workflow. Having a deeper understanding of the analytical process helped me to dive further into specifics in these conversations. With this, I defined a process flow for how multiple deals could be tracked at once, and presented the proposal to Business and developer teams. This discovery work helped clarify ambiguity and improve confidence in estimating scope of work by up to 60%.",
+        image: '/assets/moodys/portfolio-discovery-cover.png',
+        imageAlt: 'Process flow diagram for tracking multiple deals at once, overlaid on the new Swan Portfolio Asset Assumptions interface',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+      {
+        label: 'Defining Individual vs Bulk Defaults',
+        body: "I defined how default values and behaviour should differ between single-item and bulk contexts. Engineering initially pushed back on allowing any individual-level actions at the portfolio level, arguing those should stay confined to the single-deal view. After several rounds of conversation and negotiation, we reached a compromise: key values became editable directly at the portfolio level, without forcing analysts to drop into each deal individually.",
+        image: '/assets/moodys/portfolio-individual-vs-bulk-defaults-cover.png',
+        imageAlt: 'Swan Portfolio Performance & Asset Assumptions table with editable bulk default values across multiple deals',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+      {
+        label: 'Toolbar Definition',
+        body: "As Portfolios matured, analysts had access to close to 20 operations on a single page. Working in an ambiguous, still-being-defined space, I added new actions to the toolbar as functionality was needed rather than pausing to design a system upfront, and the actions space became bloated as a result. I categorised and redesigned it, introducing defaults and patterns that reduced the space the toolbar took up by over 60%, letting three additional deals appear on page load.",
+        image: '/assets/moodys/portfolio-toolbar-cover.png',
+        imageAlt: 'Before and after comparison of the Swan Portfolio toolbar, redesigned to take up significantly less space',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+      {
+        label: 'Bulk Edit',
+        body: "Bulk Edit let analysts update the same parameter across multiple deals in a single action, instead of performing each action individually. The core design challenge was that the right component, interaction, and feedback pattern changed depending on which variable was being edited - a numeric field, a date, a categorical selector, and a toggle each needed a different way of confirming what was about to change and what the analyst should expect once it applied across the selection, along with the complexities that arise from solving for CRUD and partial success.",
+        image: '/assets/moodys/portfolio-bulk-edit-cover.png',
+        imageAlt: 'Swan Portfolio Edit Asset Assumptions panel for applying a modifier across multiple selected deals at once',
+        imageWidth: 3268,
+        imageHeight: 1600,
+      },
+    ],
   },
 ];
 ---
@@ -66,57 +147,30 @@ const themes = [
       <p class="ms-body">Fitting two years of work into a cohesive narrative is quite hard. Here are three themes that best capture where the work was concentrated and what impact it had.</p>
 
       <div class="ms-theme-list">
-        {themes.map(({ id, title, body }) => (
-          <div class="ms-theme" id={id}>
-            <h3 class="ms-theme-title">{title}</h3>
-            <p class="ms-body">{body}</p>
+        {themes.map(({ id, title, body, sections }) => (
+          <div class="ms-theme-group">
+            <div class="ms-theme" id={id}>
+              <h3 class="ms-theme-title">{title}</h3>
+              {body && <p class="ms-body">{body}</p>}
+            </div>
+            {sections && sections.length > 0 && (
+              <div class="ms-section-gap">
+                {sections.map((s) => (
+                  <CaseStudySection
+                    label={s.label}
+                    body={s.body}
+                    image={s.image}
+                    imageAlt={s.imageAlt}
+                    imageWidth={s.imageWidth}
+                    imageHeight={s.imageHeight}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
     </section>
-
-    <div class="ms-section-gap">
-      <CaseStudySection
-        label="Introduction"
-        body="Majority of the work involved translating workflows that existed on spreadsheets into patterns that could leverage web-based interactions unavailable on spreadsheets. This involved redefining the intent of the analysts, and how they could execute their goal in more intuitive ways."
-        image="/assets/moodys/swan-excel-intro.png"
-        imageAlt="Comparison of the old Excel-based ABSROM triggers workflow next to the new Swan Configure Triggers interface"
-        imageWidth={3268}
-        imageHeight={1600}
-      />
-      <CaseStudySection
-        label="Waterfall"
-        body="The first project I worked on was to redesign the process of creating a Waterfall, the last and most complex step in defining the Cashflow. Waterfalls determine the order in which tranches would be repaid. Analysts were used to keying in the priority order and payment sources for all necessary targets. Finding targets in a massive exhaustive list and mentioning a priority number was cognitively taxing, often leading to mistakes. I asked the question what if the steps could be defined in the order in which they were going to be executed, which changed the interaction paradigm and made defining complex, multi-step waterfalls with numerous conditional triggers simple. This adhered to my principle of never letting tools hinder thought process. We also leveraged web based interaction patterns such as drag-and-drop to make the task intuitive and fun."
-        image="/assets/moodys/swan-waterfall-cover.png"
-        imageAlt="Screenshot of the new Swan Waterfall interface"
-        imageWidth={3268}
-        imageHeight={1600}
-      />
-      <CaseStudySection
-        label="Dashboards"
-        body="Dashboards were a new addition, made possible once the shift to web let summaries from multiple tools live in one place for the first time. I defined what information was visible at each of the three zoom levels analysts could view the application from. The sensitivity dashboard, in particular, became the primary source of analysis-level status, improving visibility across all individual tools."
-        image="/assets/moodys/swan-dashboards-cover.png"
-        imageAlt="Screenshot of the new Swan Dashboard interface"
-        imageWidth={3268}
-        imageHeight={1600}
-      />
-      <CaseStudySection
-        label="Reference Rate"
-        body="Reference Rate was already designed and built by the dev team before I joined the SFG team, but analysts could still select combinations that produced incalculable outputs. I redesigned the tool around error prevention rather than error recovery, using progressive disclosure to eliminate invalid selections. This improved analysts' confidence in the assumptions they were inputting, and reduced reliance on custom components, making the codebase easier to maintain. I also took on the front-end implementation myself, cutting dev effort by 70% and speeding up delivery."
-        image="/assets/moodys/swan-refrate-cover.png"
-        imageAlt="Screenshot of the new Swan Reference Rate interface"
-        imageWidth={3268}
-        imageHeight={1600}
-      />
-      <CaseStudySection
-        label="Autorun"
-        body="Autorun was a capability introduced in Swan to dramatically speed up how quickly stressed analyses could be executed. I worked closely with the dev team to define when analysts could trigger these runs, and what visibility they'd have into system status while a run was in progress. That collaboration led to a parallel run architecture: a single workstream's execution time dropped from 25 minutes to 3 minutes, an 88% reduction, and because runs executed in parallel, analysing multiple workstreams took no longer than analysing one."
-        image="/assets/moodys/swan-autorun-cover.png"
-        imageAlt="Screenshot of the Swan Autorun interface"
-        imageWidth={3268}
-        imageHeight={1600}
-      />
-    </div>
     </div>
 
   </article>
@@ -249,6 +303,16 @@ const themes = [
     display: flex;
     flex-direction: column;
     gap: 40px;
+  }
+
+  .ms-theme-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ms-theme-group + .ms-theme-group {
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
   }
 
   .ms-theme {

@@ -51,34 +51,36 @@ document.addEventListener('astro:page-load', () => {
     const tickField  = document.getElementById('tickField');
     const sidebar    = document.querySelector('.sidebar');
     const navLinks   = document.querySelectorAll('.nav-link');
+    const csSubnav   = document.getElementById('csSubnav');
 
     if (!tickField || !sidebar || !sidebarNav) return;
 
     const hasSubnav = sidebarNav.dataset.subnav === 'true';
 
-    // NAV_Y: Y positions of each main nav label within the tick field
-    // On case study pages, About/Experiments/Now are pushed down to make room for sub-nav
-    const NAV_Y      = hasSubnav ? [8, 252, 292, 332] : [8, 48, 88, 128];
-    const TICK_COUNT = hasSubnav ? 44 : 18;
     const TICK_STEP  = 8;
     const MIN_W      = 16;
     const MAX_W      = 32;
     const SIGMA      = 24;
-    const NAV_TOP    = 114;
+    const NAV_GAP    = 40; // vertical gap between About/Experiments/Now
+    const SUBNAV_GAP = 28; // gap between the end of the sub-nav and About
 
-    // Build ticks
-    const ticks = [];
-    for (let i = 0; i < TICK_COUNT; i++) {
-        const el = document.createElement('div');
-        el.className = 'tick';
-        tickField.appendChild(el);
-        ticks.push(el);
+    // NAV_Y: Y position of each main nav label, in tick-field coordinates.
+    // On case study pages, About/Experiments/Now sit below the sub-nav —
+    // measured rather than hardcoded, since sub-nav content (and therefore
+    // its height) varies per case study and can wrap to multiple lines.
+    let NAV_Y = [8, 48, 88, 128];
+
+    let ticks = [];
+    function buildTicks(count) {
+        ticks.forEach(t => t.remove());
+        ticks = [];
+        for (let i = 0; i < count; i++) {
+            const el = document.createElement('div');
+            el.className = 'tick';
+            tickField.appendChild(el);
+            ticks.push(el);
+        }
     }
-
-    // Position main nav labels vertically
-    navLinks.forEach((link, i) => {
-        link.style.top = (NAV_Y[i] - 8) + 'px';
-    });
 
     function gaussian(dist) {
         return Math.exp(-0.5 * (dist / SIGMA) ** 2);
@@ -111,16 +113,15 @@ document.addEventListener('astro:page-load', () => {
     let activeTickY = NAV_Y[activeIdx];
     let hovering = false;
 
-    setWidths(activeTickY);
-    themeChangeListeners.push(() => setWidths(activeTickY));
-
     navLinks.forEach((link, i) => {
         link.addEventListener('mouseenter', () => { activeIdx = i; });
     });
 
     sidebar.addEventListener('mousemove', (e) => {
         hovering = true;
-        const cursorY = e.clientY - sidebar.getBoundingClientRect().top - NAV_TOP;
+        // Measured against the tick field's own live position (not a fixed
+        // offset) so this stays correct while the nav region is scrolled.
+        const cursorY = e.clientY - tickField.getBoundingClientRect().top;
         setWidths(cursorY);
     });
 
@@ -128,6 +129,34 @@ document.addEventListener('astro:page-load', () => {
         hovering = false;
         setWidths(activeTickY);
     });
+
+    themeChangeListeners.push(() => setWidths(activeTickY));
+
+    // Lays out the main nav labels + tick field. Re-measures the sub-nav's
+    // actual rendered height each time, so it never depends on a guessed
+    // constant that goes stale as sub-nav content changes.
+    function layout() {
+        if (hasSubnav && csSubnav) {
+            const navTop = sidebarNav.getBoundingClientRect().top;
+            const subnavBottom = csSubnav.getBoundingClientRect().bottom;
+            const startY = Math.round(subnavBottom - navTop) + SUBNAV_GAP;
+            NAV_Y = [8, startY, startY + NAV_GAP, startY + NAV_GAP * 2];
+        }
+
+        navLinks.forEach((link, i) => {
+            link.style.top = (NAV_Y[i] - 8) + 'px';
+        });
+
+        buildTicks(Math.ceil((NAV_Y[NAV_Y.length - 1] + 40) / TICK_STEP));
+        activeTickY = NAV_Y[activeIdx];
+        if (!hovering) setWidths(activeTickY);
+    }
+
+    layout();
+    if (hasSubnav) {
+        // Re-measure once layout/fonts settle, since sub-nav text can reflow.
+        requestAnimationFrame(layout);
+    }
 
     // ── Sub-nav: highlight active section on scroll ──
     if (!hasSubnav) return;
