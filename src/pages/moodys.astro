@@ -2,6 +2,7 @@
 // src/pages/moodys.astro
 import Layout from '../layouts/Layout.astro';
 import CaseStudySection from '../components/CaseStudySection.astro';
+import PasswordGate from '../components/PasswordGate.astro';
 
 const themes = [
   {
@@ -93,7 +94,9 @@ const themes = [
 ];
 ---
 <Layout title="Moody's Ratings — Avyay">
-  <article class="case-study">
+  <PasswordGate passwordHash="789382de289e43fe891e12fbe31e19801794082cdd13ce5c739cf221e27909a3" storageKey="moodys-unlocked" />
+
+  <article class="case-study" id="gateProtected" hidden>
 
     <header class="ms-banner">
       <img

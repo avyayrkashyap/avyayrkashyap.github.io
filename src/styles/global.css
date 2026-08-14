@@ -375,7 +375,7 @@ body.sidebar-closed .main {
   line-height: 1.15;
   letter-spacing: -0.056em;
   flex-shrink: 0;
-  max-width: 320px;
+  width: 240px;
 }
 
 .case-study-card:hover .case-study-title {
