@@ -162,16 +162,17 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
 
   /* Animating the gradient's own angle (rather than rotating the element)
      keeps the glow locked to the image's rectangle instead of sweeping a
-     rotated box past its corners. */
+     rotated box past its corners. Inherited so the animated angle also
+     reaches the ::before glow layer; under inherits: false that layer
+     silently falls back to the 0deg initial value and stops tracking. */
   @property --ab-glow-angle {
     syntax: '<angle>';
     initial-value: 0deg;
-    inherits: false;
+    inherits: true;
   }
 
   .ab-avatar-wrap {
     position: relative;
-    isolation: isolate;
     display: inline-flex;
     flex-shrink: 0;
     width: 100%;
@@ -190,12 +191,22 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
     animation: ab-glow-rotate 6s linear infinite;
   }
 
+  /* Radius and gradient are stated explicitly rather than via `inherit`:
+     inherited paint on a filtered pseudo-element is handled inconsistently
+     across engines and was showing a hard rectangle in Safari. */
   .ab-avatar-wrap::before {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: inherit;
-    background: inherit;
+    border-radius: 22px;
+    background: conic-gradient(
+      from var(--ab-glow-angle, 0deg),
+      transparent 0deg,
+      var(--color-accent) 70deg,
+      var(--color-accent-outline) 150deg,
+      transparent 240deg,
+      transparent 360deg
+    );
     filter: blur(12px);
     opacity: 0.85;
   }
