@@ -130,7 +130,11 @@ const teams = [
 
     <section class="ab-section">
       <h2 class="ab-h2">Designing with AI</h2>
-      <p class="ab-body ab-body--lead">I treat AI as a design material, not a tool bolted onto the workflow. That means using it to accelerate research synthesis and prototyping, but also rethinking what a "design deliverable" looks like when agents can execute on intent directly. A lot of my recent work has been about defining that process for the teams around me, not just using it myself.</p>
+      <p class="ab-body ab-body--lead">As the execution layer becomes more accessible, my process keeps moving closer to the material my work will actually exist in. The real gap is in understanding the problem space in front of me. When I know its shape, I build directly and explore inside real components and constraints; when I don't, I need blue-sky room, working through it in writing as much as in pixels. Every assumption I clarify moves me further along that line.</p>
+      <figure class="ab-process">
+        <img class="ab-process-img ab-process-img--light" src="/assets/about/design-process.png" alt="A spectrum from Explore to Build: Are.na, Paper and Figma at the explore end, Claude Code, Conductor Worktrees and Google Antigravity at the build end." width="1722" height="542" />
+        <img class="ab-process-img ab-process-img--dark" src="/assets/about/design-process-dark.png" alt="" aria-hidden="true" width="1722" height="542" />
+      </figure>
     </section>
 
     <section class="ab-section">
@@ -374,6 +378,33 @@ const teams = [
     color: var(--color-text-muted);
     margin-top: 4px;
     margin-bottom: 10px;
+  }
+
+  /* ── Designing with AI ── */
+  /* Two exports of the same diagram: the labels and the are.na mark are near
+     black, so the dark variant recolours just those and leaves the product
+     logos alone. Swapped on theme the same way the timeline logos are. */
+  .ab-process {
+    margin-top: 32px;
+    max-width: 760px;
+  }
+
+  .ab-process-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .ab-process-img--dark {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-process-img--light {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-process-img--dark {
+    display: block;
   }
 
   /* ── Philosophy ── */
