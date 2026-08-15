@@ -1,8 +1,419 @@
 ---
 // src/pages/about.astro
 import Layout from '../layouts/Layout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+
+// Ordered reverse-chronologically by start year — schools and jobs
+// interleaved, most recent first, as a single "journey" rather than two
+// separate lists.
+const timeline = [
+  {
+    period: 'Sep 2024 - Present',
+    role: 'Sr. UX Designer',
+    company: "Moody's Investor Service",
+    location: 'New York',
+    logo: '/assets/index/logo-moodys.png',
+    logoDark: '/assets/index/logo-moodys-dark.png',
+    body: "Own end-to-end design of structured finance analysis workflows in a 0→1 enterprise environment. Defining the next generation of processes that democratize design across the org.",
+  },
+  {
+    period: 'May 2023 - Dec 2023',
+    role: 'UX Design Intern',
+    company: 'GEP Worldwide',
+    location: 'New Jersey',
+    logo: '/assets/index/logo-gep.png',
+    logoDark: '/assets/index/logo-gep-dark.png',
+    body: "Led a platform-level redesign of a sourcing product for cost engineers and category managers, and shipped low-code app builders that cut internal development turnaround from weeks to hours.",
+  },
+  {
+    period: '2022 - 2024',
+    role: 'MS, Human-Computer Interaction',
+    company: 'Indiana University Bloomington',
+    logo: '/assets/about/iu-logo.png',
+    body: "Deepened my research practice, from mixed-methods and cognitive walkthroughs to synthesis and storytelling.",
+  },
+  {
+    period: '2020 - 2022',
+    role: 'UX Design Manager',
+    company: 'Reliance Jio',
+    location: 'Mumbai',
+    logo: '/assets/index/logo-jio.png',
+    body: "Led a redesign of JioMart's consumer experience that contributed to a 42% increase in customer satisfaction, and established the UX foundation for a new internal employee service portal used across the organization.",
+  },
+  {
+    period: 'May 2018 - Jul 2018',
+    role: 'UX Design Intern',
+    company: 'Philips Innovation Campus',
+    location: 'Bangalore',
+    logo: '/assets/index/logo-philips.png',
+    body: "Conceptualized a solution to detect early signs of Conduct Disorder in children through emotion-sensing technologies and IoT.",
+  },
+  {
+    period: '2015 - 2020',
+    role: 'Dual Degree, Interaction Design',
+    company: 'IDC School of Design, IIT Bombay',
+    logo: '/assets/about/iitb-logo.png',
+    body: "Fell in love with design.",
+  },
+];
+
+const philosophy = [
+  {
+    title: 'Never let tools hinder thought',
+    body: "The interface should keep pace with how someone is already thinking, not force them to think in the shape of the tool.",
+  },
+  {
+    title: 'Simple, until it isn’t',
+    body: "Simplicity is the default. Complexity only earns its place once it's clearly doing something simplicity can't.",
+  },
+  {
+    title: 'Verify before you design',
+    body: "Assumptions are cheap to check and expensive to build around. I'd rather spend a day confirming than a sprint unwinding.",
+  },
+];
+
+const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems'];
 ---
 <Layout title="About — Avyay">
-  <ComingSoon note="Still writing my own bio. Turns out that's the hardest part of the job." />
+  <article class="about">
+
+    <section class="ab-intro">
+      <span class="ab-avatar-wrap">
+        <img class="ab-avatar" src="/assets/about/about-avyay.png" alt="Avyay standing in front of the Golden Gate Bridge" width="2534" height="1292" />
+      </span>
+      <div class="ab-intro-text">
+        <h1 class="ab-title">Hi, I'm Avyay.</h1>
+        <p class="ab-lead">I'm a product designer based in New York, working across structured finance and AI-native workflows. I care about making complex, high-stakes tools feel obvious to use, and about building the design process itself to keep pace with how fast the tools around it are changing.</p>
+      </div>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-h2">Journey</h2>
+      <div class="ab-timeline">
+        {timeline.map(({ period, role, company, location, logo, logoDark, body }) => (
+          <div class="ab-row">
+            <span class="ab-row-period">{period}</span>
+            <div class="ab-row-content">
+              {logo && (
+                <span class="ab-row-logo-wrap">
+                  <img class={`ab-row-logo${logoDark ? ' ab-row-logo--light' : ''}`} src={logo} alt="" />
+                  {logoDark && <img class="ab-row-logo ab-row-logo--dark" src={logoDark} alt="" />}
+                </span>
+              )}
+              <h3 class="ab-row-title">{role}</h3>
+              <span class="ab-row-company">{company}{location && ` · ${location}`}</span>
+              <p class="ab-body">{body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-h2">Designing with AI</h2>
+      <p class="ab-body ab-body--lead">I treat AI as a design material, not a tool bolted onto the workflow. That means using it to accelerate research synthesis and prototyping, but also rethinking what a "design deliverable" looks like when agents can execute on intent directly. A lot of my recent work has been about defining that process for the teams around me, not just using it myself.</p>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-h2">Design philosophy</h2>
+      <div class="ab-philosophy">
+        {philosophy.map(({ title, body }, i) => (
+          <div class="ab-principle">
+            <span class="ab-principle-num">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="ab-row-title">{title}</h3>
+              <p class="ab-body">{body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-h2">Teams I support</h2>
+      <div class="ab-teams">
+        {teams.map((team) => <span class="ab-team-pill">{team}</span>)}
+      </div>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-h2">Off hours</h2>
+      <p class="ab-body ab-body--lead">
+        Off hours, you can find me deep in <img class="ab-inline-logo" src="/assets/about/claude-code-logo.png" alt="Claude Code" /> making apps to engage me and my friends asynchronously, playing <img class="ab-inline-logo" src="/assets/about/eafc26-logo.png" alt="EA Sports FC 26" />, adding items to my <img class="ab-inline-logo" src="/assets/about/beli-logo.png" alt="Beli" /> list, and logging runs on <img class="ab-inline-logo ab-inline-logo--badge" src="/assets/about/nrc-logo.png" alt="Nike Run Club" /> at the Jersey City waterfront, gawking at the Empire State Building.
+      </p>
+    </section>
+
+  </article>
 </Layout>
+
+<style>
+  .about {
+    max-width: 1100px;
+    padding: clamp(96px, 16vh, 168px) clamp(40px, 9vw, 122px) 120px;
+  }
+
+  /* ── Intro ── */
+  .ab-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+    padding-bottom: 48px;
+  }
+
+  /* Animating the gradient's own angle (rather than rotating the element)
+     keeps the glow locked to the image's rectangle instead of sweeping a
+     rotated box past its corners. */
+  @property --ab-glow-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .ab-avatar-wrap {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 420px;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 22px;
+    background: conic-gradient(
+      from var(--ab-glow-angle, 0deg),
+      transparent 0deg,
+      var(--color-accent) 70deg,
+      var(--color-accent-outline) 150deg,
+      transparent 240deg,
+      transparent 360deg
+    );
+    animation: ab-glow-rotate 6s linear infinite;
+  }
+
+  .ab-avatar-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    filter: blur(12px);
+    opacity: 0.85;
+  }
+
+  @keyframes ab-glow-rotate {
+    to {
+      --ab-glow-angle: 360deg;
+    }
+  }
+
+  .ab-avatar {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2534 / 1292;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ab-avatar-wrap {
+      animation: none;
+    }
+  }
+
+  .ab-intro-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ab-title {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.05em;
+    line-height: 1.05;
+  }
+
+  .ab-lead {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--color-text);
+    opacity: 0.75;
+    max-width: 640px;
+  }
+
+  /* ── Sections ── */
+  .ab-section {
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ab-section + .ab-section {
+    margin-top: 48px;
+  }
+
+  .ab-h2 {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 32px;
+  }
+
+  .ab-body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--color-text);
+    opacity: 0.75;
+  }
+
+  .ab-body--lead {
+    font-size: 18px;
+    max-width: 760px;
+    opacity: 0.85;
+  }
+
+  .ab-inline-logo {
+    height: 1.1em;
+    width: auto;
+    vertical-align: -0.22em;
+    margin: 0 2px;
+  }
+
+  .ab-inline-logo--badge {
+    height: 1.3em;
+    border-radius: 4px;
+    vertical-align: -0.32em;
+  }
+
+  .ab-row-title {
+    font-family: 'Lexend', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  /* ── Timeline ── */
+  .ab-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ab-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .ab-row-period {
+    flex-shrink: 0;
+    width: 160px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    padding-top: 3px;
+  }
+
+  .ab-row-content {
+    flex: 1;
+    max-width: 640px;
+  }
+
+  .ab-row-logo-wrap {
+    display: block;
+    line-height: 0;
+    margin-bottom: 12px;
+  }
+
+  .ab-row-logo {
+    height: 24px;
+    width: auto;
+  }
+
+  .ab-row-logo--dark {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-row-logo--light {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-row-logo--dark {
+    display: block;
+  }
+
+  .ab-row-company {
+    display: block;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+
+  /* ── Philosophy ── */
+  .ab-philosophy {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ab-principle {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .ab-principle-num {
+    flex-shrink: 0;
+    width: 32px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--color-accent);
+    padding-top: 4px;
+  }
+
+  .ab-principle .ab-row-content,
+  .ab-principle > div {
+    max-width: 560px;
+  }
+
+  /* ── Teams ── */
+  .ab-teams {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .ab-team-pill {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    padding: 8px 16px;
+  }
+
+  @media (max-width: 768px) {
+    .ab-row {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ab-row-period {
+      width: auto;
+    }
+  }
+</style>
