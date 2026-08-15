@@ -71,7 +71,12 @@ const philosophy = [
   },
 ];
 
-const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems'];
+// All three play in red, hence the section heading.
+const teams = [
+  { name: 'Manchester United', logo: '/assets/about/mufc-logo.png' },
+  { name: 'Royal Challengers Bengaluru', logo: '/assets/about/rcb-logo.png' },
+  { name: 'Scuderia Ferrari', logo: '/assets/about/sf-logo.png' },
+];
 ---
 <Layout title="About — Avyay">
   <article class="about">
@@ -129,9 +134,15 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
     </section>
 
     <section class="ab-section">
-      <h2 class="ab-h2">Teams I support</h2>
+      <h2 class="ab-h2">Reds that make me Blue</h2>
       <div class="ab-teams">
-        {teams.map((team) => <span class="ab-team-pill">{team}</span>)}
+        {teams.map(({ name, logo }) => (
+          <div class="ab-team-card">
+            <span class="ab-team-crest">
+              <img class="ab-team-logo" src={logo} alt={name} />
+            </span>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -375,7 +386,10 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
     gap: 16px;
   }
 
-  .ab-principle {
+  /* Shared card chrome for the philosophy and teams grids, so the two
+     sections stay in step if the surface treatment changes. */
+  .ab-principle,
+  .ab-team-card {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -386,7 +400,8 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
     transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
-  .ab-principle:hover {
+  .ab-principle:hover,
+  .ab-team-card:hover {
     transform: translateY(-2px);
     border-color: var(--color-accent-outline);
   }
@@ -399,20 +414,25 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
 
   /* ── Teams ── */
   .ab-teams {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
   }
 
-  .ab-team-pill {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-text);
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: 9999px;
-    padding: 8px 16px;
+  /* The crests differ in silhouette (round, tall, shield), so a fixed-height
+     row keeps them optically level instead of aligning their raw boxes. */
+  .ab-team-crest {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+  }
+
+  .ab-team-logo {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
   }
 
   @media (max-width: 768px) {
