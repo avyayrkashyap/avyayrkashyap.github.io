@@ -83,6 +83,21 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
       <div class="ab-intro-text">
         <h1 class="ab-title">Hi, I'm Avyay.</h1>
         <p class="ab-lead">I'm a product designer based in New York, working across structured finance and AI-native workflows. I care about making complex, high-stakes tools feel obvious to use, and about building the design process itself to keep pace with how fast the tools around it are changing.</p>
+        <p class="ab-lead">
+          Off hours, you can find me deep in <img class="ab-inline-logo" src="/assets/about/claude-code-logo.png" alt="Claude Code" /> making apps to engage me and my friends asynchronously, playing <img class="ab-inline-logo" src="/assets/about/eafc26-logo.png" alt="EA Sports FC 26" />, adding items to my <img class="ab-inline-logo" src="/assets/about/beli-logo.png" alt="Beli" /> list, and logging runs on <img class="ab-inline-logo ab-inline-logo--badge" src="/assets/about/nrc-logo.png" alt="Nike Run Club" /> at the Jersey City waterfront, gawking at the Empire State Building.
+        </p>
+      </div>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-h2">Design philosophy</h2>
+      <div class="ab-philosophy">
+        {philosophy.map(({ title, body }) => (
+          <div class="ab-principle">
+            <h3 class="ab-row-title">{title}</h3>
+            <p class="ab-body">{body}</p>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -114,32 +129,10 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
     </section>
 
     <section class="ab-section">
-      <h2 class="ab-h2">Design philosophy</h2>
-      <div class="ab-philosophy">
-        {philosophy.map(({ title, body }, i) => (
-          <div class="ab-principle">
-            <span class="ab-principle-num">{String(i + 1).padStart(2, '0')}</span>
-            <div>
-              <h3 class="ab-row-title">{title}</h3>
-              <p class="ab-body">{body}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="ab-section">
       <h2 class="ab-h2">Teams I support</h2>
       <div class="ab-teams">
         {teams.map((team) => <span class="ab-team-pill">{team}</span>)}
       </div>
-    </section>
-
-    <section class="ab-section">
-      <h2 class="ab-h2">Off hours</h2>
-      <p class="ab-body ab-body--lead">
-        Off hours, you can find me deep in <img class="ab-inline-logo" src="/assets/about/claude-code-logo.png" alt="Claude Code" /> making apps to engage me and my friends asynchronously, playing <img class="ab-inline-logo" src="/assets/about/eafc26-logo.png" alt="EA Sports FC 26" />, adding items to my <img class="ab-inline-logo" src="/assets/about/beli-logo.png" alt="Beli" /> list, and logging runs on <img class="ab-inline-logo ab-inline-logo--badge" src="/assets/about/nrc-logo.png" alt="Nike Run Club" /> at the Jersey City waterfront, gawking at the Empire State Building.
-      </p>
     </section>
 
   </article>
@@ -373,30 +366,35 @@ const teams = ['Product', 'Engineering', 'Business & Process', 'Design Systems']
   }
 
   /* ── Philosophy ── */
+  /* auto-fit rather than a fixed 3 columns: between the mobile breakpoint and
+     full width, three tracks squeeze the copy to a few words per line, so let
+     the cards drop to two (then one) on their own. */
   .ab-philosophy {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
   }
 
   .ab-principle {
     display: flex;
-    gap: 24px;
-    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
-  .ab-principle-num {
-    flex-shrink: 0;
-    width: 32px;
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--color-accent);
-    padding-top: 4px;
+  .ab-principle:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent-outline);
   }
 
-  .ab-principle .ab-row-content,
-  .ab-principle > div {
-    max-width: 560px;
+  /* The shared row title carries a bottom margin for the timeline; inside a
+     card the flex gap handles that spacing instead. */
+  .ab-principle .ab-row-title {
+    margin-bottom: 0;
   }
 
   /* ── Teams ── */
