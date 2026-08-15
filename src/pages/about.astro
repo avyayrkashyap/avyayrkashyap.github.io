@@ -95,6 +95,15 @@ const teams = [
     </section>
 
     <section class="ab-section">
+      <h2 class="ab-h2">My design stack</h2>
+      <figure class="ab-process">
+        <img class="ab-process-img ab-process-img--light" src="/assets/about/design-process.png" alt="A spectrum from Ambiguous to Clear: Are.na, Paper and Figma at the ambiguous end, Claude Code, Conductor Worktrees and Google Antigravity at the clear end." width="1710" height="542" />
+        <img class="ab-process-img ab-process-img--dark" src="/assets/about/design-process-dark.png" alt="" aria-hidden="true" width="1710" height="542" />
+      </figure>
+      <p class="ab-body ab-body--lead">As the execution layer becomes more accessible, my process keeps moving closer to the material my work will actually exist in. The real gap is in understanding the problem space in front of me. When I know its shape, I build directly and explore inside real components and constraints; when it's more ambiguous, I work through the problem using tools that allow for written and visual exploration. Working toward a defined solution has me gliding back and forth along that line.</p>
+    </section>
+
+    <section class="ab-section">
       <h2 class="ab-h2">Design philosophy</h2>
       <div class="ab-philosophy">
         {philosophy.map(({ title, body }) => (
@@ -126,15 +135,6 @@ const teams = [
           </div>
         ))}
       </div>
-    </section>
-
-    <section class="ab-section">
-      <h2 class="ab-h2">Designing with AI</h2>
-      <p class="ab-body ab-body--lead">As the execution layer becomes more accessible, my process keeps moving closer to the material my work will actually exist in. The real gap is in understanding the problem space in front of me. When I know its shape, I build directly and explore inside real components and constraints; when I don't, I need blue-sky room, working through it in writing as much as in pixels. Every assumption I clarify moves me further along that line.</p>
-      <figure class="ab-process">
-        <img class="ab-process-img ab-process-img--light" src="/assets/about/design-process.png" alt="A spectrum from Explore to Build: Are.na, Paper and Figma at the explore end, Claude Code, Conductor Worktrees and Google Antigravity at the build end." width="1722" height="542" />
-        <img class="ab-process-img ab-process-img--dark" src="/assets/about/design-process-dark.png" alt="" aria-hidden="true" width="1722" height="542" />
-      </figure>
     </section>
 
     <section class="ab-section">
@@ -380,12 +380,12 @@ const teams = [
     margin-bottom: 10px;
   }
 
-  /* ── Designing with AI ── */
+  /* ── My design stack ── */
   /* Two exports of the same diagram: the labels and the are.na mark are near
      black, so the dark variant recolours just those and leaves the product
      logos alone. Swapped on theme the same way the timeline logos are. */
   .ab-process {
-    margin-top: 32px;
+    margin-bottom: 32px;
     max-width: 760px;
   }
 
