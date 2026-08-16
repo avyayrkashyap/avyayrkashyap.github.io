@@ -45,6 +45,35 @@ const caseStudySections: Record<string, { label: string; href: string; children?
       ],
     },
   ],
+  '/ai-in-enterprise': [
+    {
+      label: 'Playgrounds for thinking out loud',
+      href: '#playgrounds',
+      children: [
+        { label: 'Why not a mockup', href: '#why-not-a-mockup' },
+        { label: 'Building outside the system', href: '#building-outside-the-system' },
+        { label: 'What it changes in the room', href: '#what-it-changes-in-the-room' },
+      ],
+    },
+    {
+      label: 'Owning the front-end, not just the design',
+      href: '#design-to-development',
+      children: [
+        { label: 'Working in the codebase', href: '#working-in-the-codebase' },
+        { label: 'Effect on velocity', href: '#effect-on-velocity' },
+        { label: 'The part that mattered more than speed', href: '#the-part-that-mattered-more-than-speed' },
+      ],
+    },
+    {
+      label: 'Teaching agents to design',
+      href: '#teaching-agents',
+      children: [
+        { label: 'Skills as a design deliverable', href: '#skills-as-a-design-deliverable' },
+        { label: 'Writing the context down', href: '#writing-the-context-down' },
+        { label: 'What this makes of the role', href: '#what-this-makes-of-the-role' },
+      ],
+    },
+  ],
 };
 
 const activeCaseStudy = Object.keys(caseStudySections).find((key) => pathname.startsWith(key));

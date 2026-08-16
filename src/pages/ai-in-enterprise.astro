@@ -1,0 +1,276 @@
+---
+// src/pages/ai-in-enterprise.astro
+import Layout from '../layouts/Layout.astro';
+import CaseStudySection from '../components/CaseStudySection.astro';
+import PasswordGate from '../components/PasswordGate.astro';
+
+const themes = [
+  {
+    id: 'playgrounds',
+    title: 'Playgrounds for thinking out loud',
+    body: "A design system is the right constraint most of the time. It is the wrong one when the question is still what should this even be. Playgrounds are working front-ends I build deliberately outside our component library, for the sole purpose of making an idea tangible early enough to be argued with. I have built three of these for collaboration sessions with business partners.",
+    sections: [
+      {
+        label: 'Why not a mockup',
+        body: "Static frames make stakeholders do two jobs at once: imagine the interaction, and then judge it. In a domain as dense as structured finance, the imagining is the expensive part, and it is where alignment quietly breaks. Someone nods at a screen, and three sprints later it turns out they were picturing something else entirely. Building a real, clickable front-end removes that step. The interface answers questions about itself, and the conversation starts at the actual disagreement instead of at interpretation.",
+      },
+      {
+        label: 'Building outside the system',
+        body: "The point of a playground is that nothing in it has to be defensible yet. Dropping the design system means I am not negotiating with existing components while I am still deciding whether the underlying idea holds. LLMs are what make this affordable: an exploration that would previously have cost a sprint of front-end work now costs an afternoon, which changes what is worth exploring at all. Ideas that were too speculative to justify building are now cheap enough to simply test.",
+      },
+      {
+        label: 'What it changes in the room',
+        body: "Sessions with business shift from reviewing to using. Partners reach for the edge cases immediately, the ones that involve their real data and their real regulatory constraints, and those are exactly the cases that usually surface halfway through development. Once a direction earns its place, the playground gets thrown away. It was never the deliverable. The decision it produced was.",
+      },
+    ],
+  },
+  {
+    id: 'design-to-development',
+    title: 'Owning the front-end, not just the design',
+    body: "Handoff is where design parity quietly erodes. Spacing drifts, states get dropped, and the one interaction carrying the whole idea gets flattened into whatever was easier to build. Rather than police that gap through reviews, I started closing it by delivering the front-end myself.",
+    sections: [
+      {
+        label: 'Working in the codebase',
+        body: "I have worked directly in the codebase on seven projects: FAA, PAEL, Dashboards, Notifications, Cashflow Waterfall, Cashflow Capital Structure, and Reference Rate. These were not throwaway prototypes. They were the shipped front-end. Working in the real material also changed my design decisions upstream, because I could feel which ideas were expensive and which were nearly free, and I stopped proposing the expensive ones by accident.",
+      },
+      {
+        label: 'Effect on velocity',
+        body: "Taking on 60 to 70% of the front-end burden improved dev turnaround by roughly 3x. The team hit higher sprint velocity and committed to shorter timelines with the same headcount, because the work that used to queue behind engineering availability no longer did. Engineers spent their time on the parts that genuinely needed them: state management, performance, and the calculation layer.",
+      },
+      {
+        label: 'The part that mattered more than speed',
+        body: "The velocity number is the easy thing to report, but the more durable change was that design decisions stopped being renegotiated after the fact. When the person making the decision is also the one implementing it, there is no interpretation gap to close, and no round of reviews spent explaining why a detail was not incidental. Design parity stopped being something I asked for and became a property of how the work got built.",
+      },
+    ],
+  },
+  {
+    id: 'teaching-agents',
+    title: 'Teaching agents to design',
+    body: "The bottleneck in a design org is not ideas. It is that every design decision has to route through a designer. As Moody's moves toward an agent-first workflow, I have been working on moving the repeatable decisions into agents instead, so product and development partners can produce work that holds up without waiting on me.",
+    sections: [
+      {
+        label: 'Skills as a design deliverable',
+        body: "I design, develop, and test skills that automate specific design decisions for non-design partners. I treat a skill the way I would treat a feature: define precisely which decision it is making, build it, then test it against real cases to find where it produces something a designer would reject. That last step is the actual work. A skill that is right most of the time but confidently wrong at the edges is worse than no skill, because it moves the review burden somewhere harder to see.",
+      },
+      {
+        label: 'Writing the context down',
+        body: "After Google released its DESIGN.md standard, I worked on our version of it. The premise is simple: an agent designing inside our product needs the same context a new designer would need, and that context should be written down once rather than re-explained in every conversation. Doing this forced a useful exercise, which was articulating conventions the team had been carrying implicitly and had never had to defend in writing.",
+      },
+      {
+        label: 'What this makes of the role',
+        body: "This work has changed what I think a designer owns. Less of my time goes into producing individual screens and more into defining the decisions behind them well enough that something other than me can execute them correctly. Ambiguity is still mine. Judgment is still mine. The repeatable parts increasingly are not, and I would rather spend that reclaimed time on the problems that genuinely need a designer.",
+      },
+    ],
+  },
+];
+---
+<Layout title="Leveraging AI in Enterprise — Avyay">
+  <PasswordGate passwordHash="789382de289e43fe891e12fbe31e19801794082cdd13ce5c739cf221e27909a3" storageKey="ai-in-enterprise-unlocked" />
+
+  <article class="case-study" id="gateProtected" hidden>
+
+    <div class="ms-content">
+    <section class="ms-intro">
+      <div class="ms-intro-main">
+        <h1 class="t-display">Leveraging AI in Enterprise</h1>
+        <p class="t-body">Enterprise design is slowed down by the distance between having an idea and having something a stakeholder can react to. LLMs collapsed that distance for me, and in doing so changed three things about how I work: how early I can put a real interface in front of business, how much of the front-end I can own myself, and how much of the design process someone who is not a designer can run without me in the room.</p>
+      </div>
+
+      <dl class="ms-meta">
+        <div class="ms-meta-item">
+          <dt>Role</dt>
+          <dd>Sr. UX Designer</dd>
+        </div>
+        <div class="ms-meta-item">
+          <dt>Context</dt>
+          <dd>Moody's Ratings, Structured Finance</dd>
+        </div>
+        <div class="ms-meta-item">
+          <dt>Timeline</dt>
+          <dd>Ongoing</dd>
+        </div>
+      </dl>
+    </section>
+
+    <p class="ms-callout t-body">This is a high-level overview of how I use LLMs in my day to day practice. Detailed case studies to come soon.</p>
+
+    <section class="ms-columns">
+      <div class="ms-col">
+        <h2 class="ms-h2 t-h2">Why this matters here</h2>
+        <p class="t-body">Structured finance is slow to prototype in. The workflows are dense, the domain knowledge is deep, and the cost of a misread requirement is measured in sprints. That combination usually pushes teams toward heavy upfront documentation and long feedback loops, which is precisely where good ideas go to die.</p>
+      </div>
+      <div class="ms-col">
+        <h2 class="ms-h2 t-h2">What changed</h2>
+        <p class="t-body">Once building became cheap, the sequence inverted. Instead of specifying carefully and building once, I build early, put something real in front of people, and let the artefact do the specifying. The design work moved away from producing screens and toward defining the decisions behind them clearly enough that others, human or agent, can execute them.</p>
+      </div>
+    </section>
+
+    <section class="ms-themes">
+      <p class="t-body">Three ways this shows up in the work.</p>
+
+      <div class="ms-theme-list">
+        {themes.map(({ id, title, body, sections }) => (
+          <div class="ms-theme-group">
+            <div class="ms-theme" id={id}>
+              <h3 class="ms-theme-title t-h3">{title}</h3>
+              {body && <p class="t-body">{body}</p>}
+            </div>
+            {sections && sections.length > 0 && (
+              <div class="ms-section-gap">
+                {sections.map((s) => (
+                  <CaseStudySection
+                    label={s.label}
+                    body={s.body}
+                    image={s.image}
+                    imageAlt={s.imageAlt}
+                    imageWidth={s.imageWidth}
+                    imageHeight={s.imageHeight}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+    </div>
+
+  </article>
+</Layout>
+
+<style>
+  /* Mirrors the Moody's case-study layout. No banner image on this one yet,
+     so the top padding stands in for the banner's margin. */
+  .case-study {
+    max-width: 1100px;
+    padding: clamp(96px, 16vh, 168px) clamp(40px, 9vw, 122px) 120px;
+  }
+
+  /* ── Intro ── */
+  .ms-intro {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 64px;
+    padding-bottom: 40px;
+  }
+
+  .ms-intro-main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ms-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+    padding-top: 10px;
+  }
+
+  /* Type from .t-label; scoped selector keeps the dt/dd pair unclassed */
+  .ms-meta-item dt {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+  }
+
+  .ms-meta-item dd {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-text);
+    max-width: 220px;
+  }
+
+  /* ── Callout ── */
+  .ms-callout {
+    background: var(--color-bg-secondary);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 56px;
+  }
+
+  /* ── Columns ── */
+  .ms-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+
+  .ms-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 24px;
+  }
+
+  .ms-h2 {
+    padding: 8px 0px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* ── Themes ── */
+  .ms-themes {
+    padding-top: 48px;
+    margin-top: 8px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .ms-theme-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .ms-theme-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ms-theme-group + .ms-theme-group {
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ms-theme {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+  }
+
+  .ms-theme-title {
+    flex-shrink: 0;
+    max-width: 180px;
+  }
+
+  .ms-theme .ms-body {
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .ms-intro {
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .ms-columns {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .ms-theme {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+</style>
