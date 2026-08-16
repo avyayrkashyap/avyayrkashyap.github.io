@@ -86,41 +86,41 @@ const teams = [
         <img class="ab-avatar" src="/assets/about/about-avyay.png" alt="Avyay standing in front of the Golden Gate Bridge" width="2534" height="1292" />
       </span>
       <div class="ab-intro-text">
-        <h1 class="ab-title">Hi, I'm Avyay.</h1>
-        <p class="ab-lead">I'm a product designer based in New York, working across structured finance and AI-native workflows. I care about making complex, high-stakes tools feel obvious to use, and about building the design process itself to keep pace with how fast the tools around it are changing.</p>
-        <p class="ab-lead">
+        <h1 class="t-display">Hi, I'm Avyay.</h1>
+        <p class="ab-lead t-lead">I'm a product designer based in New York, working across structured finance and AI-native workflows. I care about making complex, high-stakes tools feel obvious to use, and about building the design process itself to keep pace with how fast the tools around it are changing.</p>
+        <p class="ab-lead t-lead">
           Off hours, you can find me deep in <img class="ab-inline-logo" src="/assets/about/claude-code-logo.png" alt="Claude Code" /> making apps to engage me and my friends asynchronously, playing <img class="ab-inline-logo" src="/assets/about/eafc26-logo.png" alt="EA Sports FC 26" />, adding items to my <img class="ab-inline-logo" src="/assets/about/beli-logo.png" alt="Beli" /> list, and logging runs on <img class="ab-inline-logo ab-inline-logo--badge" src="/assets/about/nrc-logo.png" alt="Nike Run Club" /> at the Jersey City waterfront, gawking at the Empire State Building.
         </p>
       </div>
     </section>
 
     <section class="ab-section">
-      <h2 class="ab-h2">My design stack</h2>
+      <h2 class="ab-section-label t-label">My design stack</h2>
       <figure class="ab-process">
         <img class="ab-process-img ab-process-img--light" src="/assets/about/design-process.png" alt="A spectrum from Ambiguous to Clear: Are.na, Paper and Figma at the ambiguous end, Claude Code, Conductor Worktrees and Google Antigravity at the clear end." width="1710" height="542" />
         <img class="ab-process-img ab-process-img--dark" src="/assets/about/design-process-dark.png" alt="" aria-hidden="true" width="1710" height="542" />
       </figure>
-      <p class="ab-body ab-body--lead">As the execution layer becomes more accessible, my process keeps moving closer to the material my work will actually exist in. The real gap is in understanding the problem space in front of me. When I know its shape, I build directly and explore inside real components and constraints; when it's more ambiguous, I work through the problem using tools that allow for written and visual exploration. Working toward a defined solution has me gliding back and forth along that line.</p>
+      <p class="ab-lead-wide t-lead">As the execution layer becomes more accessible, my process keeps moving closer to the material my work will actually exist in. The real gap is in understanding the problem space in front of me. When I know its shape, I build directly and explore inside real components and constraints; when it's more ambiguous, I work through the problem using tools that allow for written and visual exploration. Working toward a defined solution has me gliding back and forth along that line.</p>
     </section>
 
     <section class="ab-section">
-      <h2 class="ab-h2">Design philosophy</h2>
+      <h2 class="ab-section-label t-label">Design philosophy</h2>
       <div class="ab-philosophy">
         {philosophy.map(({ title, body }) => (
           <div class="ab-principle">
-            <h3 class="ab-row-title">{title}</h3>
-            <p class="ab-body">{body}</p>
+            <h3 class="ab-row-title t-h3">{title}</h3>
+            <p class="t-body">{body}</p>
           </div>
         ))}
       </div>
     </section>
 
     <section class="ab-section">
-      <h2 class="ab-h2">Journey</h2>
+      <h2 class="ab-section-label t-label">Journey</h2>
       <div class="ab-timeline">
         {timeline.map(({ period, role, company, location, logo, logoDark, body }) => (
           <div class="ab-row">
-            <span class="ab-row-period">{period}</span>
+            <span class="ab-row-period t-small">{period}</span>
             <div class="ab-row-content">
               {logo && (
                 <span class="ab-row-logo-wrap">
@@ -128,9 +128,9 @@ const teams = [
                   {logoDark && <img class="ab-row-logo ab-row-logo--dark" src={logoDark} alt="" />}
                 </span>
               )}
-              <h3 class="ab-row-title">{role}</h3>
-              <span class="ab-row-company">{company}{location && ` · ${location}`}</span>
-              <p class="ab-body">{body}</p>
+              <h3 class="ab-row-title t-h3">{role}</h3>
+              <span class="ab-row-company t-small">{company}{location && ` · ${location}`}</span>
+              <p class="t-body">{body}</p>
             </div>
           </div>
         ))}
@@ -138,7 +138,7 @@ const teams = [
     </section>
 
     <section class="ab-section">
-      <h2 class="ab-h2">Reds that make me Blue</h2>
+      <h2 class="ab-section-label t-label">Reds that make me Blue</h2>
       <div class="ab-teams">
         {teams.map(({ name, logo }) => (
           <div class="ab-team-card">
@@ -247,22 +247,13 @@ const teams = [
     gap: 20px;
   }
 
-  .ab-title {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 700;
-    color: var(--color-text);
-    letter-spacing: -0.05em;
-    line-height: 1.05;
+  /* Measure only; type comes from .t-lead */
+  .ab-lead {
+    max-width: 640px;
   }
 
-  .ab-lead {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 18px;
-    line-height: 1.7;
-    color: var(--color-text);
-    opacity: 0.75;
-    max-width: 640px;
+  .ab-lead-wide {
+    max-width: 760px;
   }
 
   /* ── Sections ── */
@@ -275,28 +266,11 @@ const teams = [
     margin-top: 48px;
   }
 
-  .ab-h2 {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+  /* Section headings here read as quiet uppercase eyebrows rather than the
+     large .t-h2 the case studies use, so they need their own bottom margin. */
+  .ab-section-label {
+    display: block;
     margin-bottom: 32px;
-  }
-
-  .ab-body {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 15px;
-    line-height: 1.75;
-    color: var(--color-text);
-    opacity: 0.75;
-  }
-
-  .ab-body--lead {
-    font-size: 18px;
-    max-width: 760px;
-    opacity: 0.85;
   }
 
   .ab-inline-logo {
@@ -310,15 +284,6 @@ const teams = [
     height: 1.3em;
     border-radius: 4px;
     vertical-align: -0.32em;
-  }
-
-  .ab-row-title {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    margin-bottom: 8px;
   }
 
   /* ── Timeline ── */
@@ -337,9 +302,6 @@ const teams = [
   .ab-row-period {
     flex-shrink: 0;
     width: 160px;
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--color-text-muted);
     padding-top: 3px;
   }
 
@@ -373,9 +335,6 @@ const teams = [
 
   .ab-row-company {
     display: block;
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--color-text-muted);
     margin-top: 4px;
     margin-bottom: 10px;
   }

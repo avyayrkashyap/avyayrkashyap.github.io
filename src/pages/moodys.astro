@@ -112,8 +112,8 @@ const themes = [
     <div class="ms-content">
     <section class="ms-intro">
       <div class="ms-intro-main">
-        <h1 class="ms-title">Moody's Ratings</h1>
-        <p class="ms-body">I joined Moody's Ratings in September 2024 and work on a variety of projects, ranging from deep product work in the structured finance domain - solving interface problems and bridging the gap between business and user goals - to redefining what responsibilities a designer should own in a product. As the organization transitions to an agent-first workflow, my role has morphed to also include equipping agents to do product design and help introduce agentic design processes to various product and development teams.</p>
+        <h1 class="t-display">Moody's Ratings</h1>
+        <p class="t-body">I joined Moody's Ratings in September 2024 and work on a variety of projects, ranging from deep product work in the structured finance domain - solving interface problems and bridging the gap between business and user goals - to redefining what responsibilities a designer should own in a product. As the organization transitions to an agent-first workflow, my role has morphed to also include equipping agents to do product design and help introduce agentic design processes to various product and development teams.</p>
       </div>
 
       <dl class="ms-meta">
@@ -132,29 +132,29 @@ const themes = [
       </dl>
     </section>
 
-    <p class="ms-callout">This is a high-level overview of the work I have done and continue to execute at Moody's. Detailed case studies to come soon.</p>
+    <p class="ms-callout t-body">This is a high-level overview of the work I have done and continue to execute at Moody's. Detailed case studies to come soon.</p>
 
     <section class="ms-columns">
       <div class="ms-col">
-        <h2 class="ms-h2">What does Moody's do?</h2>
-        <p class="ms-body">Moody's is one of the world's leading credit rating agencies, assessing the creditworthiness of companies, governments, and financial instruments that investors and institutions rely on to make decisions. I work within Structured Finance, where Moody's rates securities backed by pooled assets sitting at the intersection of complex financial instruments and the analysts who need to act on them quickly and confidently.</p>
+        <h2 class="ms-h2 t-h2">What does Moody's do?</h2>
+        <p class="t-body">Moody's is one of the world's leading credit rating agencies, assessing the creditworthiness of companies, governments, and financial instruments that investors and institutions rely on to make decisions. I work within Structured Finance, where Moody's rates securities backed by pooled assets sitting at the intersection of complex financial instruments and the analysts who need to act on them quickly and confidently.</p>
       </div>
       <div class="ms-col">
-        <h2 class="ms-h2">My Role</h2>
-        <p class="ms-body">As a Senior UX Designer on the Structured Finance team, I own the end-to-end design of tools used by analysts to rate and monitor structured securities. This involves translating dense financial workflows, often shaped by regulatory and legacy constraints, into interfaces that reduce time-to-decision and cut down on analyst error under pressure.</p>
-        <p class="ms-body">As Moody's transitions to an agent-first workflow, I've also taken on the onus of equipping agents to do product design themselves, helping introduce agentic design processes across product and development teams.</p>
+        <h2 class="ms-h2 t-h2">My Role</h2>
+        <p class="t-body">As a Senior UX Designer on the Structured Finance team, I own the end-to-end design of tools used by analysts to rate and monitor structured securities. This involves translating dense financial workflows, often shaped by regulatory and legacy constraints, into interfaces that reduce time-to-decision and cut down on analyst error under pressure.</p>
+        <p class="t-body">As Moody's transitions to an agent-first workflow, I've also taken on the onus of equipping agents to do product design themselves, helping introduce agentic design processes across product and development teams.</p>
       </div>
     </section>
 
     <section class="ms-themes">
-      <p class="ms-body">Fitting two years of work into a cohesive narrative is quite hard. Here are three themes that best capture where the work was concentrated and what impact it had.</p>
+      <p class="t-body">Fitting two years of work into a cohesive narrative is quite hard. Here are three themes that best capture where the work was concentrated and what impact it had.</p>
 
       <div class="ms-theme-list">
         {themes.map(({ id, title, body, sections }) => (
           <div class="ms-theme-group">
             <div class="ms-theme" id={id}>
-              <h3 class="ms-theme-title">{title}</h3>
-              {body && <p class="ms-body">{body}</p>}
+              <h3 class="ms-theme-title t-h3">{title}</h3>
+              {body && <p class="t-body">{body}</p>}
             </div>
             {sections && sections.length > 0 && (
               <div class="ms-section-gap">
@@ -215,22 +215,6 @@ const themes = [
     gap: 24px;
   }
 
-  .ms-title {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: clamp(24px, 5vw, 48px);
-    font-weight: 700;
-    color: var(--color-text);
-    letter-spacing: -0.05em;
-    line-height: 1.05;
-  }
-
-  .ms-body {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 16px;
-    line-height: 1.75;
-    color: var(--color-text);
-  }
-
   .ms-meta {
     display: flex;
     flex-direction: column;
@@ -239,29 +223,28 @@ const themes = [
     padding-top: 10px;
   }
 
+  /* Type from .t-label; scoped selector keeps the dt/dd pair unclassed */
   .ms-meta-item dt {
-    font-family: 'Lexend', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 12px;
-    color: var(--color-text-muted);
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    color: var(--color-text-muted);
     margin-bottom: 6px;
   }
 
   .ms-meta-item dd {
-    font-family: 'Manrope', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 600;
-    color: var(--color-text);
     line-height: 1.4;
+    color: var(--color-text);
     max-width: 220px;
   }
 
   /* ── Callout ── */
   .ms-callout {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--color-text);
     background: var(--color-bg-secondary);
     border-radius: 8px;
     padding: 20px 24px;
@@ -283,12 +266,7 @@ const themes = [
   }
 
   .ms-h2 {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--color-text);
     padding: 8px 0px;
-    letter-spacing: -0.03em;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -325,12 +303,6 @@ const themes = [
   }
 
   .ms-theme-title {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: 24px;
-    font-weight: 500;
-    color: var(--color-text);
-    letter-spacing: -0.03em;
-    line-height: 1.25;
     flex-shrink: 0;
     max-width: 180px;
   }

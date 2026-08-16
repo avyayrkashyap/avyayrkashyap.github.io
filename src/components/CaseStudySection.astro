@@ -14,8 +14,8 @@ const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '
 ---
 <section class="cs-block" id={id}>
   <div class="cs-block-header">
-    <span class="cs-block-label">{label}</span>
-    <p class="cs-block-body">{body}</p>
+    <span class="t-label">{label}</span>
+    <p class="cs-block-body t-body">{body}</p>
   </div>
   {image && (
     <div class="cs-block-visual">
@@ -38,18 +38,7 @@ const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '
     gap: 4px;
   }
 
-  .cs-block-label {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: 12px;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-  }
-
   .cs-block-body {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 14px;
-    line-height: 1.75;
-    color: var(--color-text);
     letter-spacing: -0.01em;
   }
 

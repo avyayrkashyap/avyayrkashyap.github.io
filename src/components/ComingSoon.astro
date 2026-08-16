@@ -31,8 +31,8 @@ const { note } = Astro.props;
   <span class="soon-orb" aria-hidden="true">
     <ThinkingOrb client:load state="working" size={64} theme="light" aria-hidden={true} />
   </span>
-  <h1 class="soon-title">Coming soon.</h1>
-  <p class="soon-note">{note}</p>
+  <h1 class="soon-title t-display">Coming soon.</h1>
+  <p class="soon-note t-body">{note}</p>
   <a class="soon-back" href="/">← Back home</a>
 </section>
 
@@ -67,27 +67,17 @@ const { note } = Astro.props;
   }
 
   .soon-title {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 500;
-    line-height: 1.05;
-    letter-spacing: -0.056em;
-    color: var(--color-text);
     transition: color 0.3s ease;
   }
 
   .soon-note {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 15px;
-    color: var(--color-text);
-    opacity: 0.65;
     max-width: 40ch;
     transition: color 0.3s ease;
   }
 
   .soon-back {
     margin-top: 16px;
-    font-family: 'Manrope', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 500;
     color: var(--color-accent);

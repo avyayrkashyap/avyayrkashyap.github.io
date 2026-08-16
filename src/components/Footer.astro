@@ -16,12 +16,12 @@ const socials = [
 <footer class="site-footer">
   <div class="footer-top">
     <div class="footer-contact">
-      <a class="footer-email" href="mailto:avyayrk@gmail.com">avyayrk@gmail.com</a>
-      <span class="footer-caption">Get in touch</span>
+      <a class="footer-email t-display t-display--sm" href="mailto:avyayrk@gmail.com">avyayrk@gmail.com</a>
+      <span class="footer-caption t-small">Get in touch</span>
     </div>
 
     <div class="footer-social">
-      <span class="footer-caption">Find me on</span>
+      <span class="footer-caption t-small">Find me on</span>
       <div class="footer-social-links">
         {socials.map(({ label, href, path }) => (
           <a class="footer-icon-btn" href={href} target="_blank" rel="noopener" aria-label={label}>
@@ -34,7 +34,7 @@ const socials = [
     </div>
   </div>
 
-  <p class="footer-bottom">Made with <span aria-hidden="true">❤️</span> from New York, NY&nbsp;|&nbsp;Avyay Ravi Kashyap © 2026</p>
+  <p class="footer-bottom t-small">Made with <span aria-hidden="true">❤️</span> from New York, NY&nbsp;|&nbsp;Avyay Ravi Kashyap © 2026</p>
 </footer>
 
 <style>
@@ -61,23 +61,12 @@ const socials = [
   }
 
   .footer-email {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: clamp(28px, 4vw, 40px);
-    font-weight: 500;
-    letter-spacing: -0.04em;
-    color: var(--color-text);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .footer-email:hover {
     color: var(--color-accent);
-  }
-
-  .footer-caption {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 14px;
-    color: var(--color-text-muted);
   }
 
   .footer-social {
@@ -113,12 +102,6 @@ const socials = [
   .footer-icon-btn:hover {
     background: var(--color-bg-secondary);
     color: var(--color-accent);
-  }
-
-  .footer-bottom {
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 13px;
-    color: var(--color-text-muted);
   }
 
   @media (max-width: 768px) {

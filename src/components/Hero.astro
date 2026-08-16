@@ -38,13 +38,13 @@ const links = [
     </filter>
   </svg>
 
-  <p class="hero-eyebrow">
+  <p class="hero-eyebrow t-label">
     <span class="hero-orb" aria-hidden="true">
       <ThinkingOrb client:load state="breathing" size={20} theme="light" aria-hidden={true} />
     </span>
     Hi, I am Avyay
   </p>
-  <h1 class="hero-title" id="heroTitle">I make complexity intuitive through AI-native design processes that drive business impact.</h1>
+  <h1 class="hero-title t-display t-display--sm" id="heroTitle">I make complexity intuitive through AI-native design processes that drive business impact.</h1>
 
   <div class="hero-logos">
     <img class="hero-logo hero-logo--light" src="/assets/index/logo-moodys.png" alt="Moody's" />
@@ -87,12 +87,11 @@ const links = [
     flex-direction: column;
     align-items: start;
     gap: 8px;
-    font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1;
-    color: var(--color-accent);
     margin-bottom: 14px;
+    transition: color 0.3s ease;
+  }
+
+  .hero-title {
     transition: color 0.3s ease;
   }
 
@@ -116,15 +115,7 @@ const links = [
   }
 
   /* Sized against the ~670px content column, not the viewport */
-  .hero-title {
-    font-family: 'Lexend', system-ui, sans-serif;
-    font-size: clamp(28px, 3.6vw, 36px);
-    font-weight: 500;
-    line-height: 1.05;
-    letter-spacing: -0.056em;
-    color: var(--color-text);
-    transition: color 0.3s ease;
-  }
+
 
   /* ── Client logos ── */
   .hero-logos {
@@ -179,7 +170,7 @@ const links = [
     padding: 0 16px;
     background: transparent;
     border-radius: 9999px;
-    font-family: 'Manrope', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 500;
     color: var(--color-text);
