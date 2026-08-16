@@ -1,0 +1,128 @@
+---
+// src/components/MoodysCover.astro
+// Interactive cover for the Moody's card. At rest it reads as the old flat
+// cover: the gradient plus the dashboard laptop cropped by the frame. On
+// hover the dashboard pulls back until the whole machine is visible and the
+// two side screens fan out behind it.
+//
+// Geometry is derived from the original flattened cover so the resting state
+// matches it (and so the view transition into the case study still lines up):
+// the laptop sat at 68.9% of frame width, horizontally centred, top at 19.6%,
+// with the bottom 179px falling outside the frame.
+//
+// Each shot is authored at its *hover* size and position, and the resting
+// look is a transform on top of that. Only transform and opacity animate,
+// which keeps the whole thing on the compositor.
+const base = '/assets/moodys/moodys-cover';
+---
+<div class="ms-cover" transition:name="moodys-cover">
+  <img class="ms-bg" src={`${base}/moodys-bg.png`} alt="" aria-hidden="true" width="2060" height="848" />
+
+  <!-- Ordered the way the case study tells it: waterfall, dashboards, reference rate. -->
+  <img class="ms-shot ms-shot--left" src={`${base}/waterfall-laptop.png`} alt="" aria-hidden="true" width="1698" height="1028" />
+  <img class="ms-shot ms-shot--right" src={`${base}/refrate-laptop.png`} alt="" aria-hidden="true" width="1696" height="1028" />
+  <img class="ms-shot ms-shot--main" src={`${base}/dashboard-laptop.png`} alt="Structured Workflow Analytics dashboard" width="1696" height="1028" />
+</div>
+
+<style>
+  /* The gradient bitmap has its own rounded corners baked in, with
+     transparent pixels outside them, and the frame clips to a different
+     radius. Painting the same gradient underneath means those corners have
+     nothing to reveal, so the bitmap can sit at a true 100% and keep the
+     wordmark where it was drawn. Stops are sampled from the PNG itself. */
+  .ms-cover {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg, #091264 0%, #273F91 100%);
+  }
+
+  .ms-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ms-shot {
+    position: absolute;
+    height: auto;
+    transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
+      opacity 0.4s ease;
+  }
+
+  /* Hover geometry: three equal 32% machines on one baseline, spanning 1% to
+     99% with a 1% gap between each. The artwork is full-bleed in every PNG,
+     so the element edges are the visible edges and the gaps read true. */
+  .ms-shot--main,
+  .ms-shot--left,
+  .ms-shot--right {
+    width: 32%;
+    top: 26%;
+  }
+
+  .ms-shot--main {
+    left: 34%;
+    z-index: 2;
+    /* Rest: back to the original cover's 68.9% width, dropped so the base
+       falls out of frame. 32 x 2.1531 = 68.9, and translateY resolves
+       against the element's own unscaled height. */
+    transform: translateY(44%) scale(2.1531);
+  }
+
+  .ms-shot--left,
+  .ms-shot--right {
+    z-index: 1;
+    opacity: 0;
+  }
+
+  .ms-shot--left {
+    left: 1%;
+    /* Tucked behind the dashboard at rest, so they slide outward on hover. */
+    transform: translateX(45%) scale(0.9);
+  }
+
+  .ms-shot--right {
+    right: 1%;
+    transform: translateX(-45%) scale(0.9);
+  }
+
+  :global(.case-study-link:hover) .ms-shot--main,
+  :global(.case-study-link:focus-visible) .ms-shot--main,
+  :global(.case-study-link:hover) .ms-shot--left,
+  :global(.case-study-link:focus-visible) .ms-shot--left,
+  :global(.case-study-link:hover) .ms-shot--right,
+  :global(.case-study-link:focus-visible) .ms-shot--right {
+    transform: none;
+  }
+
+  :global(.case-study-link:hover) .ms-shot--left,
+  :global(.case-study-link:focus-visible) .ms-shot--left,
+  :global(.case-study-link:hover) .ms-shot--right,
+  :global(.case-study-link:focus-visible) .ms-shot--right {
+    opacity: 1;
+  }
+
+  /* Below the card breakpoint the frame is too narrow for three machines to
+     read as anything but clutter, so keep the resting composition. */
+  @media (max-width: 768px) {
+    :global(.case-study-link:hover) .ms-shot--main,
+    :global(.case-study-link:focus-visible) .ms-shot--main {
+      transform: translateY(44%) scale(2.1531);
+    }
+
+    :global(.case-study-link:hover) .ms-shot--left,
+    :global(.case-study-link:focus-visible) .ms-shot--left,
+    :global(.case-study-link:hover) .ms-shot--right,
+    :global(.case-study-link:focus-visible) .ms-shot--right {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ms-shot {
+      transition: none;
+    }
+  }
+</style>
