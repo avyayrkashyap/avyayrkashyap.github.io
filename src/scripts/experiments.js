@@ -61,25 +61,50 @@ document.addEventListener('astro:page-load', () => {
   }
 });
 
-// Screen recordings play only while whatever holds them is hovered, whether
-// that's an app card or a notification figure. They ship with preload="none",
-// so the file isn't fetched at all until the first hover, and pausing on the
-// way out keeps an off-screen clip from decoding in the background. Touch
-// devices never fire this and just keep the poster.
+// Screen recordings play on their own and loop, rather than waiting for a
+// hover. They're started when they scroll into view and paused when they
+// leave it: the viewer sees a clip already running whenever one is on screen,
+// while a clip further down the page costs nothing until it gets there. They
+// ship with preload="none", so play() is also what triggers the download.
+//
+// Under prefers-reduced-motion the clips stay on their posters and play on
+// hover instead, so the content is still reachable without motion nobody
+// asked for.
 document.addEventListener('astro:page-load', () => {
-  document.querySelectorAll('.exp-clip').forEach((clip) => {
-    const card = clip.closest('.exp-app, .exp-video');
-    if (!card) return;
+  const clips = document.querySelectorAll('.exp-clip');
+  if (!clips.length) return;
 
-    card.addEventListener('pointerenter', (event) => {
-      if (event.pointerType === 'touch') return;
-      // play() rejects if the pointer leaves before the file is ready; that's
-      // expected here rather than an error worth surfacing.
-      clip.play().catch(() => {});
-    });
+  // play() rejects if the clip is paused again before the file is ready,
+  // which is expected here rather than an error worth surfacing.
+  const play = (clip) => clip.play().catch(() => {});
 
-    card.addEventListener('pointerleave', () => {
-      clip.pause();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    clips.forEach((clip) => {
+      const host = clip.closest('.exp-app, .exp-video');
+      if (!host) return;
+
+      host.addEventListener('pointerenter', (event) => {
+        if (event.pointerType === 'touch') return;
+        play(clip);
+      });
+
+      host.addEventListener('pointerleave', () => clip.pause());
     });
-  });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          play(entry.target);
+        } else {
+          entry.target.pause();
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  clips.forEach((clip) => observer.observe(clip));
 });

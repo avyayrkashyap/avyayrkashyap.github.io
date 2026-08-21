@@ -131,9 +131,9 @@ const notifications = [
               <div class={`exp-app-shot exp-app-shot--${layout}`}>
                 {/*
                   preload="none" on purpose: the file is a few megabytes, and
-                  nothing is fetched until someone hovers the card. Until then
-                  the poster is the whole cost. experiments.js starts and stops
-                  playback on hover.
+                  nothing is fetched until the clip scrolls into view. Until
+                  then the poster is the whole cost. experiments.js starts and
+                  stops playback as it enters and leaves the viewport.
                 */}
                 <span class="exp-phone">
                   <video
@@ -160,7 +160,8 @@ const notifications = [
         {notifications.map(({ label, src, poster, alt }) => (
           <figure class="exp-video">
             {src ? (
-              /* Same deal as the app clips: nothing downloads until hover. */
+              /* Same deal as the app clips: nothing downloads until this
+                 scrolls into view, then it plays and loops on its own. */
               <video
                 class="exp-video-media exp-clip"
                 src={src}
