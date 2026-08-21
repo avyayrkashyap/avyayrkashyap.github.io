@@ -17,3 +17,9 @@ pnpm-debug.log*
 
 # macOS
 .DS_Store
+
+# Claude Code local state. settings.local.json records approved commands
+# verbatim, which can include tokens pasted into a shell call, so it must
+# never be committed to a public repo.
+.claude/settings.local.json
+.claude/worktrees/

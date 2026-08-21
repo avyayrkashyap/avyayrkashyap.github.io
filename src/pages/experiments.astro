@@ -1,8 +1,674 @@
 ---
 // src/pages/experiments.astro
 import Layout from '../layouts/Layout.astro';
-import ComingSoon from '../components/ComingSoon.astro';
+import { ThinkingOrb } from 'thinking-orbs';
+
+// `shots` is optional: a card without any renders as the copy panel alone.
+// `layout` picks how the artwork sits: 'quad' is 2x2 for landscape drawings,
+// 'trio' is a row of portrait app screens, and 'clip' is a single screen
+// recording. A card with neither `shots` nor `clip` is the copy panel alone.
+const apps = [
+  {
+    name: 'Points Are Really Bad',
+    href: 'https://www.pointsarereallybad.com',
+    blurb: 'Football score prediction game where points are really bad',
+    context: 'Inspired by Tifo Football, I built this game for me and my friends to get invested in every match. The closer we were to predicting the correct score, the fewer added points we got, and points are really bad.',
+    layout: 'clip',
+    clip: {
+      src: '/assets/experiments/points-are-bad/points-are-bad.mp4',
+      poster: '/assets/experiments/points-are-bad/points-are-bad-poster.png',
+      alt: 'A run through the app: browsing fixtures, entering a score prediction, and locking it in.',
+    },
+  },
+  {
+    name: 'Trip Itinerary',
+    href: 'https://avyayrk.com/trip-itinerary',
+    blurb: 'Asynchronous trip planner that ensures the trip makes it out of the group chat',
+    context: 'I was going to go on a trip to New Orleans, but planning the itinerary with friends across timezones was tough - until I built Trip Itinerary, freeing us to coordinate asynchronously and have a well planned trip.',
+    layout: 'trio',
+    shots: [
+      { src: '/assets/experiments/trip-itinerary/places.png', alt: 'The Places tab of Trip Itinerary' },
+      { src: '/assets/experiments/trip-itinerary/plan.png', alt: 'The Plan tab of Trip Itinerary, showing a New Orleans trip laid out by day' },
+      { src: '/assets/experiments/trip-itinerary/people.png', alt: 'The People tab of Trip Itinerary' },
+    ],
+  },
+  {
+    name: 'Drinks I Sip',
+    href: 'https://drinksisip.com',
+    blurb: "My digital shelf of some cups and glasses I've liked enough to draw.",
+    context: "I've had some really good drinks around the world, and on a completely different note, had been looking for a reason to get back to drawing things on ProCreate, leading to the birth of DrinksISip.",
+    // Each file is a finished tile, colour and label baked in, so they mosaic
+    // straight onto the card.
+    layout: 'quad',
+    shots: [
+      { src: '/assets/experiments/drinksisip/amorino.png', alt: 'Amorino hot chocolate, drawn on a grey tile' },
+      { src: '/assets/experiments/drinksisip/caffe-panna.png', alt: 'Caffè Panna hot chocolate, drawn on an orange tile' },
+      { src: '/assets/experiments/drinksisip/the-cocoa-store.png', alt: 'The Cocoa Store hot chocolate, drawn on a pink tile' },
+      { src: '/assets/experiments/drinksisip/breads-bakery.png', alt: 'Breads Bakery hot chocolate, drawn on a cream tile' },
+    ],
+  },
+];
+
+// Dynamic Island mockups. An entry with no `src` renders as an empty slot, so
+// adding another capture is a one-line change here.
+const notifications = [
+  {
+    label: 'Live score',
+    src: '/assets/experiments/dynamic-island/live-score.mp4',
+    poster: '/assets/experiments/dynamic-island/live-score-poster.png',
+    alt: 'A live football score running in the Dynamic Island, Manchester United against Manchester City',
+  },
+  {
+    label: 'Wait for ride',
+    src: '/assets/experiments/dynamic-island/uber-ride.mp4',
+    poster: '/assets/experiments/dynamic-island/uber-ride-poster.png',
+    alt: 'An Uber ride tracked in the Dynamic Island, with the car, plate and arrival time',
+  },
+];
 ---
 <Layout title="Experiments — Avyay">
-  <ComingSoon note="Still in the lab. No test tubes were harmed in the making of this page." />
+  <article class="exp">
+
+    {/*
+      ThinkingOrb paints grayscale ink only, so it gets recoloured by mapping
+      every painted pixel onto the accent while keeping its alpha. Same
+      approach as the hero orb: feColorMatrix can't read a CSS variable, so
+      each theme carries its own filter and the wrapper swaps between them.
+    */}
+    <svg class="exp-orb-defs" aria-hidden="true" focusable="false">
+      <!-- --color-accent light: #1A6CF0 -->
+      <filter id="orbAccentLight" color-interpolation-filters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0.10196
+                  0 0 0 0 0.42353
+                  0 0 0 0 0.94118
+                  0 0 0 1 0" />
+      </filter>
+      <!-- --color-accent dark: #5C97FF -->
+      <filter id="orbAccentDark" color-interpolation-filters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0.36078
+                  0 0 0 0 0.59216
+                  0 0 0 0 1
+                  0 0 0 1 0" />
+      </filter>
+    </svg>
+
+    <header class="exp-intro">
+      <span class="exp-orb" aria-hidden="true">
+        <ThinkingOrb client:load state="composing" size={64} theme="light" aria-hidden={true} />
+      </span>
+      <h1 class="exp-title t-display t-display--sm" id="expTitle">My Sandbox to express random things.</h1>
+    </header>
+
+    <section class="exp-section exp-reveal">
+      <h2 class="exp-section-label t-label">Apps made with AI</h2>
+      <div class="exp-apps">
+        {apps.map(({ name, href, blurb, context, shots, clip, layout }) => (
+          <a class={`exp-app${clip ? ' exp-app--clip' : ''}${shots || clip ? '' : ' exp-app--noshot'}`} href={href} target="_blank" rel="noopener">
+            <div class="exp-app-panel">
+              <span class="exp-app-dither" aria-hidden="true"></span>
+              <span class="exp-app-arrow material-symbols-outlined" aria-hidden="true">call_made</span>
+              <h3 class="exp-app-name t-h2">{name}</h3>
+              <p class="exp-app-blurb t-body">{blurb}</p>
+              <div class="exp-app-context">
+                <div class="exp-app-context-inner">
+                  <span class="exp-app-context-label t-label">Context</span>
+                  <p class="exp-app-context-body t-body">{context}</p>
+                </div>
+              </div>
+            </div>
+            {shots && (
+              <div class={`exp-app-shot exp-app-shot--${layout}`}>
+                {shots.map(({ src, alt }) => (
+                  <img class="exp-tile" src={src} alt={alt} loading="lazy" />
+                ))}
+              </div>
+            )}
+            {clip && (
+              <div class={`exp-app-shot exp-app-shot--${layout}`}>
+                {/*
+                  preload="none" on purpose: the file is a few megabytes, and
+                  nothing is fetched until someone hovers the card. Until then
+                  the poster is the whole cost. experiments.js starts and stops
+                  playback on hover.
+                */}
+                <span class="exp-phone">
+                  <video
+                    class="exp-clip"
+                    src={clip.src}
+                    poster={clip.poster}
+                    aria-label={clip.alt}
+                    preload="none"
+                    muted
+                    loop
+                    playsinline
+                  ></video>
+                </span>
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="exp-section exp-reveal">
+      <h2 class="exp-section-label t-label">Really Live notifications</h2>
+      <div class="exp-videos">
+        {notifications.map(({ label, src, poster, alt }) => (
+          <figure class="exp-video">
+            {src ? (
+              /* Same deal as the app clips: nothing downloads until hover. */
+              <video
+                class="exp-video-media exp-clip"
+                src={src}
+                poster={poster}
+                aria-label={alt}
+                preload="none"
+                muted
+                loop
+                playsinline
+              ></video>
+            ) : (
+              <div class="exp-video-placeholder" aria-hidden="true">
+                <svg class="exp-video-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2.5" y="5" width="19" height="14" rx="3" />
+                  <path d="M10 9.5 15 12l-5 2.5z" />
+                </svg>
+              </div>
+            )}
+            <figcaption class="exp-video-caption t-small">{label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+  </article>
 </Layout>
+
+<script src="../scripts/experiments.js"></script>
+
+<style>
+  /* Opts out of the 1100px cap `.main > *` puts on every page child, so the
+     cards run the full width of the main column. The gutter is a plain edge
+     margin rather than the wide reading gutter the prose pages use. */
+  .exp {
+    max-width: none;
+    padding: clamp(96px, 16vh, 168px) clamp(24px, 5vw, 64px) 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Zero-size holder for the tint filters */
+  .exp-orb-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .exp-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 64px;
+  }
+
+  .exp-orb {
+    display: inline-flex;
+    line-height: 0;
+    filter: url(#orbAccentLight);
+  }
+
+  :global(html[data-theme='dark']) .exp-orb {
+    filter: url(#orbAccentDark);
+  }
+
+  .exp-title {
+    max-width: 18ch;
+    transition: color 0.3s ease;
+  }
+
+  /* Caret only while the line is typing itself in */
+  .exp-title.is-typing::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 0.85em;
+    margin-left: 3px;
+    vertical-align: -0.08em;
+    background: var(--color-accent);
+    animation: exp-caret 0.9s steps(1) infinite;
+  }
+
+  @keyframes exp-caret {
+    50% { opacity: 0; }
+  }
+
+  /* ── Sections ── */
+  .exp-section {
+    width: 100%;
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .exp-section + .exp-section {
+    margin-top: 48px;
+  }
+
+  .exp-section-label {
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  /* ── Apps ──
+     Each app is one full-width card: a blue panel carrying the copy, with a
+     screenshot sitting alongside it. The context paragraph and the arrow are
+     hover-only, so the resting state stays down to a title and one line. */
+  .exp-apps {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* One bordered card holding the copy on the left and the screenshot on the
+     right, flush so the two read as a single surface. */
+  .exp-app {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+    text-align: left;
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: 28px;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
+  }
+
+  .exp-app--noshot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .exp-app:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-accent-outline);
+  }
+
+  .exp-app-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Top-aligned rather than centred: the title then holds one position and
+       the context expands downward under it, instead of the whole block
+       drifting up as it grows on hover. */
+    justify-content: flex-start;
+    padding: 36px 40px;
+    background: var(--color-bg);
+    overflow: hidden;
+  }
+
+  /* ── Dither wash ──
+     An ordered-dither dissolve rising off the panel's bottom edge on hover.
+     One dot grid drawn as three bands of decreasing height, each at a
+     different phase within the cell: near the edge all three overlap and read
+     solid, then they drop away a band at a time. That stepped density is what
+     sells it as a dither rather than a plain fade.
+
+     The bands are sized rather than masked on purpose. Fading them with
+     `mask-image` is the tidier way to write it, but three stacked masked
+     layers stopped Chrome painting the whole main column, so height does the
+     work instead: no mask, no compositing layer, nothing to go wrong. */
+  .exp-app-dither,
+  .exp-app-dither::before,
+  .exp-app-dither::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle at center,
+        var(--color-accent) 0 1px,
+        transparent 1.3px);
+    background-size: 4px 4px;
+  }
+
+  .exp-app-dither {
+    height: 52%;
+    opacity: 0;
+    background-position: 0 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .exp-app-dither::before,
+  .exp-app-dither::after {
+    content: '';
+  }
+
+  /* Heights nest inside the band above, so these are ~34% and ~20% of the
+     panel rather than of themselves. */
+  .exp-app-dither::before {
+    height: 65%;
+    background-position: 2px 2px;
+  }
+
+  .exp-app-dither::after {
+    height: 38%;
+    background-position: 2px 0;
+  }
+
+  .exp-app:hover .exp-app-dither {
+    opacity: 0.55;
+  }
+
+  /* The wash is absolutely positioned, so the panel's in-flow copy needs a
+     stacking context of its own to stay above it. */
+  .exp-app-name,
+  .exp-app-blurb,
+  .exp-app-context,
+  .exp-app-arrow {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Type comes from .t-h2; this only clears its bottom margin (the panel
+     spaces its own children) and reserves room for the corner arrow. */
+  .exp-app-name {
+    margin-bottom: 0;
+    padding-right: 48px;
+    transition: color 0.2s ease;
+  }
+
+  .exp-app:hover .exp-app-name {
+    color: var(--color-accent);
+  }
+
+  .exp-app-blurb {
+    margin-top: 8px;
+    max-width: 60ch;
+  }
+
+  .exp-app-arrow {
+    position: absolute;
+    z-index: 1;
+    top: 32px;
+    right: 32px;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--color-accent);
+    opacity: 0;
+    transform: translate(-6px, 6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 40;
+  }
+
+  /* Collapsing the row from 0fr to 1fr animates the height without any
+     magic pixel value, so the copy can be any length. */
+  .exp-app-context {
+    display: grid;
+    grid-template-rows: 0fr;
+    width: 100%;
+    opacity: 0;
+    transition: grid-template-rows 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
+  }
+
+  /* Glass plate under the context so the copy stays readable where it sits
+     over the densest part of the dither. Translucent rather than opaque, so
+     the pattern still reads through it. The two themes state their own tint
+     the way global.css does, instead of leaning on color-mix. */
+  .exp-app-context-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    min-height: 0;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 1px solid var(--color-divider);
+    background: rgba(255, 255, 255, 0.72);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+  }
+
+  :global(html[data-theme='dark']) .exp-app-context-inner {
+    background: rgba(22, 23, 27, 0.72);
+  }
+
+  .exp-app-context-label {
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+
+  .exp-app-context-body {
+    max-width: 62ch;
+  }
+
+  /* Gated on hover-capable pointers: on touch there is no hover state to
+     reach, so the context and arrow just stay open. */
+  @media (hover: hover) {
+    .exp-app:hover .exp-app-arrow {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    .exp-app:hover .exp-app-context,
+    .exp-app:focus-visible .exp-app-context {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 36px;
+    }
+
+    .exp-app:focus-visible .exp-app-arrow {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  @media (hover: none) {
+    .exp-app-arrow {
+      opacity: 1;
+      transform: none;
+    }
+
+    .exp-app-context {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 28px;
+    }
+  }
+
+  /* Each layout takes the aspect ratio its own artwork wants, which is also
+     what gives the grid an intrinsic height and so sets the card's height. */
+  .exp-app-shot {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    padding: 4px;
+    background: var(--color-bg-secondary);
+  }
+
+  /* Four landscape drawings (~1.44), two up and two across. Two 1.44 cells
+     side by side over two rows leaves the block at 1.44 as well. */
+  .exp-app-shot--quad {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    aspect-ratio: 1.44;
+  }
+
+  /* Three portrait app screens (~0.57) in a row: 3 x 0.57 puts the block at
+     about 1.7, and each cell then matches its screenshot almost exactly, so
+     the screens read whole rather than cropped. */
+  .exp-app-shot--trio {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    aspect-ratio: 1.7;
+  }
+
+  /* A single screen recording, shown in a phone that stands on the card and
+     runs off its bottom edge. The copy panel keeps most of the width and the
+     phone takes a narrow column at the right, so the card reads as one
+     surface with a device set into it rather than a split. */
+  .exp-app--clip {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  }
+
+  .exp-app-shot--clip {
+    position: relative;
+    /* Sets the card's height, and is deliberately shorter than the phone */
+    min-height: 380px;
+    padding: 0;
+    /* Matches the copy panel so there's no seam down the middle */
+    background: var(--color-bg);
+  }
+
+  .exp-phone {
+    position: absolute;
+    top: 44px;
+    left: 50%;
+    /* Taller than the block it sits in, so the card's own overflow crops the
+       bottom of the phone off rather than the card growing to contain it. */
+    height: calc(100% + 64px);
+    /* Shorter than the clip's 296 x 640, which crops the recording's iOS
+       status bar and dynamic island off the top and leaves the app's own
+       header sitting at the edge of the screen. */
+    aspect-ratio: 296 / 584;
+    padding: 7px;
+    border-radius: 34px;
+    /* Fixed rather than themed: this is a device, not a surface. */
+    background: #0B0C0F;
+    box-shadow: 0 18px 40px var(--color-shadow), 0 2px 8px var(--color-shadow-soft);
+    transform: translateX(-50%);
+  }
+
+  .exp-clip {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 27px;
+    object-fit: cover;
+    object-position: center bottom;
+  }
+
+  .exp-tile {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  /* Anchored bottom-left: that corner holds the drink's name, and the empty
+     headroom above each cup is what we can afford to lose. */
+  .exp-app-shot--quad .exp-tile {
+    object-position: left bottom;
+  }
+
+  /* App screens crop from the bottom instead, so each keeps its header. */
+  .exp-app-shot--trio .exp-tile {
+    object-position: center top;
+  }
+
+  /* ── Really Live notifications ── */
+  .exp-videos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .exp-video {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* The two captures sit at slightly different ratios, so the frame takes a
+     ratio between them and the video is contained rather than cropped. The
+     mockups are already black to the edges, so the letterboxing that leaves
+     is invisible against the frame. */
+  .exp-video-media,
+  .exp-video-placeholder {
+    width: 100%;
+    aspect-ratio: 1.28;
+    border-radius: 20px;
+    background: #000;
+    object-fit: contain;
+  }
+
+  .exp-video-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--color-border);
+    background: var(--color-bg-secondary);
+    color: var(--color-accent);
+  }
+
+  .exp-video-glyph {
+    width: 32px;
+    height: 32px;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 768px) {
+    .exp-videos {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* Screenshot stacks under the panel rather than shrinking beside it */
+    .exp-app,
+    .exp-app--noshot,
+    .exp-app--clip {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .exp-app-shot--clip {
+      min-height: 300px;
+    }
+
+    .exp-phone {
+      top: 28px;
+      height: calc(100% + 48px);
+    }
+
+    .exp-app-panel {
+      padding: 28px 24px;
+    }
+
+    .exp-app-name {
+      padding-right: 40px;
+    }
+
+    .exp-app-context-inner {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+
+
+    .exp-title {
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .exp-app,
+    .exp-app-arrow,
+    .exp-app-context {
+      transition: none;
+    }
+
+    .exp-app:hover {
+      transform: none;
+    }
+
+    .exp-title.is-typing::after {
+      animation: none;
+    }
+  }
+</style>
