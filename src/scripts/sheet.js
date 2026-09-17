@@ -133,9 +133,6 @@ async function inject(path) {
   runScripts(body);
   body.scrollTop = 0;
   panel.setAttribute('aria-label', entry.label);
-  // Lets Sheet.astro's CSS vary the shell per sheet (e.g. hiding the close
-  // button for the resume PDF), the same way it does server-side on first load
-  panel.dataset.sheet = path;
   document.title = entry.title;
   current = path;
   return entry;
@@ -385,8 +382,8 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('click', (e) => {
   if (!e.target.closest?.('[data-sheet-close]')) return;
-  // With the mobile menu open, a tap outside only closes the menu (dock.js)
-  if (els().dock?.classList.contains('is-open') && !e.target.closest('.sheet-close')) return;
+  // With the mobile menu open, a tap outside just closes the menu (dock.js)
+  if (els().dock?.classList.contains('is-open')) return;
   requestClose();
 });
 

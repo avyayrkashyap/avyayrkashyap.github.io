@@ -9,10 +9,6 @@ interface Props {
 }
 
 const { open = false, label } = Astro.props;
-// Which page's content is showing, so CSS can vary the shell per sheet (the
-// resume PDF has no room for the site's own close button on top of the
-// browser's). sheet.js keeps this in sync client-side as sheets swap.
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 <div
   class:list={['sheet', { 'is-open': open }]}
@@ -24,7 +20,6 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   <div
     class="sheet-panel"
     id="sheetPanel"
-    data-sheet={path}
     role="dialog"
     aria-modal="true"
     aria-label={label}
@@ -33,11 +28,6 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   >
     <div class="sheet-header" id="sheetHandle">
       <span class="sheet-grabber" aria-hidden="true"></span>
-      <button class="sheet-close" type="button" aria-label="Close" data-sheet-close>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
-      </button>
     </div>
     <div class="sheet-body" id="sheetBody">
       <slot />
@@ -123,39 +113,6 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     height: 5px;
     border-radius: 9999px;
     background-color: var(--color-border);
-  }
-
-  .sheet-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: 0;
-    border-radius: 9999px;
-    background-color: var(--color-quote-bg);
-    color: var(--color-text);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  /* The resume PDF fills the sheet edge to edge with no room to spare, and
-     the embedded viewer has its own close/download controls anyway. The drag
-     handle, backdrop tap, and Escape still close it. */
-  .sheet-panel[data-sheet='/resume'] .sheet-close {
-    display: none;
-  }
-
-  .sheet-close:hover {
-    background-color: var(--color-border);
-  }
-
-  .sheet-close svg {
-    width: 16px;
-    height: 16px;
   }
 
   .sheet-body {
