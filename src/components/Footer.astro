@@ -16,12 +16,13 @@ const socials = [
 <footer class="site-footer">
   <div class="footer-top">
     <div class="footer-contact">
-      <a class="footer-email t-display t-display--sm" href="mailto:avyayrk@gmail.com">avyayrk@gmail.com</a>
-      <span class="footer-caption t-small">Get in touch</span>
+      {/* At Title size the address is wider than a phone; <wbr> lets it wrap after the @ instead of overflowing */}
+      <a class="footer-email type-title" href="mailto:avyayrk@gmail.com">avyayrk@<wbr />gmail.com</a>
+      <span class="footer-caption type-body-xs">Get in touch</span>
     </div>
 
     <div class="footer-social">
-      <span class="footer-caption t-small">Find me on</span>
+      <span class="footer-caption type-body-xs">Find me on</span>
       <div class="footer-social-links">
         {socials.map(({ label, href, path }) => (
           <a class="footer-icon-btn" href={href} target="_blank" rel="noopener" aria-label={label}>
@@ -34,7 +35,7 @@ const socials = [
     </div>
   </div>
 
-  <p class="footer-bottom t-small">Made with <span aria-hidden="true">❤️</span> from New York, NY&nbsp;|&nbsp;Avyay Ravi Kashyap © 2026</p>
+  <p class="footer-bottom type-body-xs">Made with <span aria-hidden="true">❤️</span> from New York, NY&nbsp;|&nbsp;Avyay Ravi Kashyap © 2026</p>
 </footer>
 
 <style>
@@ -66,7 +67,7 @@ const socials = [
   }
 
   .footer-email:hover {
-    color: var(--color-accent);
+    color: var(--color-text-accent);
   }
 
   .footer-social {
@@ -90,7 +91,7 @@ const socials = [
     height: 36px;
     border-radius: 9999px;
     background: transparent;
-    color: var(--color-text);
+    color: var(--color-text-strong);
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
@@ -100,8 +101,8 @@ const socials = [
   }
 
   .footer-icon-btn:hover {
-    background: var(--color-bg-secondary);
-    color: var(--color-accent);
+    background: var(--color-cool-bg);
+    color: var(--color-text-accent);
   }
 
   @media (max-width: 768px) {

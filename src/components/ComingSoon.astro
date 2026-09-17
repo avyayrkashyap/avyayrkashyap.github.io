@@ -10,14 +10,16 @@ const { note } = Astro.props;
 ---
 <section class="soon">
   <svg class="soon-orb-defs" aria-hidden="true" focusable="false">
+    <!-- --color-text-accent light: #155ED3 -->
     <filter id="orbAccentLight" color-interpolation-filters="sRGB">
       <feColorMatrix
         type="matrix"
-        values="0 0 0 0 0.10196
-                0 0 0 0 0.42353
-                0 0 0 0 0.94118
+        values="0 0 0 0 0.08235
+                0 0 0 0 0.36863
+                0 0 0 0 0.82745
                 0 0 0 1 0" />
     </filter>
+    <!-- --color-text-accent dark: #5C97FF -->
     <filter id="orbAccentDark" color-interpolation-filters="sRGB">
       <feColorMatrix
         type="matrix"
@@ -31,9 +33,9 @@ const { note } = Astro.props;
   <span class="soon-orb" aria-hidden="true">
     <ThinkingOrb client:load state="working" size={64} theme="light" aria-hidden={true} />
   </span>
-  <h1 class="soon-title t-display">Coming soon.</h1>
-  <p class="soon-note t-body">{note}</p>
-  <a class="soon-back" href="/">← Back home</a>
+  <h1 class="soon-title type-title">Coming soon.</h1>
+  <p class="soon-note type-body-md">{note}</p>
+  <a class="soon-back type-body-sm" href="/">← Back home</a>
 </section>
 
 <style>
@@ -75,14 +77,11 @@ const { note } = Astro.props;
     transition: color 0.3s ease;
   }
 
+  /* body-sm, in the accent rather than secondary text */
   .soon-back {
     margin-top: 16px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-accent);
+    color: var(--color-text-accent);
     text-decoration: none;
-    opacity: 0.85;
     transition: opacity 0.2s ease;
   }
 

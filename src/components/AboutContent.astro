@@ -1,0 +1,490 @@
+---
+// src/components/AboutContent.astro
+// The About page body. Rendered inside the sheet, both when /about is loaded
+// directly and when the sheet fetches it over another page.
+
+// Ordered reverse-chronologically by start year — schools and jobs
+// interleaved, most recent first, as a single "journey" rather than two
+// separate lists.
+const timeline = [
+  {
+    period: 'Sep 2024 - Present',
+    role: 'Sr. UX Designer',
+    company: "Moody's Investor Service",
+    location: 'New York',
+    logo: '/assets/index/logo-moodys.png',
+    logoDark: '/assets/index/logo-moodys-dark.png',
+    body: "Own end-to-end design of structured finance analysis workflows in a 0→1 enterprise environment. Defining the next generation of processes that democratize design across the org.",
+  },
+  {
+    period: 'May 2023 - Dec 2023',
+    role: 'UX Design Intern',
+    company: 'GEP Worldwide',
+    location: 'New Jersey',
+    logo: '/assets/index/logo-gep.png',
+    logoDark: '/assets/index/logo-gep-dark.png',
+    body: "Led a platform-level redesign of a sourcing product for cost engineers and category managers, and shipped low-code app builders that cut internal development turnaround from weeks to hours.",
+  },
+  {
+    period: '2022 - 2024',
+    role: 'MS, Human-Computer Interaction',
+    company: 'Indiana University Bloomington',
+    logo: '/assets/about/iu-logo.png',
+    body: "Deepened my research practice, from mixed-methods and cognitive walkthroughs to synthesis and storytelling.",
+  },
+  {
+    period: '2020 - 2022',
+    role: 'UX Design Manager',
+    company: 'Reliance Jio',
+    location: 'Mumbai',
+    logo: '/assets/index/logo-jio.png',
+    body: "Led a redesign of JioMart's consumer experience that contributed to a 42% increase in customer satisfaction, and established the UX foundation for a new internal employee service portal used across the organization.",
+  },
+  {
+    period: 'May 2018 - Jul 2018',
+    role: 'UX Design Intern',
+    company: 'Philips Innovation Campus',
+    location: 'Bangalore',
+    logo: '/assets/index/logo-philips.png',
+    body: "Conceptualized a solution to detect early signs of Conduct Disorder in children through emotion-sensing technologies and IoT.",
+  },
+  {
+    period: '2015 - 2020',
+    role: 'Dual Degree, Interaction Design',
+    company: 'IDC School of Design, IIT Bombay',
+    logo: '/assets/about/iitb-logo.png',
+    body: "Fell in love with design.",
+  },
+];
+
+const philosophy = [
+  {
+    title: 'Tools should never hinder thought',
+    body: "The interface should keep pace with how someone is already thinking, not force them to think in the shape of the tool.",
+  },
+  {
+    title: 'Simple, until it isn’t',
+    body: "Simplicity is the default. Complexity only earns its place once it's clearly doing something simplicity can't.",
+  },
+  {
+    title: 'Verify before you design',
+    body: "Assumptions are cheap to check and expensive to build around. I'd rather spend a day confirming than a sprint unwinding.",
+  },
+];
+
+// All three play in red, hence the section heading.
+const teams = [
+  { name: 'Manchester United', logo: '/assets/about/mufc-logo.png' },
+  { name: 'Royal Challengers Bengaluru', logo: '/assets/about/rcb-logo.png' },
+  { name: 'Scuderia Ferrari', logo: '/assets/about/sf-logo.png' },
+];
+---
+<article class="about">
+
+  <section class="ab-intro">
+    <span class="ab-avatar-wrap">
+      <img class="ab-avatar" src="/assets/about/about-avyay.png" alt="Avyay standing in front of the Golden Gate Bridge" width="2534" height="1292" />
+    </span>
+    <div class="ab-intro-text">
+      <h1 class="type-title">Hi, I'm Avyay.</h1>
+      <p class="ab-lead type-body-md">I'm a product designer based in New York, working across structured finance and AI-native workflows. I care about making complex, high-stakes tools feel obvious to use, and about building the design process itself to keep pace with how fast the tools around it are changing.</p>
+      <p class="ab-lead type-body-md">
+        Off hours, you can find me deep in <img class="ab-inline-logo" src="/assets/about/claude-code-logo.png" alt="Claude Code" /> making apps to engage me and my friends asynchronously, playing <img class="ab-inline-logo" src="/assets/about/eafc26-logo.png" alt="EA Sports FC 26" />, adding items to my <img class="ab-inline-logo" src="/assets/about/beli-logo.png" alt="Beli" /> list, and logging runs on <img class="ab-inline-logo ab-inline-logo--badge" src="/assets/about/nrc-logo.png" alt="Nike Run Club" /> at the Jersey City waterfront, gawking at the Empire State Building.
+      </p>
+    </div>
+  </section>
+
+  <div class="ab-main">
+    <section class="ab-section">
+      <h2 class="ab-section-label type-h4">My design stack</h2>
+      <figure class="ab-process">
+        <img class="ab-process-img ab-process-img--light" src="/assets/about/design-process.png" alt="A spectrum from Ambiguous to Clear: Are.na, Paper and Figma at the ambiguous end, Claude Code, Conductor Worktrees and Google Antigravity at the clear end." width="1710" height="542" />
+        <img class="ab-process-img ab-process-img--dark" src="/assets/about/design-process-dark.png" alt="" aria-hidden="true" width="1710" height="542" />
+      </figure>
+      <p class="ab-lead-wide type-body-md">As the execution layer becomes more accessible, my process keeps moving closer to the material my work will actually exist in. The real gap is in understanding the problem space in front of me. When I know its shape, I build directly and explore inside real components and constraints; when it's more ambiguous, I work through the problem using tools that allow for written and visual exploration. Working toward a defined solution has me gliding back and forth along that line.</p>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-section-label type-h4">Design philosophy</h2>
+      <div class="ab-philosophy">
+        {philosophy.map(({ title, body }) => (
+          <div class="ab-principle">
+            <h3 class="ab-row-title type-h2">{title}</h3>
+            <p class="type-body-sm">{body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-section-label type-h4">Journey</h2>
+      <div class="ab-timeline">
+        {timeline.map(({ period, role, company, location, logo, logoDark, body }) => (
+          <div class="ab-row">
+            <span class="ab-row-period type-body-xs">{period}</span>
+            <div class="ab-row-content">
+              {logo && (
+                <span class="ab-row-logo-wrap">
+                  <img class={`ab-row-logo${logoDark ? ' ab-row-logo--light' : ''}`} src={logo} alt="" />
+                  {logoDark && <img class="ab-row-logo ab-row-logo--dark" src={logoDark} alt="" />}
+                </span>
+              )}
+              <h3 class="ab-row-title type-h2">{role}</h3>
+              <span class="ab-row-company type-body-xs">{company}{location && ` · ${location}`}</span>
+              <p class="type-body-sm">{body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ab-section">
+      <h2 class="ab-section-label type-h4">Reds that make me Blue</h2>
+      <div class="ab-teams">
+        {teams.map(({ name, logo }) => (
+          <div class="ab-team-card">
+            <span class="ab-team-crest">
+              <img class="ab-team-logo" src={logo} alt={name} />
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+
+</article>
+
+<style>
+  .about {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(96px, 16vh, 168px) clamp(40px, 9vw, 122px) 120px;
+  }
+
+  /* ── Two columns ──
+     The intro (photo + blurb) pins on the left while the sections scroll past
+     on the right. The page only renders inside the sheet, whose body is the
+     scroll container, so sticky offsets are measured from the sheet's top. */
+  @media (min-width: 1024px) {
+    .about {
+      display: grid;
+      grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+      column-gap: clamp(48px, 5vw, 96px);
+      align-items: start;
+      max-width: 1240px;
+      padding-inline: clamp(40px, 4vw, 64px);
+    }
+
+    .ab-intro {
+      gap: 24px;
+      padding-bottom: 0;
+    }
+
+    .ab-intro-text {
+      gap: 16px;
+    }
+
+    /* The first section sits beside the photo, so it drops the divider that
+       separated it from the intro when stacked */
+    .ab-main > .ab-section:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+
+  /* Only pin the intro when the viewport can show all of it; on shorter
+     screens a pinned intro would hide the end of the blurb */
+  @media (min-width: 1024px) and (min-height: 760px) {
+    .ab-intro {
+      position: sticky;
+      top: 12px;
+    }
+  }
+
+  /* Sizes against its own column, so the timeline can stack when the column
+     is narrow even though the viewport is wide */
+  .ab-main {
+    container-type: inline-size;
+    min-width: 0;
+  }
+
+  /* ── Intro ── */
+  .ab-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+    padding-bottom: 48px;
+  }
+
+  /* Animating the gradient's own angle (rather than rotating the element)
+     keeps the glow locked to the image's rectangle instead of sweeping a
+     rotated box past its corners. Inherited so the animated angle also
+     reaches the ::before glow layer; under inherits: false that layer
+     silently falls back to the 0deg initial value and stops tracking. */
+  @property --ab-glow-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: true;
+  }
+
+  .ab-avatar-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 420px;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 22px;
+    background: conic-gradient(
+      from var(--ab-glow-angle, 0deg),
+      transparent 0deg,
+      var(--color-text-accent) 70deg,
+      color-mix(in srgb, var(--color-text-accent) 20%, transparent) 150deg,
+      transparent 240deg,
+      transparent 360deg
+    );
+    animation: ab-glow-rotate 6s linear infinite;
+  }
+
+  /* Radius and gradient are stated explicitly rather than via `inherit`:
+     inherited paint on a filtered pseudo-element is handled inconsistently
+     across engines and was showing a hard rectangle in Safari. */
+  .ab-avatar-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    background: conic-gradient(
+      from var(--ab-glow-angle, 0deg),
+      transparent 0deg,
+      var(--color-text-accent) 70deg,
+      color-mix(in srgb, var(--color-text-accent) 20%, transparent) 150deg,
+      transparent 240deg,
+      transparent 360deg
+    );
+    filter: blur(12px);
+    opacity: 0.85;
+  }
+
+  @keyframes ab-glow-rotate {
+    to {
+      --ab-glow-angle: 360deg;
+    }
+  }
+
+  .ab-avatar {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2534 / 1292;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ab-avatar-wrap {
+      animation: none;
+    }
+  }
+
+  .ab-intro-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Measure only; type comes from .type-body-md */
+  .ab-lead {
+    max-width: 640px;
+  }
+
+  .ab-lead-wide {
+    max-width: 760px;
+  }
+
+  /* ── Sections ── */
+  .ab-section {
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ab-section + .ab-section {
+    margin-top: 48px;
+  }
+
+  /* Section headings here read as quiet uppercase eyebrows rather than the
+     large .t-h2 the case studies use, so they need their own bottom margin. */
+  .ab-section-label {
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .ab-inline-logo {
+    height: 1.1em;
+    width: auto;
+    vertical-align: -0.22em;
+    margin: 0 2px;
+  }
+
+  .ab-inline-logo--badge {
+    height: 1.3em;
+    border-radius: 4px;
+    vertical-align: -0.32em;
+  }
+
+  /* ── Timeline ── */
+  .ab-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ab-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .ab-row-period {
+    flex-shrink: 0;
+    width: 160px;
+    padding-top: 3px;
+  }
+
+  .ab-row-content {
+    flex: 1;
+    max-width: 640px;
+  }
+
+  .ab-row-logo-wrap {
+    display: block;
+    line-height: 0;
+    margin-bottom: 12px;
+  }
+
+  .ab-row-logo {
+    height: 24px;
+    width: auto;
+  }
+
+  .ab-row-logo--dark {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-row-logo--light {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-row-logo--dark {
+    display: block;
+  }
+
+  /* The legacy h3 carried its own bottom margin; the primitives don't */
+  .ab-row-title {
+    margin-bottom: 0;
+  }
+
+  .ab-row-company {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+
+  /* ── My design stack ── */
+  /* Two exports of the same diagram: the labels and the are.na mark are near
+     black, so the dark variant recolours just those and leaves the product
+     logos alone. Swapped on theme the same way the timeline logos are. */
+  .ab-process {
+    margin-bottom: 32px;
+    max-width: 760px;
+  }
+
+  .ab-process-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .ab-process-img--dark {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-process-img--light {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .ab-process-img--dark {
+    display: block;
+  }
+
+  /* ── Philosophy ── */
+  /* auto-fit rather than a fixed 3 columns: between the mobile breakpoint and
+     full width, three tracks squeeze the copy to a few words per line, so let
+     the cards drop to two (then one) on their own. */
+  .ab-philosophy {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  /* Shared card chrome for the philosophy and teams grids, so the two
+     sections stay in step if the surface treatment changes. Static surfaces:
+     the cool fill carries them in both themes, with no hover state. */
+  .ab-principle,
+  .ab-team-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--color-cool-bg);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  /* ── Teams ── */
+  /* Crest-only cards, so they can go narrower than the philosophy cards and
+     keep all three on one row in the right-hand column */
+  .ab-teams {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  /* The crests differ in silhouette (round, tall, shield), so a fixed-height
+     row keeps them optically level instead of aligning their raw boxes. */
+  .ab-team-crest {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+  }
+
+  .ab-team-logo {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+
+  /* Three principles don't split evenly into two tracks, so below room for
+     three, stack them rather than leave one orphaned */
+  @container (max-width: 820px) {
+    .ab-philosophy {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @container (max-width: 560px) {
+    .ab-row {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ab-row-period {
+      width: auto;
+      padding-top: 0;
+    }
+  }
+</style>
