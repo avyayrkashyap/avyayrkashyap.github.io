@@ -232,7 +232,7 @@ const socials = [
     display: flex;
     /* Vertical padding lives on each .dock-link instead, so the hit target
        fills the full pill height rather than just the text line */
-    padding: 0 16px;
+    padding: 0;
     border-radius: 8px;
     /* Frosted glass: translucent fill blurs whatever scrolls underneath */
     background-color: rgba(255, 255, 255, 0.55);
@@ -255,11 +255,10 @@ const socials = [
   }
 
   .dock-link {
-    width: 64px;
+    width: 84px;
     flex-shrink: 0;
     /* 8px moved here from .dock-nav's old top/bottom padding */
-    padding: 10px 4px;
-    border-radius: 4px;
+    padding: 10px 0;
     font-family: var(--font-sans);
     font-size: 14px;
     line-height: 1.3;
@@ -272,6 +271,16 @@ const socials = [
   .dock-link:hover,
   .dock-link.is-active {
     color: var(--color-text-accent);
+  }
+
+  .dock-link:first-of-type {
+    padding-left: 4px;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .dock-link:last-of-type {
+    padding-right: 4px;
+    border-radius: 0 8px 8px 0;
   }
 
   /* Same hover surface as the theme toggle and social links */
