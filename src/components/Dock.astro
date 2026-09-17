@@ -13,7 +13,7 @@ const navItems = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Now', href: '/now' },
-  { label: 'Resume', href: '/assets/files/resume.pdf', external: true },
+  { label: 'Resume', href: '/resume' },
 ];
 
 const isActive = (href: string) => pathname === href;
@@ -48,13 +48,11 @@ const socials = [
   </div>
 
   <nav class="dock-nav" id="dockNav" aria-label="Primary">
-    {navItems.map(({ label, href, external }) => (
+    {navItems.map(({ label, href }) => (
       <a
         class={`dock-link${isActive(href) ? ' is-active' : ''}`}
         href={href}
         aria-current={isActive(href) ? 'page' : undefined}
-        target={external ? '_blank' : undefined}
-        rel={external ? 'noopener' : undefined}
       >{label}</a>
     ))}
     {!hasActive && <span class="dock-current-fallback" aria-hidden="true">Menu</span>}
@@ -318,7 +316,7 @@ const socials = [
   .dock-social {
     display: flex;
     align-items: center;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border-radius: 4px;
     transition: background-color 0.2s ease;
   }

@@ -41,6 +41,12 @@
   --color-text-secondary: #2E4153;
   --color-text-disabled: #B9B9B9;
   --color-text-accent: #155ED3;
+  /* Text/icon color for content sitting directly on an accent-filled surface
+     (e.g. a button's fill), not on the page background. Unlike every other
+     token here it doesn't just flip light/dark: the dark-mode accent is a
+     much lighter blue than the light-mode one, so it takes dark text instead
+     of light, while light mode's darker accent still wants white. */
+  --color-on-accent: #FFFFFF;
   color-scheme: light;
 }
 
@@ -68,6 +74,7 @@ html[data-theme='dark'] {
   --color-text-secondary: #B4BFCB;
   --color-text-disabled: #62666F;
   --color-text-accent: #5C97FF;
+  --color-on-accent: #01060E;
   color-scheme: dark;
 }
 
@@ -82,6 +89,15 @@ body {
 body {
   background-color: var(--color-bg-default);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme toggle's circular reveal (dock.js). Scoped to this class, set only
+   for the transition's duration, so it doesn't touch Astro's own
+   page-navigation view transitions elsewhere on the site. */
+html.theme-transition::view-transition-old(root),
+html.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* ── Type primitives ──

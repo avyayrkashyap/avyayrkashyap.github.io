@@ -16,7 +16,7 @@
 // ClientRouter replaces <body> on every navigation.
 
 // Must match the pages that render <Layout sheetOpen>
-const SHEET_PATHS = new Set(['/about', '/now']);
+const SHEET_PATHS = new Set(['/about', '/now', '/resume']);
 const DURATION_MS = 500;
 const DOCK_EASING = 'cubic-bezier(0.32, 0.72, 0, 1)';
 const DRAG_CLOSE_PX = 120;
@@ -133,6 +133,9 @@ async function inject(path) {
   runScripts(body);
   body.scrollTop = 0;
   panel.setAttribute('aria-label', entry.label);
+  // Lets Sheet.astro's CSS vary the shell per sheet (e.g. hiding the close
+  // button for the resume PDF), the same way it does server-side on first load
+  panel.dataset.sheet = path;
   document.title = entry.title;
   current = path;
   return entry;
@@ -335,11 +338,23 @@ function requestClose() {
 
 // ── Events ──
 
+// On mobile the closed dock shows only the current page's link; tapping it
+// should open the dock, not route or touch the sheet. Capture beats dock.js's
+// bubble-phase listener on #dock regardless of registration order (capture
+// always runs outside-in), so this has to be the one to yield.
+function isClosedMobileDockTarget(target) {
+  const dock = document.getElementById('dock');
+  if (!dock || dock.classList.contains('is-open')) return false;
+  if (!window.matchMedia('(max-width: 640px)').matches) return false;
+  return dock.contains(target);
+}
+
 // Capture phase, so this runs before the ClientRouter's own link handling
 document.addEventListener('click', (e) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   const link = e.target.closest?.('a[href]');
   if (!link || link.target === '_blank') return;
+  if (isClosedMobileDockTarget(e.target)) return;
 
   const path = sheetPathOf(link.href);
   if (path) {
