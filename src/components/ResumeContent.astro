@@ -1,0 +1,80 @@
+---
+// src/components/ResumeContent.astro
+// The Resume sheet: an embedded PDF viewer, just the page itself. The
+// #toolbar=0 fragment hides Chrome/Firefox's own PDF toolbar (zoom, print,
+// page thumbnails); Safari mostly ignores it and shows its own controls
+// regardless. A download button covers every browser either way. Its states
+// (default/hover/pressed/focus/disabled, light and dark) are mocked on the
+// "components" artboard in Paper — keep the two in sync.
+const PDF_SRC = '/assets/files/resume.pdf';
+---
+<div class="resume">
+  <a class="resume-download" href={PDF_SRC} download>
+    <svg class="resume-download-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M8 2V10M8 10L4.5 6.5M8 10L11.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M2.5 12.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+    Download Resume
+  </a>
+  <iframe class="resume-frame" src={`${PDF_SRC}#toolbar=0&navpanes=0&scrollbar=0`} title="Avyay Kashyap's resume"></iframe>
+</div>
+
+<style>
+  .resume {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .resume-download {
+    flex-shrink: 0;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 24px 12px;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    background-color: var(--color-text-accent);
+    color: var(--color-on-accent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    transition: filter 0.15s ease;
+  }
+
+  .resume-download:hover {
+    filter: brightness(0.85);
+  }
+
+  .resume-download:active {
+    filter: brightness(0.7);
+  }
+
+  /* Ring gap matches the sheet panel behind the button, so it reads as a
+     cutout rather than a fixed colour that'd clash against either theme */
+  .resume-download:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-bg-default), 0 0 0 5px var(--color-text-accent);
+  }
+
+  .resume-download-icon {
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .resume-download {
+      transition: none;
+    }
+  }
+
+  .resume-frame {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    border: 0;
+    background: var(--color-bg-secondary);
+  }
+</style>

@@ -9,6 +9,10 @@ interface Props {
 }
 
 const { open = false, label } = Astro.props;
+// Which page's content is showing, so CSS can vary the shell per sheet (the
+// resume PDF has no room for the site's own close button on top of the
+// browser's). sheet.js keeps this in sync client-side as sheets swap.
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 <div
   class:list={['sheet', { 'is-open': open }]}
@@ -20,6 +24,7 @@ const { open = false, label } = Astro.props;
   <div
     class="sheet-panel"
     id="sheetPanel"
+    data-sheet={path}
     role="dialog"
     aria-modal="true"
     aria-label={label}
@@ -137,6 +142,13 @@ const { open = false, label } = Astro.props;
     transition: background-color 0.2s ease;
   }
 
+  /* The resume PDF fills the sheet edge to edge with no room to spare, and
+     the embedded viewer has its own close/download controls anyway. The drag
+     handle, backdrop tap, and Escape still close it. */
+  .sheet-panel[data-sheet='/resume'] .sheet-close {
+    display: none;
+  }
+
   .sheet-close:hover {
     background-color: var(--color-border);
   }
@@ -163,6 +175,11 @@ const { open = false, label } = Astro.props;
   .sheet .sheet-body :global(.soon) {
     min-height: 100%;
     padding-bottom: 96px;
+  }
+
+  /* The PDF viewer fills the sheet edge to edge instead of scrolling with it */
+  .sheet .sheet-body :global(.resume) {
+    min-height: 100%;
   }
 
   @media (max-width: 640px) {

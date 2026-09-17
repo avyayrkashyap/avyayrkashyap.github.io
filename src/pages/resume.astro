@@ -1,0 +1,16 @@
+---
+// src/pages/resume.astro
+// Resume is a sheet, like About and Now: loaded directly it opens over the
+// homepage, and from anywhere else sheet.js pulls it over the page already
+// showing.
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Work from '../components/Work.astro';
+import ResumeContent from '../components/ResumeContent.astro';
+---
+
+<Layout title="Resume — Avyay" sheetOpen sheetLabel="Resume">
+  <Hero />
+  <Work />
+  <ResumeContent slot="sheet" />
+</Layout>

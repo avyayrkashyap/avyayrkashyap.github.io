@@ -8,9 +8,38 @@ document.addEventListener('astro:page-load', () => {
     themeToggle.setAttribute('aria-checked', String(root.getAttribute('data-theme') === 'dark'));
     themeToggle.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      themeToggle.setAttribute('aria-checked', String(next === 'dark'));
+      const applyTheme = () => {
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeToggle.setAttribute('aria-checked', String(next === 'dark'));
+      };
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (typeof document.startViewTransition !== 'function' || reduceMotion) {
+        applyTheme();
+        return;
+      }
+
+      // Grows a circle from the toggle's own position (not the pointer's —
+      // this also fires from a keyboard Enter/Space) out past the farthest
+      // corner, revealing the new theme's snapshot through it. The default
+      // cross-fade is suppressed only for the duration of this transition
+      // (scoped by .theme-transition), so it doesn't touch Astro's own
+      // page-navigation view transitions.
+      const { left, top, width, height } = themeToggle.getBoundingClientRect();
+      const x = left + width / 2;
+      const y = top + height / 2;
+      const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+      root.classList.add('theme-transition');
+      const transition = document.startViewTransition(applyTheme);
+      transition.ready.then(() => {
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 500, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' },
+        );
+      });
+      transition.finished.finally(() => root.classList.remove('theme-transition'));
     });
   }
 
@@ -71,7 +100,27 @@ document.addEventListener('astro:page-load', () => {
       menu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     };
 
+    // Matches the CSS breakpoint the collapsed/expanding nav itself uses
+    const isMobileDock = () => window.matchMedia('(max-width: 640px)').matches;
+
     menu.addEventListener('click', () => setOpen(!dock.classList.contains('is-open')));
+
+    // On mobile, the closed bar shows only the current page's link (or the
+    // "Menu" fallback). Tapping it should open the dock rather than route —
+    // this listener sits on #dock, a closer ancestor than ClientRouter's own
+    // click listener on document, so preventDefault() here reliably blocks
+    // both the default navigation and Astro's soft-navigation. Once open,
+    // a tap on a link is left alone and routes normally.
+    dock.addEventListener('click', (e) => {
+      if (!isMobileDock() || e.target.closest('.dock-menu')) return;
+      if (!dock.classList.contains('is-open')) {
+        if (e.target.closest('.dock-link')) e.preventDefault();
+        setOpen(true);
+      } else if (e.target.closest('.dock-link')) {
+        setOpen(false);
+      }
+    }, { signal });
+
     document.addEventListener('click', (e) => {
       if (!dock.contains(e.target)) setOpen(false);
     }, { signal });
@@ -81,9 +130,13 @@ document.addEventListener('astro:page-load', () => {
         menu.focus();
       }
     }, { signal });
-    dock.querySelectorAll('.dock-link').forEach((link) => {
-      link.addEventListener('click', () => setOpen(false));
-    });
     document.addEventListener('dock:close-menu', () => setOpen(false), { signal });
+
+    // Starting to scroll — the page itself, or the sheet's own scroll
+    // container while one is open — collapses the expanded menu. Scroll
+    // events don't bubble, so the sheet body needs its own listener.
+    const collapseOnScroll = () => setOpen(false);
+    window.addEventListener('scroll', collapseOnScroll, { signal, passive: true });
+    document.getElementById('sheetBody')?.addEventListener('scroll', collapseOnScroll, { signal, passive: true });
   }
 });
