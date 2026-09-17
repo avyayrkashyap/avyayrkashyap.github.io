@@ -1,216 +1,129 @@
 ---
 // src/components/Hero.astro
-import { ThinkingOrb } from 'thinking-orbs';
-
-const links = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/avyay-kashyap-4236635b/' },
-  { label: 'X', href: 'https://x.com/avyayrkashyap' },
-  { label: 'Resume', href: '/assets/files/resume.pdf' },
-];
 ---
 <section class="hero">
-  {/*
-    ThinkingOrb paints grayscale ink only (no colour prop), so the orb is
-    recoloured by mapping every painted pixel to the accent while keeping
-    its alpha. Lives on the wrapper because Astro's scoped styles don't
-    reach elements rendered inside a React island. feColorMatrix can't read
-    a CSS variable, so each theme's accent gets its own filter and the
-    wrapper swaps between them.
-  */}
-  <svg class="hero-orb-defs" aria-hidden="true" focusable="false">
-    <!-- --color-accent light: #1A6CF0 -->
-    <filter id="orbAccentLight" color-interpolation-filters="sRGB">
-      <feColorMatrix
-        type="matrix"
-        values="0 0 0 0 0.10196
-                0 0 0 0 0.42353
-                0 0 0 0 0.94118
-                0 0 0 1 0" />
-    </filter>
-    <!-- --color-accent dark: #5C97FF -->
-    <filter id="orbAccentDark" color-interpolation-filters="sRGB">
-      <feColorMatrix
-        type="matrix"
-        values="0 0 0 0 0.36078
-                0 0 0 0 0.59216
-                0 0 0 0 1
-                0 0 0 1 0" />
-    </filter>
-  </svg>
-
-  <p class="hero-eyebrow t-label">
-    <span class="hero-orb" aria-hidden="true">
-      <ThinkingOrb client:load state="breathing" size={20} theme="light" aria-hidden={true} />
-    </span>
-    Hi, I am Avyay
-  </p>
-  <h1 class="hero-title t-display t-display--sm" id="heroTitle">I make complexity intuitive through AI-native design processes that drive business impact.</h1>
-
-  <div class="hero-logos">
-    <img class="hero-logo hero-logo--light" src="/assets/index/logo-moodys.png" alt="Moody's" />
-    <img class="hero-logo hero-logo--dark" src="/assets/index/logo-moodys-dark.png" alt="Moody's" />
-    <span class="hero-logo-dot" aria-hidden="true"></span>
-    <img class="hero-logo hero-logo--light" src="/assets/index/logo-gep.png" alt="GEP" />
-    <img class="hero-logo hero-logo--dark" src="/assets/index/logo-gep-dark.png" alt="GEP" />
-    <span class="hero-logo-dot" aria-hidden="true"></span>
-    <img class="hero-logo" src="/assets/index/logo-jio.png" alt="Jio" />
-    <span class="hero-logo-dot" aria-hidden="true"></span>
-    <img class="hero-logo" src="/assets/index/logo-philips.png" alt="Philips" />
-  </div>
-
-  <div class="hero-links">
-    {links.map(({ label, href }) => (
-      <a class="hero-link" href={href} target="_blank" rel="noopener">
-        {label}
-        <svg class="hero-link-arrow" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3.5 8.5 8.5 3.5" />
-          <path d="M4.25 3.5H8.5V7.75" />
-        </svg>
-      </a>
-    ))}
+  <div class="hero-card">
+    <div class="hero-intro">
+      <div class="hero-photo" role="img" aria-label="Avyay in front of the Golden Gate Bridge"></div>
+      <div class="hero-copy">
+        <p class="hero-eyebrow type-body-md">Hi, I am Avyay</p>
+        <h1 class="hero-title type-title" aria-label="I am a designer. builder. tinkerer. human.">
+          <span aria-hidden="true">I am a <span id="heroWord">designer.</span><span class="hero-caret" id="heroCaret"></span></span>
+        </h1>
+        <p class="hero-lead type-body-md" id="heroLead">I solve problems that make every day better.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <script src="../scripts/hero.js"></script>
 
 <style>
+  /* Full-bleed: opts out of the .main > * content column */
   .hero {
-    padding: clamp(96px, 16vh, 168px) clamp(40px, 9vw, 122px) clamp(64px, 9vh, 104px);
+    max-width: none;
+    height: 100vh;
+    height: 100svh;
+    min-height: 560px;
+    padding: 24px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
   }
 
-  .hero-eyebrow {
+  .hero-card {
+    position: relative;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: start;
+    justify-content: center;
+    /* Equal top/bottom room clears the fixed dock and keeps the intro centered */
+    padding: 72px clamp(24px, 8.3vw, 120px);
+    border-radius: 24px;
+    overflow: clip;
+    background-image: linear-gradient(in oklab 180deg, var(--color-warm-bg) 0%, var(--color-cool-bg) 100%);
+  }
+
+  .hero-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .hero-photo {
+    width: 172px;
+    height: 102px;
+    flex-shrink: 0;
+    border-radius: 24px;
+    background-image: url(/assets/index/hero-photo.jpg);
+    background-position: 49.855% 52.168%;
+    background-repeat: no-repeat;
+    background-size: 200.291%;
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 8px;
-    margin-bottom: 14px;
-    transition: color 0.3s ease;
+    min-width: 0;
+  }
+
+  /* Type comes from the .type-* primitives; the eyebrow swaps body-md's
+     secondary colour for the accent, as in the Paper hero */
+  .hero-eyebrow {
+    color: var(--color-text-accent);
   }
 
   .hero-title {
-    transition: color 0.3s ease;
+    text-wrap: pretty;
   }
 
-  /* Zero-size holder for the tint filters */
-  .hero-orb-defs {
-    position: absolute;
-    width: 0;
-    height: 0;
-    pointer-events: none;
+  /* Dark mode: every hero line takes text-neutral-default (the title already
+     does). The body-md opacity still applies to the eyebrow and lead. */
+  :global(html[data-theme='dark']) .hero-eyebrow,
+  :global(html[data-theme='dark']) .hero-lead {
+    color: var(--color-text-strong);
   }
 
-  .hero-orb {
-    display: inline-flex;
-    flex-shrink: 0;
-    line-height: 0;
-    filter: url(#orbAccentLight);
-  }
-
-  :global(html[data-theme='dark']) .hero-orb {
-    filter: url(#orbAccentDark);
-  }
-
-  /* Sized against the ~670px content column, not the viewport */
-
-
-  /* ── Client logos ── */
-  .hero-logos {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 36px;
-  }
-
-  .hero-logo {
-    height: 16px;
-    width: auto;
-    flex-shrink: 0;
-  }
-
-  /* Moody's, GEP, and Jio ship separate dark-mode marks; swap by theme
-     instead of tinting so each keeps its intended brand color. */
-  .hero-logo--dark {
+  /* Hidden until hero.js starts cycling the word */
+  .hero-caret {
     display: none;
+    width: 2px;
+    height: 0.9em;
+    margin-left: 3px;
+    vertical-align: -0.08em;
+    background-color: var(--color-text-accent);
+    animation: hero-caret-blink 1s steps(1) infinite;
   }
 
-  :global(html[data-theme='dark']) .hero-logo--light {
-    display: none;
+  .hero-caret.is-on {
+    display: inline-block;
   }
 
-  :global(html[data-theme='dark']) .hero-logo--dark {
-    display: block;
+  /* Solid while typing or deleting, blinks only while resting on a word */
+  .hero-caret.is-typing {
+    animation: none;
   }
 
-  .hero-logo-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    background: var(--color-border);
-    flex-shrink: 0;
+  @keyframes hero-caret-blink {
+    50% {
+      opacity: 0;
+    }
   }
 
-  /* ── Link pills ── */
-  .hero-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 32px;
-  }
-
-  .hero-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 38px;
-    padding: 0 16px;
-    background: transparent;
-    border-radius: 9999px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-text);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
-  }
-
-  .hero-link:hover {
-    transform: translateY(-2px);
-    background: var(--color-bg-secondary);
-    color: var(--color-accent);
-  }
-
-  .hero-link-arrow {
-    width: 12px;
-    height: 12px;
-    opacity: 0.45;
-    transition: opacity 0.2s ease;
-  }
-
-  .hero-link:hover .hero-link-arrow {
-    opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-    /* Horizontal padding stays in sync with .work-section so both align */
+  @media (max-width: 640px) {
     .hero {
-      padding-top: clamp(72px, 12vh, 112px);
-      padding-bottom: 56px;
+      padding: 12px;
     }
-  }
 
-  @media (prefers-reduced-motion: reduce) {
-    .hero-link,
-    .hero-link-arrow {
-      transition: none;
+    .hero-card {
+      justify-content: center;
+      padding-bottom: 120px;
     }
-    .hero-link:hover {
-      transform: none;
+
+    .hero-intro {
+      gap: 20px;
     }
   }
 </style>

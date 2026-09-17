@@ -1,63 +1,78 @@
-// Re-run on every ClientRouter navigation so the typewriter/reveal replays
-// when the hero is swapped back in. astro:page-load also covers the initial
-// hard load, replacing the old run-once-immediately IIFE.
+// Re-run on every ClientRouter navigation so the typewriter restarts when the
+// hero is swapped back in. astro:page-load also covers the initial hard load.
+let cycleTimer;
+
+// Stop the loop before the page is swapped out, or it keeps ticking against
+// a detached node
+document.addEventListener('astro:before-swap', () => clearTimeout(cycleTimer));
+
 document.addEventListener('astro:page-load', () => {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  clearTimeout(cycleTimer);
 
-  const revealItems = [
-    ...document.querySelectorAll('.hero-logos > *'),
-    ...document.querySelectorAll('.hero-links > *'),
-  ].filter((item) => getComputedStyle(item).display !== 'none');
+  const wordEl = document.getElementById('heroWord');
+  const caret = document.getElementById('heroCaret');
+  const lead = document.getElementById('heroLead');
+  if (!wordEl || !caret) return;
 
-  function revealOneByOne() {
-    revealItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.style.opacity = '1';
-        item.style.transform = 'none';
-      }, i * 70);
-    });
-  }
+  const WORDS = ['designer.', 'builder.', 'tinkerer.', 'human.'];
 
-  if (prefersReducedMotion) return;
-
-  // Hide logos/links up front; revealed one by one once the title finishes typing
-  revealItems.forEach((item) => {
-    item.style.opacity = '0';
-    item.style.transform = 'translateY(8px)';
-    item.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-  });
-
-  const el = document.getElementById('heroTitle');
-  if (!el) {
-    revealOneByOne();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // No motion: show the whole line at once instead of cycling
+    wordEl.textContent = WORDS.join(' ');
     return;
   }
 
-  const fullText = el.textContent.trim();
+  const TYPE_MS = 70;
+  const DELETE_MS = 40;
+  const HOLD_MS = 1600;
+  const GAP_MS = 250;
+
+  if (lead) {
+    lead.style.opacity = '0';
+    lead.style.transform = 'translateY(6px)';
+    lead.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  }
+
+  let leadShown = false;
+  function revealLead() {
+    if (leadShown || !lead) return;
+    leadShown = true;
+    lead.style.opacity = '';
+    lead.style.transform = 'none';
+  }
+
+  let wordIdx = 0;
+  let charIdx = 0;
+  let deleting = false;
+
+  function tick() {
+    const word = WORDS[wordIdx];
+    wordEl.textContent = word.slice(0, charIdx);
+
+    if (!deleting && charIdx < word.length) {
+      caret.classList.add('is-typing');
+      charIdx++;
+      cycleTimer = setTimeout(tick, TYPE_MS);
+    } else if (!deleting) {
+      // Word fully typed: rest on it with a blinking caret
+      caret.classList.remove('is-typing');
+      revealLead();
+      deleting = true;
+      cycleTimer = setTimeout(tick, HOLD_MS);
+    } else if (charIdx > 0) {
+      caret.classList.add('is-typing');
+      charIdx--;
+      cycleTimer = setTimeout(tick, DELETE_MS);
+    } else {
+      deleting = false;
+      wordIdx = (wordIdx + 1) % WORDS.length;
+      cycleTimer = setTimeout(tick, GAP_MS);
+    }
+  }
 
   function start() {
-    // Lock the box to its final (fully-typed) height so wrapping never shifts layout mid-type
-    el.style.minHeight = el.getBoundingClientRect().height + 'px';
-    el.setAttribute('aria-label', fullText);
-
-    const textSpan = document.createElement('span');
-    textSpan.setAttribute('aria-hidden', 'true');
-
-    el.textContent = '';
-    el.appendChild(textSpan);
-
-    const SPEED_MS = 20;
-    let i = 0;
-
-    function tick() {
-      textSpan.textContent = fullText.slice(0, i);
-      if (i <= fullText.length) {
-        i++;
-        setTimeout(tick, SPEED_MS);
-      } else {
-        revealOneByOne();
-      }
-    }
+    wordEl.textContent = '';
+    caret.classList.add('is-on');
     tick();
   }
 

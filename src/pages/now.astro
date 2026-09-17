@@ -1,8 +1,15 @@
 ---
 // src/pages/now.astro
+// Now is a sheet, like About: loaded directly it opens over the homepage, and
+// from anywhere else sheet.js pulls it over the page already showing.
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Work from '../components/Work.astro';
 import ComingSoon from '../components/ComingSoon.astro';
 ---
-<Layout title="Now — Avyay">
-  <ComingSoon note="What am I doing right now? Building this page, apparently." />
+
+<Layout title="Now — Avyay" sheetOpen sheetLabel="Now">
+  <Hero />
+  <Work />
+  <ComingSoon slot="sheet" note="What am I doing right now? Building this page, apparently." />
 </Layout>

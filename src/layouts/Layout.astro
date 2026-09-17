@@ -2,27 +2,43 @@
 // src/layouts/Layout.astro
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import Sidebar from '../components/Sidebar.astro';
+import Dock from '../components/Dock.astro';
+import Sheet from '../components/Sheet.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
+  /* Server-render the sheet open (with the homepage behind it). The page's
+     sheet content goes in slot="sheet". Paths must match SHEET_PATHS in sheet.js */
+  sheetOpen?: boolean;
+  sheetLabel?: string;
 }
 
-const { title } = Astro.props;
+const { title, sheetOpen = false, sheetLabel } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class:list={{ 'sheet-open': sheetOpen }}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
-  <!-- Single Material Symbol (call_made), used for the outbound arrow on the experiment cards -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=call_made" />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Manrope:wght@200..800&family=Platypi:wght@300..800&display=swap" rel="stylesheet" />
+  <!-- Material Symbols subset: apps (mobile dock menu) and call_made (experiment card arrow). Google requires icon_names in alphabetical order -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=apps,call_made" />
+  <script is:inline>
+    // Registered before the ClientRouter's own popstate listener, so the sheet
+    // (sheet.js) can claim Back/Forward moves that only open, swap or close it
+    // before the router swaps the page. Bound once per document.
+    if (!window.__sheetPopBound) {
+      window.__sheetPopBound = true;
+      addEventListener('popstate', function (e) {
+        if (window.__sheetPopState) window.__sheetPopState(e);
+      });
+    }
+  </script>
   <ClientRouter />
   <script is:inline>
     (function () {
@@ -40,29 +56,13 @@ const { title } = Astro.props;
   </script>
 </head>
 <body>
-  <!-- Hamburger: visible on mobile only -->
-  <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
-    <!-- Hamburger icon -->
-    <svg class="btn-icon btn-icon--menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-      <line x1="3" y1="6"  x2="21" y2="6"/>
-      <line x1="3" y1="12" x2="21" y2="12"/>
-      <line x1="3" y1="18" x2="21" y2="18"/>
-    </svg>
-    <!-- Left arrow icon -->
-    <svg class="btn-icon btn-icon--arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="19" y1="12" x2="5" y2="12"/>
-      <line x1="5"  y1="12" x2="11" y2="6"/>
-      <line x1="5"  y1="12" x2="11" y2="18"/>
-    </svg>
-  </button>
-
-  <!-- Overlay: tapping it closes the sidebar on mobile -->
-  <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-  <Sidebar />
-  <main class="main">
+  <main class="main" inert={sheetOpen}>
     <slot />
     <Footer />
   </main>
+  <Sheet open={sheetOpen} label={sheetLabel}>
+    <slot name="sheet" />
+  </Sheet>
+  <Dock top={sheetOpen} />
 </body>
 </html>

@@ -1,0 +1,183 @@
+---
+// src/components/Sheet.astro
+// Bottom sheet for pages that open over other pages (About, Now). Present
+// (empty and closed) on every page so sheet.js can fill it; server-rendered
+// open on the sheet pages themselves.
+interface Props {
+  open?: boolean;
+  label?: string;
+}
+
+const { open = false, label } = Astro.props;
+---
+<div
+  class:list={['sheet', { 'is-open': open }]}
+  id="sheet"
+  data-underlying-url="/"
+  data-underlying-title="Avyay — Product Designer"
+>
+  <div class="sheet-backdrop" data-sheet-close></div>
+  <div
+    class="sheet-panel"
+    id="sheetPanel"
+    role="dialog"
+    aria-modal="true"
+    aria-label={label}
+    tabindex="-1"
+    aria-hidden={open ? undefined : 'true'}
+  >
+    <div class="sheet-header" id="sheetHandle">
+      <span class="sheet-grabber" aria-hidden="true"></span>
+      <button class="sheet-close" type="button" aria-label="Close" data-sheet-close>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div class="sheet-body" id="sheetBody">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script src="../scripts/sheet.js"></script>
+
+<style>
+  .sheet {
+    position: fixed;
+    inset: 0;
+    /* Below the dock (50), so the nav stays usable above the sheet */
+    z-index: 40;
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0s 0.5s;
+  }
+
+  .sheet.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    transition: visibility 0s;
+  }
+
+  .sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-scrim);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .sheet.is-open .sheet-backdrop {
+    opacity: 1;
+  }
+
+  .sheet-panel {
+    position: absolute;
+    /* Clears the dock once it's at the top. sheet.js keeps --sheet-top in sync
+       with the dock's live height, so the mobile menu pushes the sheet down */
+    top: var(--sheet-top, 72px);
+    right: 24px;
+    bottom: 0;
+    left: 24px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 24px 24px 0 0;
+    background-color: var(--color-bg-default);
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    outline: none;
+  }
+
+  .sheet.is-open .sheet-panel {
+    transform: translateY(0);
+  }
+
+  /* While dragging, the panel follows the pointer with no easing */
+  .sheet.is-dragging .sheet-panel,
+  .sheet.is-dragging .sheet-backdrop {
+    transition: none;
+  }
+
+  .sheet-header {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 20px;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .sheet.is-dragging .sheet-header {
+    cursor: grabbing;
+  }
+
+  .sheet-grabber {
+    width: 40px;
+    height: 5px;
+    border-radius: 9999px;
+    background-color: var(--color-border);
+  }
+
+  .sheet-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 9999px;
+    background-color: var(--color-quote-bg);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .sheet-close:hover {
+    background-color: var(--color-border);
+  }
+
+  .sheet-close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .sheet-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: inherit;
+  }
+
+  /* Page bodies were sized for a full page; inside the sheet they sit under
+     its header and fill its height instead */
+  .sheet .sheet-body :global(.about) {
+    padding-top: 12px;
+  }
+
+  .sheet .sheet-body :global(.soon) {
+    min-height: 100%;
+    padding-bottom: 96px;
+  }
+
+  @media (max-width: 640px) {
+    .sheet-panel {
+      top: var(--sheet-top, 80px);
+      right: 0;
+      left: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheet,
+    .sheet-backdrop,
+    .sheet-panel {
+      transition: none;
+    }
+  }
+</style>

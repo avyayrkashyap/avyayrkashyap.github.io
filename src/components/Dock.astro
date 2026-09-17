@@ -1,0 +1,518 @@
+---
+// src/components/Dock.astro
+// Site-wide primary navigation, fixed to the bottom of the viewport.
+interface Props {
+  /* Starts at the top, for pages that render with the sheet open */
+  top?: boolean;
+}
+
+const { top = false } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Now', href: '/now' },
+  { label: 'Resume', href: '/assets/files/resume.pdf', external: true },
+];
+
+const isActive = (href: string) => pathname === href;
+// Case study pages aren't in the nav, so the collapsed mobile bar needs a label
+const hasActive = navItems.some(({ href }) => isActive(href));
+
+const socials = [
+  { label: 'X', href: 'https://x.com/avyayrkashyap', src: '/assets/index/dock-x.png', width: 18, invertDark: true },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/avyay-kashyap-4236635b/', src: '/assets/index/dock-linkedin.png', width: 16 },
+  { label: 'Substack', href: 'https://avyaykashyap.substack.com/', src: '/assets/index/dock-substack.png', width: 16, zoom: true },
+];
+---
+<div class:list={['dock', { 'dock--top': top }]} id="dock">
+  <div class="dock-pill dock-pill--left">
+    <button class="dock-theme" id="dockThemeToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+      <svg class="dock-theme-icon dock-theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" />
+        <line x1="12" y1="2" x2="12" y2="4" />
+        <line x1="12" y1="20" x2="12" y2="22" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="2" y1="12" x2="4" y2="12" />
+        <line x1="20" y1="12" x2="22" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </svg>
+      <span class="dock-track" aria-hidden="true"><span class="dock-thumb"></span></span>
+      <svg class="dock-theme-icon dock-theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="dock-nav" id="dockNav" aria-label="Primary">
+    {navItems.map(({ label, href, external }) => (
+      <a
+        class={`dock-link${isActive(href) ? ' is-active' : ''}`}
+        href={href}
+        aria-current={isActive(href) ? 'page' : undefined}
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener' : undefined}
+      >{label}</a>
+    ))}
+    {!hasActive && <span class="dock-current-fallback" aria-hidden="true">Menu</span>}
+    {/* Mobile only: expands the nav and reveals the theme + socials sheet */}
+    <button class="dock-menu" id="dockMenu" type="button" aria-expanded="false" aria-controls="dock" aria-label="Open menu">
+      <span class="material-symbols-outlined" aria-hidden="true">apps</span>
+    </button>
+    <span class="dock-indicator" id="dockIndicator" aria-hidden="true"></span>
+  </nav>
+
+  <div class="dock-pill dock-pill--right">
+    {socials.map(({ label, href, src, width, invertDark, zoom }) => (
+      <a class="dock-social" href={href} target="_blank" rel="noopener" aria-label={label}>
+        <span
+          class:list={['dock-social-icon', { 'dock-social-icon--invert': invertDark, 'dock-social-icon--zoom': zoom }]}
+          style={`width: ${width}px; background-image: url(${src});`}
+          aria-hidden="true"
+        ></span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script src="../scripts/dock.js"></script>
+
+<style>
+  /* ── Dock ── */
+  .dock {
+    position: fixed;
+    z-index: 50;
+    left: 50%;
+    /* 40px from the viewport edge lines it up inside the homepage hero card */
+    bottom: 40px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+  }
+
+  /* While a sheet is open. sheet.js animates the move between the two anchors. */
+  .dock.dock--top {
+    top: 16px;
+    bottom: auto;
+  }
+
+  .dock-pill {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    background-color: rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Side pills tuck 4px under the nav so it reads as one raised key */
+  .dock-pill--left {
+    padding-right: 8px;
+    margin-right: -4px;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .dock-pill--right {
+    padding-left: 8px;
+    margin-left: -4px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* With a mouse, the side pills hide behind the nav and slide out when the
+     pointer enters the dock. Keyboard focus reveals them too. Touch screens
+     have no hover, so they stay visible there. Phones use the menu sheet. */
+  @media (min-width: 641px) and (hover: hover) and (pointer: fine) {
+    .dock-pill {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dock-pill--left {
+      transform: translateX(100%);
+    }
+
+    .dock-pill--right {
+      transform: translateX(-100%);
+    }
+
+    .dock:hover .dock-pill,
+    .dock:focus-within .dock-pill {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
+  }
+
+  :global(html[data-theme='dark']) .dock-pill {
+    background-color: rgba(33, 34, 39, 0.4);
+  }
+
+  /* Phones draw the pills' surface with .dock::before instead (see below) */
+  @media (min-width: 641px) {
+    :global(html.sheet-open) .dock-pill {
+      background-color: var(--color-bg-secondary);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  .dock-theme {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 4px;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  /* Same hover surface as the social links */
+  .dock-theme:hover {
+    background-color: var(--color-cool-bg);
+  }
+
+  .dock-theme-icon {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+  }
+
+  .dock-theme-icon--sun {
+    color: var(--color-text-accent);
+  }
+
+  .dock-theme-icon--moon {
+    color: var(--color-text-muted);
+  }
+
+  :global(html[data-theme='dark']) .dock-theme-icon--sun {
+    color: var(--color-text-muted);
+  }
+
+  :global(html[data-theme='dark']) .dock-theme-icon--moon {
+    color: var(--color-text-accent);
+  }
+
+  .dock-track {
+    position: relative;
+    width: 34px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background-color: var(--color-accent-soft);
+  }
+
+  .dock-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(html[data-theme='dark']) .dock-thumb {
+    transform: translateX(14px);
+  }
+
+  .dock-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    padding: 8px 16px;
+    border-radius: 8px;
+    /* Frosted glass: translucent fill blurs whatever scrolls underneath */
+    background-color: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+
+  :global(html[data-theme='dark']) .dock-nav {
+    background-color: rgba(33, 34, 39, 0.55);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  /* A sheet is up: glass over the sheet and scrim gets muddy, so go solid */
+  :global(html.sheet-open) .dock-nav {
+    background-color: var(--color-bg-secondary);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .dock-link {
+    width: 64px;
+    flex-shrink: 0;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-text-strong);
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .dock-link:hover,
+  .dock-link.is-active {
+    color: var(--color-text-accent);
+  }
+
+  /* Same hover surface as the theme toggle and social links */
+  .dock-link:hover {
+    background-color: var(--color-cool-bg);
+  }
+
+  .dock-link.is-active {
+    font-weight: 700;
+  }
+
+  .dock-menu,
+  .dock-current-fallback {
+    display: none;
+  }
+
+  /* Hidden by dock.js while an open sheet makes a nav page current */
+  .dock-current-fallback[hidden] {
+    display: none !important;
+  }
+
+  .dock-indicator {
+    position: absolute;
+    left: 0;
+    top: 32px;
+    width: 16px;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: var(--color-text-accent);
+    /* hero.js positions it under the active link, then follows hover */
+    transform: translateX(36px);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .dock-social {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+
+  .dock-social:hover {
+    background-color: var(--color-cool-bg);
+  }
+
+  .dock-social-icon {
+    display: block;
+    height: 16px;
+    flex-shrink: 0;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .dock-social-icon--zoom {
+    background-size: 160%;
+  }
+
+  :global(html[data-theme='dark']) .dock-social-icon--invert {
+    filter: invert(1);
+  }
+
+  /* ── Mobile: collapsed bar + expanding menu ── */
+  @media (max-width: 640px) {
+    .dock {
+      bottom: 24px;
+      width: 240px;
+      display: grid;
+      /* Equal outer tracks keep the theme + socials group centered whatever their
+         widths. max-content, not auto: the pills clip overflow for their
+         collapse animation, which lets auto tracks shrink below their content */
+      grid-template-columns: 1fr max-content max-content 1fr;
+    }
+
+    .dock-nav {
+      grid-column: 1 / -1;
+      flex-wrap: wrap;
+      align-items: center;
+      /* Right side clears the absolutely positioned menu button */
+      padding: 4px 44px 4px 16px;
+      border-radius: 12px;
+    }
+
+    .dock-indicator {
+      display: none;
+    }
+
+    /* Labels stay on the 16px text line; the highlight bleeds 8px to the left
+       and stops short of the menu button on the right */
+    .dock-link,
+    .dock-current-fallback {
+      width: auto;
+      margin-left: -8px;
+      padding: 8px 0 8px 8px;
+      border-radius: 6px;
+      text-align: left;
+    }
+
+    /* The current page stays on the bottom row beside the menu button */
+    .dock-link.is-active,
+    .dock-current-fallback {
+      display: block;
+      flex: 1;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--color-text-accent);
+    }
+
+    /* The other links stack above it and grow the bar upward when open */
+    .dock-link:not(.is-active) {
+      order: -1;
+      flex-basis: 100%;
+      max-height: 0;
+      padding-block: 0;
+      opacity: 0;
+      overflow: hidden;
+      visibility: hidden;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, visibility 0s 0.35s;
+    }
+
+    .dock.is-open .dock-link:not(.is-active) {
+      max-height: 40px;
+      padding-block: 10px;
+      opacity: 1;
+      visibility: visible;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease 0.05s, visibility 0s;
+    }
+
+    /* Pinned to the bottom-right so it stays beside the current page as the bar grows */
+    .dock-menu {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border: 0;
+      border-radius: 8px;
+      background: none;
+      color: var(--color-text-strong);
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .dock-menu .material-symbols-outlined {
+      font-size: 22px;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .dock.is-open .dock-menu {
+      background-color: var(--color-accent-soft);
+      color: var(--color-text-accent);
+    }
+
+    .dock.is-open .dock-menu .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Theme + socials: one sheet tucked under the nav, sliding out when open */
+    .dock-pill {
+      /* The tray surface (.dock::before) forms its own layer; positioning the
+         pills paints them above it instead of underneath */
+      position: relative;
+      grid-row: 2;
+      max-height: 0;
+      margin: 0;
+      padding-block: 0;
+      opacity: 0;
+      overflow: hidden;
+      visibility: hidden;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), margin 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, visibility 0s 0.35s;
+    }
+
+    /* One sheet surface drawn behind both halves, tucked under the nav. Denser
+       frost than desktop since it sits over body text on phones. */
+    .dock::before {
+      content: '';
+      grid-column: 1 / -1;
+      grid-row: 2;
+      /* The dock centers its items; the tray has no content, so it must stretch */
+      align-self: stretch;
+      margin-top: -12px;
+      border-radius: 0 0 12px 12px;
+      background-color: rgba(255, 255, 255, 0.75);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      backdrop-filter: blur(16px) saturate(180%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    :global(html[data-theme='dark']) .dock::before {
+      background-color: rgba(33, 34, 39, 0.75);
+    }
+
+    :global(html.sheet-open) .dock::before {
+      background-color: var(--color-bg-secondary);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .dock.is-open::before {
+      opacity: 1;
+    }
+
+    .dock-pill,
+    :global(html[data-theme='dark']) .dock-pill {
+      background: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border-radius: 0;
+    }
+
+    .dock-pill--left {
+      grid-column: 2;
+      padding-inline: 0 8px;
+    }
+
+    .dock-pill--right {
+      grid-column: 3;
+      padding-inline: 8px 0;
+    }
+
+    .dock.is-open .dock-pill {
+      max-height: 56px;
+      margin-top: -12px;
+      padding-block: 18px 6px;
+      opacity: 1;
+      visibility: visible;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), margin 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease 0.05s, visibility 0s;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dock-thumb,
+    .dock-indicator,
+    .dock-pill,
+    .dock-link {
+      transition: none !important;
+    }
+  }
+</style>
