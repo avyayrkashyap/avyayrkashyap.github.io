@@ -230,7 +230,9 @@ const socials = [
     position: relative;
     z-index: 1;
     display: flex;
-    padding: 8px 16px;
+    /* Vertical padding lives on each .dock-link instead, so the hit target
+       fills the full pill height rather than just the text line */
+    padding: 0 16px;
     border-radius: 8px;
     /* Frosted glass: translucent fill blurs whatever scrolls underneath */
     background-color: rgba(255, 255, 255, 0.55);
@@ -255,7 +257,8 @@ const socials = [
   .dock-link {
     width: 64px;
     flex-shrink: 0;
-    padding: 2px 4px;
+    /* 8px moved here from .dock-nav's old top/bottom padding */
+    padding: 10px 4px;
     border-radius: 4px;
     font-family: var(--font-sans);
     font-size: 14px;
