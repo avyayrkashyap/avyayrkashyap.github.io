@@ -197,7 +197,9 @@ function stopSpring() {
 function moveDock(toTop) {
   const { dock } = els();
   if (!dock || dock.classList.contains('dock--top') === toTop) return stopSpring();
-  document.dispatchEvent(new CustomEvent('dock:close-menu'));
+  // Collapsed to make way for the move, not because anyone dismissed it —
+  // routing says so, so the dock can pass that on to whatever is arriving
+  document.dispatchEvent(new CustomEvent('dock:close-menu', { detail: { routing: true } }));
   const first = dock.getBoundingClientRect().top;
   stopSpring();
   dock.classList.toggle('dock--top', toTop);

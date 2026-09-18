@@ -39,6 +39,10 @@ let typeTimer = null;
 let leaveTimer = null;
 let stageTimer = null;
 let scrollFrame = 0;
+// Set when a nav link is tapped from an expanded dock (dock.js): the dock
+// collapses to route, and if what arrives has chapters, its list takes the
+// space the nav links just gave up rather than waiting to be asked for.
+let expandOnArrival = false;
 // True once the entrance has reached its text stage. Until then the name is
 // set silently — typewriting it while it's still faded out would burn the
 // effect off-screen, and it could even finish before anyone sees it start.
@@ -98,6 +102,9 @@ function hide() {
   clearTimeout(leaveTimer);
   clearTimeout(stageTimer);
   chapters = [];
+  // Landed somewhere with nothing to list, so the intent doesn't carry on
+  // to whatever is opened next
+  expandOnArrival = false;
   activeIndex = -1;
   progressHold = false;
   textReady = false;
@@ -292,9 +299,15 @@ function scan() {
   measureWidth();
   revealTimer = setTimeout(() => {
     chapter.classList.add('is-visible');
+    const { dock, sheetPanel } = els();
     // Mobile: the pill takes the bar's main row, so the page label steps
     // aside (the rule lives in Dock.astro, which owns that label)
-    els().dock?.classList.add('dock--chapters');
+    dock?.classList.add('dock--chapters');
+    // Arrived from an expanded dock, or the dock is expanded right now: the
+    // list unfurls alongside the pill's entrance. A direct load, or a link
+    // tapped from the page body, leaves it shut.
+    sheetPanel?.classList.toggle('is-open', expandOnArrival || Boolean(dock?.classList.contains('is-open')));
+    expandOnArrival = false;
     // The entrance's own stages take it from here (grow, flip, picture);
     // the name and progress bar wait for their stage below.
     stageTimer = setTimeout(() => {
@@ -372,6 +385,9 @@ document.addEventListener('astro:page-load', () => {
 
   document.addEventListener('sheet:content-changed', scan, { signal });
   document.addEventListener('sheet:closed', hide, { signal });
+  // Routed here from a dock that was expanded — scan() reopens the list on
+  // arrival rather than making you ask for it again
+  document.addEventListener('dock:route-from-open', () => { expandOnArrival = true; }, { signal });
   // Mobile: the dock's grid button reveals the chapter list alongside the
   // nav links, so the list simply follows the menu's state
   document.addEventListener('dock:menu-toggle', (e) => {

@@ -139,7 +139,17 @@ document.addEventListener('astro:page-load', () => {
         menu.focus();
       }
     }, { signal });
-    document.addEventListener('dock:close-menu', () => setOpen(false), { signal });
+    document.addEventListener('dock:close-menu', (e) => {
+      // Collapsed to let an arriving sheet through rather than dismissed, and
+      // it was open at the time: the page on its way in may want to reopen
+      // into the space the nav links are giving up (chapters.js). It can't
+      // work this out for itself — by the time it's scanned the dock is shut,
+      // and a link tapped from the page body looks identical from there.
+      if (e.detail?.routing && dock.classList.contains('is-open')) {
+        document.dispatchEvent(new CustomEvent('dock:route-from-open'));
+      }
+      setOpen(false);
+    }, { signal });
 
     // Starting to scroll — the page itself, or the sheet's own scroll
     // container while one is open — collapses the expanded menu. Scroll
