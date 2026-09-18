@@ -1,0 +1,65 @@
+---
+// src/components/ChapterSheet.astro
+// Mobile only: the chapter list, stacked directly above the chapter pill
+// inside the dock's bar (.dock-bar in Dock.astro) and sharing its surface, so
+// the list reads as attached to the chapter it names. The nav links are a
+// separate sheet above, with a gap between the two.
+//
+// Rows are filled in by chapters.js, which renders the same list into
+// #chapterDropdown for the desktop dropdown. Desktop never shows this one.
+---
+<div class="chapter-sheet" id="chapterSheet"></div>
+
+<style>
+  .chapter-sheet {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .chapter-sheet {
+      display: flex;
+      flex-direction: column;
+      /* Out of the bar's own padding — 16px on the left, and 44px on the
+         right that only the bar's row needs, to clear the menu button — and
+         back to the 8px inset the rows' highlight leaves around itself, the
+         same as the links sheet above */
+      margin-left: -8px;
+      margin-right: -36px;
+      /* Collapsed to nothing, padding animating alongside the height so an
+         empty list leaves no strip behind */
+      max-height: 0;
+      padding-block: 0;
+      opacity: 0;
+      overflow: hidden;
+      visibility: hidden;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, visibility 0s 0.35s;
+    }
+
+    .chapter-sheet.is-open {
+      /* Generous enough for the four sections About has; the rows scroll
+         rather than clip if a page ever has more */
+      max-height: 220px;
+      padding-block: 4px 8px;
+      overflow-y: auto;
+      opacity: 1;
+      visibility: visible;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease 0.05s, visibility 0s;
+    }
+
+    /* The rows take the nav links' treatment — highlight filling the sheet,
+       text on the bar's 16px line (see .dock-link in Dock.astro) — rather
+       than the desktop dropdown's, since these sit in a bar-width sheet
+       rather than a floating panel. :global() because chapters.js builds the
+       rows at runtime, so they carry no scoping attribute. */
+    :global(.chapter-sheet .chapter-row) {
+      padding: 10px 8px;
+      border-radius: 6px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chapter-sheet {
+        transition: none;
+      }
+    }
+  }
+</style>

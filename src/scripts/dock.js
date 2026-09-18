@@ -85,7 +85,9 @@ document.addEventListener('astro:page-load', () => {
         if (on) link.setAttribute('aria-current', 'page');
         else link.removeAttribute('aria-current');
       });
-      nav.querySelector('.dock-current-fallback')?.toggleAttribute('hidden', links.some((l) => l.classList.contains('is-active')));
+      // The mobile bar names the current page rather than repeating its link
+      const current = nav.querySelector('.dock-current');
+      if (current) current.textContent = links.find((l) => l.classList.contains('is-active'))?.textContent ?? 'Menu';
       rest();
     }, { signal });
   }
@@ -98,6 +100,9 @@ document.addEventListener('astro:page-load', () => {
       dock.classList.toggle('is-open', open);
       menu.setAttribute('aria-expanded', String(open));
       menu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      // On mobile this button reveals the chapter list too, so chapters.js
+      // needs the close as well as the open to stay in step
+      document.dispatchEvent(new CustomEvent('dock:menu-toggle', { detail: { open } }));
     };
 
     // Matches the CSS breakpoint the collapsed/expanding nav itself uses
@@ -113,6 +118,10 @@ document.addEventListener('astro:page-load', () => {
     // a tap on a link is left alone and routes normally.
     dock.addEventListener('click', (e) => {
       if (!isMobileDock() || e.target.closest('.dock-menu')) return;
+      // A chapter row closes the menu itself (chapters.js), and it does so
+      // before the click reaches this listener — which would then see a
+      // closed dock and helpfully open it straight back up.
+      if (e.target.closest('.chapter-row')) return;
       if (!dock.classList.contains('is-open')) {
         if (e.target.closest('.dock-link')) e.preventDefault();
         setOpen(true);

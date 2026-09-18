@@ -1,0 +1,411 @@
+---
+// src/components/ChapterPill.astro
+// Sits inline in the dock's nav row, between About and Now. Hidden until
+// chapters.js finds headings in the current sheet (About only, for now) —
+// see .chapter.is-visible below. The chapter list itself is built once by
+// chapters.js and rendered into both #chapterDropdown (desktop) and
+// #chapterSheet (mobile), rather than existing twice in the markup here.
+---
+<div class="chapter" id="dockChapter">
+  {/* The clip is what widens to make room in the nav (stage 1); the pill
+      inside keeps its full width the whole time and is simply revealed. */}
+  <div class="chapter-clip">
+    <div class="chapter-pill" id="chapterPill">
+      <span class="chapter-thumb" aria-hidden="true"></span>
+      <span class="chapter-text">
+        <span class="chapter-name" id="chapterName"></span>
+        <span class="chapter-progress" aria-hidden="true">
+          <span class="chapter-progress-fill" id="chapterProgressFill"></span>
+        </span>
+      </span>
+      <button
+        class="chapter-toc-btn chapter-toc-btn--desktop"
+        id="chapterTocDesktop"
+        type="button"
+        aria-expanded="false"
+        aria-controls="chapterDropdown"
+        aria-label="Jump to a section"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">toc</span>
+      </button>
+    </div>
+  </div>
+
+  {/* Desktop opens the list as a dropdown under the pill; mobile has no
+      trigger of its own — the dock's own grid button reveals ChapterSheet,
+      a sheet of its own above the nav, alongside the nav links (chapters.js
+      keeps the two in step). */}
+  <div class="chapter-dropdown" id="chapterDropdown" role="menu"></div>
+</div>
+
+<script src="../scripts/chapters.js"></script>
+
+<style>
+  /* Always laid out (never display:none) — a display change can't be
+     animated, and toggling it is what made the nav snap wider instead of
+     growing. While hidden the clip below is simply 0 wide, so the dock
+     measures the same as if this weren't here. */
+  .chapter {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* Sits between About (order 0) and Now (order 2) in the nav, though its
+       wrapper puts it after all four links in the DOM — see .dock-links in
+       Dock.astro for why the grouping is that way round. */
+    order: 1;
+  }
+
+  /* Stage 1: the nav grows. This is the only thing that takes up width, so
+     animating it is what widens the dock. --chapter-width is measured by
+     chapters.js (and is 0 on mobile, where the pill isn't shown at all). */
+  .chapter-clip {
+    align-self: stretch;
+    display: flex;
+    width: 0;
+    overflow: hidden;
+  }
+
+  @keyframes chapter-grow {
+    from { width: 0; }
+    to { width: var(--chapter-width, 273px); }
+  }
+
+  @keyframes chapter-shrink {
+    from { width: var(--chapter-width, 273px); }
+    to { width: 0; }
+  }
+
+  /* Stage 2: the frame tilts up from lying face-down to face the viewer.
+     perspective() lives in the transform rather than as a property on the
+     parent so the 3D stays local to the pill and can't affect how the
+     absolutely-positioned dropdown and mobile button resolve against it. */
+  @keyframes chapter-flip-in {
+    from {
+      opacity: 0;
+      transform: perspective(700px) rotateX(-90deg);
+    }
+    to {
+      opacity: 1;
+      transform: perspective(700px) rotateX(0deg);
+    }
+  }
+
+  @keyframes chapter-flip-out {
+    from {
+      opacity: 1;
+      transform: perspective(700px) rotateX(0deg);
+    }
+    to {
+      opacity: 0;
+      transform: perspective(700px) rotateX(-90deg);
+    }
+  }
+
+  /* Stages 3 and 4: contents arrive after the frame has settled */
+  @keyframes chapter-content-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes chapter-content-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  /* Entrance: grow → flip → picture → text. Each stage's delay is the sum
+     of the ones before it, minus a little overlap so it reads as one motion
+     rather than four separate beats. `both` holds each element at its
+     from-state during its delay. chapters.js waits REVEAL_DELAY_MS before
+     starting any of this, and TEXT_STAGE_MS matches the last delay here. */
+  .chapter.is-visible .chapter-clip {
+    animation: chapter-grow 0.32s cubic-bezier(0.25, 1, 0.5, 1) both;
+  }
+
+  .chapter.is-visible .chapter-pill {
+    animation: chapter-flip-in 0.4s 0.24s cubic-bezier(0.25, 1, 0.5, 1) both;
+  }
+
+  .chapter.is-visible .chapter-thumb {
+    animation: chapter-content-in 0.24s 0.58s ease-out both;
+  }
+
+  .chapter.is-visible .chapter-text {
+    animation: chapter-content-in 0.24s 0.7s ease-out both;
+  }
+
+  /* Exit: the same four stages in reverse, tightened up. Declared after the
+     entrance rules so they win at equal specificity while both classes are
+     briefly on the element. LEAVE_MS in chapters.js matches the total. */
+  .chapter.is-leaving .chapter-text {
+    animation: chapter-content-out 0.16s ease-in both;
+  }
+
+  .chapter.is-leaving .chapter-thumb {
+    animation: chapter-content-out 0.16s 0.08s ease-in both;
+  }
+
+  .chapter.is-leaving .chapter-pill {
+    animation: chapter-flip-out 0.3s 0.18s cubic-bezier(0.55, 0, 0.85, 0.3) both;
+  }
+
+  .chapter.is-leaving .chapter-clip {
+    animation: chapter-shrink 0.28s 0.42s cubic-bezier(0.55, 0, 0.85, 0.3) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chapter.is-visible .chapter-clip,
+    .chapter.is-visible .chapter-pill,
+    .chapter.is-visible .chapter-thumb,
+    .chapter.is-visible .chapter-text,
+    .chapter.is-leaving .chapter-clip,
+    .chapter.is-leaving .chapter-pill,
+    .chapter.is-leaving .chapter-thumb,
+    .chapter.is-leaving .chapter-text {
+      animation: none;
+    }
+
+    /* No animation to carry it open, so hold the width outright */
+    .chapter.is-visible .chapter-clip {
+      width: var(--chapter-width, 273px);
+    }
+  }
+
+  .chapter-pill {
+    position: relative;
+    /* Keeps its full width while the clip around it is still narrow, so the
+       clip reveals it rather than squashing it — and so chapters.js can
+       measure it even while collapsed */
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px 0 4px;
+    background-color: var(--color-cool-bg);
+  }
+
+  .chapter-thumb {
+    flex-shrink: 0;
+    width: 51px;
+    height: 30px;
+    border-radius: 2px;
+    background-image: url(/assets/index/hero-photo.jpg);
+    background-position: 49.855% 52.168%;
+    background-repeat: no-repeat;
+    background-size: 200.291%;
+  }
+
+  .chapter-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+    width: 160px;
+  }
+
+  .chapter-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1.3;
+    /* Matches the line-height above (1.3 x 12px). An element with no text
+       generates no line box and collapses to 0 — which, since .chapter-text
+       centers its children, would slide the progress bar up for the moment
+       the typewriter has erased one chapter name and not yet typed the next. */
+    min-height: 1.3em;
+    color: var(--color-text-strong);
+  }
+
+  .chapter-progress {
+    position: relative;
+    height: 4px;
+    border-radius: 9999px;
+    background-color: var(--color-border);
+  }
+
+  .chapter-progress-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    border-radius: 9999px;
+    background-color: var(--color-text-accent);
+    transition: width 0.15s ease;
+  }
+
+  .chapter-toc-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    color: var(--color-text-accent);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .chapter-toc-btn:hover,
+  .chapter-toc-btn[aria-expanded='true'] {
+    background-color: var(--color-border);
+  }
+
+  .chapter-toc-btn .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  /* ── Dropdown (desktop) ──
+     Chapters only ever show while the About sheet is open, which always
+     pins the dock near the top of the screen — so the panel drops down
+     below the pill, not up (there's no room above it). */
+  .chapter-dropdown {
+    position: absolute;
+    z-index: 1;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-inline: 6px;
+    border-radius: 12px;
+    background-color: var(--color-bg-default);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    /* Unfurls downward from under the pill rather than appearing outright —
+       the same motion, and the same curve, as the sheets the dock opens on
+       mobile (see ChapterSheet.astro). Padding animates alongside the height
+       so the collapsed panel is genuinely nothing rather than a 12px sliver,
+       and being absolutely positioned it costs the dock no layout as it
+       grows. */
+    max-height: 0;
+    padding-block: 0;
+    opacity: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, visibility 0s 0.35s;
+  }
+
+  .chapter-dropdown.is-open {
+    /* Generous enough for the four sections About has; the rows scroll
+       rather than clip if a page ever has more */
+    max-height: 220px;
+    padding-block: 6px;
+    overflow-y: auto;
+    opacity: 1;
+    visibility: visible;
+    transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease 0.05s, visibility 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chapter-dropdown {
+      transition: none;
+    }
+  }
+
+  /* Shared row style for both the dropdown and the mobile sheet, so the two
+     stay visually identical however chapters.js renders them */
+  /* Matches .dock-link's font, weight, and hover/active colour language on
+     the dock — just left-aligned and individually rounded, since these stack
+     as a list instead of sitting in one continuous pill.
+
+     :global() throughout: chapters.js builds these rows at runtime via
+     document.createElement, so they never carry Astro's scoping attribute —
+     a scoped rule here would just silently never match them, leaving the
+     browser's own default button chrome (which is exactly what showed up:
+     a grey bevelled box) instead of this styling. */
+  :global(.chapter-row) {
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: left;
+    color: var(--color-text-strong);
+    text-decoration: none;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    width: 100%;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  :global(.chapter-row:hover),
+  :global(.chapter-row.is-active) {
+    color: var(--color-text-accent);
+  }
+
+  :global(.chapter-row:hover) {
+    background-color: var(--color-cool-bg);
+  }
+
+  :global(.chapter-row.is-active) {
+    font-weight: 700;
+  }
+
+  @media (min-width: 641px) and (hover: hover) and (pointer: fine) {
+    /* The dock's side pills only reveal on hover past 640px (see Dock.astro);
+       the chapter pill needs the same courtesy so it doesn't stay solid
+       while everything around it is still translucent */
+    .chapter-pill {
+      transition: background-color 0.2s ease;
+    }
+  }
+
+  /* ── Mobile: the pill takes over the bar ──
+     There's no room beside the page label here, so the pill replaces it and
+     the dock's own grid button reveals the chapter list along with the nav
+     links (chapters.js keeps the two in step). */
+  @media (max-width: 640px) {
+    /* .chapter's own box is removed so the pill becomes a row of the bar in
+       its own right, in the page label's place, with the chapter list its
+       own row directly above it. */
+    .chapter {
+      display: contents;
+    }
+
+    .chapter-toc-btn--desktop,
+    .chapter-dropdown {
+      display: none !important;
+    }
+
+    /* No width to grow into on mobile: the pill replaces the page label on
+       the bar's main row rather than making room beside it, so the clip just
+       reveals it outright. */
+    .chapter-clip {
+      display: none;
+      width: auto;
+      overflow: visible;
+    }
+
+    /* The bar is a column here, so the clip is simply its last row — no
+       width to grow into, and flex left alone (a basis in a column would set
+       its height, not its width). */
+    .chapter.is-visible .chapter-clip,
+    .chapter.is-leaving .chapter-clip {
+      display: flex;
+      flex: none;
+      min-width: 0;
+      width: auto;
+      animation: none;
+    }
+
+    /* Fills the bar rather than sitting in it as a separate chip */
+    .chapter-pill {
+      flex: 1;
+      min-width: 0;
+      padding: 0;
+      background: none;
+    }
+
+    .chapter-text {
+      flex: 1;
+      width: auto;
+    }
+
+  }
+</style>

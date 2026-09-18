@@ -1,6 +1,9 @@
 ---
 // src/components/Dock.astro
 // Site-wide primary navigation, fixed to the bottom of the viewport.
+import ChapterPill from './ChapterPill.astro';
+import ChapterSheet from './ChapterSheet.astro';
+
 interface Props {
   /* Starts at the top, for pages that render with the sheet open */
   top?: boolean;
@@ -17,8 +20,10 @@ const navItems = [
 ];
 
 const isActive = (href: string) => pathname === href;
-// Case study pages aren't in the nav, so the collapsed mobile bar needs a label
-const hasActive = navItems.some(({ href }) => isActive(href));
+// The label the collapsed mobile bar carries. Case study pages aren't in the
+// nav at all, so they fall back to "Menu". dock.js keeps this in step when an
+// open sheet makes a nav page current without a navigation.
+const currentLabel = navItems.find(({ href }) => isActive(href))?.label ?? 'Menu';
 
 const socials = [
   { label: 'X', href: 'https://x.com/avyayrkashyap', src: '/assets/index/dock-x.png', width: 18, invertDark: true },
@@ -47,19 +52,36 @@ const socials = [
     </button>
   </div>
 
+  {/* Two groups, and which one is a box depends on the breakpoint. On desktop
+      both are display: contents, so every link, the chapter pill and the menu
+      button lay out inline in the nav exactly as if these wrappers weren't
+      here. On phones each becomes a sheet of its own: the links above, the
+      chapter list and its pill below, with a gap between them. */}
   <nav class="dock-nav" id="dockNav" aria-label="Primary">
-    {navItems.map(({ label, href }) => (
-      <a
-        class={`dock-link${isActive(href) ? ' is-active' : ''}`}
-        href={href}
-        aria-current={isActive(href) ? 'page' : undefined}
-      >{label}</a>
-    ))}
-    {!hasActive && <span class="dock-current-fallback" aria-hidden="true">Menu</span>}
-    {/* Mobile only: expands the nav and reveals the theme + socials sheet */}
-    <button class="dock-menu" id="dockMenu" type="button" aria-expanded="false" aria-controls="dock" aria-label="Open menu">
-      <span class="material-symbols-outlined" aria-hidden="true">apps</span>
-    </button>
+    <div class="dock-links">
+      {navItems.map(({ label, href }) => (
+        <a
+          class={`dock-link${isActive(href) ? ' is-active' : ''}`}
+          href={href}
+          aria-current={isActive(href) ? 'page' : undefined}
+        >{label}</a>
+      ))}
+    </div>
+
+    <div class="dock-bar">
+      {/* Mobile only, and stacked above the pill inside this same sheet, so
+          the list reads as belonging to the chapter it names */}
+      <ChapterSheet />
+      <ChapterPill />
+      {/* Mobile only: the collapsed bar's page label, which the chapter pill
+          replaces on pages that have chapters */}
+      <span class="dock-current" id="dockCurrent" aria-hidden="true">{currentLabel}</span>
+      {/* Mobile only: expands both sheets */}
+      <button class="dock-menu" id="dockMenu" type="button" aria-expanded="false" aria-controls="dock" aria-label="Open menu">
+        <span class="material-symbols-outlined" aria-hidden="true">apps</span>
+      </button>
+    </div>
+
     <span class="dock-indicator" id="dockIndicator" aria-hidden="true"></span>
   </nav>
 
@@ -252,6 +274,22 @@ const socials = [
     backdrop-filter: none;
   }
 
+  /* Dissolved by default: the links, the chapter pill and the menu button are
+     direct flex items of the nav, and only the mobile block below gives these
+     two wrappers boxes of their own. */
+  .dock-links,
+  .dock-bar {
+    display: contents;
+  }
+
+  /* DOM order is all four links, then the chapter pill — the grouping the
+     mobile sheets need. Inline in the bar the pill belongs between About and
+     Now, which is what these two rules restore. (order applies to the links
+     themselves: with the wrappers dissolved, they're the flex items.) */
+  .dock-links .dock-link:nth-child(n + 3) {
+    order: 2;
+  }
+
   .dock-link {
     width: 84px;
     flex-shrink: 0;
@@ -291,13 +329,8 @@ const socials = [
   }
 
   .dock-menu,
-  .dock-current-fallback {
+  .dock-current {
     display: none;
-  }
-
-  /* Hidden by dock.js while an open sheet makes a nav page current */
-  .dock-current-fallback[hidden] {
-    display: none !important;
   }
 
   .dock-indicator {
@@ -354,35 +387,126 @@ const socials = [
       grid-template-columns: 1fr max-content max-content 1fr;
     }
 
+    /* The nav stops being a surface here and becomes the stack that holds
+       two of them: the links sheet, then the chapter list and its pill. Each
+       draws its own glass (see .dock-links, .dock-bar below), so the gap
+       between them shows the page rather than more chrome. */
     .dock-nav {
       grid-column: 1 / -1;
-      flex-wrap: wrap;
-      align-items: center;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    :global(html[data-theme='dark']) .dock-nav,
+    :global(html.sheet-open) .dock-nav {
+      background: none;
+      box-shadow: none;
+    }
+
+    /* The two sheets. Same glass the nav itself carries on desktop, each with
+       its own edge highlight so they read as two separate surfaces. */
+    .dock-links,
+    .dock-bar {
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.75);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      backdrop-filter: blur(16px) saturate(180%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    :global(html[data-theme='dark']) .dock-links,
+    :global(html[data-theme='dark']) .dock-bar {
+      background-color: rgba(33, 34, 39, 0.75);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 1px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    :global(html.sheet-open) .dock-links,
+    :global(html.sheet-open) .dock-bar {
+      background-color: var(--color-bg-secondary);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    /* ── The links sheet, above ── */
+    .dock-links {
+      display: flex;
+      flex-direction: column;
+      /* The inset the rows' highlight leaves around itself; the rows carry
+         the remaining 8px as padding, so their text still lands on the
+         bar's 16px line */
+      padding-inline: 8px;
+      /* Collapsed to nothing, margin and padding animating alongside the
+         height so it leaves no empty strip behind (the same treatment
+         .dock-pill gets for the tray below) */
+      max-height: 0;
+      margin-bottom: 0;
+      padding-block: 0;
+      opacity: 0;
+      overflow: hidden;
+      visibility: hidden;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), margin 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, visibility 0s 0.35s;
+    }
+
+    .dock.is-open .dock-links {
+      max-height: 200px;
+      /* The separation between the two sheets */
+      margin-bottom: 8px;
+      padding-block: 4px;
+      opacity: 1;
+      visibility: visible;
+      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), margin 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease 0.05s, visibility 0s;
+    }
+
+    /* The current page is named on the bar below instead, so it isn't
+       repeated in the list */
+    .dock-links .dock-link.is-active {
+      display: none;
+    }
+
+    /* ── The bar, below: the chapter list and the pill it belongs to ── */
+    .dock-bar {
+      position: relative;
+      display: flex;
+      flex-direction: column;
       /* Right side clears the absolutely positioned menu button */
       padding: 4px 44px 4px 16px;
-      border-radius: 12px;
+    }
+
+    /* With chapters, the chapter pill takes the bar row in the page label's
+       place. chapters.js sets the class (rather than :has() on .chapter)
+       because that element belongs to ChapterPill's scope, not this one. */
+    .dock--chapters .dock-current {
+      display: none;
     }
 
     .dock-indicator {
       display: none;
     }
 
-    /* Labels stay on the 16px text line; the highlight bleeds 8px to the left
-       and stops short of the menu button on the right */
+    /* A row fills its sheet's content box, so its hover and active highlight
+       runs the full width with an even 8px of sheet either side — rather than
+       the old lopsided bleed, which sat 8px off the left edge and 16px off
+       the right. The 8px of padding here is what keeps the label on the
+       bar's 16px text line. */
     .dock-link,
-    .dock-current-fallback {
+    .dock-current {
       width: auto;
-      margin-left: -8px;
-      padding: 8px 0 8px 8px;
+      padding: 10px 8px;
       border-radius: 6px;
       text-align: left;
     }
 
-    /* The current page stays on the bottom row beside the menu button */
-    .dock-link.is-active,
-    .dock-current-fallback {
+    /* A label rather than a control, so it has no highlight to inset — it
+       sits straight on the bar's own 16px padding */
+    .dock-current {
       display: block;
-      flex: 1;
+      padding: 6px 0;
       font-family: var(--font-sans);
       font-size: 14px;
       font-weight: 700;
@@ -390,27 +514,8 @@ const socials = [
       color: var(--color-text-accent);
     }
 
-    /* The other links stack above it and grow the bar upward when open */
-    .dock-link:not(.is-active) {
-      order: -1;
-      flex-basis: 100%;
-      max-height: 0;
-      padding-block: 0;
-      opacity: 0;
-      overflow: hidden;
-      visibility: hidden;
-      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease, visibility 0s 0.35s;
-    }
-
-    .dock.is-open .dock-link:not(.is-active) {
-      max-height: 40px;
-      padding-block: 10px;
-      opacity: 1;
-      visibility: visible;
-      transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease 0.05s, visibility 0s;
-    }
-
-    /* Pinned to the bottom-right so it stays beside the current page as the bar grows */
+    /* Pinned to the bottom-right so it stays beside the bar row as the
+       chapter list above it grows */
     .dock-menu {
       position: absolute;
       right: 4px;

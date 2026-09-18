@@ -135,6 +135,9 @@ async function inject(path) {
   panel.setAttribute('aria-label', entry.label);
   document.title = entry.title;
   current = path;
+  // Lets chapters.js (re)scan for headings whenever a sheet's content
+  // actually changes, rather than guessing when that might be
+  document.dispatchEvent(new CustomEvent('sheet:content-changed', { detail: { path } }));
   return entry;
 }
 
@@ -246,6 +249,9 @@ function applyOpen() {
 function applyClose() {
   const { sheet, panel, main } = els();
   if (!sheet) return;
+  // chapters.js hides the chapter pill on this; content-changed only fires
+  // on open/swap, so closing needs its own signal
+  document.dispatchEvent(new CustomEvent('sheet:closed'));
   sheet.classList.remove('is-open', 'is-dragging');
   panel.style.transform = '';
   sheet.querySelector('.sheet-backdrop').style.opacity = '';
