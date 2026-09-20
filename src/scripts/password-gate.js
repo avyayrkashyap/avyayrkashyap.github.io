@@ -14,6 +14,9 @@ document.addEventListener('astro:page-load', () => {
     localStorage.setItem(storageKey, 'true');
     gate.hidden = true;
     if (protectedEl) protectedEl.hidden = false;
+    // Until now the page had no layout to measure, so anything tracking it —
+    // chapters.js, for the dock's chapter pill — has to be told it does
+    document.dispatchEvent(new CustomEvent('gate:unlocked'));
   }
 
   if (localStorage.getItem(storageKey) === 'true') {
