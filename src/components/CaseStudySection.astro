@@ -1,5 +1,6 @@
 ---
 // src/components/CaseStudySection.astro
+// A labelled block inside a case study theme: heading, copy, and one visual.
 interface Props {
   label: string;
   body: string;
@@ -14,8 +15,8 @@ const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '
 ---
 <section class="cs-block" id={id}>
   <div class="cs-block-header">
-    <span class="t-label">{label}</span>
-    <p class="cs-block-body t-body">{body}</p>
+    <h4 class="cs-block-title type-h2">{label}</h4>
+    <p class="cs-block-body cs-prose type-body-md">{body}</p>
   </div>
   {image && (
     <div class="cs-block-visual">
@@ -29,21 +30,27 @@ const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '
     display: flex;
     flex-direction: column;
     gap: 24px;
-    margin-top: 64px;
+    margin-top: 48px;
   }
 
   .cs-block-header {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
   }
 
-  .cs-block-body {
-    letter-spacing: -0.01em;
+  /* Long-form running text. The body primitives are set at line-height 1.3,
+     which suits the UI-length copy they were drawn for; a case study
+     paragraph runs ten lines, so it relaxes the leading and holds a measure.
+     Family, size and colour still come from .type-body-md. */
+  .cs-prose {
+    max-width: 680px;
+    line-height: 1.6;
   }
 
+  /* Matches the card radius in the primitives */
   .cs-block-visual {
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
   }
 

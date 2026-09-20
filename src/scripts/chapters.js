@@ -1,23 +1,55 @@
-// Chapter pill + TOC for pages with headings inside a sheet (About, today).
+// Chapter pill + TOC for long pages that opt in — pages read inside a sheet
+// (About, Now, Resume) and ordinary routes that scroll the window (the case
+// studies) both work the same way.
+//
+// ── How a page opts in ──
+// Markup only, no per-page script:
+//
+//   <div class="ms-content" data-chapters>
+//     <section class="ms-section" id="context" data-chapter>
+//       <h2 class="ms-section-label type-h4">Context</h2>
+//     </section>
+//     <div class="ms-theme" id="building-swan" data-chapter="Building Swan">…</div>
+//   </div>
+//
+// data-chapters marks the container to scan; data-chapter marks a chapter
+// inside it, and its id is the jump target, so it has to be stable and
+// unique. The name the pill types is data-chapter's own value when it has
+// one, else the text of the first .type-h4 inside (the site's section-label
+// primitive), else the id. Give the value outright whenever a section's
+// first .type-h4 isn't its label, or when the visible heading is a sentence
+// rather than a name — the pill types it out a character at a time, in a
+// slot barely wide enough for a few words.
+//
+// Only elements actually marked count, at any depth under the container, so
+// a page can promote a nested group to a chapter (Moody's themes) without
+// every block inside it becoming one.
+//
+// ── Which scroller ──
+// A sheet on top is what's being read, so its chapters win while one is open
+// and #sheetBody does the scrolling; otherwise the page's own container is
+// used and the document scrolls. Measurement, scroll-spy, progress and the
+// smooth jump all run against whichever of the two `scroller` currently
+// holds, so nothing below this point knows which kind of page it's on.
 //
 // Rescans whenever sheet.js says the sheet's content changed or closed
-// (sheet:content-changed / sheet:closed) — never on a raw timer or
-// MutationObserver, since sheet.js already knows exactly when content swaps.
-// Finding zero headings (any other sheet) just hides everything back down to
-// the plain Home/About/Now/Resume dock.
-//
-// Scroll-spy and the smooth-scroll-to-chapter both operate on #sheetBody,
-// since chapters only ever live inside a sheet, never a plain page.
+// (sheet:content-changed / sheet:closed), and when a password gate reveals a
+// case study (gate:unlocked) — never on a raw timer or MutationObserver,
+// since each of those events already knows exactly when content appeared.
+// Finding no chapters hides everything back down to the plain
+// Home/About/Now/Resume dock.
 
-// What counts as a "chapter": every element matching this, in DOM order,
-// read via its own text for the chapter name
-const SECTION_SELECTOR = '#sheetBody .ab-section[id]';
-const LABEL_SELECTOR = '.ab-section-label';
+// What a page must supply: the container, a chapter inside it, and the
+// heading a chapter falls back to for its name
+const CONTAINER_SELECTOR = '[data-chapters]';
+const SECTION_SELECTOR = '[data-chapter][id]';
+const LABEL_SELECTOR = '.type-h4';
 // Section becomes "active" once its top has scrolled this far past the
-// sheet's own top edge — a little early feels more natural than exact-0
+// scroller's own top edge — a little early feels more natural than exact-0
 const ACTIVATE_OFFSET = 24;
-// The pill waits this long after the sheet opens before revealing itself,
-// so it appears once the sheet's own 0.5s slide-up has mostly settled
+// The pill waits this long after a page arrives before revealing itself, so
+// it appears once a sheet's own 0.5s slide-up (or a route's transition) has
+// mostly settled
 const REVEAL_DELAY_MS = 600;
 // Both match the staged animations in ChapterPill.astro: the entrance runs
 // grow -> flip -> picture -> text, and the name/progress stage starts at
@@ -39,6 +71,13 @@ let typeTimer = null;
 let leaveTimer = null;
 let stageTimer = null;
 let scrollFrame = 0;
+// Offsets are only as good as the layout they were taken against, and a page
+// keeps settling after load: a password gate reveals the content, web fonts
+// swap, images land. Timed re-measures can only guess at when that finishes,
+// and on the gated case study they guessed wrong, leaving the pill a chapter
+// behind. Watching the container's own size catches every one of those.
+let sizeObserver = null;
+let measureFrame = 0;
 // Set when a nav link is tapped from an expanded dock (dock.js): the dock
 // collapses to route, and if what arrives has chapters, its list takes the
 // space the nav links just gave up rather than waiting to be asked for.
@@ -47,6 +86,11 @@ let expandOnArrival = false;
 // set silently — typewriting it while it's still faded out would burn the
 // effect off-screen, and it could even finish before anyone sees it start.
 let textReady = false;
+// Whether a sheet is the thing being read. Taken from sheet.js's own events
+// rather than from what #sheetBody happens to contain: a closed sheet keeps
+// its last content in the DOM, and a sheet opened over a page is injected
+// before it's marked open, so containment answers this wrong at both ends.
+let sheetActive = false;
 
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -61,6 +105,60 @@ const els = () => ({
   dock: document.getElementById('dock'),
   sheetBody: document.getElementById('sheetBody'),
 });
+
+// ── Scrollers ──
+// The two kinds of page, behind one shape. `root` is where a chapter is
+// looked up again by id at measure time, and `originTop` is where the
+// scrolled content's very top sits in viewport coordinates — the only two
+// things that genuinely differ between them.
+
+// A sheet body holds its place on screen while its content scrolls inside
+// it, so its content starts however far it has been scrolled above its own
+// top edge.
+const sheetScroller = (body) => ({
+  root: body,
+  get top() { return body.scrollTop; },
+  set top(value) { body.scrollTop = value; },
+  get max() { return Math.max(1, body.scrollHeight - body.clientHeight); },
+  originTop: () => body.getBoundingClientRect().top - body.scrollTop,
+});
+
+// The document is itself the thing that moves, so its content starts exactly
+// scrollTop above the viewport — measuring its element's rect the way the
+// sheet does would count the scroll twice.
+const pageScroller = () => {
+  const el = document.scrollingElement ?? document.documentElement;
+  return {
+    root: document,
+    get top() { return el.scrollTop; },
+    // Global CSS sets scroll-behavior: smooth on html and body, which would
+    // have the browser smoothly chase every frame this tween writes — two
+    // animations running the same scroll, arriving late and sliding past
+    // each other. 'instant' opts this one write out of that.
+    set top(value) { window.scrollTo({ top: value, behavior: 'instant' }); },
+    get max() { return Math.max(1, el.scrollHeight - el.clientHeight); },
+    originTop: () => -el.scrollTop,
+  };
+};
+
+let scroller = null;
+
+// The container being tracked, and with it which scroller moves it
+function findContainer() {
+  const { sheetBody } = els();
+  if (sheetActive && sheetBody) return sheetBody.querySelector(CONTAINER_SELECTOR);
+  // A page's own container, ignoring both the sheet's leftover markup and
+  // anything still behind a password gate — a hidden container has no layout
+  // to measure, and the gate says when that changes
+  return [...document.querySelectorAll(CONTAINER_SELECTOR)]
+    .find((el) => !sheetBody?.contains(el) && !el.closest('[hidden]')) ?? null;
+}
+
+function labelFor(el) {
+  const explicit = el.dataset.chapter?.trim();
+  if (explicit) return explicit;
+  return el.querySelector(LABEL_SELECTOR)?.textContent.trim() || el.id;
+}
 
 function buildRow(label, index) {
   const button = document.createElement('button');
@@ -102,6 +200,14 @@ function hide() {
   clearTimeout(leaveTimer);
   clearTimeout(stageTimer);
   chapters = [];
+  // Dropped along with the chapters they belong to: a scroll landing between
+  // hide() and the teardown below would otherwise still spy against them and
+  // set a name the teardown is about to clear
+  offsets = [];
+  scroller = null;
+  sizeObserver?.disconnect();
+  sizeObserver = null;
+  cancelAnimationFrame(measureFrame);
   // Landed somewhere with nothing to list, so the intent doesn't carry on
   // to whatever is opened next
   expandOnArrival = false;
@@ -213,8 +319,9 @@ function setProgress(fraction) {
   if (fill) fill.style.width = `${Math.round(Math.max(0, Math.min(1, fraction)) * 100)}%`;
 }
 
-// Each chapter's top, in #sheetBody's own scroll coordinates — recomputed
-// whenever chapters change or the sheet resizes, not on every scroll tick
+// Each chapter's top, in the active scroller's own scroll coordinates —
+// recomputed whenever chapters change or the window resizes, not on every
+// scroll tick
 let offsets = [];
 // While true, setActive has pinned the bar at "done" until the new chapter
 // name finishes typing (see setActive) — onScroll must not fight that
@@ -233,25 +340,40 @@ function measureWidth() {
 }
 
 function measure() {
-  const { sheetBody } = els();
-  if (!sheetBody) return;
-  const bodyTop = sheetBody.getBoundingClientRect().top - sheetBody.scrollTop;
+  if (!scroller) return;
+  const originTop = scroller.originTop();
   // Looked up by id rather than trusting the node captured at scan time. On a
   // direct load of a sheet page the body's content is replaced after that
   // first scan, which left every chapter holding a detached node: those
   // measure as a rect of zeros, so every offset collapsed to the top of the
   // page and jumping to a chapter scrolled nowhere.
   offsets = chapters.map(({ id, el }) => {
-    const node = sheetBody.querySelector(`[id="${CSS.escape(id)}"]`) ?? el;
-    return node.getBoundingClientRect().top - bodyTop;
+    const node = scroller.root.querySelector(`[id="${CSS.escape(id)}"]`) ?? el;
+    return node.getBoundingClientRect().top - originTop;
   });
 }
 
+// Coalesced to one re-measure per frame: a gate reveal or a font swap can
+// fire the observer several times in a row.
+function watchSize(container) {
+  sizeObserver?.disconnect();
+  sizeObserver = null;
+  if (!container || typeof ResizeObserver === 'undefined') return;
+
+  sizeObserver = new ResizeObserver(() => {
+    cancelAnimationFrame(measureFrame);
+    measureFrame = requestAnimationFrame(() => {
+      measure();
+      onScroll();
+    });
+  });
+  sizeObserver.observe(container);
+}
+
 function onScroll() {
-  const { sheetBody } = els();
-  if (!sheetBody || !offsets.length) return;
-  const scrollTop = sheetBody.scrollTop;
-  const maxScroll = Math.max(1, sheetBody.scrollHeight - sheetBody.clientHeight);
+  if (!scroller || !offsets.length) return;
+  const scrollTop = scroller.top;
+  const maxScroll = scroller.max;
 
   let index = 0;
   for (let i = 0; i < offsets.length; i++) {
@@ -266,33 +388,56 @@ function onScroll() {
 }
 
 function scan() {
-  const { sheetBody, chapter } = els();
-  if (!sheetBody || !chapter) return;
+  const { chapter } = els();
+  if (!chapter) return;
 
-  const sections = [...sheetBody.querySelectorAll(SECTION_SELECTOR)];
+  const container = findContainer();
+  const sections = container ? [...container.querySelectorAll(SECTION_SELECTOR)] : [];
   if (!sections.length) {
     hide();
     return;
   }
 
-  chapters = sections.map((el) => ({
+  const { sheetBody } = els();
+  scroller = sheetBody?.contains(container) ? sheetScroller(sheetBody) : pageScroller();
+  const found = sections.map((el) => ({
     id: el.id,
-    label: el.querySelector(LABEL_SELECTOR)?.textContent.trim() ?? el.id,
+    label: labelFor(el),
     el,
   }));
+
+  // Several things can ask for a rescan in quick succession — a gated case
+  // study scans on arrival and again when the gate opens, and a sheet closing
+  // over a page scans a frame later. Replaying the entrance for chapters we
+  // are already tracking blanks the name and retypes it, and the second pass
+  // re-spies against a layout that has not settled, so it can put up the
+  // wrong chapter. Same chapters means refresh the measurements, nothing more.
+  const sameSet = chapters.length === found.length && chapters.every((c, i) => c.id === found[i].id);
+  if (sameSet) {
+    chapters = found;
+    watchSize(container);
+    measure();
+    onScroll();
+    return;
+  }
+
+  chapters = found;
+  watchSize(container);
   activeIndex = -1;
   renderRows();
   measure();
 
-  // Reveal (and the name's first typewrite-in) waits until the sheet has
-  // mostly finished sliding up. Clearing .is-visible and forcing a reflow
+  // Reveal (and the name's first typewrite-in) waits until the page has
+  // mostly finished arriving. Clearing .is-visible and forcing a reflow
   // first means the CSS entrance animation replays even if the pill was
   // already visible a moment ago (closing and reopening About quickly).
   clearTimeout(revealTimer);
   clearTimeout(stageTimer);
-  // Cancels an exit still rotating out from the sheet we just left, so its
-  // teardown can't land in the middle of this entrance
+  // Cancels an exit still rotating out from the sheet or page we just left,
+  // so its teardown can't land in the middle of this entrance
   clearTimeout(leaveTimer);
+  // And any name still typing itself out for the chapters we just replaced
+  clearTimeout(typeTimer);
   textReady = false;
   chapter.classList.remove('is-visible', 'is-leaving');
   void chapter.offsetWidth;
@@ -308,6 +453,13 @@ function scan() {
     // tapped from the page body, leaves it shut.
     sheetPanel?.classList.toggle('is-open', expandOnArrival || Boolean(dock?.classList.contains('is-open')));
     expandOnArrival = false;
+    // Offsets taken at scan time were read off a page still animating in (a
+    // route transition holds the case studies' content offset until it
+    // settles, and images finish loading around then too), so they're taken
+    // again now that it's had those 600ms to land. Transform-invariant for
+    // the sheet, whose content is measured against its own scroll origin,
+    // so this costs the sheet nothing but a repeat.
+    measure();
     // The entrance's own stages take it from here (grow, flip, picture);
     // the name and progress bar wait for their stage below.
     stageTimer = setTimeout(() => {
@@ -319,6 +471,9 @@ function scan() {
       progressHold = false;
       const { name } = els();
       if (name) name.textContent = '';
+      // Last look before the name is committed to screen, for a page whose
+      // arrival animation outran the measurement above
+      measure();
       onScroll();
     }, TEXT_STAGE_MS);
   }, REVEAL_DELAY_MS);
@@ -329,13 +484,13 @@ function scan() {
 // sheet.js resizes the sheet under it to match — a scroller resized
 // mid-animation is reason enough for the browser to abandon a smooth scroll
 // it was running, so the jump simply never moved. Nothing cancels this one.
-function tweenScroll(el, to) {
+function tweenScroll(to) {
   cancelAnimationFrame(scrollFrame);
-  const from = el.scrollTop;
+  const from = scroller.top;
   const distance = to - from;
   if (!distance) return;
   if (reduceMotion()) {
-    el.scrollTop = to;
+    scroller.top = to;
     return;
   }
 
@@ -343,16 +498,14 @@ function tweenScroll(el, to) {
   const step = (now) => {
     const t = Math.min(1, (now - start) / SCROLL_MS);
     // easeOutCubic: leaves quickly, settles gently, like the pill's own motion
-    el.scrollTop = from + distance * (1 - (1 - t) ** 3);
+    scroller.top = from + distance * (1 - (1 - t) ** 3);
     if (t < 1) scrollFrame = requestAnimationFrame(step);
   };
   scrollFrame = requestAnimationFrame(step);
 }
 
 function scrollToChapter(index) {
-  const { sheetBody } = els();
-  const target = chapters[index];
-  if (!sheetBody || !target) return;
+  if (!scroller || !chapters[index]) return;
   measure();
   const top = Math.max(0, offsets[index] - 16);
 
@@ -362,10 +515,13 @@ function scrollToChapter(index) {
   // leave the menu behind, still showing the nav links
   document.dispatchEvent(new CustomEvent('dock:close-menu'));
 
-  tweenScroll(sheetBody, top);
+  tweenScroll(top);
 }
 
 document.addEventListener('astro:page-load', () => {
+  // A sheet page loaded directly renders with its sheet already open, and
+  // nothing will announce that after the fact
+  sheetActive = document.documentElement.classList.contains('sheet-open');
   scan();
 
   window.__chaptersAbort?.abort();
@@ -375,6 +531,11 @@ document.addEventListener('astro:page-load', () => {
 
   const { sheetBody, tocDesktop, dropdown, sheetPanel, chapter } = els();
 
+  // Both scrollers are listened to for the life of the page: scroll events
+  // don't bubble out of a sheet body, and which of the two is live changes
+  // with every sheet that opens or closes. onScroll is a no-op until a scan
+  // has found chapters, so the idle one costs nothing.
+  window.addEventListener('scroll', onScroll, { signal, passive: true });
   sheetBody?.addEventListener('scroll', onScroll, { signal, passive: true });
   window.addEventListener('resize', () => {
     // Crossing the mobile breakpoint changes the pill's width to or from 0
@@ -382,9 +543,30 @@ document.addEventListener('astro:page-load', () => {
     measure();
     onScroll();
   }, { signal });
+  // Web fonts arriving after first paint reflow everything the offsets were
+  // taken against, and retype the pill's own label at a different width —
+  // dock.js re-places its indicator on the same signal. Both measurements
+  // no-op if the page has moved on by then.
+  document.fonts?.ready.then(() => {
+    measureWidth();
+    measure();
+    onScroll();
+  });
 
-  document.addEventListener('sheet:content-changed', scan, { signal });
-  document.addEventListener('sheet:closed', hide, { signal });
+  document.addEventListener('sheet:content-changed', () => {
+    sheetActive = true;
+    scan();
+  }, { signal });
+  document.addEventListener('sheet:closed', () => {
+    sheetActive = false;
+    hide();
+    // The page underneath can have chapters of its own now that sheets open
+    // over the case studies too. sheet.js announces the close before it acts
+    // on it, so the rescan waits a frame for the sheet to actually be gone.
+    requestAnimationFrame(scan);
+  }, { signal });
+  // A gated case study only becomes readable once the password lands
+  document.addEventListener('gate:unlocked', scan, { signal });
   // Routed here from a dock that was expanded — scan() reopens the list on
   // arrival rather than making you ask for it again
   document.addEventListener('dock:route-from-open', () => { expandOnArrival = true; }, { signal });

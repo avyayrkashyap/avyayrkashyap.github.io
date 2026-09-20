@@ -1,10 +1,11 @@
 ---
 // src/components/ChapterPill.astro
 // Sits inline in the dock's nav row, between About and Now. Hidden until
-// chapters.js finds headings in the current sheet (About only, for now) —
-// see .chapter.is-visible below. The chapter list itself is built once by
-// chapters.js and rendered into both #chapterDropdown (desktop) and
-// #chapterSheet (mobile), rather than existing twice in the markup here.
+// chapters.js finds sections on whatever is being read — a sheet (About) or
+// an ordinary page (the case studies) — see .chapter.is-visible below. The
+// chapter list itself is built once by chapters.js and rendered into both
+// #chapterDropdown (desktop) and #chapterSheet (mobile), rather than
+// existing twice in the markup here.
 ---
 <div class="chapter" id="dockChapter">
   {/* The clip is what widens to make room in the nav (stage 1); the pill
@@ -259,9 +260,10 @@
   }
 
   /* ── Dropdown (desktop) ──
-     Chapters only ever show while the About sheet is open, which always
-     pins the dock near the top of the screen — so the panel drops down
-     below the pill, not up (there's no room above it). */
+     Opens downward by default, which is where the room is while a sheet
+     holds the dock at the top of the screen. On an ordinary page the dock
+     rests at the bottom instead, so the panel flips above the pill (see
+     below) rather than unfurling off the bottom of the viewport. */
   .chapter-dropdown {
     position: absolute;
     z-index: 1;
@@ -298,6 +300,15 @@
     opacity: 1;
     visibility: visible;
     transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), padding 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease 0.05s, visibility 0s;
+  }
+
+  /* The dock is only at the top while a sheet is open (sheet.js moves it),
+     so anywhere else the list has to grow upward out of the pill. Keyed off
+     the dock rather than a class of our own so it follows that move exactly,
+     including the animated one between the two anchors. */
+  :global(.dock:not(.dock--top)) .chapter-dropdown {
+    top: auto;
+    bottom: calc(100% + 8px);
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -167,6 +167,35 @@ html.theme-transition::view-transition-new(root) {
   font-size: 12px;
 }
 
+/* ── Text colour primitives ──
+   Paper's four text tokens as classes, so a colour can be chosen
+   independently of the type primitive carrying it. Each sets opacity as well
+   as colour: the body primitives run at 0.65, and without resetting it a
+   chosen colour would render as a muted version of itself. Wearing none of
+   them keeps whatever the type primitive says, which for body copy is
+   secondary at 65%. Like the primitives, a page's own scoped rule still
+   outranks these. */
+
+.text-strong {
+  color: var(--color-text-strong);
+  opacity: 1;
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+  opacity: 1;
+}
+
+.text-disabled {
+  color: var(--color-text-disabled);
+  opacity: 1;
+}
+
+.text-accent {
+  color: var(--color-text-accent);
+  opacity: 1;
+}
+
 /* ── Type scale (legacy, case studies) ──
    These carry type only. Anything positional (max-width, grid placement,
    page-specific margins) stays with the page or component that owns the

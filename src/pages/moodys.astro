@@ -7,6 +7,9 @@ import PasswordGate from '../components/PasswordGate.astro';
 const themes = [
   {
     id: 'building-swan',
+    /* What the dock's chapter pill types out: the title below is a sentence,
+       and the pill types a character at a time behind a short truncation */
+    chapter: 'Building Swan',
     title: 'Building Swan from 0 → 1',
     body: "Swan is Moody's structured finance platform. For much of the past two years, I've been one of its foundational designers, defining the interaction patterns, analytical process flows, and information representation that later features would inherit. With no existing product to reference, early decisions here often became the default answer for everything that came after.",
     sections: [
@@ -54,6 +57,7 @@ const themes = [
   },
   {
     id: 'portfolio',
+    chapter: 'Portfolios',
     title: 'Translating single deal interactions into Portfolios',
     body: "Portfolio in Swan is where individual analyses come together. Analysts here manage many securities at once instead of one at a time. Most of Swan's early patterns were built for single-item workflows, so when we started work on portfolios, a lot of the conversations hinged around how information would be consumed and defining what a group or bulk action should even mean inside the product, and where the line sat between what was technically achievable and what would feel natural to an analyst doing the work.",
     sections: [
@@ -109,52 +113,63 @@ const themes = [
       />
     </header>
 
-    <div class="ms-content">
-    <section class="ms-intro">
+    {/* data-chapters marks this as the page the dock's chapter pill tracks;
+        each data-chapter inside is one chapter (see src/scripts/chapters.js).
+        The intro names itself, since the first .type-h4 in it belongs to the
+        meta list rather than to the section. */}
+    <div class="ms-content" data-chapters>
+    <section class="ms-intro" id="overview" data-chapter="Overview">
       <div class="ms-intro-main">
-        <h1 class="t-display">Moody's Ratings</h1>
-        <p class="t-body">I joined Moody's Ratings in September 2024 and work on a variety of projects, ranging from deep product work in the structured finance domain - solving interface problems and bridging the gap between business and user goals - to redefining what responsibilities a designer should own in a product. As the organization transitions to an agent-first workflow, my role has morphed to also include equipping agents to do product design and help introduce agentic design processes to various product and development teams.</p>
+        <h1 class="type-title">Moody's Ratings</h1>
+        <p class="ms-prose type-body-md text-secondary">I joined Moody's Ratings in September 2024 and work on a variety of projects, ranging from deep product work in the structured finance domain - solving interface problems and bridging the gap between business and user goals - to redefining what responsibilities a designer should own in a product. As the organization transitions to an agent-first workflow, my role has morphed to also include equipping agents to do product design and help introduce agentic design processes to various product and development teams.</p>
       </div>
 
       <dl class="ms-meta">
         <div class="ms-meta-item">
-          <dt>Role</dt>
-          <dd>Sr. UX Designer</dd>
+          <dt class="type-h4">Role</dt>
+          <dd class="type-body-sm">Sr. UX Designer</dd>
         </div>
         <div class="ms-meta-item">
-          <dt>Team</dt>
-          <dd>XD, Product, Process, Business & Development</dd>
+          <dt class="type-h4">Team</dt>
+          <dd class="type-body-sm">XD, Product, Process, Business & Development</dd>
         </div>
         <div class="ms-meta-item">
-          <dt>Timeline</dt>
-          <dd>Sep 2024 - present</dd>
+          <dt class="type-h4">Timeline</dt>
+          <dd class="type-body-sm">Sep 2024 - present</dd>
         </div>
       </dl>
     </section>
 
-    <p class="ms-callout t-body">This is a high-level overview of the work I have done and continue to execute at Moody's. Detailed case studies to come soon.</p>
+    <p class="ms-callout type-body-sm">This is a high-level overview of the work I have done and continue to execute at Moody's. Detailed case studies to come soon.</p>
 
-    <section class="ms-columns">
-      <div class="ms-col">
-        <h2 class="ms-h2 t-h2">What does Moody's do?</h2>
-        <p class="t-body">Moody's is one of the world's leading credit rating agencies, assessing the creditworthiness of companies, governments, and financial instruments that investors and institutions rely on to make decisions. I work within Structured Finance, where Moody's rates securities backed by pooled assets sitting at the intersection of complex financial instruments and the analysts who need to act on them quickly and confidently.</p>
-      </div>
-      <div class="ms-col">
-        <h2 class="ms-h2 t-h2">My Role</h2>
-        <p class="t-body">As a Senior UX Designer on the Structured Finance team, I own the end-to-end design of tools used by analysts to rate and monitor structured securities. This involves translating dense financial workflows, often shaped by regulatory and legacy constraints, into interfaces that reduce time-to-decision and cut down on analyst error under pressure.</p>
-        <p class="t-body">As Moody's transitions to an agent-first workflow, I've also taken on the onus of equipping agents to do product design themselves, helping introduce agentic design processes across product and development teams.</p>
+    <section class="ms-section" id="context" data-chapter>
+      <h2 class="ms-section-label type-h4">Context</h2>
+      <div class="ms-columns">
+        <div class="ms-col">
+          <h3 class="type-h2">What does Moody's do?</h3>
+          <p class="ms-prose type-body-md">Moody's is one of the world's leading credit rating agencies, assessing the creditworthiness of companies, governments, and financial instruments that investors and institutions rely on to make decisions. I work within Structured Finance, where Moody's rates securities backed by pooled assets sitting at the intersection of complex financial instruments and the analysts who need to act on them quickly and confidently.</p>
+        </div>
+        <div class="ms-col">
+          <h3 class="type-h2">My role</h3>
+          <p class="ms-prose type-body-md">As a Senior UX Designer on the Structured Finance team, I own the end-to-end design of tools used by analysts to rate and monitor structured securities. This involves translating dense financial workflows, often shaped by regulatory and legacy constraints, into interfaces that reduce time-to-decision and cut down on analyst error under pressure.</p>
+          <p class="ms-prose type-body-md">As Moody's transitions to an agent-first workflow, I've also taken on the onus of equipping agents to do product design themselves, helping introduce agentic design processes across product and development teams.</p>
+        </div>
       </div>
     </section>
 
-    <section class="ms-themes">
-      <p class="t-body">Fitting two years of work into a cohesive narrative is quite hard. Here are three themes that best capture where the work was concentrated and what impact it had.</p>
+    <section class="ms-section" id="themes" data-chapter>
+      <h2 class="ms-section-label type-h4">Themes</h2>
+      <p class="ms-prose type-body-md">Fitting two years of work into a cohesive narrative is quite hard. Here are three themes that best capture where the work was concentrated and what impact it had.</p>
 
       <div class="ms-theme-list">
-        {themes.map(({ id, title, body, sections }) => (
+        {themes.map(({ id, chapter, title, body, sections }) => (
           <div class="ms-theme-group">
-            <div class="ms-theme" id={id}>
-              <h3 class="ms-theme-title t-h3">{title}</h3>
-              {body && <p class="t-body">{body}</p>}
+            {/* A chapter in its own right: the two themes are where the page's
+                length actually is, so they're tracked alongside its top-level
+                sections rather than folded into Themes */}
+            <div class="ms-theme" id={id} data-chapter={chapter}>
+              <h3 class="ms-theme-title type-h1">{title}</h3>
+              {body && <p class="ms-prose type-body-md">{body}</p>}
             </div>
             {sections && sections.length > 0 && (
               <div class="ms-section-gap">
@@ -200,19 +215,28 @@ const themes = [
     object-fit: cover;
   }
 
+  /* Long-form running text. The body primitives are set at line-height 1.3,
+     which suits the UI-length copy they were drawn for; a case study
+     paragraph runs ten lines, so it relaxes the leading and holds a measure.
+     Family, size and colour still come from .type-body-md. */
+  .ms-prose {
+    max-width: 680px;
+    line-height: 1.6;
+  }
+
   /* ── Intro ── */
   .ms-intro {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 64px;
-    padding-bottom: 40px;
+    padding-bottom: 48px;
   }
 
   .ms-intro-main {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
   }
 
   .ms-meta {
@@ -220,95 +244,85 @@ const themes = [
     flex-direction: column;
     gap: 20px;
     flex-shrink: 0;
-    padding-top: 10px;
+    padding-top: 8px;
   }
 
-  /* Type from .t-label; scoped selector keeps the dt/dd pair unclassed */
   .ms-meta-item dt {
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
     margin-bottom: 6px;
   }
 
+  /* A meta value is a fact rather than running text, so it keeps body-sm's
+     family and size but takes the full-strength text colour */
   .ms-meta-item dd {
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
-    color: var(--color-text);
     max-width: 220px;
+    line-height: 1.4;
+    color: var(--color-text-strong);
+    opacity: 1;
   }
 
-  /* ── Callout ── */
+  /* ── Callout ──
+     Same static surface as the cards on About: cool fill, no border, no hover.
+     A note the reader is meant to catch, so it drops the body primitive's
+     0.65 opacity rather than ending up the quietest text on the page. */
   .ms-callout {
-    background: var(--color-bg-secondary);
-    border-radius: 8px;
+    background: var(--color-cool-bg);
+    border-radius: 12px;
     padding: 20px 24px;
-    margin-bottom: 56px;
+    max-width: 680px;
+    line-height: 1.5;
+    opacity: 1;
   }
 
-  /* ── Columns ── */
+  /* ── Sections ──
+     The page's own rhythm, matching About: a rule, then a quiet uppercase
+     label, then the section's content */
+  .ms-section {
+    margin-top: 56px;
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ms-section-label {
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  /* ── Context columns ── */
   .ms-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 56px;
+    gap: 48px;
   }
 
   .ms-col {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding-top: 24px;
-  }
-
-  .ms-h2 {
-    padding: 8px 0px;
-    border-bottom: 1px solid var(--color-border);
+    gap: 12px;
   }
 
   /* ── Themes ── */
-  .ms-themes {
-    padding-top: 48px;
-    margin-top: 8px;
-    border-top: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
-  }
-
   .ms-theme-list {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-  }
-
-  .ms-theme-group {
-    display: flex;
-    flex-direction: column;
+    margin-top: 40px;
   }
 
   .ms-theme-group + .ms-theme-group {
-    padding-top: 48px;
+    margin-top: 64px;
+    padding-top: 56px;
     border-top: 1px solid var(--color-border);
   }
 
   .ms-theme {
     display: flex;
-    align-items: flex-start;
-    gap: 48px;
+    flex-direction: column;
+    gap: 16px;
   }
 
+  /* The theme title is the biggest type between the page title and the body,
+     so it holds its own measure rather than running the full column */
   .ms-theme-title {
-    flex-shrink: 0;
-    max-width: 180px;
-  }
-
-  .ms-theme .ms-body {
-    flex: 1;
+    max-width: 560px;
   }
 
   @media (max-width: 768px) {
@@ -317,14 +331,15 @@ const themes = [
       gap: 32px;
     }
 
+    /* Stacked, the meta pairs have the full column to sit in, so the measure
+       that kept them off the intro copy on desktop only forces early wraps */
+    .ms-meta-item dd {
+      max-width: none;
+    }
+
     .ms-columns {
       grid-template-columns: 1fr;
       gap: 32px;
-    }
-
-    .ms-theme {
-      flex-direction: column;
-      gap: 12px;
     }
   }
 </style>
