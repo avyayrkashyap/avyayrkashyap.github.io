@@ -1,0 +1,330 @@
+---
+// src/components/Laptop.astro
+// A MacBook built out of CSS 3D transforms. The deck and the back of the lid
+// are the two photos from the "devices" artboard in Paper; the screen is a
+// bezel around a <slot />, so the caller decides what plays on it.
+//
+// Sized in cqw, so the nearest container ancestor sets the scale. The pose
+// comes from the caller through custom properties, all optional:
+//   --lp-width        deck width (default 30cqw)
+//   --lp-left/-top    where the deck's centre sits in the stage
+//   --lp-x/-y/-z      a further nudge, handy for animating (z moves it
+//                     toward or away from the camera)
+//   --lp-tilt         how far the deck is tipped away (90deg is edge on)
+//   --lp-yaw          turn about the deck's normal (the resting angle)
+//   --lp-spin         a further turn on top of the yaw, for animating a
+//                     spin frame by frame without disturbing the pose
+//   --lp-open         lid angle: 0 lies flat open, -180deg is shut
+//   --lp-perspective, --lp-eye   the camera
+//   --lp-shadow       contact shadow colour
+//   --lp-duration, --lp-ease     pose and lid transitions
+//   --lp-pose-duration  the pose's alone (default --lp-duration); set it to
+//                     0s when driving --lp-spin from script
+//
+// Model space: .lp is the deck's footprint lying flat, and the camera is the
+// transform on it (tip the floor away, then spin). The lid shares the deck's
+// top edge and folds about it.
+//
+// Grips are invisible hit areas riding on the model, for a caller that wants
+// to let people handle it: one over each front corner of the base
+// ([data-grip="base"]) and a strip along the lid's top edge
+// ([data-grip="lid"]). They only take pointers; what a drag does is up to
+// the caller. Each has a twin on the far side of its surface, so it can still
+// be grabbed when that side is the one facing the camera (a shut lid, say).
+//
+// Thickness is stacked slices: copies of the rounded outline stepped down in
+// z. Each slice peeks out a pixel past the one above it, so together they
+// read as a solid, round-cornered extrusion from any angle, which flat edge
+// strips can't do at the corners. Slices darken with depth like the brushed
+// aluminium in the reference shots.
+const base = '/assets/moodys/laptop-3d';
+
+const mix = (from: number[], to: number[], k: number) =>
+  `rgb(${from.map((c, i) => Math.round(c + (to[i] - c) * k)).join(' ')})`;
+const slices = (count: number, top: number[], bottom: number[]) =>
+  Array.from({ length: count }, (_, i) => {
+    const k = (i + 1) / count;
+    return `transform: translateZ(calc(var(--depth) * ${-k.toFixed(3)})); background: ${mix(top, bottom, k)};`;
+  });
+
+const bodySlices = slices(10, [226, 227, 230], [140, 142, 147]);
+const lidSlices = slices(4, [206, 207, 211], [178, 180, 184]);
+---
+<div class="lp-stage">
+  <div class="lp">
+    <div class="lp-shadow" aria-hidden="true"></div>
+
+    {bodySlices.map((style) => <div class="lp-slice lp-slice--body" style={style} aria-hidden="true"></div>)}
+    <div class="lp-front" aria-hidden="true">
+      <span class="lp-scoop"></span>
+      <span class="lp-foot lp-foot--left"></span>
+      <span class="lp-foot lp-foot--right"></span>
+    </div>
+    <img class="lp-deck" src={`${base}/deck.png`} alt="" aria-hidden="true" width="1671" height="1194" />
+    <span class="lp-grip lp-grip--corner lp-grip--left" data-grip="base" aria-hidden="true"></span>
+    <span class="lp-grip lp-grip--corner lp-grip--right" data-grip="base" aria-hidden="true"></span>
+
+    <div class="lp-lid">
+      {lidSlices.map((style) => <div class="lp-slice lp-slice--lid" style={style} aria-hidden="true"></div>)}
+      <div class="lp-face lp-screen">
+        <div class="lp-bezel">
+          <div class="lp-display">
+            <slot />
+          </div>
+          <span class="lp-notch" aria-hidden="true"></span>
+          <span class="lp-chin" aria-hidden="true"></span>
+        </div>
+      </div>
+      <img class="lp-face lp-back" src={`${base}/lid-back.png`} alt="" aria-hidden="true" width="1133" height="808" />
+      <span class="lp-grip lp-grip--lid lp-grip--near" data-grip="lid" aria-hidden="true"></span>
+      <span class="lp-grip lp-grip--lid lp-grip--far" data-grip="lid" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lp-stage {
+    position: absolute;
+    inset: 0;
+    perspective: var(--lp-perspective, 140cqw);
+    perspective-origin: var(--lp-eye, 50% 30%);
+  }
+
+  .lp {
+    position: absolute;
+    left: var(--lp-left, 50%);
+    top: var(--lp-top, 50%);
+    width: var(--w);
+    height: var(--d);
+    margin-left: calc(var(--w) / -2);
+    margin-top: calc(var(--d) / -2);
+    /* Deck footprint. Both photos crop to 1.4:1, so the lid uses it too. */
+    --w: var(--lp-width, 30cqw);
+    --d: calc(var(--w) / 1.4);
+    --t: calc(var(--w) * 0.026);
+    --lid-t: calc(var(--w) * 0.008);
+    --dur: var(--lp-duration, 0.8s);
+    --ease: var(--lp-ease, cubic-bezier(0.25, 1, 0.5, 1));
+
+    transform-style: preserve-3d;
+    transform: translate3d(var(--lp-x, 0px), var(--lp-y, 0px), var(--lp-z, 0px)) rotateX(var(--lp-tilt, 58deg)) rotateZ(var(--lp-yaw, 0deg)) rotateZ(var(--lp-spin, 0deg));
+    transition: transform var(--lp-pose-duration, var(--dur)) var(--ease);
+  }
+
+  .lp-deck {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 2.4% / 3.4%;
+  }
+
+  .lp-slice {
+    position: absolute;
+    inset: 0;
+  }
+
+  .lp-slice--body {
+    --depth: var(--t);
+    border-radius: 2.4% / 3.4%;
+  }
+
+  /* The straight run of the front edge, laid over the slices so it can carry
+     the thumb scoop and the feet. It stops where the corners start curving. */
+  .lp-front {
+    position: absolute;
+    left: 2.4%;
+    right: 2.4%;
+    top: 100%;
+    height: var(--t);
+    transform-origin: top;
+    transform: rotateX(-90deg) translateZ(0.5px);
+    background: linear-gradient(180deg, #f1f2f4 0%, #d8d9dc 18%, #b5b7bb 70%, #8c8e93 100%);
+  }
+
+  .lp-scoop {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 18%;
+    height: 42%;
+    translate: -50% 0;
+    border-radius: 0 0 calc(var(--w) * 0.018) calc(var(--w) * 0.018);
+    background: linear-gradient(180deg, #c3c5c9 0%, #eceef0 100%);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.18);
+  }
+
+  .lp-foot {
+    position: absolute;
+    top: 100%;
+    width: 7%;
+    height: 22%;
+    border-radius: 0 0 40% 40% / 0 0 100% 100%;
+    background: #1b1c1f;
+  }
+
+  .lp-foot--left { left: 4%; }
+  .lp-foot--right { right: 4%; }
+
+  .lp-shadow {
+    position: absolute;
+    inset: 4% 2% -2%;
+    border-radius: 6%;
+    background: var(--lp-shadow, rgba(2, 6, 30, 0.55));
+    filter: blur(calc(var(--w) * 0.06));
+    transform: translateZ(calc(var(--t) * -1));
+  }
+
+  /* Hinged on the deck's top edge. */
+  .lp-lid {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: bottom;
+    transform: rotateX(var(--lp-open, -66deg));
+    transition: transform var(--dur) var(--ease);
+  }
+
+  /* Top corners round, hinge corners nearly square, as on the real lid. */
+  .lp-slice--lid,
+  .lp-face {
+    border-radius: 3.4% 3.4% 0.8% 0.8% / 4.8% 4.8% 1.1% 1.1%;
+  }
+
+  .lp-slice--lid {
+    --depth: var(--lid-t);
+  }
+
+  .lp-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* A hairline of aluminium, then black glass nearly to the edge. Offsets
+     are split by axis on purpose: top/bottom are fractions of the lid's
+     height, left/right of its width, matching the reference's bezels. */
+  .lp-screen {
+    padding: 0.35%;
+    background: linear-gradient(180deg, #d9dadd, #b4b6ba);
+    transform: translateZ(0.5px);
+  }
+
+  .lp-bezel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 3.1% 3.1% 0.6% 0.6% / 4.4% 4.4% 0.8% 0.8%;
+    background: #050506;
+    overflow: hidden;
+  }
+
+  .lp-display {
+    position: absolute;
+    top: 1.6%;
+    left: 1.5%;
+    right: 1.5%;
+    bottom: 4.8%;
+    border-radius: 1.4% 1.4% 0 0 / 2% 2% 0 0;
+    overflow: hidden;
+    background: #000;
+  }
+
+  /* Whatever is slotted in fills the panel. */
+  .lp-display > :global(*) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lp-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 10%;
+    height: 3.4%;
+    translate: -50% 0;
+    border-radius: 0 0 calc(var(--w) * 0.016) calc(var(--w) * 0.016);
+    background: #050506;
+  }
+
+  /* The dark band along the bottom of the glass, above the hinge. */
+  .lp-chin {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3.8%;
+    background: linear-gradient(180deg, #232427 0%, #151618 100%);
+  }
+
+  /* Seen from behind the lid, so flipped to face the other way, and pushed
+     back by the lid's thickness. */
+  .lp-back {
+    transform: translateZ(calc(var(--lid-t) * -1)) rotateY(180deg);
+  }
+
+  /* ── Grips ── */
+
+  .lp-grip {
+    position: absolute;
+    cursor: grab;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .lp-grip:active {
+    cursor: grabbing;
+  }
+
+  /* Over each front corner of the base, reaching a little past its edges so
+     the corner is easy to catch. Raised above a shut lid's thickness, so the
+     lid never covers them. */
+  .lp-grip--corner {
+    bottom: -10%;
+    width: 32%;
+    height: 55%;
+    transform: translateZ(calc(var(--lid-t) + 2px));
+  }
+
+  .lp-grip--left {
+    left: -6%;
+  }
+
+  .lp-grip--right {
+    right: -6%;
+  }
+
+  /* Along the middle of the lid's top edge, overhanging it slightly, just in
+     front of the screen and just behind the lid's back. Kept clear of the
+     corner grips' width: shut, this edge lies over the base's front, and a
+     full-width strip would steal the corners. */
+  .lp-grip--lid {
+    top: -6%;
+    left: 26%;
+    right: 26%;
+    height: 22%;
+  }
+
+  .lp-grip--near {
+    transform: translateZ(2px);
+  }
+
+  .lp-grip--far {
+    transform: translateZ(calc(var(--lid-t) * -1 - 2px));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lp,
+    .lp-lid {
+      transition: none;
+    }
+  }
+</style>

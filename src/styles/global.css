@@ -296,10 +296,7 @@ html.sheet-open {
 /* Hero styles live in src/components/Hero.astro */
 
 /* ── Work section ── */
-
-.work-section {
-  padding: clamp(60px, 8vh, 100px) clamp(40px, 9vw, 122px) clamp(80px, 10vh, 120px);
-}
+/* Projects section styles live in src/components/Work.astro */
 
 .case-study-card {
   display: flex;
