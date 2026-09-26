@@ -3,6 +3,7 @@
 import Layout from '../layouts/Layout.astro';
 import CaseStudySection from '../components/CaseStudySection.astro';
 import PasswordGate from '../components/PasswordGate.astro';
+import RefRateAnimation from '../components/RefRateAnimation.astro';
 
 const themes = [
   {
@@ -40,10 +41,7 @@ const themes = [
       {
         label: 'Reference Rate',
         body: "Reference Rate was already designed and built by the dev team before I joined the SFG team, but analysts could still select combinations that produced incalculable outputs. I redesigned the tool around error prevention rather than error recovery, using progressive disclosure to eliminate invalid selections. This improved analysts' confidence in the assumptions they were inputting, and reduced reliance on custom components, making the codebase easier to maintain. I also took on the front-end implementation myself, cutting dev effort by 70% and speeding up delivery.",
-        image: '/assets/moodys/swan-refrate-cover.png',
-        imageAlt: 'Screenshot of the new Swan Reference Rate interface',
-        imageWidth: 3268,
-        imageHeight: 1600,
+        visual: RefRateAnimation,
       },
       {
         label: 'Autorun',
@@ -173,7 +171,7 @@ const themes = [
             </div>
             {sections && sections.length > 0 && (
               <div class="ms-section-gap">
-                {sections.map((s) => (
+                {sections.map(({ visual: Visual, ...s }) => (
                   <CaseStudySection
                     label={s.label}
                     body={s.body}
@@ -181,7 +179,9 @@ const themes = [
                     imageAlt={s.imageAlt}
                     imageWidth={s.imageWidth}
                     imageHeight={s.imageHeight}
-                  />
+                  >
+                    {Visual && <Visual />}
+                  </CaseStudySection>
                 ))}
               </div>
             )}
