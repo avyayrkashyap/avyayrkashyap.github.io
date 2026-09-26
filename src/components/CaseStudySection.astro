@@ -1,6 +1,7 @@
 ---
 // src/components/CaseStudySection.astro
-// A labelled block inside a case study theme: heading, copy, and one visual.
+// A labelled block inside a case study theme: heading, copy, and one visual
+// (the image, or whatever is slotted in its place).
 interface Props {
   label: string;
   body: string;
@@ -18,9 +19,9 @@ const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '
     <h4 class="cs-block-title type-h2">{label}</h4>
     <p class="cs-block-body cs-prose type-body-md">{body}</p>
   </div>
-  {image && (
+  {(image || Astro.slots.has('default')) && (
     <div class="cs-block-visual">
-      <img src={image} alt={imageAlt} width={imageWidth} height={imageHeight} />
+      {image ? <img src={image} alt={imageAlt} width={imageWidth} height={imageHeight} /> : <slot />}
     </div>
   )}
 </section>

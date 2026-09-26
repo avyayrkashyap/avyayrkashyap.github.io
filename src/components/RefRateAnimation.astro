@@ -1,0 +1,456 @@
+---
+// src/components/RefRateAnimation.astro
+// The Reference Rate section's visual: the four Swan states drawn in Paper
+// ("I really want to make something cool" page), played in sequence as one UI.
+// The chrome that never changes is a single image (refrate/base.webp, exported
+// from Paper at 2x with the controls and chart lines cleared); the controls and
+// lines that do change are live, laid out in the artboard's own 1536px space.
+
+// Paper's help-circle and check icons
+const help = 'M7.333 1.333C4.020 1.333 1.333 4.020 1.333 7.333C1.333 10.647 4.020 13.333 7.333 13.333C10.647 13.333 13.333 10.647 13.333 7.333C13.333 4.020 10.647 1.333 7.333 1.333ZM0 7.333C0 3.283 3.283 0 7.333 0C11.383 0 14.667 3.283 14.667 7.333C14.667 11.383 11.383 14.667 7.333 14.667C3.283 14.667 0 11.383 0 7.333ZM7.505 4.683C7.195 4.630 6.876 4.688 6.604 4.848C6.333 5.007 6.127 5.258 6.022 5.555C5.900 5.902 5.519 6.084 5.172 5.962C4.825 5.840 4.642 5.459 4.764 5.112C4.973 4.518 5.386 4.017 5.929 3.698C6.472 3.379 7.110 3.262 7.731 3.369C8.352 3.475 8.915 3.798 9.320 4.280C9.726 4.761 9.948 5.371 9.947 6.001C9.946 7.021 9.190 7.695 8.650 8.055C8.359 8.248 8.074 8.391 7.863 8.484C7.668 8.567 7.545 8.614 7.491 8.632C7.142 8.749 6.764 8.560 6.648 8.211C6.531 7.862 6.720 7.484 7.068 7.368C7.106 7.354 7.240 7.302 7.322 7.266C7.486 7.193 7.701 7.085 7.910 6.945C8.370 6.639 8.613 6.313 8.613 6C8.614 5.684 8.503 5.379 8.300 5.138C8.097 4.897 7.816 4.736 7.505 4.683ZM6.667 10.667C6.667 10.298 6.965 10 7.333 10H7.340C7.708 10 8.007 10.298 8.007 10.667C8.007 11.035 7.708 11.333 7.340 11.333H7.333C6.965 11.333 6.667 11.035 6.667 10.667Z';
+const check = 'M11.805 1.138C12.065 0.878 12.065 0.456 11.805 0.195C11.544 -0.065 11.122 -0.065 10.862 0.195L4 7.057L1.138 4.195C0.878 3.935 0.456 3.935 0.195 4.195C-0.065 4.456 -0.065 4.878 0.195 5.138L3.529 8.471C3.789 8.732 4.211 8.732 4.471 8.471L11.805 1.138Z';
+const cross = 'M9.138 0.195C9.398 0.456 9.398 0.878 9.138 1.138L1.138 9.138C0.878 9.398 0.456 9.398 0.195 9.138C-0.065 8.878 -0.065 8.456 0.195 8.195L8.195 0.195C8.456 -0.065 8.878 -0.065 9.138 0.195ZM0.195 0.195C0.456 -0.065 0.878 -0.065 1.138 0.195L9.138 8.195C9.398 8.456 9.398 8.878 9.138 9.138C8.878 9.398 8.456 9.398 8.195 9.138L0.195 1.138C-0.065 0.878 -0.065 0.456 0.195 0.195Z';
+
+const fields = [
+  ['Starting point', '3.4%', '0.034'],
+  ['Delta per period', '0.1%', '0.001'],
+  ['Stop change after', '12', 'periods'],
+  ['Resultant end point', '4.6%', '0.046'],
+];
+
+// Chart geometry from Paper: the 0% gridline sits at y 784, 16% at y 356,
+// and the x axis runs from period 1 at x 970 to the plot's edge at x 1520
+// (periods are 40.85px apart)
+const y = (pct: number) => 784 - pct * (428 / 16);
+const flat = y(3.4);
+const end = y(4.6);
+const endX = 970 + 12 * 40.85;
+---
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto+Mono&display=swap" />
+
+<div class="rr" data-rr role="img" aria-label="The Swan Reference Rate tool filling in: a flat 3.4% rate is entered and charted, then a custom rate path is switched on, modelled through Cashflow, and calculated as a defined path that rises 0.1% a period to 4.6%.">
+  <img class="rr-bg" src="/assets/moodys/swan-refrate-cover.png" alt="" width="3268" height="1600" />
+
+  <div class="rr-ui" aria-hidden="true">
+    <img class="rr-base" src="/assets/moodys/refrate/base.webp" alt="" width="1536" height="760" />
+
+    <div class="rr-card rr-rate">
+      <div class="rr-label">
+        Flat Long-term Reference Rate
+        <svg viewBox="0 0 14.67 14.67" width="15" height="15"><path d={help} fill="#3B3C3E" fill-rule="evenodd" /></svg>
+      </div>
+      <div class="rr-field">
+        <span class="rr-value"><span data-rr-rate>0%</span><i class="rr-caret"></i></span>
+        <span class="rr-suffix rr-mono" data-rr-dec>0.00</span>
+      </div>
+    </div>
+
+    <div class="rr-card rr-path">
+      <div class="rr-switch">
+        Custom rate path
+        <span class="rr-toggle">
+          <span class="rr-knob">
+            <svg class="rr-knob-off" viewBox="0 0 16 16" width="16" height="16"><path transform="translate(3.333 3.333)" d={cross} fill="#3B3C3E" /></svg>
+            <svg class="rr-knob-on" viewBox="0 0 16 16" width="16" height="16"><path transform="translate(2 3.333)" d={check} fill="#0028A0" /></svg>
+          </span>
+        </span>
+      </div>
+
+      <div class="rr-reveal rr-if-on"><div class="rr-clip"><div class="rr-gap">
+        <div class="rr-label">Modeled through</div>
+        <div class="rr-radios">
+          <span class="rr-radio">Amortization &amp; Yield</span>
+          <span class="rr-radio rr-radio-cash">Cashflow</span>
+        </div>
+      </div></div></div>
+
+      <div class="rr-reveal rr-if-cash"><div class="rr-clip"><div class="rr-gap">
+        <div class="rr-panel">
+          <span class="rr-checkbox">
+            <span class="rr-box"><svg viewBox="0 0 12 12" width="12" height="12"><path transform="translate(0 1.333)" d={check} fill="#FFFFFF" /></svg></span>
+            Calculate defined path
+          </span>
+
+          <div class="rr-reveal rr-if-unchecked is-open"><div class="rr-clip"><div class="rr-gap">
+            <div class="rr-or"><i></i>OR<i></i></div>
+            <p class="rr-hint">Enter vectors to determine the custom rate path</p>
+            <span class="rr-button">Enter vectors</span>
+          </div></div></div>
+
+          <div class="rr-reveal rr-if-checked"><div class="rr-clip"><div class="rr-gap">
+            <div class="rr-fields">
+              {fields.map(([label, value, suffix]) => (
+                <div>
+                  <div class="rr-label">{label}</div>
+                  <div class="rr-field"><span class="rr-value">{value}</span><span class="rr-suffix">{suffix}</span></div>
+                </div>
+              ))}
+            </div>
+            <span class="rr-button">View vectors</span>
+          </div></div></div>
+        </div>
+      </div></div></div>
+    </div>
+
+    <svg class="rr-chart" viewBox="0 0 1536 760" width="1536" height="760">
+      <path class="rr-line-cash" d={`M970 ${flat} L${endX} ${end} H1520`} pathLength="1" />
+      <path class="rr-line-flat" d={`M970 ${flat} H1520`} />
+    </svg>
+  </div>
+</div>
+
+<script>
+  // One pass of the sequence, each state from the Paper frames in turn, then
+  // a hold on the finished tool before it resets and plays again. Only plays
+  // while on screen; reduced motion gets the finished state, still.
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-rr]').forEach((rr) => {
+      const rate = rr.querySelector('[data-rr-rate]')!;
+      const dec = rr.querySelector('[data-rr-dec]')!;
+      const set = (cls: string, on = true) => rr.classList.toggle(cls, on);
+      const type = (r: string, d: string) => { rate.textContent = r; dec.textContent = d; };
+
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        type('3.4%', '0.034');
+        ['is-rate', 'is-on', 'is-cash', 'is-checked'].forEach((c) => set(c));
+        return;
+      }
+
+      let visible = false;
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.4 }).observe(rr);
+
+      (async () => {
+        while (rr.isConnected) {
+          if (!visible) { await sleep(300); continue; }
+
+          ['is-rate', 'is-on', 'is-cash', 'is-checked'].forEach((c) => set(c, false));
+          type('0%', '0.00');
+          await sleep(1200);
+
+          set('is-typing');
+          type('', '0.00');
+          for (const [r, d] of [['3', '0.03'], ['3.', '0.03'], ['3.4', '0.034']]) {
+            await sleep(220);
+            type(r, d);
+          }
+          await sleep(500);
+          set('is-typing', false);
+          type('3.4%', '0.034');
+          set('is-rate');
+          await sleep(1500);
+
+          set('is-on');
+          await sleep(1400);
+          set('is-cash');
+          await sleep(1600);
+          set('is-checked');
+          await sleep(4500);
+        }
+      })();
+    });
+  });
+</script>
+
+<style>
+  /* The old cover supplies the gradient and the frame's shadow; the UI sits
+     exactly over its frame, which runs 80px in, 72px down and 3104px wide
+     in the 3268px image. Everything inside .rr-ui is in Paper's 1536px
+     artboard space, scaled to that frame. */
+  .rr {
+    position: relative;
+    container-type: inline-size;
+    overflow: hidden;
+  }
+
+  .rr-bg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .rr-ui {
+    position: absolute;
+    left: 2.448%;
+    top: 4.5%;
+    width: 1536px;
+    height: 760px;
+    transform-origin: 0 0;
+    /* tan(atan2()) turns the length ratio into the unitless scale */
+    transform: scale(tan(atan2(94.98cqw, 1536px)));
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    background: #fff;
+    font: 14px/21px 'Inter', system-ui, sans-serif;
+    color: #3B3C3E;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .rr-base {
+    display: block;
+  }
+
+  .rr-card {
+    position: absolute;
+    left: 301px;
+    width: 586px;
+    padding: 16px;
+    border-radius: 4px;
+    background: #fff;
+    outline: 1px solid #DDDDDE;
+    outline-offset: -1px;
+  }
+
+  .rr-rate { top: 348px; }
+  .rr-path { top: 453px; }
+
+  .rr-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+    /* "Resultant end point" is wider than its column; Paper lets it overhang */
+    white-space: nowrap;
+  }
+
+  .rr-field {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 8px;
+    border-radius: 4px;
+    outline: 1px solid #989A9C;
+    outline-offset: -1px;
+    background: #fff;
+  }
+
+  .rr-value {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .rr-suffix { color: #585A5C; }
+  .rr-mono { font-family: 'Roboto Mono', ui-monospace, monospace; }
+
+  .rr-caret {
+    display: none;
+    width: 1px;
+    height: 18px;
+    margin-left: 1px;
+    background: #3B3C3E;
+    animation: rr-blink 1s steps(1) infinite;
+  }
+  .rr.is-typing .rr-caret { display: block; }
+  @keyframes rr-blink { 50% { opacity: 0; } }
+
+  /* Toggle: knob slides 24px and the track fills */
+  .rr-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rr-toggle {
+    position: relative;
+    width: 48px;
+    height: 24px;
+    border-radius: 999px;
+    background: #fff;
+    outline: 1px solid #989A9C;
+    outline-offset: -1px;
+    transition: background-color 0.25s ease, outline-color 0.25s ease;
+  }
+
+  .rr-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #989A9C;
+    filter: drop-shadow(0 2px 2px #00000029);
+    transition: transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1), border-color 0.25s ease;
+  }
+
+  .rr-knob svg {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    transition: opacity 0.2s ease;
+  }
+
+  .rr-knob-on { opacity: 0; }
+
+  .rr.is-on .rr-toggle { background: #0028A0; outline-color: #0028A0; }
+  .rr.is-on .rr-knob { transform: translateX(24px); border-color: #0028A0; }
+  .rr.is-on .rr-knob-off { opacity: 0; }
+  .rr.is-on .rr-knob-on { opacity: 1; }
+
+  /* Progressive disclosure: each group opens from zero height. The 16px gap
+     lives inside the clip so a closed group leaves no space behind. */
+  .rr-reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+  }
+
+  .rr-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .rr-gap { padding-top: 16px; }
+
+  .rr-reveal.is-open,
+  .rr.is-on .rr-if-on,
+  .rr.is-cash .rr-if-cash,
+  .rr.is-checked .rr-if-checked {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .rr.is-checked .rr-if-unchecked {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  .rr-radios {
+    display: flex;
+    gap: 16px;
+  }
+
+  .rr-radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rr-radio::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 1px solid #989A9C;
+    background: #fff;
+    transition: border 0.2s ease, background-color 0.2s ease;
+  }
+
+  /* 6px of blue ring around an 8px white dot */
+  .rr.is-cash .rr-radio-cash::before {
+    border: 6px solid #0028A0;
+  }
+
+  .rr-panel {
+    padding: 16px;
+    border-radius: 4px;
+    background: #F8F8F8;
+  }
+
+  .rr-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rr-box {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #989A9C;
+    background: #fff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .rr-box svg {
+    transform: scale(0.4);
+    opacity: 0;
+    transition: transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1), opacity 0.15s ease;
+  }
+
+  .rr.is-checked .rr-box { background: #0028A0; border-color: #0028A0; }
+  .rr.is-checked .rr-box svg { transform: none; opacity: 1; }
+
+  .rr-or {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .rr-or i {
+    flex: 1;
+    height: 1px;
+    background: #BABCBD;
+  }
+
+  .rr-hint {
+    margin: 16px 0 8px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #000;
+  }
+
+  .rr-button {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    border-radius: 4px;
+    border: 1px solid #0028A0;
+    background: #fff;
+    color: #0028A0;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+  }
+
+  .rr-fields {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* Chart lines. The flat rate rises from the 0% axis (just below the crop);
+     the Cashflow path draws itself out from under it. */
+  .rr-chart {
+    position: absolute;
+    inset: 0;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .rr-line-flat {
+    stroke: #0028A0;
+    transform: translateY(91px);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .rr-line-cash {
+    stroke: #008C95;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .rr.is-rate .rr-line-flat { transform: none; }
+
+  .rr.is-checked .rr-line-cash {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1.4s cubic-bezier(0.45, 0, 0.25, 1) 0.2s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rr-ui * { transition: none !important; }
+  }
+</style>
