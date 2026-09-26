@@ -1,0 +1,391 @@
+---
+// src/components/SpringTuner.astro
+// A panel for tuning the projects list's highlight springs. Dev only: Work
+// renders it behind import.meta.env.DEV, and projects.js only exposes the
+// handle it drives (section.pillTuning) in dev.
+//
+// Changes apply to the live pill straight away and are remembered in this
+// browser, so they survive reloads. When it feels right, Copy puts the values
+// on the clipboard, ready to paste over DEFAULT_SPRINGS in
+// src/scripts/pill-spring.js.
+const presets = [
+  { name: 'Stretchy', lead: { stiffness: 1100, damping: 0.5 }, trail: { stiffness: 380, damping: 0.8 } },
+  { name: 'Snappy', lead: { stiffness: 1600, damping: 0.75 }, trail: { stiffness: 900, damping: 0.85 } },
+  { name: 'Elastic', lead: { stiffness: 1200, damping: 0.3 }, trail: { stiffness: 320, damping: 0.45 } },
+  { name: 'Gooey', lead: { stiffness: 700, damping: 0.7 }, trail: { stiffness: 140, damping: 0.95 } },
+  { name: 'Rigid', lead: { stiffness: 800, damping: 0.9 }, trail: { stiffness: 800, damping: 0.9 } },
+];
+
+const edges = [
+  { key: 'lead', label: 'Leading edge', note: 'the end heading toward the new item' },
+  { key: 'trail', label: 'Trailing edge', note: 'the end being left behind' },
+];
+---
+<aside class="st-panel" data-spring-tuner data-presets={JSON.stringify(presets)} aria-label="Spring tuner">
+  <button type="button" class="st-head" aria-expanded="true">
+    <span class="st-title">Pill springs</span>
+    <span class="st-chevron" aria-hidden="true">▾</span>
+  </button>
+
+  <div class="st-body">
+    <div class="st-presets">
+      {presets.map(({ name }) => <button type="button" class="st-chip" data-preset={name}>{name}</button>)}
+    </div>
+
+    <!-- The pill's band over time for a three-row move: top edge above,
+         bottom edge below. Dashed lines are where it starts and lands. -->
+    <svg class="st-graph" viewBox="0 0 248 104" aria-hidden="true">
+      <line class="st-guide" data-guide="from" x1="0" x2="248" />
+      <line class="st-guide" data-guide="to" x1="0" x2="248" />
+      <polygon class="st-band" />
+      <line class="st-settle" y1="0" y2="104" />
+    </svg>
+    <p class="st-readout" aria-live="polite"></p>
+
+    {edges.map(({ key, label, note }) => (
+      <fieldset class="st-group">
+        <legend><span class="st-legend">{label}</span> <span class="st-note">{note}</span></legend>
+        <label class="st-field">
+          <span>Stiffness</span>
+          <input type="range" min="40" max="3000" step="10" data-edge={key} data-knob="stiffness" />
+          <output></output>
+        </label>
+        <label class="st-field">
+          <span>Damping</span>
+          <input type="range" min="0.1" max="1.6" step="0.01" data-edge={key} data-knob="damping" />
+          <output></output>
+        </label>
+      </fieldset>
+    ))}
+
+    <p class="st-hint">Stiffness is how hard an edge pulls: higher is quicker. Damping under 1 overshoots and bounces, 1 lands clean, over 1 creeps in. A stiffer leading edge than trailing edge is what stretches the pill.</p>
+
+    <div class="st-actions">
+      <button type="button" class="st-button" data-replay="3">Replay ↓</button>
+      <button type="button" class="st-button" data-replay="-3">Replay ↑</button>
+      <button type="button" class="st-button st-button--accent" data-copy>Copy</button>
+      <button type="button" class="st-button" data-reset>Reset</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  import { DEFAULT_SPRINGS, simulate } from '../scripts/pill-spring.js';
+
+  const STORAGE_KEY = 'pill-springs';
+  const ROW = 48;
+  const MOVE = 3 * ROW;
+  const GRAPH = { width: 248, height: 104, time: 0.9, pad: 10 };
+
+  const load = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (saved?.lead && saved?.trail) return saved;
+    } catch {}
+    return structuredClone(DEFAULT_SPRINGS);
+  };
+
+  const save = (springs) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(springs));
+    } catch {}
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    const panel = document.querySelector('[data-spring-tuner]');
+    const section = document.querySelector('[data-projects]');
+    if (!panel || !section) return;
+
+    const presets = JSON.parse(panel.dataset.presets);
+    const inputs = [...panel.querySelectorAll('input[type="range"]')];
+    const chips = [...panel.querySelectorAll('[data-preset]')];
+    const band = panel.querySelector('.st-band');
+    const settleLine = panel.querySelector('.st-settle');
+    const readout = panel.querySelector('.st-readout');
+    const head = panel.querySelector('.st-head');
+    let springs = load();
+
+    // Positions run from a little above the start row to a little below the
+    // landing row, so overshoot on either end stays in view.
+    const y = (px) => {
+      const min = -GRAPH.pad - 12;
+      const max = MOVE + ROW + GRAPH.pad + 12;
+      return ((px - min) / (max - min)) * GRAPH.height;
+    };
+    const x = (t) => (t / GRAPH.time) * GRAPH.width;
+
+    const drawGraph = () => {
+      const { samples, maxStretch, settleTime } = simulate(springs, MOVE, ROW);
+      const visible = samples.filter((s) => s.t <= GRAPH.time);
+      const last = visible[visible.length - 1];
+      // Carry the settled band on to the right edge of the graph.
+      const tail = { t: GRAPH.time, top: last.top, bottom: last.bottom };
+      const points = [...visible, tail];
+      const topLine = points.map((s) => `${x(s.t).toFixed(1)},${y(s.top).toFixed(1)}`);
+      const bottomLine = points.map((s) => `${x(s.t).toFixed(1)},${y(s.bottom).toFixed(1)}`).reverse();
+      band.setAttribute('points', [...topLine, ...bottomLine].join(' '));
+
+      panel.querySelector('[data-guide="from"]').setAttribute('y1', y(0));
+      panel.querySelector('[data-guide="from"]').setAttribute('y2', y(0));
+      panel.querySelector('[data-guide="to"]').setAttribute('y1', y(MOVE + ROW));
+      panel.querySelector('[data-guide="to"]').setAttribute('y2', y(MOVE + ROW));
+      settleLine.setAttribute('x1', x(Math.min(settleTime, GRAPH.time)));
+      settleLine.setAttribute('x2', x(Math.min(settleTime, GRAPH.time)));
+
+      readout.textContent = `Stretches to ${maxStretch.toFixed(1)}× · settles in ${Math.round(settleTime * 1000)}ms`;
+    };
+
+    const sync = () => {
+      inputs.forEach((input) => {
+        const value = springs[input.dataset.edge][input.dataset.knob];
+        input.value = value;
+        input.nextElementSibling.textContent = input.dataset.knob === 'damping' ? value.toFixed(2) : value;
+      });
+      const match = presets.find((p) => JSON.stringify({ lead: p.lead, trail: p.trail }) === JSON.stringify(springs));
+      chips.forEach((chip) => chip.setAttribute('aria-pressed', String(chip.dataset.preset === match?.name)));
+
+      // Edit the live pill's springs in place.
+      const live = section.pillTuning?.springs;
+      if (live) {
+        Object.assign(live.lead, springs.lead);
+        Object.assign(live.trail, springs.trail);
+      }
+      drawGraph();
+      save(springs);
+    };
+
+    const replay = (rows) => section.pillTuning?.preview(rows);
+
+    if (panel.dataset.bound) {
+      sync();
+      return;
+    }
+    panel.dataset.bound = 'true';
+
+    inputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        springs[input.dataset.edge][input.dataset.knob] = Number(input.value);
+        sync();
+      });
+      // Play the move once the slider is let go.
+      input.addEventListener('change', () => replay(3));
+    });
+
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      const preset = presets.find((p) => p.name === chip.dataset.preset);
+      springs = structuredClone({ lead: preset.lead, trail: preset.trail });
+      sync();
+      replay(3);
+    }));
+
+    panel.querySelectorAll('[data-replay]').forEach((button) => {
+      button.addEventListener('click', () => replay(Number(button.dataset.replay)));
+    });
+
+    panel.querySelector('[data-reset]').addEventListener('click', () => {
+      springs = structuredClone(DEFAULT_SPRINGS);
+      sync();
+      replay(3);
+    });
+
+    const copy = panel.querySelector('[data-copy]');
+    copy.addEventListener('click', async () => {
+      const snippet = `export const DEFAULT_SPRINGS = {\n  lead: { stiffness: ${springs.lead.stiffness}, damping: ${springs.lead.damping} },\n  trail: { stiffness: ${springs.trail.stiffness}, damping: ${springs.trail.damping} },\n};`;
+      try {
+        await navigator.clipboard.writeText(snippet);
+        copy.textContent = 'Copied';
+      } catch {
+        copy.textContent = 'Copy failed';
+      }
+      setTimeout(() => { copy.textContent = 'Copy'; }, 1400);
+    });
+
+    head.addEventListener('click', () => {
+      const open = head.getAttribute('aria-expanded') !== 'true';
+      head.setAttribute('aria-expanded', String(open));
+      try { localStorage.setItem(`${STORAGE_KEY}-open`, String(open)); } catch {}
+    });
+    try {
+      if (localStorage.getItem(`${STORAGE_KEY}-open`) === 'false') head.setAttribute('aria-expanded', 'false');
+    } catch {}
+
+    // projects.js sets up its handle in the same page-load pass; let it run
+    // first so the saved springs land on the live pill.
+    setTimeout(sync);
+  });
+</script>
+
+<style>
+  .st-panel {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2147483000;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-default);
+    box-shadow: 0 8px 24px var(--color-shadow-soft);
+    font-family: var(--font-sans);
+    color: var(--color-text-strong);
+  }
+
+  .st-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .st-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .st-chevron {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    transition: transform 0.2s ease;
+  }
+
+  .st-head[aria-expanded='false'] .st-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .st-head[aria-expanded='false'] + .st-body {
+    display: none;
+  }
+
+  .st-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 14px 14px;
+  }
+
+  .st-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .st-chip,
+  .st-button {
+    padding: 4px 10px;
+    border: none;
+    border-radius: 9999px;
+    background-color: var(--color-quote-bg);
+    color: var(--color-text-strong);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+  }
+
+  .st-chip[aria-pressed='true'],
+  .st-button--accent {
+    background-color: var(--color-text-accent);
+    color: var(--color-on-accent);
+  }
+
+  .st-chip:hover,
+  .st-button:hover {
+    filter: brightness(0.92);
+  }
+
+  .st-graph {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    background: var(--color-quote-bg);
+  }
+
+  .st-band {
+    fill: var(--color-text-accent);
+    opacity: 0.85;
+  }
+
+  .st-guide {
+    stroke: var(--color-text-disabled);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .st-settle {
+    stroke: var(--color-text-secondary);
+    stroke-width: 1;
+    opacity: 0.5;
+  }
+
+  .st-readout {
+    margin-top: -4px;
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--color-text-secondary);
+  }
+
+  .st-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 0;
+    min-width: 0;
+  }
+
+  .st-group legend {
+    margin-bottom: 2px;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .st-legend {
+    font-weight: 700;
+  }
+
+  .st-note {
+    color: var(--color-text-secondary);
+  }
+
+  .st-field {
+    display: grid;
+    grid-template-columns: 64px 1fr 40px;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+
+  .st-field input {
+    width: 100%;
+    accent-color: var(--color-text-accent);
+  }
+
+  .st-field output {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-strong);
+  }
+
+  .st-hint {
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+  }
+
+  .st-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+</style>

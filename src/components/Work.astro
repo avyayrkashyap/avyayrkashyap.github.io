@@ -1,48 +1,566 @@
 ---
 // src/components/Work.astro
-import CaseStudyCard from './CaseStudyCard.astro';
-import MoodysCover from './MoodysCover.astro';
+// The projects section, from the "projects" artboard in Paper: a list of
+// projects on the left, the selected one's summary beside it, and a laptop
+// on a lit studio backdrop: a seamless sweep under a soft overhead light. The
+// laptop sits shut until the section scrolls into view, then its lid opens
+// and the first project is selected. Selecting a project swaps the summary
+// and what's on the screen.
+//
+// On wide screens the section is a tall scroll track with the card pinned
+// inside it: scrolling steps through the projects one by one, and the page
+// only moves on once the last one has had its turn. Clicking a project jumps
+// the scroll to it; clicking the selected one opens it.
+//
+// Narrower screens stack the layout, which is taller than the viewport, so
+// nothing pins there. Selection follows hover instead, and without hover
+// (touch) the first tap selects and the second opens. Projects without a page
+// yet only select.
+import Laptop from './Laptop.astro';
+import SpringTuner from './SpringTuner.astro';
+
+interface Project {
+  label: string;
+  description: string;
+  href?: string;
+  external?: boolean;
+  screen?: { image: string; video?: string };
+}
+
+const projects: Project[] = [
+  {
+    label: '0 → 1 Structured Finance',
+    description: "Led end-to-end design for a leading rating agency's structured finance applications, improving clarity and confidence of analysts, alongside taking ownership of front-end designs to speed up UI implementation by 3x in a 0→1 enterprise environment.",
+    href: '/moodys',
+    // Placeholder footage until the real screen recording is ready.
+    screen: {
+      image: '/assets/moodys/swan-dashboards-cover.png',
+      video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+    },
+  },
+  {
+    label: 'AI in Enterprise',
+    description: 'Case study coming soon.',
+  },
+  {
+    label: 'Drinks I sip',
+    description: "My digital shelf of some cups and glasses I've liked enough to draw.",
+    href: 'https://drinksisip.com',
+    external: true,
+    screen: {
+      image: '/assets/experiments/drinksisip/drinksisip.png',
+      video: '/assets/experiments/drinksisip/drinksisip.mp4',
+    },
+  },
+  {
+    label: 'Cost Analytics',
+    description: 'Bridged the gap between market volatility and strategic action by redesigning a cost analytics platform that increased product stickiness and user likability by 16%.',
+    href: '/gep',
+    screen: { image: '/assets/gep/gep-cover.png' },
+  },
+  {
+    label: 'Track to Thrive',
+    description: 'Case study coming soon.',
+  },
+  {
+    label: 'Poakme',
+    description: 'Case study coming soon.',
+  },
+];
 ---
-<section id="work" class="work-section">
-  <div class="work-list">
-    <CaseStudyCard
-      index="/01"
-      title="Structured Finance 0→1"
-      description="Led end-to-end design for a leading rating agency's structured finance applications, improving clarity and confidence of analysts, alongside taking ownership of front-end designs to speed up UI implementation by 3x in a 0→1 enterprise environment."
-      tags={["Product Design", "AI-assisted development", "Sep 2024 - Present"]}
-      href="/moodys"
-      imageBg="#091264"
-    >
-      <MoodysCover />
-    </CaseStudyCard>
+<section id="work" class="projects" data-projects style={`--count: ${projects.length}`}>
+  <div class="pj-sticky">
+    <div class="pj-card">
+      <nav class="pj-list" aria-label="Projects">
+        <span class="pj-pill" aria-hidden="true"></span>
+        {projects.map(({ label, href, external }, i) =>
+          href ? (
+            <a class="pj-item" href={href} data-index={i} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+              <span class="type-h4">{label}</span>
+            </a>
+          ) : (
+            <button class="pj-item" type="button" data-index={i}>
+              <span class="type-h4">{label}</span>
+            </button>
+          )
+        )}
+      </nav>
 
-    <hr class="work-divider" />
+      <div class="pj-descs" aria-live="polite">
+        {projects.map(({ description }, i) => (
+          <p class="pj-desc type-body-xs" data-index={i}>{description}</p>
+        ))}
+      </div>
 
-    <CaseStudyCard
-      index="/02"
-      title="GEP Cost Analytics"
-      description="Bridged the gap between market volatility and strategic action by redesigning a cost analytics platform that increased product stickiness and user likability by 16%."
-      tags={["Internship", "Product Design", "3 months"]}
-      href="/gep"
-      image="/assets/gep/gep-cover.png"
-      imageAlt="GEP Cost Model dashboard"
-      imageBg="#001E4F"
-    />
+      <div class="pj-photo">
+        <div class="pj-backdrop" aria-hidden="true"></div>
+        <div class="pj-scene">
+          <div class="pj-floor-stage" aria-hidden="true">
+            <div class="pj-floor">
+              <span class="pj-pool"></span>
+              <span class="pj-spill"></span>
+              <span class="pj-ao"></span>
+            </div>
+          </div>
+          <Laptop>
+            <div class="pj-screens">
+              {projects.map(({ label, screen }, i) => (
+                <div class="pj-screen" data-index={i}>
+                  {screen?.video ? (
+                    <video src={screen.video} poster={screen.image} muted loop playsinline preload="metadata" aria-hidden="true"></video>
+                  ) : screen ? (
+                    <img src={screen.image} alt="" aria-hidden="true" loading="lazy" />
+                  ) : (
+                    <span class="pj-soon" aria-hidden="true">{label}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Laptop>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<script src="../scripts/reveal.js"></script>
+{import.meta.env.DEV && <SpringTuner />}
+
+<script src="../scripts/projects.js"></script>
 
 <style>
-  .work-list {
-    display: flex;
-    flex-direction: column;
+  /* Full-bleed like the hero: opts out of the .main > * content column.
+     The section is the scroll track: one screen for the card itself, plus
+     half a screen of scrolling per project. Every layout below fits one
+     screen, so the card pins at every width. */
+  .projects {
+    --step: 50vh;
+    max-width: none;
+    height: calc(max(100vh, 560px) + var(--count) * var(--step));
   }
 
-  .work-divider {
-    border: none;
-    border-top: 1px solid var(--color-divider);
-    margin: 80px 0;
-    transition: border-color 0.3s ease;
+  .pj-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    min-height: 560px;
+    padding: 24px;
+    display: flex;
+  }
+
+  /* Desktop: list, summary and laptop side by side, 36px apart, all
+     top-aligned. */
+  .pj-card {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 214px 264px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    column-gap: 36px;
+    row-gap: 24px;
+    padding: 23px;
+    border: 1px solid var(--color-text-disabled);
+    border-radius: 24px;
+    background: var(--color-bg-default);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* ── List ── */
+
+  .pj-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    min-width: 0;
+  }
+
+  /* A fixed 48px row with the label centred in it. Left to their own line
+     boxes, links came out 50.5px and buttons 48px, so the sliding pill (which
+     steps by exactly one row) drifted off the labels further down. */
+  .pj-item {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .pj-item .type-h4 {
+    display: block;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+
+  .pj-item.is-active .type-h4 {
+    color: var(--color-on-accent);
+  }
+
+  .pj-item:focus-visible {
+    outline: 2px solid var(--color-accent-outline);
+    outline-offset: 2px;
+  }
+
+  /* One highlight that travels between items, rather than each item
+     painting its own. projects.js springs its two leading and trailing
+     edges separately (top and bottom here, left and right when the list
+     runs sideways on phones), writing its offset and length every frame, so
+     it stretches on the way and snaps onto the item. Hidden until the intro
+     picks the first project. */
+  .pj-pill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    border-radius: 8px;
+    background: var(--color-text-accent);
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    will-change: transform, width, height;
+  }
+
+  .projects.has-selection .pj-pill {
+    opacity: 1;
+  }
+
+  /* ── Summary ── */
+
+  /* Every summary shares one grid cell, so swapping never shifts layout. */
+  .pj-descs {
+    display: grid;
+    align-self: start;
+  }
+
+  .pj-desc {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+  }
+
+  /* Only the showing one takes clicks (so text can be selected or edited);
+     the hidden ones stacked in the same cell stay out of the way. */
+  .pj-desc.is-active {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition-delay: 0.08s;
+  }
+
+  /* ── Backdrop and laptop ── */
+
+  /* The lit surface's palette, from the site tokens: a warm paper sweep in
+     light mode, a charcoal one in dark. */
+  .pj-photo {
+    --lit-base: color-mix(in oklab, var(--color-warm-bg), #3d372d 4%);
+    --lit-wall: color-mix(in oklab, var(--color-warm-bg), #3d372d 14%);
+    --lit-front: color-mix(in oklab, var(--color-warm-bg), #3d372d 8%);
+    --lit-edge: color-mix(in oklab, var(--color-warm-bg), #3d372d 22%);
+    --lit-pool: var(--color-bg-default);
+    --lit-ao: rgba(58, 48, 34, 0.2);
+    --lit-contact: rgba(52, 42, 30, 0.5);
+    --lit-spill: color-mix(in srgb, var(--color-text-accent) 6%, transparent);
+
+    position: relative;
+    container-type: size;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--lit-base);
+  }
+
+  :global(html[data-theme='dark']) .pj-photo {
+    --lit-base: var(--color-bg-secondary);
+    --lit-wall: color-mix(in oklab, var(--color-bg-default), #000 30%);
+    --lit-front: var(--color-bg-default);
+    --lit-edge: color-mix(in oklab, var(--color-bg-default), #000 50%);
+    --lit-pool: color-mix(in oklab, var(--color-bg-secondary), #fff 9%);
+    --lit-ao: rgba(0, 0, 0, 0.5);
+    --lit-contact: rgba(0, 0, 0, 0.8);
+    --lit-spill: color-mix(in srgb, var(--color-text-accent) 14%, transparent);
+  }
+
+  /* The seamless sweep, flat in the box: the wall behind falls off into
+     shadow above the light, the floor runs forward out of it, and the
+     corners sink away. */
+  .pj-backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(130% 100% at 50% 44%, transparent 45%, var(--lit-edge) 100%),
+      linear-gradient(180deg, var(--lit-wall) 0%, var(--lit-base) 50%, var(--lit-front) 100%);
+  }
+
+  /* The scene is a square fitted inside the box, so the laptop keeps its
+     size and framing whatever the box's shape; the backdrop fills the rest. */
+  .pj-scene {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(100cqw, 100cqh);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    container-type: inline-size;
+
+    /* A product shot's camera, free of any photo: a long lens (about 4.8
+       deck widths away) looking down 26 degrees and aimed squarely at the
+       deck's centre, with the laptop square on to the viewer. The deck sits
+       low of centre, which leaves the open laptop as a whole centred in the
+       frame.
+
+       Changing project spins it a full turn on the spot (projects.js drives
+       --lp-spin every frame, so the pose itself doesn't transition). Its
+       corners swing wider than its resting width as it turns, so it also
+       eases back a little mid-spin (--lp-z) to keep them inside the box. */
+    --lp-width: 62cqw;
+    --lp-left: 50%;
+    --lp-top: 68.5%;
+    --lp-tilt: 64deg;
+    --lp-yaw: 0deg;
+    --lp-pose-duration: 0s;
+    --lp-perspective: 260cqw;
+    --lp-eye: 50% 68.5%;
+    --lp-shadow: var(--lit-contact);
+    --lp-duration: 1.4s;
+    --lp-ease: cubic-bezier(0.3, 0.8, 0.25, 1);
+    /* Shut until the section scrolls into view. */
+    --lp-open: -179.5deg;
+  }
+
+  /* Opened to about 108 degrees, leaning back a little like a real one. */
+  .projects.is-open .pj-scene {
+    --lp-open: -72deg;
+  }
+
+  /* The lid under a finger follows it exactly, then settles a little quicker
+     than the intro once let go. projects.js sets --lp-open inline for both. */
+  .projects.is-lid-dragging .pj-scene {
+    --lp-duration: 0s;
+  }
+
+  .projects.is-lid-settling .pj-scene {
+    --lp-duration: 0.6s;
+  }
+
+  /* The floor under the laptop, posed with the same camera so the light on
+     it lies flat in perspective. It's three decks across and deep, centred
+     on the deck, and sits at the feet. */
+  .pj-floor-stage {
+    position: absolute;
+    inset: 0;
+    perspective: var(--lp-perspective);
+    perspective-origin: var(--lp-eye);
+  }
+
+  .pj-floor {
+    --w: var(--lp-width);
+    --d: calc(var(--w) / 1.4);
+
+    position: absolute;
+    left: var(--lp-left);
+    top: var(--lp-top);
+    width: calc(var(--w) * 3);
+    height: calc(var(--d) * 3);
+    margin-left: calc(var(--w) * -1.5);
+    margin-top: calc(var(--d) * -1.5);
+    transform: translate(var(--lp-x, 0px), var(--lp-y, 0px)) rotateX(var(--lp-tilt)) rotateZ(var(--lp-yaw)) translateZ(calc(var(--w) * -0.032));
+  }
+
+  .pj-floor > span {
+    position: absolute;
+  }
+
+  /* The pool of light, a little behind the deck, as from a softbox above. */
+  .pj-pool {
+    inset: 0 0 8%;
+    background: radial-gradient(closest-side, var(--lit-pool), transparent);
+  }
+
+  /* Soft occlusion around the footprint, wider than the contact shadow. */
+  .pj-ao {
+    inset: 28% 27% 25%;
+    background: radial-gradient(closest-side, var(--lit-ao) 30%, transparent);
+  }
+
+  /* The screen's glow on the floor in front of the deck, once it's lit. */
+  .pj-spill {
+    inset: 58% 28% 14%;
+    background: radial-gradient(closest-side, var(--lit-spill), transparent);
+    opacity: 0;
+    transition: opacity 1.2s ease 0.6s;
+  }
+
+  .projects.has-selection .pj-spill {
+    opacity: 1;
+  }
+
+  /* No glow with the lid shut. */
+  .projects.is-lid-shut .pj-spill {
+    opacity: 0;
+    transition-delay: 0s;
+  }
+
+  .pj-screens {
+    container-type: inline-size;
+    background: #000;
+  }
+
+  .pj-screen {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .pj-screen.is-active {
+    opacity: 1;
+  }
+
+  /* Mid-spin the swap happens while the screen faces away, so it's instant:
+     a crossfade could still be running when the screen comes back round. */
+  .projects.is-spinning .pj-screen {
+    transition: none;
+  }
+
+  .pj-screen img,
+  .pj-screen video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Recordings show whole, letterboxed in white rather than cropped. */
+  .pj-screen video {
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .pj-soon {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: 8cqw;
+    background: linear-gradient(180deg, #16171b 0%, #21283c 100%);
+    color: #f1f0ec;
+    font-family: var(--font-sans);
+    font-size: 5cqw;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* ── Narrower screens: list and summary above, the photo below ── */
+
+  /* Tablet: the list keeps its own column, and the summary moves above the
+     laptop in the other. */
+  @media (max-width: 1100px) {
+    .pj-card {
+      grid-template-columns: 214px minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .pj-list {
+      grid-row: 1 / -1;
+    }
+
+    .pj-descs {
+      grid-column: 2;
+      grid-row: 1;
+      max-width: 480px;
+    }
+
+    .pj-photo {
+      grid-column: 2;
+      grid-row: 2;
+    }
+  }
+
+  /* Phone: one column. The list turns into a sideways-scrolling row across
+     the top, then the summary, then the laptop filling what's left. */
+  @media (max-width: 640px) {
+    .pj-sticky {
+      padding: 16px;
+    }
+
+    .pj-card {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr);
+      row-gap: 16px;
+      padding: 15px;
+    }
+
+    /* Bleeds to the card's inner edge so items scroll right up to it, with
+       the card's padding kept as the resting inset. */
+    .pj-list {
+      grid-row: auto;
+      flex-direction: row;
+      margin-inline: -15px;
+      padding-inline: 15px;
+      scroll-padding-inline: 15px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    .pj-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pj-item {
+      flex-shrink: 0;
+      padding: 0 16px;
+    }
+
+    /* Width and offset come from projects.js along this axis. */
+    .pj-pill {
+      right: auto;
+    }
+
+    .pj-descs {
+      grid-column: auto;
+      grid-row: auto;
+      max-width: none;
+    }
+
+    .pj-photo {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+
+  /* Too short to pin: the card flows as a normal block, and the laptop takes
+     a fixed shape instead of filling the screen. */
+  @media (max-height: 559px) {
+    .projects {
+      height: auto;
+    }
+
+    .pj-sticky {
+      position: static;
+      height: auto;
+      min-height: 0;
+    }
+
+    .pj-photo {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pj-pill,
+    .pj-desc,
+    .pj-screen,
+    .pj-spill {
+      transition: none;
+    }
   }
 </style>
