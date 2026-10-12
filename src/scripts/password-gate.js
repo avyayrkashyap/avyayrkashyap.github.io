@@ -37,7 +37,7 @@ document.addEventListener('astro:page-load', () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const hash = await sha256(input.value.trim().toLowerCase());
+    const hash = await sha256(input.value.trim());
     if (hash === expectedHash) {
       unlock();
       return;
