@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paper Folio — Design Primitives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=call_made" />
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   Tokens, copied verbatim from src/styles/global.css
+   ══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font-display: 'Lexend', system-ui, sans-serif;
+  --font-sans: 'Manrope', system-ui, sans-serif;
+
+  --color-bg: #F8F6F1;
+  --color-bg-secondary: #FFFFFF;
+  --color-text: #1C1C1E;
+  --color-text-muted: #999999;
+  --color-accent: #1A6CF0;
+  --color-accent-outline: rgba(26, 108, 240, 0.2);
+  --color-accent-soft: rgba(26, 108, 240, 0.04);
+  --color-tick-idle: rgba(26, 108, 240, 0.2);
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-divider: rgba(0, 0, 0, 0.06);
+  --color-quote-bg: rgba(0, 0, 0, 0.04);
+  --color-shadow: rgba(26, 108, 240, 0.12);
+  --color-shadow-soft: rgba(26, 108, 240, 0.08);
+  --color-scrim: rgba(0, 0, 0, 0.35);
+  --color-error: #E5484D;
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  --color-bg: #16171B;
+  --color-bg-secondary: #212227;
+  --color-text: #F1F0EC;
+  --color-text-muted: #8A8A8E;
+  --color-accent: #5C97FF;
+  --color-accent-outline: rgba(92, 151, 255, 0.28);
+  --color-accent-soft: rgba(92, 151, 255, 0.08);
+  --color-tick-idle: rgba(92, 151, 255, 0.22);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-divider: rgba(255, 255, 255, 0.08);
+  --color-quote-bg: rgba(255, 255, 255, 0.05);
+  --color-shadow: rgba(0, 0, 0, 0.45);
+  --color-shadow-soft: rgba(0, 0, 0, 0.3);
+  --color-scrim: rgba(0, 0, 0, 0.55);
+  --color-error: #FF6369;
+  color-scheme: dark;
+}
+
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+}
+body {
+  background-color: var(--color-bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+/* ── Type scale, verbatim ── */
+.t-display { font-family: var(--font-display); font-size: clamp(32px, 5vw, 48px); font-weight: 700; line-height: 1.05; letter-spacing: -0.05em; color: var(--color-text); }
+.t-display--sm { font-size: clamp(28px, 3.6vw, 36px); font-weight: 500; }
+.t-h2 { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.25; letter-spacing: -0.03em; color: var(--color-text); margin-bottom: 20px; }
+.t-h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: 8px; }
+.t-label { font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); }
+.t-lead { font-family: var(--font-sans); font-size: 18px; line-height: 1.7; color: var(--color-text); opacity: 0.85; }
+.t-body { font-family: var(--font-sans); font-size: 14px; line-height: 1.75; color: var(--color-text); opacity: 0.75; }
+.t-small { font-family: var(--font-sans); font-size: 13px; line-height: 1.5; color: var(--color-text-muted); }
+
+/* ══════════════════════════════════════════════════════════════════
+   Sheet chrome (not part of the site)
+   ══════════════════════════════════════════════════════════════════ */
+.sheet { max-width: 1080px; margin: 0 auto; padding: clamp(56px, 8vh, 96px) clamp(24px, 6vw, 72px) 140px; }
+
+.sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; padding-bottom: 40px; }
+.sheet-head-text { display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+
+.section { padding-top: 48px; border-top: 1px solid var(--color-border); }
+.section + .section { margin-top: 56px; }
+.section-label { display: block; margin-bottom: 8px; }
+.section-note { max-width: 68ch; margin-bottom: 32px; }
+
+.sub { margin: 40px 0 16px; }
+.sub:first-of-type { margin-top: 0; }
+
+code, .mono { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12px; letter-spacing: 0; }
+.chip {
+  display: inline-block; font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 11.5px; line-height: 1; padding: 5px 8px; border-radius: 6px;
+  background: var(--color-accent-soft); border: 1px solid var(--color-accent-outline);
+  color: var(--color-accent); white-space: nowrap;
+}
+.chip--plain { background: var(--color-quote-bg); border-color: var(--color-border); color: var(--color-text); opacity: 0.8; }
+
+/* Specimen rows */
+.spec { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 24px 0; border-bottom: 1px solid var(--color-divider); }
+.spec:last-child { border-bottom: none; }
+.spec-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.spec-specs { font-size: 12px; color: var(--color-text-muted); font-family: var(--font-sans); }
+
+/* Color swatches */
+.swatch-group { margin-bottom: 36px; }
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.swatch {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden;
+  background: var(--color-bg-secondary);
+}
+.swatch-chip { height: 76px; width: 100%; }
+/* Alpha values need something underneath to read against */
+.swatch-chip--alpha {
+  background-image:
+    linear-gradient(45deg, rgba(128,128,128,0.22) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(128,128,128,0.22) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(128,128,128,0.22) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(128,128,128,0.22) 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
+}
+.swatch-chip-fill { width: 100%; height: 100%; }
+.swatch-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+.swatch-name { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11.5px; color: var(--color-text); word-break: break-all; }
+.swatch-val { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11px; color: var(--color-text-muted); }
+.swatch-use { font-size: 11.5px; line-height: 1.45; color: var(--color-text); opacity: 0.6; }
+
+/* Scale tables */
+.scale { width: 100%; border-collapse: collapse; }
+.scale th { text-align: left; font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); padding: 0 16px 12px 0; border-bottom: 1px solid var(--color-border); }
+.scale td { padding: 11px 16px 11px 0; border-bottom: 1px solid var(--color-divider); vertical-align: middle; font-size: 13px; line-height: 1.5; }
+.scale td:first-child { width: 84px; }
+.scale td.note { color: var(--color-text); opacity: 0.65; font-size: 12.5px; }
+.bar { height: 12px; border-radius: 3px; background: var(--color-accent); opacity: 0.75; }
+.bar-cell { width: 46%; min-width: 160px; }
+
+/* Radius / shadow demo tiles */
+.tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 16px; }
+.tile { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.tile-box { width: 100%; height: 76px; background: var(--color-accent-soft); border: 1px solid var(--color-accent-outline); }
+.tile-label { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11.5px; color: var(--color-text); }
+.tile-note { font-size: 11.5px; color: var(--color-text-muted); line-height: 1.4; }
+
+.shadow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+.shadow-box { height: 92px; border-radius: 16px; background: var(--color-bg-secondary); }
+
+/* ── Live component reproductions (verbatim rules from the source) ── */
+.demo { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 24px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-bg); }
+.demo--stack { flex-direction: column; align-items: flex-start; }
+
+.hero-link { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; background: transparent; border-radius: 9999px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; color: var(--color-text); text-decoration: none; white-space: nowrap; transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease; }
+.hero-link:hover { transform: translateY(-2px); background: var(--color-bg-secondary); color: var(--color-accent); }
+.hero-link-arrow { width: 12px; height: 12px; opacity: 0.45; transition: opacity 0.2s ease; }
+.hero-link:hover .hero-link-arrow { opacity: 1; }
+
+.footer-icon-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9999px; background: transparent; color: var(--color-text); transition: background-color 0.2s ease, color 0.2s ease; }
+.footer-icon-btn svg { width: 16px; height: 16px; }
+.footer-icon-btn:hover { background: var(--color-bg-secondary); color: var(--color-accent); }
+
+.hero-logo-dot { width: 8px; height: 8px; border-radius: 9999px; background: var(--color-border); flex-shrink: 0; }
+
+.tick-field { display: flex; flex-direction: column; gap: 6px; }
+.tick { height: 2px; width: 14px; background-color: var(--color-tick-idle); border-radius: 9999px; transition: width 70ms ease-out, background-color 70ms ease-out; }
+.tick--wide { width: 34px; background-color: var(--color-accent); }
+
+.nav-link { font-family: var(--font-sans); font-size: 16px; line-height: 1; color: var(--color-accent); text-decoration: none; white-space: nowrap; opacity: 0.4; transition: opacity 0.2s ease; }
+.nav-link.active { opacity: 1; font-weight: 800; }
+.nav-link:hover { opacity: 1; }
+.cs-subnav-link { font-family: var(--font-sans); font-size: 12px; line-height: 1.35; color: var(--color-accent); text-decoration: none; opacity: 0.35; padding: 5px 0; transition: opacity 0.15s ease; }
+.cs-subnav-link.active { opacity: 1; font-weight: 700; }
+
+.theme-toggle { display: flex; align-items: center; gap: 10px; background: none; border: none; padding: 0; cursor: pointer; transition: opacity 0.2s ease; }
+.theme-toggle:hover { opacity: 0.85; }
+.theme-track { position: relative; display: block; flex-shrink: 0; width: 34px; height: 20px; border-radius: 9999px; background: var(--color-accent-soft); transition: background-color 0.16s cubic-bezier(0.32, 0.72, 0, 1); }
+html[data-theme='dark'] .theme-track { background: var(--color-accent); }
+.theme-toggle-icon { width: 13px; height: 13px; flex-shrink: 0; color: var(--color-text-muted); transition: color 0.3s ease; }
+.theme-toggle-icon--sun { color: var(--color-accent); }
+html[data-theme='dark'] .theme-toggle-icon--sun { color: var(--color-text-muted); }
+html[data-theme='dark'] .theme-toggle-icon--moon { color: var(--color-accent); }
+.theme-thumb { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 9999px; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); transition: left 0.16s cubic-bezier(0.32, 0.72, 0, 1), width 0.16s cubic-bezier(0.32, 0.72, 0, 1), height 0.16s cubic-bezier(0.32, 0.72, 0, 1), top 0.16s cubic-bezier(0.32, 0.72, 0, 1); }
+html[data-theme='dark'] .theme-thumb { left: 16px; }
+.theme-toggle:hover .theme-thumb { width: 18px; }
+html[data-theme='dark'] .theme-toggle:hover .theme-thumb { left: 14px; }
+.theme-toggle:active .theme-thumb { width: 20px; height: 12px; top: 4px; }
+html[data-theme='dark'] .theme-toggle:active .theme-thumb { left: 12px; }
+
+.ab-principle { display: flex; flex-direction: column; gap: 10px; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 12px; padding: 24px; transition: transform 0.2s ease, border-color 0.2s ease; }
+.ab-principle:hover { transform: translateY(-2px); border-color: var(--color-accent-outline); }
+
+.gate-form { display: flex; align-items: center; gap: 10px; }
+.gate-input { height: 42px; padding: 0 18px; border-radius: 9999px; border: 1px solid var(--color-border); background: var(--color-bg-secondary); color: var(--color-text); font-family: var(--font-sans); font-size: 14px; width: 200px; transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease; }
+.gate-input::placeholder { color: var(--color-text-muted); }
+.gate-input:focus { outline: none; border-color: var(--color-accent); }
+.gate-submit { height: 42px; padding: 0 20px; border-radius: 9999px; border: none; background: var(--color-accent); color: var(--color-bg); font-family: var(--font-sans); font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s ease; }
+.gate-submit:hover { opacity: 0.85; }
+
+.case-study-tags { display: flex; align-items: center; gap: 4px; color: var(--color-accent); }
+.case-study-tags span:not(:last-child)::after { content: '•'; margin-left: 4px; opacity: 0.6; }
+
+.cs-quote { border: none; padding: 12px 16px; background: var(--color-quote-bg); border-radius: 4px; font-style: italic; margin: 0; }
+.cs-persona { padding: 32px; background: var(--color-accent-soft); border-left: 2px solid var(--color-accent); border-radius: 0 8px 8px 0; }
+.cs-persona-num { font-family: var(--font-sans); font-size: 10px; color: var(--color-accent); letter-spacing: 0.08em; }
+.cs-impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--color-divider); border-radius: 8px; overflow: hidden; }
+.cs-impact-card { background: var(--color-bg); padding: 32px 28px; display: flex; flex-direction: column; gap: 8px; }
+.cs-impact-number { font-family: var(--font-display); font-size: 48px; font-weight: 700; color: var(--color-accent); letter-spacing: -0.04em; line-height: 1; }
+.cs-problem-statement { font-family: var(--font-display); font-size: clamp(18px, 2.2vw, 26px); font-weight: 700; color: var(--color-text); letter-spacing: -0.03em; line-height: 1.3; border: none; padding: 0; }
+.cs-feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.cs-feature-list li { padding-left: 20px; position: relative; }
+.cs-feature-list li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 2px; background: var(--color-accent); border-radius: 2px; }
+.ms-callout { background: var(--color-bg-secondary); border-radius: 8px; padding: 20px 24px; }
+.work-divider { border: none; border-top: 1px solid var(--color-divider); margin: 0; }
+.cs-divider { border: none; border-top: 1px solid var(--color-border); margin: 0; }
+
+.cs-frame-demo { position: relative; width: 100%; max-width: 420px; aspect-ratio: 2.43; border-radius: 4px; overflow: hidden; background: linear-gradient(180deg, #091264 0%, #273F91 100%); transition: border-radius 0.4s ease; cursor: pointer; }
+.cs-frame-demo:hover { border-radius: 16px; }
+
+/* Dither wash, reproduced */
+.dither-demo { position: relative; height: 140px; border: 1px solid var(--color-border); border-radius: 16px; overflow: hidden; background: var(--color-bg); }
+.exp-app-dither, .exp-app-dither::before, .exp-app-dither::after { position: absolute; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; background-image: radial-gradient(circle at center, var(--color-accent) 0 1px, transparent 1.3px); background-size: 4px 4px; }
+.exp-app-dither { height: 52%; opacity: 0.55; background-position: 0 0; }
+.exp-app-dither::before, .exp-app-dither::after { content: ''; }
+.exp-app-dither::before { height: 65%; background-position: 2px 2px; }
+.exp-app-dither::after { height: 38%; background-position: 2px 0; }
+
+.exp-app-context-inner { display: flex; align-items: flex-start; gap: 20px; padding: 14px 18px; border-radius: 16px; border: 1px solid var(--color-divider); background: rgba(255, 255, 255, 0.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+html[data-theme='dark'] .exp-app-context-inner { background: rgba(22, 23, 27, 0.72); }
+
+.exp-app-arrow { font-family: 'Material Symbols Outlined'; font-size: 32px; line-height: 1; color: var(--color-accent); font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 40; }
+
+/* Motion demo */
+.ease-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--color-divider); }
+.ease-track { position: relative; height: 26px; border-radius: 9999px; background: var(--color-accent-soft); border: 1px solid var(--color-accent-outline); overflow: hidden; }
+.ease-dot { position: absolute; top: 5px; left: 4px; width: 14px; height: 14px; border-radius: 9999px; background: var(--color-accent); }
+.ease-track.run .ease-dot { left: calc(100% - 18px); }
+
+/* Sheet-only toggle button */
+.sheet-toggle { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border-radius: 9999px; border: 1px solid var(--color-border); background: var(--color-bg-secondary); color: var(--color-text); font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; transition: border-color 0.2s ease, color 0.2s ease; }
+.sheet-toggle:hover { border-color: var(--color-accent-outline); color: var(--color-accent); }
+
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+
+@media (max-width: 768px) {
+  .ease-row { grid-template-columns: minmax(0, 1fr); }
+  .cs-impact-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="sheet-head">
+    <div class="sheet-head-text">
+      <span class="t-label">Paper Folio</span>
+      <h1 class="t-display">Design primitives</h1>
+      <p class="t-body">Everything defined once and reused across the six pages: index, about, experiments, moodys, gep, now. Tokens come from <code>src/styles/global.css</code>; component rules are copied verbatim from their Astro files, so what renders here is what renders on the site. Flip the theme to see both palettes.</p>
+    </div>
+    <button class="sheet-toggle" id="themeBtn">Switch to dark</button>
+  </header>
+
+  <!-- ══════════════ COLOR ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">01 — Color</span>
+    <h2 class="t-h2">Sixteen tokens, two themes</h2>
+    <p class="section-note t-body">Every token is redeclared under <code>html[data-theme='dark']</code>, so the two palettes stay one-to-one. Values below are live: they update when you flip the theme. Alpha tokens are shown over a checkerboard.</p>
+
+    <div class="swatch-group">
+      <h3 class="t-h3">Surfaces</h3>
+      <p class="t-small" style="margin-bottom:16px">Page ground and the raised surface used for cards, callouts and hover fills.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip" style="background:var(--color-bg)"></div><div class="swatch-body"><span class="swatch-name">--color-bg</span><span class="swatch-val" data-val="--color-bg"></span><span class="swatch-use">body, sidebar, main, impact cards</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:var(--color-bg-secondary)"></div><div class="swatch-body"><span class="swatch-name">--color-bg-secondary</span><span class="swatch-val" data-val="--color-bg-secondary"></span><span class="swatch-use">cards, callout, input, pill hover</span></div></div>
+      </div>
+    </div>
+
+    <div class="swatch-group">
+      <h3 class="t-h3">Text</h3>
+      <p class="t-small" style="margin-bottom:16px">Two values only. Everything softer is the same ink at reduced opacity: <code>.t-lead</code> at 0.85, <code>.t-body</code> at 0.75.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip" style="background:var(--color-text)"></div><div class="swatch-body"><span class="swatch-name">--color-text</span><span class="swatch-val" data-val="--color-text"></span><span class="swatch-use">headings, body, nav</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:var(--color-text-muted)"></div><div class="swatch-body"><span class="swatch-name">--color-text-muted</span><span class="swatch-val" data-val="--color-text-muted"></span><span class="swatch-use">.t-label, .t-small, placeholders, idle toggle icon</span></div></div>
+      </div>
+    </div>
+
+    <div class="swatch-group">
+      <h3 class="t-h3">Accent</h3>
+      <p class="t-small" style="margin-bottom:16px">One blue at four strengths. Outline for hover borders, soft for tinted fills, tick-idle for the resting nav ticks.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip" style="background:var(--color-accent)"></div><div class="swatch-body"><span class="swatch-name">--color-accent</span><span class="swatch-val" data-val="--color-accent"></span><span class="swatch-use">links, logo dots, numerals, caret, dither</span></div></div>
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-accent-outline)"></div></div><div class="swatch-body"><span class="swatch-name">--color-accent-outline</span><span class="swatch-val" data-val="--color-accent-outline"></span><span class="swatch-use">card hover border, logo dot outline</span></div></div>
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-accent-soft)"></div></div><div class="swatch-body"><span class="swatch-name">--color-accent-soft</span><span class="swatch-val" data-val="--color-accent-soft"></span><span class="swatch-use">persona block, theme track (light)</span></div></div>
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-tick-idle)"></div></div><div class="swatch-body"><span class="swatch-name">--color-tick-idle</span><span class="swatch-val" data-val="--color-tick-idle"></span><span class="swatch-use">.tick at rest</span></div></div>
+      </div>
+    </div>
+
+    <div class="swatch-group">
+      <h3 class="t-h3">Lines and fills</h3>
+      <p class="t-small" style="margin-bottom:16px">Border is the stronger hairline (section rules, card edges); divider is the quieter one (work list, impact grid gaps).</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-border)"></div></div><div class="swatch-body"><span class="swatch-name">--color-border</span><span class="swatch-val" data-val="--color-border"></span><span class="swatch-use">section rules, cards, input, footer top</span></div></div>
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-divider)"></div></div><div class="swatch-body"><span class="swatch-name">--color-divider</span><span class="swatch-val" data-val="--color-divider"></span><span class="swatch-use">.work-divider, impact grid gutters</span></div></div>
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-quote-bg)"></div></div><div class="swatch-body"><span class="swatch-name">--color-quote-bg</span><span class="swatch-val" data-val="--color-quote-bg"></span><span class="swatch-use">.cs-quote</span></div></div>
+      </div>
+    </div>
+
+    <div class="swatch-group">
+      <h3 class="t-h3">Shadow and scrim</h3>
+      <p class="t-small" style="margin-bottom:16px">In light these are tinted blue rather than neutral grey, which is what keeps the sidebar lift feeling warm. Dark swaps them for plain black at higher alpha.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-shadow)"></div></div><div class="swatch-body"><span class="swatch-name">--color-shadow</span><span class="swatch-val" data-val="--color-shadow"></span><span class="swatch-use">sidebar and phone, outer shadow</span></div></div>
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-shadow-soft)"></div></div><div class="swatch-body"><span class="swatch-name">--color-shadow-soft</span><span class="swatch-val" data-val="--color-shadow-soft"></span><span class="swatch-use">contact shadow layer</span></div></div>
+        <div class="swatch"><div class="swatch-chip swatch-chip--alpha"><div class="swatch-chip-fill" style="background:var(--color-scrim)"></div></div><div class="swatch-body"><span class="swatch-name">--color-scrim</span><span class="swatch-val" data-val="--color-scrim"></span><span class="swatch-use">.sidebar-overlay on mobile</span></div></div>
+      </div>
+    </div>
+
+    <div class="swatch-group">
+      <h3 class="t-h3">Status</h3>
+      <p class="t-small" style="margin-bottom:16px">One value, lifted in dark the same way the accent is so it stays legible.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip" style="background:var(--color-error)"></div><div class="swatch-body"><span class="swatch-name">--color-error</span><span class="swatch-val" data-val="--color-error"></span><span class="swatch-use">password gate failure</span></div></div>
+      </div>
+    </div>
+
+    <div class="swatch-group">
+      <h3 class="t-h3">Fixed colors (outside the token set)</h3>
+      <p class="t-small" style="margin-bottom:16px">Five hard-coded values that deliberately do not follow the theme, because they are objects or brand artwork rather than surfaces.</p>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-chip" style="background:#0B0C0F"></div><div class="swatch-body"><span class="swatch-name">#0B0C0F</span><span class="swatch-val">.exp-phone body</span><span class="swatch-use">experiments, phone bezel</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#000000"></div><div class="swatch-body"><span class="swatch-name">#000000</span><span class="swatch-val">.exp-video-media</span><span class="swatch-use">video frame letterbox</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#FFFFFF"></div><div class="swatch-body"><span class="swatch-name">#FFFFFF</span><span class="swatch-val">.theme-thumb</span><span class="swatch-use">toggle thumb, both themes</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#091264"></div><div class="swatch-body"><span class="swatch-name">#091264</span><span class="swatch-val">gradient stop 0%</span><span class="swatch-use">Moody's cover</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:#273F91"></div><div class="swatch-body"><span class="swatch-name">#273F91</span><span class="swatch-val">gradient stop 100%</span><span class="swatch-use">Moody's cover</span></div></div>
+        <div class="swatch"><div class="swatch-chip" style="background:linear-gradient(180deg, #091264 0%, #273F91 100%)"></div><div class="swatch-body"><span class="swatch-name">.ms-cover</span><span class="swatch-val">linear-gradient(180deg, …)</span><span class="swatch-use">painted under the cover bitmap</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ TYPOGRAPHY ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">02 — Typography</span>
+    <h2 class="t-h2">Eight shared classes, two families</h2>
+    <p class="section-note t-body">Lexend (<code>--font-display</code>) carries headings and display type; Manrope (<code>--font-sans</code>) carries body and UI. The <code>.t-*</code> classes hold type only. Anything positional stays with the page, which is why elements usually carry both: <code>class="ab-lead t-lead"</code>.</p>
+
+    <h3 class="sub t-h3">The shared scale</h3>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-display</span><span class="spec-specs">Lexend · clamp(32px, 5vw, 48px) · 700 · lh 1.05 · ls -0.05em</span></div>
+      <p class="t-display">Designing systems people can actually hold</p>
+      <p class="t-small">Page titles: the hero sentence, About, Experiments, Coming Soon.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-display--sm</span><span class="spec-specs">modifier · clamp(28px, 3.6vw, 36px) · 500</span></div>
+      <p class="t-display t-display--sm">Designing systems people can actually hold</p>
+      <p class="t-small">For display type that has to hold a long line, where full size would dominate the page. Used on the hero sentence and the footer email.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-h2</span><span class="spec-specs">Lexend · 24px · 600 · lh 1.25 · ls -0.03em · mb 20px</span></div>
+      <p class="t-h2" style="margin-bottom:0">Research shaped the whole intake flow</p>
+      <p class="t-small">Case study titles, section headings, experiment card names.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-h3</span><span class="spec-specs">Lexend · 20px · 700 · ls -0.02em · mb 8px</span></div>
+      <p class="t-h3" style="margin-bottom:0">Three principles worth keeping</p>
+      <p class="t-small">Card titles, timeline roles, sub-headings inside a section.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-label</span><span class="spec-specs">Manrope · 12px · 600 · ls 0.08em · uppercase · muted</span></div>
+      <p class="t-label">Selected work — 2024</p>
+      <p class="t-small">Eyebrows above headings, the label half of a meta pair, case study indices and tags.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-lead</span><span class="spec-specs">Manrope · 18px · lh 1.7 · text at 0.85 opacity</span></div>
+      <p class="t-lead">A lead paragraph sets up the section without competing with the heading above it, and holds a comfortable measure of about sixty characters.</p>
+      <p class="t-small">Intro paragraphs, case study subtitles, the About lede.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-body</span><span class="spec-specs">Manrope · 14px · lh 1.75 · text at 0.75 opacity</span></div>
+      <p class="t-body">Body copy is the workhorse: card descriptions, case study prose, timeline detail. It runs one step quieter than the lead so a page of it still reads as background to the headings.</p>
+      <p class="t-small">The default for running text everywhere.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.t-small</span><span class="spec-specs">Manrope · 13px · lh 1.5 · muted</span></div>
+      <p class="t-small">Captions, footnotes, and the quiet line under a figure.</p>
+      <p class="t-small">Metadata, captions, the footer note.</p>
+    </div>
+
+    <h3 class="sub t-h3">Local type not in the scale</h3>
+    <p class="t-body" style="margin-bottom:20px">Nine places declare their own type because the value is specific to one component. Worth knowing they exist before adding a ninth.</p>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.cs-impact-number</span><span class="spec-specs">Lexend · 48px · 700 · ls -0.04em · lh 1 · accent</span></div>
+      <p class="cs-impact-number">62%</p>
+      <p class="t-small">gep.astro, impact grid.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.cs-problem-statement</span><span class="spec-specs">Lexend · clamp(18px, 2.2vw, 26px) · 700 · ls -0.03em · lh 1.3</span></div>
+      <p class="cs-problem-statement">Buyers could not tell which supplier request was already in flight.</p>
+      <p class="t-small">gep.astro, the framed problem statement.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.nav-link</span><span class="chip">.nav-link.active</span><span class="spec-specs">Manrope · 16px · lh 1 · accent · 0.4 opacity, active 800 at 1</span></div>
+      <div class="demo" style="gap:20px"><a href="#" class="nav-link">Work</a><a href="#" class="nav-link active">About</a><a href="#" class="nav-link">Experiments</a></div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.cs-subnav-link</span><span class="chip">.cs-subnav-link--child</span><span class="spec-specs">Manrope · 12px · lh 1.35 · accent · 0.35 opacity, active 700 at 1</span></div>
+      <div class="demo demo--stack" style="gap:2px"><a href="#" class="cs-subnav-link active">Research</a><a href="#" class="cs-subnav-link" style="padding-left:14px">Interviews</a><a href="#" class="cs-subnav-link">Outcome</a></div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.ms-meta-item dt</span><span class="chip">.ms-meta-item dd</span><span class="spec-specs">Manrope · 12px/600/uppercase over 14px/600/lh 1.4</span></div>
+      <div class="demo demo--stack" style="gap:4px">
+        <span class="t-label">Role</span>
+        <span style="font-family:var(--font-sans);font-size:14px;font-weight:600;line-height:1.4;color:var(--color-text)">Product Designer, design system and intake</span>
+      </div>
+      <p class="t-small">moodys.astro. Matches .t-label but stays unclassed so the dt/dd pair reads semantically.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.cs-need strong</span><span class="spec-specs">Manrope · 13px · block · mb 4px</span></div>
+      <div class="demo demo--stack" style="gap:0"><strong style="display:block;font-family:var(--font-sans);font-size:13px;color:var(--color-text);margin-bottom:4px">Know the status without asking</strong><span class="t-body">Buyers checked in by email because nothing told them where a request sat.</span></div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.cs-learning strong</span><span class="spec-specs">Lexend · 15px · block · ls -0.02em · mb 4px</span></div>
+      <div class="demo demo--stack" style="gap:0"><strong style="display:block;font-family:var(--font-display);font-size:15px;color:var(--color-text);margin-bottom:4px;letter-spacing:-0.02em">Ship the smallest legible slice</strong><span class="t-body">The half-built flow taught us more in a week than the spec did in a month.</span></div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.cs-persona-num</span><span class="chip">.cs-need-num</span><span class="chip">.cs-learning-num</span><span class="chip">.cs-process-list li::before</span><span class="spec-specs">Manrope · 10px · accent (persona adds ls 0.08em)</span></div>
+      <div class="demo" style="gap:24px"><span class="cs-persona-num">PERSONA 01</span><span style="font-family:var(--font-sans);font-size:10px;color:var(--color-accent)">02</span><span style="font-family:var(--font-sans);font-size:10px;color:var(--color-accent)">03</span></div>
+      <p class="t-small">Grouped in one rule so the four numeral treatments stay in step.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-meta"><span class="chip">.exp-app-arrow</span><span class="spec-specs">Material Symbols Outlined · 32px · FILL 0, wght 500, GRAD 0, opsz 40</span></div>
+      <div class="demo"><span class="exp-app-arrow">call_made</span></div>
+      <p class="t-small">The only icon font on the site. A single glyph, subset at request time via <code>&amp;icon_names=call_made</code>.</p>
+    </div>
+
+    <h3 class="sub t-h3">Families and weights loaded</h3>
+    <table class="scale">
+      <thead><tr><th>Token</th><th>Family</th><th>Loaded axis</th><th>Weights actually used</th></tr></thead>
+      <tbody>
+        <tr><td style="width:auto"><code>--font-display</code></td><td style="font-family:var(--font-display)">Lexend</td><td><code>wght@100..900</code></td><td>500, 600, 700</td></tr>
+        <tr><td style="width:auto"><code>--font-sans</code></td><td style="font-family:var(--font-sans)">Manrope</td><td><code>wght@200..800</code></td><td>400, 500, 600, 700, 800</td></tr>
+      </tbody>
+    </table>
+    <p class="t-small" style="margin-top:12px">Both are variable fonts served from Google Fonts with <code>font-synthesis: none</code>, so a weight that is not requested will not be faked.</p>
+  </section>
+
+  <!-- ══════════════ SPACING ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">03 — Spacing</span>
+    <h2 class="t-h2">A 4px-based ladder, used literally</h2>
+    <p class="section-note t-body">There are no spacing custom properties in the codebase. Values are written inline at each use site, but they land on a consistent 4px ladder with a few 2px and 6px exceptions. Listed ascending, with where each step earns its keep.</p>
+
+    <table class="scale">
+      <thead><tr><th>Value</th><th class="bar-cell">Scale</th><th>Where it is used</th></tr></thead>
+      <tbody>
+        <tr><td><code>2px</code></td><td class="bar-cell"><div class="bar" style="width:1.6%"></div></td><td class="note">Impact grid gutters, avatar glow ring padding, persona left border, tick height</td></tr>
+        <tr><td><code>4px</code></td><td class="bar-cell"><div class="bar" style="width:3.3%"></div></td><td class="note">Tag gaps, meta item gaps, screenshot tile gutters, cover frame radius</td></tr>
+        <tr><td><code>6px</code></td><td class="bar-cell"><div class="bar" style="width:5%"></div></td><td class="note">Tick field gap, meta dt bottom margin</td></tr>
+        <tr><td><code>8px</code></td><td class="bar-cell"><div class="bar" style="width:6.6%"></div></td><td class="note">.t-h3 bottom margin, logo dots, pill inner gap, impact card gap, blurb offset</td></tr>
+        <tr><td><code>10px</code></td><td class="bar-cell"><div class="bar" style="width:8.3%"></div></td><td class="note">Card inner gap, gate form gap, theme toggle gap, hero link row gap</td></tr>
+        <tr><td><code>12px</code></td><td class="bar-cell"><div class="bar" style="width:10%"></div></td><td class="note">Feature list gap, footer social gap, timeline logo margin, persona header gap</td></tr>
+        <tr><td><code>14px</code></td><td class="bar-cell"><div class="bar" style="width:11.6%"></div></td><td class="note">Hero eyebrow margin, context plate vertical padding, subnav child indent</td></tr>
+        <tr><td><code>16px</code></td><td class="bar-cell"><div class="bar" style="width:13.3%"></div></td><td class="note">The default gap. Grid gaps, card header gap, process list, sidebar inset</td></tr>
+        <tr><td><code>20px</code></td><td class="bar-cell"><div class="bar" style="width:16.6%"></div></td><td class="note">.t-h2 bottom margin, app card gap, intro text gap, context plate gap</td></tr>
+        <tr><td><code>24px</code></td><td class="bar-cell"><div class="bar" style="width:20%"></div></td><td class="note">Card padding, case study block gap, meta grid row gap, reveal offset</td></tr>
+        <tr><td><code>28px</code></td><td class="bar-cell"><div class="bar" style="width:23.3%"></div></td><td class="note">Learnings gap, impact card horizontal padding, mobile panel padding</td></tr>
+        <tr><td><code>32px</code></td><td class="bar-cell"><div class="bar" style="width:26.6%"></div></td><td class="note">Section label margin, timeline gap, persona padding, footer top gap</td></tr>
+        <tr><td><code>36px</code></td><td class="bar-cell"><div class="bar" style="width:30%"></div></td><td class="note">Sidebar gutter, logo offset, app panel vertical padding, hover context margin</td></tr>
+        <tr><td><code>40px</code></td><td class="bar-cell"><div class="bar" style="width:33.3%"></div></td><td class="note">Footer stack gap, timeline row gap, two-col gap, gate and soon padding</td></tr>
+        <tr><td><code>48px</code></td><td class="bar-cell"><div class="bar" style="width:40%"></div></td><td class="note">Section top padding and separation, theme block gap, case study info gap</td></tr>
+        <tr><td><code>56px</code></td><td class="bar-cell"><div class="bar" style="width:46.6%"></div></td><td class="note">Case study section padding, Moody's column gap and callout margin</td></tr>
+        <tr><td><code>64px</code></td><td class="bar-cell"><div class="bar" style="width:53.3%"></div></td><td class="note">Footer top padding, case study block margin, experiments intro padding</td></tr>
+        <tr><td><code>72px</code></td><td class="bar-cell"><div class="bar" style="width:60%"></div></td><td class="note">Case study hero bottom margin</td></tr>
+        <tr><td><code>80px</code></td><td class="bar-cell"><div class="bar" style="width:66.6%"></div></td><td class="note">Work divider margin, sidebar scroll bottom inset, GEP top padding</td></tr>
+        <tr><td><code>96px</code></td><td class="bar-cell"><div class="bar" style="width:80%"></div></td><td class="note">Moody's banner top margin</td></tr>
+        <tr><td><code>120px</code></td><td class="bar-cell"><div class="bar" style="width:100%"></div></td><td class="note">Page bottom padding on About, Experiments and both case studies</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub t-h3">Fluid values</h3>
+    <p class="t-body" style="margin-bottom:20px">Page gutters and hero rhythm are <code>clamp()</code> rather than fixed, so the same rule holds from a narrow window to full width. Four are shared across pages and should stay in sync.</p>
+    <table class="scale">
+      <thead><tr><th>Value</th><th>Role</th><th>Used by</th></tr></thead>
+      <tbody>
+        <tr><td style="width:auto"><code>clamp(24px, 5vw, 64px)</code></td><td class="note">Narrow edge gutter</td><td class="note">.exp, full-bleed experiment cards</td></tr>
+        <tr><td style="width:auto"><code>clamp(40px, 8vw, 100px)</code></td><td class="note">Reading gutter</td><td class="note">.case-study on gep</td></tr>
+        <tr><td style="width:auto"><code>clamp(40px, 9vw, 122px)</code></td><td class="note">Standard page gutter</td><td class="note">.hero, .work-section, .site-footer, .about, moodys</td></tr>
+        <tr><td style="width:auto"><code>clamp(-40px, -9vw, -122px)</code></td><td class="note">Negative of the above, to break the banner full-bleed</td><td class="note">.ms-banner</td></tr>
+        <tr><td style="width:auto"><code>clamp(96px, 16vh, 168px)</code></td><td class="note">Page top padding</td><td class="note">.hero, .about, .exp</td></tr>
+        <tr><td style="width:auto"><code>clamp(64px, 9vh, 104px)</code></td><td class="note">Hero bottom padding</td><td class="note">.hero</td></tr>
+        <tr><td style="width:auto"><code>clamp(60px, 8vh, 100px)</code> / <code>clamp(80px, 10vh, 120px)</code></td><td class="note">Work section top and bottom</td><td class="note">.work-section</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub t-h3">Layout constants</h3>
+    <table class="scale">
+      <thead><tr><th>Value</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td style="width:auto"><code>258px</code></td><td class="note">Sidebar width</td></tr>
+        <tr><td style="width:auto"><code>290px</code></td><td class="note">Main column left margin, that is 16 + 258 + 16</td></tr>
+        <tr><td style="width:auto"><code>1100px</code></td><td class="note">Content cap from <code>.main &gt; *</code>, also the About and Moody's max width</td></tr>
+        <tr><td style="width:auto"><code>860px</code></td><td class="note">GEP case study max width</td></tr>
+        <tr><td style="width:auto"><code>760px / 640px / 600px / 480px</code></td><td class="note">Prose measures: wide lead, lead, subtitle, card description</td></tr>
+        <tr><td style="width:auto"><code>260px</code></td><td class="note"><code>auto-fit minmax</code> floor for the philosophy and teams grids</td></tr>
+        <tr><td style="width:auto"><code>768px</code></td><td class="note">The single breakpoint, used by every page</td></tr>
+        <tr><td style="width:auto"><code>40ch / 60ch / 62ch / 18ch</code></td><td class="note">Character-based measures: gate note, app blurb, context body, experiments title</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════════ RADIUS ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">04 — Radius</span>
+    <h2 class="t-h2">Twelve radii, ascending</h2>
+    <p class="section-note t-body">Small radii mark flat surfaces, large ones mark objects that sit on the page. Two are animated: the case study frame goes 4px to 16px on hover, and the pill radius is the site's only fully round value.</p>
+    <div class="tile-grid">
+      <div class="tile"><div class="tile-box" style="border-radius:2px"></div><span class="tile-label">2px</span><span class="tile-note">Feature list bullet</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:4px"></div><span class="tile-label">4px</span><span class="tile-note">Card frame at rest, quote, inline badge logo</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:8px"></div><span class="tile-label">8px</span><span class="tile-note">Callout, impact grid, persona, hero image, tile</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:10px"></div><span class="tile-label">10px</span><span class="tile-note">Mobile hamburger button</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:12px"></div><span class="tile-label">12px</span><span class="tile-note">Principle and team cards</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:16px"></div><span class="tile-label">16px</span><span class="tile-note">Card frame on hover, section visual, context plate</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:20px"></div><span class="tile-label">20px</span><span class="tile-note">Avatar, video frame</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:22px"></div><span class="tile-label">22px</span><span class="tile-note">Avatar glow ring, that is 20 + 2px padding</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:24px"></div><span class="tile-label">24px</span><span class="tile-note">Sidebar</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:27px"></div><span class="tile-label">27px</span><span class="tile-note">Phone screen, that is 34 minus 7px bezel</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:28px"></div><span class="tile-label">28px</span><span class="tile-note">Experiment app card</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:34px"></div><span class="tile-label">34px</span><span class="tile-note">Phone body</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:9999px"></div><span class="tile-label">9999px</span><span class="tile-note">Pills, ticks, dots, toggle, icon buttons, input</span></div>
+      <div class="tile"><div class="tile-box" style="border-radius:0 8px 8px 0"></div><span class="tile-label">0 8px 8px 0</span><span class="tile-note">Persona block, flat against its accent border</span></div>
+    </div>
+
+    <h3 class="sub t-h3">The animated frame</h3>
+    <p class="t-body" style="margin-bottom:16px">Hover the swatch: <code>.cs-frame</code> goes from 4px to 16px over 0.4s while the cover image scales to 1.02.</p>
+    <div class="cs-frame-demo"></div>
+  </section>
+
+  <!-- ══════════════ ELEVATION ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">05 — Elevation</span>
+    <h2 class="t-h2">Three shadows</h2>
+    <p class="section-note t-body">Each is a two-layer stack: a wide ambient layer plus a tight contact layer. Both layers use the shadow tokens, so the whole system retints when the theme flips.</p>
+    <div class="shadow-grid">
+      <div class="tile">
+        <div class="shadow-box" style="box-shadow: 0 4px 32px var(--color-shadow), 0 1px 4px var(--color-shadow-soft)"></div>
+        <span class="tile-label">.sidebar</span>
+        <span class="tile-note">0 4px 32px shadow, 0 1px 4px shadow-soft</span>
+      </div>
+      <div class="tile">
+        <div class="shadow-box" style="box-shadow: 0 18px 40px var(--color-shadow), 0 2px 8px var(--color-shadow-soft)"></div>
+        <span class="tile-label">.exp-phone</span>
+        <span class="tile-note">0 18px 40px shadow, 0 2px 8px shadow-soft</span>
+      </div>
+      <div class="tile">
+        <div class="shadow-box" style="box-shadow: 0 1px 2px rgba(0,0,0,0.2)"></div>
+        <span class="tile-label">.theme-thumb</span>
+        <span class="tile-note">0 1px 2px rgba(0,0,0,0.2), fixed, not themed</span>
+      </div>
+    </div>
+    <h3 class="sub t-h3">Blur</h3>
+    <table class="scale">
+      <thead><tr><th>Value</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td style="width:auto"><code>filter: blur(12px)</code></td><td class="note">.ab-avatar-wrap::before, the rotating conic glow behind the About portrait</td></tr>
+        <tr><td style="width:auto"><code>backdrop-filter: blur(8px)</code></td><td class="note">.exp-app-context-inner, the glass plate over the dither wash</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════════ MOTION ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">06 — Motion</span>
+    <h2 class="t-h2">Two easing curves carry almost everything</h2>
+    <p class="section-note t-body">Hover the tracks to run each curve. Every animated component is wrapped in a <code>prefers-reduced-motion</code> guard, and the reveal-on-scroll cards fall back to fully visible rather than hidden.</p>
+
+    <div class="ease-row"><div><span class="chip">cubic-bezier(0.25, 1, 0.5, 1)</span><p class="t-small" style="margin-top:8px">The site's signature ease-out. Sidebar slide, card reveal, hover lift, Moody's cover spread, context row expansion.</p></div><div class="ease-track" data-ease="cubic-bezier(0.25,1,0.5,1)" data-dur="0.55s"><div class="ease-dot"></div></div></div>
+    <div class="ease-row"><div><span class="chip">cubic-bezier(0.32, 0.72, 0, 1)</span><p class="t-small" style="margin-top:8px">Tighter, snappier. Only the theme toggle track and thumb use it.</p></div><div class="ease-track" data-ease="cubic-bezier(0.32,0.72,0,1)" data-dur="0.16s"><div class="ease-dot"></div></div></div>
+    <div class="ease-row"><div><span class="chip">ease</span><p class="t-small" style="margin-top:8px">The default for color, opacity and border transitions.</p></div><div class="ease-track" data-ease="ease" data-dur="0.3s"><div class="ease-dot"></div></div></div>
+    <div class="ease-row"><div><span class="chip">ease-out</span><p class="t-small" style="margin-top:8px">Only the nav tick width and color, at 70ms.</p></div><div class="ease-track" data-ease="ease-out" data-dur="0.07s"><div class="ease-dot"></div></div></div>
+    <div class="ease-row"><div><span class="chip">linear</span><span class="chip">steps(1)</span><p class="t-small" style="margin-top:8px">The 6s About avatar glow rotation, and the 0.9s typing caret blink.</p></div><div class="ease-track" data-ease="linear" data-dur="1s"><div class="ease-dot"></div></div></div>
+
+    <h3 class="sub t-h3">Durations, ascending</h3>
+    <table class="scale">
+      <thead><tr><th>Value</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td><code>70ms</code></td><td class="note">.tick width and background</td></tr>
+        <tr><td><code>0.15s</code></td><td class="note">.cs-subnav-link opacity</td></tr>
+        <tr><td><code>0.16s</code></td><td class="note">Theme track and thumb</td></tr>
+        <tr><td><code>0.2s</code></td><td class="note">The default hover: pills, icon buttons, cards, nav links, inputs</td></tr>
+        <tr><td><code>0.25s</code></td><td class="note">Hamburger icon swap, gate shake keyframe, context opacity</td></tr>
+        <tr><td><code>0.3s</code></td><td class="note">Theme repaint on body, surfaces and icons; app card lift; arrow</td></tr>
+        <tr><td><code>0.35s</code></td><td class="note">Dither wash fade, context row expansion</td></tr>
+        <tr><td><code>0.4s</code></td><td class="note">Sidebar and main margin slide, frame radius, cover image scale, overlay</td></tr>
+        <tr><td><code>0.55s</code></td><td class="note">Moody's cover, three-screen spread</td></tr>
+        <tr><td><code>0.6s</code></td><td class="note">Case study card reveal on scroll</td></tr>
+        <tr><td><code>0.9s</code></td><td class="note">Typing caret blink, infinite</td></tr>
+        <tr><td><code>6s</code></td><td class="note">About avatar conic glow rotation, infinite</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub t-h3">Keyframes and staggers</h3>
+    <table class="scale">
+      <thead><tr><th>Name</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td style="width:auto"><code>ab-glow-rotate</code></td><td class="note">Animates the registered <code>@property --ab-glow-angle</code> to 360deg, so the conic gradient's own angle turns rather than the element</td></tr>
+        <tr><td style="width:auto"><code>gate-shake</code></td><td class="note">translateX -6px at 25%, +6px at 75%, on a wrong password</td></tr>
+        <tr><td style="width:auto"><code>exp-caret</code></td><td class="note">opacity 0 at 50%, stepped, for the typing caret</td></tr>
+        <tr><td style="width:auto">Reveal stagger</td><td class="note"><code>transition-delay</code> 0.1s / 0.2s / 0.3s on the 2nd, 3rd and 4th case study card</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════════ COMPONENTS ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">07 — Components</span>
+    <h2 class="t-h2">The recurring pieces</h2>
+    <p class="section-note t-body">Rendered from the same rules the site uses, so hover states behave the way they do in production.</p>
+
+    <h3 class="sub t-h3">Pill link <span class="chip">.hero-link</span></h3>
+    <p class="t-small" style="margin-bottom:16px">38px tall, fully round, transparent at rest. On hover it lifts 2px, fills with bg-secondary and turns accent; the arrow goes from 0.45 to full opacity.</p>
+    <div class="demo">
+      <a href="#" class="hero-link">Resume <svg class="hero-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+      <a href="#" class="hero-link">Read.cv <svg class="hero-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+    </div>
+
+    <h3 class="sub t-h3">Icon button <span class="chip">.footer-icon-btn</span></h3>
+    <p class="t-small" style="margin-bottom:16px">36px round, 16px glyph, same hover fill as the pill.</p>
+    <div class="demo">
+      <a href="#" class="footer-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 11v5M8 8v.01M12 16v-5M16 16v-3a2 2 0 0 0-4 0"/></svg></a>
+      <a href="#" class="footer-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"/></svg></a>
+      <a href="#" class="footer-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></a>
+    </div>
+
+    <h3 class="sub t-h3">Surface card <span class="chip">.ab-principle</span> <span class="chip">.ab-team-card</span></h3>
+    <p class="t-small" style="margin-bottom:16px">One shared rule for both grids: bg-secondary on a hairline border, 12px radius, 24px padding, 10px inner gap. Hover lifts 2px and warms the border to accent-outline.</p>
+    <div class="grid-2">
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Start from the constraint</h4><p class="t-body">The limit is usually the most interesting part of the brief, so design against it rather than around it.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Prototype before you argue</h4><p class="t-body">A rough build settles a debate faster than a deck, and it survives the handoff.</p></div>
+    </div>
+
+    <h3 class="sub t-h3">Input and submit <span class="chip">.gate-input</span> <span class="chip">.gate-submit</span></h3>
+    <p class="t-small" style="margin-bottom:16px">Both 42px tall and fully round. The input's border goes accent on focus with the native outline suppressed; the submit is a solid accent fill with bg-colored text.</p>
+    <div class="demo"><form class="gate-form" onsubmit="return false"><input class="gate-input" type="password" placeholder="Password" /><button class="gate-submit" type="submit">Enter</button></form></div>
+
+    <h3 class="sub t-h3">Nav tick <span class="chip">.tick</span> <span class="chip">.tick-field</span></h3>
+    <p class="t-small" style="margin-bottom:16px">A 2px by 14px rounded bar at tick-idle, stacked at 6px gaps. The active row widens and goes full accent in 70ms, which is what produces the sidebar's scrubbing feel.</p>
+    <div class="demo"><div class="tick-field"><div class="tick"></div><div class="tick"></div><div class="tick tick--wide"></div><div class="tick"></div><div class="tick"></div><div class="tick"></div></div></div>
+
+    <h3 class="sub t-h3">Theme toggle <span class="chip">.theme-toggle</span> <span class="chip">.theme-track</span> <span class="chip">.theme-thumb</span></h3>
+    <p class="t-small" style="margin-bottom:16px">34 by 20 track with a 16px thumb. Hover stretches the thumb to 18px, press squishes it to 20 by 12. The thumb is anchored to whichever edge matches the theme, so it squishes toward the center instead of drifting off the track. This one is live.</p>
+    <div class="demo">
+      <button class="theme-toggle" id="toggleDemo">
+        <svg class="theme-toggle-icon theme-toggle-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <span class="theme-track"><span class="theme-thumb"></span></span>
+        <svg class="theme-toggle-icon theme-toggle-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+
+    <h3 class="sub t-h3">Logo dot <span class="chip">.logo-dot</span> and separator <span class="chip">.hero-logo-dot</span></h3>
+    <p class="t-small" style="margin-bottom:16px">The same 8px round dot in two roles: accent with a 1px accent-outline for the sidebar logo, which rearranges on hover via per-dot custom properties; border-colored as a quiet separator between client logos.</p>
+    <div class="demo" style="gap:12px">
+      <span style="width:8px;height:8px;border-radius:9999px;background:var(--color-accent);outline:1px solid var(--color-accent-outline);display:inline-block"></span>
+      <span style="width:8px;height:8px;border-radius:9999px;background:var(--color-accent);outline:1px solid var(--color-accent-outline);display:inline-block"></span>
+      <span style="width:8px;height:8px;border-radius:9999px;background:var(--color-accent);outline:1px solid var(--color-accent-outline);display:inline-block"></span>
+      <span style="width:24px"></span>
+      <span class="hero-logo-dot"></span>
+    </div>
+
+    <h3 class="sub t-h3">Tag list <span class="chip">.case-study-tags</span></h3>
+    <p class="t-small" style="margin-bottom:16px">Accent-colored <code>.t-label</code> spans with a bullet injected by <code>:not(:last-child)::after</code>, so the markup stays a plain list.</p>
+    <div class="demo"><div class="case-study-tags t-label"><span>Design system</span><span>Research</span><span>Enterprise</span></div></div>
+
+    <h3 class="sub t-h3">Dividers <span class="chip">.work-divider</span> <span class="chip">.cs-divider</span></h3>
+    <p class="t-small" style="margin-bottom:16px">Both are a bare <code>border-top: 1px</code>. Work uses the quieter divider token at 80px vertical margin; case studies use border with the section handling its own spacing.</p>
+    <div class="demo demo--stack" style="gap:24px;align-items:stretch"><hr class="work-divider" /><hr class="cs-divider" /></div>
+
+    <h3 class="sub t-h3">Quote <span class="chip">.cs-quote</span> and callout <span class="chip">.ms-callout</span></h3>
+    <div class="demo demo--stack" style="align-items:stretch;gap:16px">
+      <blockquote class="cs-quote t-body">I check three tabs before I know whether anyone picked it up.</blockquote>
+      <div class="ms-callout"><p class="t-body" style="margin:0">A callout sits on bg-secondary at 8px radius with 20 by 24 padding, used to lift one paragraph out of the flow.</p></div>
+    </div>
+
+    <h3 class="sub t-h3">Persona block <span class="chip">.cs-persona</span></h3>
+    <p class="t-small" style="margin-bottom:16px">Accent-soft fill behind a 2px accent left border, with the radius flattened on that side.</p>
+    <div class="cs-persona">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px"><span class="cs-persona-num">PERSONA 01</span><h4 class="t-h3" style="margin-bottom:0">The category buyer</h4></div>
+      <p class="t-body" style="margin:0">Runs eight sourcing events at once and needs the status of each without opening any of them.</p>
+    </div>
+
+    <h3 class="sub t-h3">Impact grid <span class="chip">.cs-impact-grid</span> <span class="chip">.cs-impact-number</span></h3>
+    <p class="t-small" style="margin-bottom:16px">Three columns with a 2px gap over a divider-colored background, so the gutters read as hairlines without any borders.</p>
+    <div class="cs-impact-grid">
+      <div class="cs-impact-card"><span class="cs-impact-number">62%</span><span class="t-small">faster intake</span></div>
+      <div class="cs-impact-card"><span class="cs-impact-number">3x</span><span class="t-small">more requests self-served</span></div>
+      <div class="cs-impact-card"><span class="cs-impact-number">18</span><span class="t-small">screens retired</span></div>
+    </div>
+
+    <h3 class="sub t-h3">Feature list <span class="chip">.cs-feature-list</span></h3>
+    <p class="t-small" style="margin-bottom:16px">An 8 by 2px accent dash as the marker, absolutely placed 9px down so it optically centers on the first line.</p>
+    <div class="demo demo--stack" style="align-items:stretch">
+      <ul class="cs-feature-list t-body">
+        <li>Status is visible from the list, not just the detail view</li>
+        <li>Every request carries its own audit trail</li>
+        <li>Drafts survive a closed tab</li>
+      </ul>
+    </div>
+
+    <h3 class="sub t-h3">Dither wash <span class="chip">.exp-app-dither</span></h3>
+    <p class="t-small" style="margin-bottom:16px">One 4px accent dot grid drawn as three bands of decreasing height, each at a different phase in the cell. Near the bottom edge all three overlap and read solid, then they drop away a band at a time. The stepped density is what sells it as a dither rather than a fade. Bands are sized rather than masked on purpose: three stacked masked layers stopped Chrome painting the whole main column.</p>
+    <div class="dither-demo"><div class="exp-app-dither"></div></div>
+
+    <h3 class="sub t-h3">Glass plate <span class="chip">.exp-app-context-inner</span></h3>
+    <p class="t-small" style="margin-bottom:16px">Sits over the densest part of the dither. Translucent rather than opaque so the pattern still reads through, with each theme stating its own tint instead of leaning on <code>color-mix</code>.</p>
+    <div class="dither-demo" style="height:auto;padding:24px"><div class="exp-app-dither"></div>
+      <div class="exp-app-context-inner" style="position:relative;z-index:1"><span class="t-label" style="flex-shrink:0;padding-top:4px">Context</span><p class="t-body" style="margin:0;max-width:62ch">Backdrop blur at 8px over a 0.72 alpha tint, on a divider-colored hairline at 16px radius.</p></div>
+    </div>
+
+    <h3 class="sub t-h3">Case study frame <span class="chip">.cs-frame</span></h3>
+    <p class="t-small" style="margin-bottom:16px">A fixed 2.43 aspect ratio holding each cover. The Moody's gradient is painted underneath its own bitmap so the baked-in rounded corners have nothing to reveal.</p>
+    <div class="cs-frame-demo"></div>
+  </section>
+
+  <!-- ══════════════ NOTES ══════════════ -->
+  <section class="section">
+    <span class="section-label t-label">08 — Conventions</span>
+    <h2 class="t-h2">Rules the system relies on</h2>
+    <div class="grid-2" style="margin-top:24px">
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Type and layout stay separate</h4><p class="t-body">The <code>.t-*</code> classes carry type only. Max-width, grid placement and page margins live with the component, so an element usually carries both, as in <code>class="ab-lead t-lead"</code>.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Scoped styles win</h4><p class="t-body">Astro's scoped selectors outrank the global primitives, so a page can override one value without fighting the class.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Opacity, not extra ink colors</h4><p class="t-body">Two text tokens cover the whole site. Softer text is the same color at 0.85, 0.75, 0.45 or 0.35 rather than a new value.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Every token has a dark twin</h4><p class="t-body">Nothing is derived at runtime. The dark block restates all sixteen, which is why theme flips need no <code>color-mix</code> and no JS beyond setting the attribute.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Motion is always guarded</h4><p class="t-body">Every animated component ships a <code>prefers-reduced-motion: reduce</code> block, and the scroll-reveal cards resolve to visible rather than hidden.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">One breakpoint</h4><p class="t-body">768px, used by every page. Hover-dependent behavior is additionally gated on <code>@media (hover: hover)</code> with a touch fallback that leaves the content open.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">No spacing tokens yet</h4><p class="t-body">Spacing is the one primitive not yet named. Values are consistent on a 4px ladder but written literally at each use site, so a rename means a find and replace.</p></div>
+      <div class="ab-principle"><h4 class="t-h3" style="margin-bottom:0">Dependency-free</h4><p class="t-body">No Tailwind, no framer-motion, no UI library. The toggle's spring feel is plain CSS transitions, and the only external assets are two variable fonts plus one icon glyph.</p></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('themeBtn');
+  var demo = document.getElementById('toggleDemo');
+
+  function label() {
+    btn.textContent = root.getAttribute('data-theme') === 'dark' ? 'Switch to light' : 'Switch to dark';
+  }
+  function flip() {
+    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    label();
+    readValues();
+  }
+  btn.addEventListener('click', flip);
+  demo.addEventListener('click', flip);
+
+  // Print each token's resolved value so the swatch captions track the theme
+  function readValues() {
+    var cs = getComputedStyle(root);
+    document.querySelectorAll('[data-val]').forEach(function (el) {
+      el.textContent = cs.getPropertyValue(el.getAttribute('data-val')).trim();
+    });
+  }
+
+  // Easing demos: run the dot across on hover
+  document.querySelectorAll('.ease-track').forEach(function (track) {
+    var dot = track.querySelector('.ease-dot');
+    dot.style.transition = 'left ' + track.dataset.dur + ' ' + track.dataset.ease;
+    track.addEventListener('mouseenter', function () { track.classList.add('run'); });
+    track.addEventListener('mouseleave', function () { track.classList.remove('run'); });
+  });
+
+  label();
+  readValues();
+})();
+</script>
+</body>
+</html>
