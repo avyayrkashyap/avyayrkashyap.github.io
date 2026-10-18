@@ -1,24 +1,47 @@
 ---
 // src/pages/augment.astro
-// Case study for Augment, a local voice layer for the Mac. The product visuals are live recreations driven by
-// src/scripts/augment.js (the mascot's own keyframes, the notch pill's own open/close), so they stay crisp and move.
+// Case study for Augment, a first step toward a personal agent on the Mac. The product visuals are live recreations
+// driven by src/scripts/augment.js (the mascot's own keyframes, the notch pill's own open/close, the router's picks),
+// so they stay crisp and move. The weather and score cards copy the app's widgets.js/widgets.css look.
 import Layout from '../layouts/Layout.astro';
 
 const apps = [
-  { id: 'notes', name: 'Notes', why: "Built with Notes' own Format menu: a real heading, then a real checklist you can tick." },
-  { id: 'claude', name: 'Claude', why: 'Markdown, which the chat renders as a heading and a list once you send it.' },
-  { id: 'mail', name: 'Mail', why: 'Rich text: a heading and bullets, with a plain twin for fields that only take plain text.' },
-  { id: 'terminal', name: 'Terminal', why: 'One line. A newline in a terminal runs a command, so the list is flattened on purpose.' },
+  { id: 'notes', name: 'Notes', why: "A real heading and a checklist you can tick." },
+  { id: 'claude', name: 'Claude', why: 'Markdown, rendered once you send it.' },
+  { id: 'mail', name: 'Mail', why: 'Rich text, with a plain-text twin.' },
+  { id: 'terminal', name: 'Terminal', why: 'One line, since a newline runs a command.' },
 ];
 
 const states = [
   { id: 'idle', label: 'Idle', anim: 'Breathe' },
-  { id: 'listening', label: 'Listening', anim: 'Lean in, brackets open with your voice' },
+  { id: 'listening', label: 'Listening', anim: 'Brackets follow your voice' },
   { id: 'thinking', label: 'Thinking', anim: 'Typing dots' },
-  { id: 'done', label: 'Note done', anim: 'Happy hop' },
+  { id: 'done', label: 'Done', anim: 'Happy hop' },
   { id: 'quiet', label: 'Too quiet', anim: 'Tilt' },
   { id: 'error', label: 'Something failed', anim: 'Shake' },
 ];
+
+const tools = [
+  { id: 'type', name: 'Type', does: 'Pasted where I am' },
+  { id: 'ask', name: 'Ask', does: 'Augie answers' },
+  { id: 'search', name: 'Search', does: 'In my browser' },
+  { id: 'weather', name: 'Weather', does: 'A card' },
+  { id: 'scores', name: 'Scores', does: 'A card' },
+];
+
+const rails = [
+  ['An unpunctuated quote got “answered”.', 'Answers and searches need something actually asked.'],
+  ['It searched while I was typing in a text box.', 'In a text box, it types.'],
+  ['18% of 240 came back as 48.', 'Llama writes 0.18 * 240; code works out 43.2.'],
+  ['It mixed up “Friday” and “tomorrow”.', 'Code reads the day.'],
+  ['It ignored a rule written as prose.', 'A line code reads: Answer here: weather, sports.'],
+];
+
+// weather icons as voice-app/widgets.js draws them: an overcast cloud, or a cloud with falling rain
+const cloud = (fill: string, y: number) => `<path class="wi-cloud" transform="translate(0 ${y})" d="M20 46h26a10 10 0 0 0 0-20a14 14 0 0 0-26-3a11.5 11.5 0 0 0 0 23z" fill="${fill}"/>`;
+const drops = `<g stroke="#7CC0FF" stroke-width="3" stroke-linecap="round">${[22, 32, 42].map(x => `<line class="wi-drop" x1="${x}" y1="51" x2="${x - 2}" y2="57"/>`).join('')}</g>`;
+const icon = (rain: boolean, size: number) => `<svg class="wi" viewBox="0 0 64 64" width="${size}" height="${size}" aria-hidden="true">${rain ? cloud('#C9D2DC', -6) + drops : cloud('#DDE3EA', 2)}</svg>`;
+const hours: [string, boolean, number][] = [['9 AM', false, 8], ['12 PM', true, 11], ['3 PM', true, 13], ['6 PM', true, 10], ['9 PM', false, 7]];
 ---
 
 <Layout title="Augment — Avyay">
@@ -28,7 +51,7 @@ const states = [
     <header class="au-hero">
       <span class="type-body-sm text-disabled">/Experiment</span>
       <h1 class="type-title">Augment</h1>
-      <p class="au-prose type-body-md">A voice layer for the Mac. Press ⌥Space anywhere, talk, and a local Whisper and Llama turn what you said into tidy text, typed straight into the app you were using: a checklist in Notes, Markdown in Claude, one safe line in Terminal. Nothing leaves the laptop.</p>
+      <p class="au-prose type-body-md">A first step toward a personal agent that gets small tasks done on the side. I press ⌥Space anywhere on my Mac and talk; Augment works out what I meant and does it.</p>
 
       <!-- Live: the pill grows out of the notch, listens, tidies, and pastes into Notes -->
       <div class="au-desk au-desk--hero" data-au="hero" role="img" aria-label="Animation: Augment's black pill grows out of a MacBook notch, shows words as they're spoken, then pastes a formatted checklist into Notes">
@@ -62,73 +85,48 @@ const states = [
       <div class="au-meta-item"><span class="type-h4">Timeline</span><span class="type-body-sm">October 2026</span></div>
     </section>
 
-    <!-- ── Where it started ── -->
-    <section id="origin" class="au-section" data-chapter="Where it started">
-      <h2 class="au-label type-h4">Where it started</h2>
-      <h3 class="au-statement type-h1">An ear and a brain, glued together by a web page.</h3>
-      <p class="au-prose type-body-md">The first version was a single HTML file. You pressed Record, talked, and pressed Stop. The page sent the audio to Whisper running on the Mac (the ears), passed the words to Llama 3.1 8B (the brain) to remove the ums and add punctuation, and showed both. Whisper and Llama never spoke to each other; the page was the glue.</p>
-
-      <div class="au-flow" data-au="flow" aria-label="Diagram: microphone to Whisper to Llama to clean text">
-        <div class="au-flow-node"><span class="au-flow-icon">🎙</span><strong class="type-h3">You talk</strong><span class="type-body-xs">16 kHz audio</span></div>
-        <div class="au-flow-pipe"><i></i></div>
-        <div class="au-flow-node"><span class="au-flow-icon">👂</span><strong class="type-h3">Whisper</strong><span class="type-body-xs">audio → words, ~1.4 s</span></div>
-        <div class="au-flow-pipe"><i></i></div>
-        <div class="au-flow-node"><span class="au-flow-icon">🧠</span><strong class="type-h3">Llama 3.1 8B</strong><span class="type-body-xs">words → tidy text</span></div>
-        <div class="au-flow-pipe"><i></i></div>
-        <div class="au-flow-node"><span class="au-flow-icon">📋</span><strong class="type-h3">Clipboard</strong><span class="type-body-xs">paste it yourself</span></div>
-      </div>
-
-      <div class="au-numbers">
-        <div class="au-number"><span class="au-figure">0</span><span class="type-body-sm">accounts, logins or API keys</span></div>
-        <div class="au-number"><span class="au-figure">2–5 s</span><span class="type-body-sm">from Stop to tidy text, once warm</span></div>
-        <div class="au-number"><span class="au-figure">6.4 GB</span><span class="type-body-sm">self-contained Mac app, both models inside</span></div>
-      </div>
+    <!-- ── Why ── -->
+    <section id="why" class="au-section" data-chapter="Why">
+      <h2 class="au-label type-h4">Why I built it</h2>
+      <h3 class="au-statement type-h1">Small tasks shouldn't pull me out of what I'm doing.</h3>
+      <p class="au-prose type-body-md">Jot a to-do, check a number, see if it'll rain. Each one means switching apps. I wanted to say it once, from anywhere, and have it done.</p>
 
       <div class="au-two">
         <figure class="au-shot au-shot--app">
           <img src="/assets/augment/full-app.png" alt="Augment's first window: a Record button, the mascot, a live transcript card and a clipboard card" width="840" height="1120" loading="lazy" />
         </figure>
         <div class="au-two-copy">
-          <h3 class="type-h2">Then it became an app</h3>
-          <p class="au-prose type-body-md">Wrapping it in Electron gave it a global hotkey, a menu bar icon and a window of floating cards: a record button, the live transcript, and what came out the other end. Both servers ship inside the app, Llama starts when you begin talking so it's warm by the time you stop, and it frees its 5 GB after five quiet minutes.</p>
-          <p class="au-prose type-body-md">It worked, but it still ended with "now go and paste it". The rest of this project was about removing that last step and everything that made it feel like a tool you visit instead of something that's just there.</p>
+          <h3 class="type-h2">It started as dictation</h3>
+          <p class="au-prose type-body-md">Whisper heard me and Llama 3.1 8B tidied the words, both running on the Mac. But it was a window I had to visit, and I still had to paste.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── Augie ── -->
-    <section id="augie" class="au-section" data-chapter="Meet Augie">
-      <h2 class="au-label type-h4">Meet Augie</h2>
-      <h3 class="au-statement type-h1">A face made of two brackets and two squares.</h3>
-      <p class="au-prose type-body-md">Augment needed a way to say "I'm listening" and "I'm thinking" without words, at 28 pixels tall. Augie is the product's name drawn as a face: <code>[··]</code>. Every state is a keyframe animation (seven tracks: the whole body, each bracket, each eye) that I could tune in a small editor built into the app. Move your pointer around: the eyes follow it, and every so often Augie blinks.</p>
+    <!-- ── Router ── -->
+    <section id="router" class="au-section" data-chapter="The router">
+      <h2 class="au-label type-h4">From transcript to agent</h2>
+      <h3 class="au-statement type-h1">First, work out what the note is for.</h3>
+      <p class="au-prose type-body-md">A router picks one of five jobs for every note, from the words, the app in front, the website in a browser, and whether the cursor is in a text box.</p>
 
-      <div class="au-states">
-        {states.map(({ id, label, anim }) => (
-          <figure class="au-state">
-            <div class="au-state-stage"><div class="au-state-mascot" data-mascot={id}></div></div>
-            <figcaption><strong class="type-h3">{label}</strong><span class="type-body-xs">{anim}</span></figcaption>
-          </figure>
-        ))}
+      <div class="au-router" data-au="router" aria-label="Animation: spoken notes being routed to Type, Ask, Search, Weather or Scores">
+        <p class="au-said">“Can you send me the deck before Friday?”</p>
+        <div class="au-signals type-body-xs">
+          <span class="au-chip">App <b data-sig="app">Mail</b></span>
+          <span class="au-chip">Website <b data-sig="site">—</b></span>
+          <span class="au-chip">Text box <b data-sig="box">yes</b></span>
+        </div>
+        <div class="au-tools">
+          {tools.map(({ id, name, does }) => (
+            <div class:list={['au-tool', { 'is-on': id === 'type' }]} data-tool={id}><strong>{name}</strong><span class="type-body-xs">{does}</span></div>
+          ))}
+        </div>
+        <p class="au-why type-body-sm">Written to someone, with the cursor in a message: typed there.</p>
       </div>
-    </section>
 
-    <!-- ── Live transcript ── -->
-    <section id="transcript" class="au-section" data-chapter="Words as you speak">
-      <h2 class="au-label type-h4">Words as you speak</h2>
-      <h3 class="au-statement type-h1">Ink settles as Whisper stops changing its mind.</h3>
-      <p class="au-prose type-body-md">Whisper doesn't stream; it transcribes a clip. So every 1.5 seconds Augment sends everything said so far and redraws it. Words that came back the same as last time are drawn in full ink; the newest stay light until Whisper stops revising them. You can watch it correct "check list" into "checklist" below. When you stop, one final pass over the whole recording produces the real transcript.</p>
+      <p class="au-prose type-body-md">When unsure, it types: a stray answer is easy to ignore, but a dictated sentence that never lands is lost. A labelled test set keeps it honest; 35 of 35 route correctly.</p>
 
-      <div class="au-card" data-au="transcript">
-        <div class="au-card-head"><span class="type-h4">Live transcript</span><span class="au-pass type-body-xs">Whisper pass 1</span></div>
-        <p class="au-live"></p>
-      </div>
-    </section>
-
-    <!-- ── Typing where you are ── -->
-    <section id="apps" class="au-section" data-chapter="Typing where you are">
-      <h2 class="au-label type-h4">Typing where you are</h2>
-      <h3 class="au-statement type-h1">One note, written the way each app reads.</h3>
-      <p class="au-prose type-body-md">The clipboard step went first. When you press ⌥Space, Augment notes which app is in front, and when the note is ready it presses ⌘V there for you. Knowing the app turned out to matter for more than pasting: the same checklist has to land differently in each one.</p>
+      <h3 class="au-sub type-h2">Typing still has to land right</h3>
+      <p class="au-prose type-body-md">The same note lands differently in each app, and any app or site can get its own instructions file (<code>Notes.md</code>, <code>mail.google.com.md</code>).</p>
 
       <div class="au-apps" data-au="apps">
         <div class="au-app-tabs" role="tablist" aria-label="Apps">
@@ -171,17 +169,11 @@ const states = [
       </div>
     </section>
 
-    <!-- ── The harness ── -->
-    <section id="harness" class="au-section" data-chapter="Teaching an 8B model">
-      <h2 class="au-label type-h4">Teaching an 8B model to format</h2>
-      <h3 class="au-statement type-h1">Rails, not a longer prompt.</h3>
-      <p class="au-prose type-body-md">Formatting meant the model had to decide what's a heading, what's a list and what's just a sentence, and drop the words people use to dictate a list ("first one is", "let's make it a checklist") without dropping anything else. A small model asked to do all of that in one go behaved like one:</p>
-
-      <ol class="au-tries">
-        <li><strong class="type-h3">One prompt, Markdown out</strong><span class="type-body-sm">Made a list once in eight tries, kept "make this a checklist" in the note, and answered "Can you summarise this?" instead of copying it.</span></li>
-        <li><strong class="type-h3">Worked examples</strong><span class="type-body-sm">Lists improved, but it quietly dropped words ("on the way home", "Hey, just wanted to say") and invented headings from questions.</span></li>
-        <li><strong class="type-h3">Fixed fields, checked in code</strong><span class="type-body-sm">Llama fills a JSON shape the server enforces; code removes the spoken instructions first and checks everything Llama returns. Every real dictation I threw at it came out right.</span></li>
-      </ol>
+    <!-- ── Rails ── -->
+    <section id="rails" class="au-section" data-chapter="Rails">
+      <h2 class="au-label type-h4">Rails, not prompts</h2>
+      <h3 class="au-statement type-h1">A small model is fast and private, and wrong in predictable ways.</h3>
+      <p class="au-prose type-body-md">Rewording the prompt never fixed much. A line of code that checked its work did. One prompt made a list once in eight tries; fixed fields plus checks get it right.</p>
 
       <div class="au-harness" data-au="harness" aria-label="Animation: a spoken note going through Augment's formatting steps">
         <div class="au-step" data-step="1">
@@ -189,8 +181,8 @@ const states = [
           <p class="au-heard"><span class="t-head">Trip to Paris.</span> <span class="t-ask">Let's make it a checklist.</span> <span class="t-count">First one is</span> book flights. <span class="t-count">Second,</span> renew my passport. <span class="t-count">And the last one is</span> find a pet sitter.</p>
         </div>
         <div class="au-step" data-step="2">
-          <span class="au-step-label type-h4">Code removes the request</span>
-          <p class="type-body-sm">"Let's make it a checklist." is cut before Llama sees it, and becomes a hint instead: <span class="au-chip">kind: checklist</span></p>
+          <span class="au-step-label type-h4">Code lifts the request</span>
+          <p class="type-body-sm"><span class="au-chip">kind: checklist</span></p>
         </div>
         <div class="au-step" data-step="3">
           <span class="au-step-label type-h4">Llama fills fixed fields</span>
@@ -205,9 +197,9 @@ const states = [
         <div class="au-step" data-step="4">
           <span class="au-step-label type-h4">Code checks Llama's work</span>
           <div class="au-guards">
-            <span class="au-chip">✓ heading is the whole first sentence you said</span>
-            <span class="au-chip">✓ counting words stripped from items</span>
-            <span class="au-chip">✓ nothing repeated after the list</span>
+            <span class="au-chip">✓ heading was a whole sentence</span>
+            <span class="au-chip">✓ no counting words</span>
+            <span class="au-chip">✓ no echoed list</span>
           </div>
         </div>
         <div class="au-step" data-step="5">
@@ -220,28 +212,95 @@ const states = [
           </div>
         </div>
       </div>
+
+      <p class="au-prose type-body-md au-after">The same fix, again and again:</p>
+      <ul class="au-rails">
+        <li class="au-rails-head type-h4"><span>Llama</span><span>The rail</span></li>
+        {rails.map(([wrong, rail]) => (
+          <li class="type-body-sm"><span>{wrong}</span><span>{rail}</span></li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ── Answers ── -->
+    <section id="answers" class="au-section" data-chapter="Answers">
+      <h2 class="au-label type-h4">Answers you can see</h2>
+      <h3 class="au-statement type-h1">The weather and the football, right in the pill.</h3>
+      <p class="au-prose type-body-md">Llama is offline, so I gave two daily questions their own answers: weather from Open-Meteo, scores from ESPN's public data. Llama reads the place or team; every number comes from the source.</p>
+
+      <div class="au-answers" aria-label="Examples: a weather card and a score card inside Augment's black pill">
+        <div class="au-answer">
+          <div class="au-slot" data-mascot="idle"></div>
+          <div class="wd wd-weather">
+            <div class="wd-now">
+              <Fragment set:html={icon(true, 58)} />
+              <div class="wd-main">
+                <div class="wd-place">Paris · Tomorrow</div>
+                <div class="wd-temp">13°<span class="wd-unit">C</span></div>
+                <div class="wd-desc">Light rain</div>
+              </div>
+              <div class="wd-side"><span>H 13°</span><span>L 6°</span><span class="wd-rain">☂ 80%</span></div>
+            </div>
+            <div class="wd-hours">
+              {hours.map(([label, rain, temp]) => (
+                <div class="wd-hour"><span>{label}</span><Fragment set:html={icon(rain, 22)} /><b>{temp}°</b></div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div class="au-answer">
+          <div class="au-slot" data-mascot="idle"></div>
+          <div class="wd wd-score">
+            <div class="wd-head"><span>Full time</span><span>Premier League</span></div>
+            <div class="wd-match">
+              <div class="wd-team wd-win"><span class="wd-crest wd-crest--big">L</span><span class="wd-name">Liverpool</span></div>
+              <div class="wd-score-mid"><span class="wd-points">2<i>–</i>1</span></div>
+              <div class="wd-team wd-team--r"><span class="wd-crest wd-crest--big">B</span><span class="wd-name">Brentford</span></div>
+            </div>
+            <div class="wd-next">Next <span class="wd-crest wd-crest--small">V</span> <b>Villarreal</b> · home · Tue 20 Oct</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="au-prose type-body-md">Whisper and Llama still run on the Mac. Augment's own web requests go only to those two services, on an allow-list, and carry just a place or a team name. Searches go through my browser.</p>
+    </section>
+
+    <!-- ── Augie ── -->
+    <section id="augie" class="au-section" data-chapter="Augie">
+      <h2 class="au-label type-h4">Meet Augie</h2>
+      <h3 class="au-statement type-h1">A face made of two brackets and two squares.</h3>
+      <p class="au-prose type-body-md">The pill needs to say “listening” or “thinking” in 28 pixels. Augie, <code>[··]</code>, does it with keyframes. Its eyes follow your pointer.</p>
+
+      <div class="au-states">
+        {states.map(({ id, label, anim }) => (
+          <figure class="au-state">
+            <div class="au-state-stage"><div class="au-state-mascot" data-mascot={id}></div></div>
+            <figcaption><strong class="type-h3">{label}</strong><span class="type-body-xs">{anim}</span></figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
 
     <!-- ── The pill ── -->
-    <section id="pill" class="au-section" data-chapter="Out of the notch">
-      <h2 class="au-label type-h4">From floating pill to notch</h2>
+    <section id="pill" class="au-section" data-chapter="The notch">
+      <h2 class="au-label type-h4">Out of the notch</h2>
       <h3 class="au-statement type-h1">The pill learned where it lives.</h3>
-      <p class="au-prose type-body-md">When you start talking from another app, the full window would steal focus. So Augment shows a small pill instead: it never takes focus, mirrors what's happening, and disappears a few seconds after the note lands. Its design changed four times.</p>
+      <p class="au-prose type-body-md">A window would steal focus, so Augment shows a pill that never does. It took four tries.</p>
 
       <ol class="au-evolution">
         <li class="au-version">
           <div class="au-version-copy">
             <span class="au-version-num type-body-xs">v1</span>
             <h3 class="type-h2">A floating pill</h3>
-            <p class="au-prose type-body-sm">Translucent grey, centred near the top of the screen, sliding in and fading out. It read well over any wallpaper but floated free of everything around it.</p>
+            <p class="au-prose type-body-sm">Translucent grey, attached to nothing.</p>
           </div>
           <figure class="au-shot au-shot--pill"><img src="/assets/augment/pill-v1-live.png" alt="The first mini pill: a translucent dark grey rounded pill over a wallpaper, showing the mascot, words being transcribed and a red timer" width="960" height="192" loading="lazy" /></figure>
         </li>
         <li class="au-version">
           <div class="au-version-copy">
             <span class="au-version-num type-body-xs">v2</span>
-            <h3 class="type-h2">Knowing where it's going</h3>
-            <p class="au-prose type-body-sm">Once Augment knew which app it was writing into, the pill showed that app's icon. The first attempt drew a grey placeholder; macOS only hands over the real icon through Quick Look.</p>
+            <h3 class="type-h2">Where it's going</h3>
+            <p class="au-prose type-body-sm">Shows the app it's typing into.</p>
           </div>
           <div class="au-oldpill" aria-hidden="true">
             <div class="au-oldpill-slot" data-mascot="listening"></div>
@@ -254,7 +313,7 @@ const states = [
           <div class="au-version-copy">
             <span class="au-version-num type-body-xs">v3</span>
             <h3 class="type-h2">Out of the notch</h3>
-            <p class="au-prose type-body-sm">Pure black, attached to the top edge, growing out of the MacBook notch and tucking back into it with the same motion reversed. macOS keeps windows below the menu bar, so this one has to ask to sit above it.</p>
+            <p class="au-prose type-body-sm">Pure black, growing out of the MacBook notch, above the menu bar.</p>
           </div>
           <div class="au-desk au-desk--mini" data-au="notch" aria-hidden="true">
             <div class="au-menubar"><span class="au-menubar-left"><b></b>Notes<i>File</i><i>Edit</i></span><span class="au-menubar-right"><i>12:31</i></span></div>
@@ -273,27 +332,20 @@ const states = [
           <div class="au-version-copy">
             <span class="au-version-num type-body-xs">v4</span>
             <h3 class="type-h2">Two rows, one job each</h3>
-            <p class="au-prose type-body-sm">The top is only for Augie and your words; the app and the timer moved to a bar underneath. Words got the full width, so a finished note fits on two lines.</p>
+            <p class="au-prose type-body-sm">Words on top; where it went, below.</p>
           </div>
-          <div class="au-anatomy" aria-hidden="true">
-            <div class="au-desk au-desk--still">
-              <div class="au-notch"></div>
-              <div class="au-pill">
-                <div class="au-row">
-                  <div class="au-slot" data-mascot="idle"></div>
-                  <div class="au-text"><span class="au-line au-final">Trip to Paris ☐ Book flights ☐ Renew my passport ☐ Find a pet sitter</span></div>
-                </div>
-                <div class="au-bar">
-                  <span class="au-target"><img src="/assets/augment/icon-notes.png" alt="" width="18" height="18" />Notes</span>
-                  <span class="au-side">Pasted</span>
-                </div>
+          <div class="au-desk au-desk--still" aria-hidden="true">
+            <div class="au-notch"></div>
+            <div class="au-pill">
+              <div class="au-row">
+                <div class="au-slot" data-mascot="idle"></div>
+                <div class="au-text"><span class="au-line au-final">Trip to Paris ☐ Book flights ☐ Renew my passport ☐ Find a pet sitter</span></div>
+              </div>
+              <div class="au-bar">
+                <span class="au-target"><img src="/assets/augment/icon-notes.png" alt="" width="18" height="18" />Notes</span>
+                <span class="au-side">Pasted</span>
               </div>
             </div>
-            <ul class="au-callouts">
-              <li><b>Ears</b> concave curves where it meets the screen edge, so it reads as the notch growing</li>
-              <li><b>Below the notch</b> content starts at the menu bar's height, which on a notched Mac is the notch's</li>
-              <li><b>Bottom bar</b> where the note is going, and what happened to it</li>
-            </ul>
           </div>
         </li>
       </ol>
@@ -301,36 +353,32 @@ const states = [
 
     <!-- ── Bugs ── -->
     <section id="bugs" class="au-section" data-chapter="What broke">
-      <h2 class="au-label type-h4">What broke, and what it taught me</h2>
+      <h2 class="au-label type-h4">What broke</h2>
       <div class="au-bugs">
         <div class="au-bug">
           <strong class="type-h3">The paste that never happened</strong>
-          <p class="type-body-sm">Formatting "didn't work", so I tuned prompts. The real cause was in the terminal all along: Electron had changed its clipboard API, and every paste threw before pressing a key. Read the logs before blaming the model.</p>
+          <p class="type-body-sm">I tuned prompts first. The logs showed Electron's clipboard API had changed, and every paste was failing silently.</p>
+        </div>
+        <div class="au-bug">
+          <strong class="type-h3">Permissions that vanished</strong>
+          <p class="type-body-sm">Ad-hoc signing fingerprints each build, so macOS forgot permissions on every rebuild. A self-signed certificate fixed it.</p>
         </div>
         <div class="au-bug">
           <strong class="type-h3">A shortcut someone else owned</strong>
-          <p class="type-body-sm">Notes' checklist shortcut, ⇧⌘L, opened another app's drawer on my Mac. Augment now clicks Format → Checklist in Notes' own menu, which nothing can intercept.</p>
+          <p class="type-body-sm">Notes' ⇧⌘L opened another app's drawer, so Augment clicks Format → Checklist instead.</p>
         </div>
         <div class="au-bug">
           <strong class="type-h3">The close that snapped shut</strong>
-          <p class="type-body-sm">Playing the opening animation in reverse did nothing: Chromium won't restart an animation whose only change is its direction. Closing got its own copy of the keyframes.</p>
-        </div>
-        <div class="au-bug">
-          <strong class="type-h3">Formatting twice</strong>
-          <p class="type-body-sm">A list followed by the same list as a paragraph looked like a double paste. It was Llama repeating the items in "what came after". Code now drops that field when it only echoes the list.</p>
+          <p class="type-body-sm">Chromium won't restart an animation that only changes direction, so closing got its own keyframes.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── Learnings ── -->
-    <section id="learnings" class="au-section" data-chapter="Learnings">
-      <h2 class="au-label type-h4">Learnings</h2>
-      <div class="au-learnings">
-        <div class="au-learning"><span class="au-learning-num">01</span><div><strong class="type-h3">Small models need rails</strong><p class="type-body-sm">Fixed fields and checks in code did what no amount of prompt wording could. The model decides what goes where; code makes sure it's sane.</p></div></div>
-        <div class="au-learning"><span class="au-learning-num">02</span><div><strong class="type-h3">Test with how people actually talk</strong><p class="type-body-sm">Every fix came from a real dictation: "item number one is going to be", "this is going to be a checklist". Tidy sample sentences hid all of it.</p></div></div>
-        <div class="au-learning"><span class="au-learning-num">03</span><div><strong class="type-h3">Use what's already on screen</strong><p class="type-body-sm">The app you're in, its own menus, the notch. The more Augment borrowed from the Mac, the less it felt like a separate tool.</p></div></div>
-        <div class="au-learning"><span class="au-learning-num">04</span><div><strong class="type-h3">Check the plumbing first</strong><p class="type-body-sm">Three of the four worst bugs were platform changes, not design or model problems. Proof beats assumptions, every time.</p></div></div>
-      </div>
+    <!-- ── Next ── -->
+    <section id="next" class="au-section" data-chapter="What's next">
+      <h2 class="au-label type-h4">What's next</h2>
+      <h3 class="au-statement type-h1">More small jobs, same rules.</h3>
+      <p class="au-prose type-body-md">Each job is one module behind the router, so the next ones (a to-do list, a summary, an email draft) are small additions. The rule stays: the model decides, code checks, and when in doubt, do the safe thing.</p>
     </section>
 
   </article>
@@ -481,21 +529,7 @@ const states = [
   .au-label { display: block; margin-bottom: 32px; }
   .au-statement { margin-bottom: 16px; max-width: 680px; }
 
-  /* ── Origin flow ── */
-  .au-flow { display: flex; align-items: stretch; gap: 0; margin: 36px 0 28px; }
-  .au-flow-node { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 18px 16px; border-radius: 12px; background: var(--color-cool-bg); }
-  .au-flow-icon { font-size: 22px; margin-bottom: 6px; }
-  .au-flow-pipe { flex: 0 0 28px; position: relative; align-self: center; height: 2px; background: var(--color-divider); }
-  .au-flow-pipe i { position: absolute; top: -3px; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--color-text-accent); opacity: 0; }
-  .au-flow.is-playing .au-flow-pipe i { animation: au-pulse 2.4s linear infinite; }
-  .au-flow.is-playing .au-flow-pipe:nth-of-type(4) i { animation-delay: 0.8s; }
-  .au-flow.is-playing .au-flow-pipe:nth-of-type(6) i { animation-delay: 1.6s; }
-  @keyframes au-pulse { 0% { left: 0; opacity: 0; } 10% { opacity: 1; } 30% { left: calc(100% - 8px); opacity: 1; } 36%, 100% { left: calc(100% - 8px); opacity: 0; } }
-
-  .au-numbers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--color-divider); border-radius: 12px; overflow: hidden; margin-bottom: 40px; }
-  .au-number { background: var(--color-cool-bg); padding: 28px 24px; display: flex; flex-direction: column; gap: 8px; }
-  .au-figure { font: 700 40px/1 var(--font-serif); color: var(--color-text-accent); }
-
+  /* ── Why ── */
   .au-two { display: grid; grid-template-columns: 240px 1fr; gap: 40px; align-items: start; }
   .au-two-copy h3 { margin-bottom: 12px; }
   .au-shot { margin: 0; border-radius: 12px; overflow: hidden; }
@@ -520,16 +554,6 @@ const states = [
   .au .fx-blink .m-blink { animation: au-mblink 0.17s ease-in-out; }
   @keyframes au-mblink { 50% { transform: scaleY(0.1); } }
 
-  /* ── Live transcript card (mirrors the app's transcript card) ── */
-  .au-card { margin-top: 32px; padding: 20px 24px 24px; border-radius: 16px; background: #f6f6f4; color: #1c2430; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.06); min-height: 210px; }
-  html[data-theme='dark'] .au-card { background: #1d1f22; color: #eef0ee; }
-  .au-card-head { display: flex; justify-content: space-between; margin-bottom: 14px; }
-  .au-card-head .type-h4 { text-transform: none; color: #6c7480; font-size: 13px; }
-  .au-pass { color: #6c7480; }
-  .au-live { margin: 0; font: 26px/1.4 var(--au-serif); max-width: 640px; }
-  .au-live .au-tentative { color: #a3a9b1; transition: color 0.4s; }
-  html[data-theme='dark'] .au-live .au-tentative { color: #6c737c; }
-
   /* ── Apps ── */
   .au-apps { margin-top: 32px; }
   .au-app-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
@@ -548,10 +572,82 @@ const states = [
   .au-app-panels .au-doc { min-height: 168px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(0, 0, 0, 0.08); }
   .au-app-why { margin-top: 12px; }
 
+  /* ── Router ── */
+  .au-router { margin: 32px 0; padding: 22px; border-radius: 16px; background: var(--color-cool-bg); display: flex; flex-direction: column; gap: 16px; }
+  .au-said { margin: 0; min-height: 2.7em; font: 24px/1.35 var(--au-serif); color: var(--color-text-strong); }
+  .au-router.is-new .au-said { animation: au-land 0.35s cubic-bezier(.2, .8, .25, 1); }
+  .au-signals { display: flex; flex-wrap: wrap; gap: 6px; }
+  .au-signals .au-chip { font-weight: 500; color: var(--color-text-secondary); }
+  .au-signals b { margin-left: 4px; color: var(--color-text-strong); }
+  .au-tools { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .au-tool {
+    display: flex; flex-direction: column; gap: 2px; padding: 12px 10px; border-radius: 10px;
+    border: 1px solid var(--color-border); background: var(--color-bg-default); color: var(--color-text-secondary);
+    transition: border-color 0.3s, color 0.3s, transform 0.3s cubic-bezier(.2, .8, .25, 1.4);
+  }
+  .au-tool strong { font: 600 14px/1.2 var(--font-sans); color: var(--color-text-strong); }
+  .au-tool.is-on { border-color: var(--color-text-accent); transform: translateY(-2px); }
+  .au-tool.is-on strong { color: var(--color-text-accent); }
+  .au-why { margin: 0; min-height: 3em; }
+  .au-sub { margin: 40px 0 12px; }
+
+  /* ── Rails ── */
+  .au-after { margin-top: 32px; }
+  .au-rails { list-style: none; padding: 0; margin: 16px 0 0; border-top: 1px solid var(--color-border); }
+  .au-rails li { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 28px; padding: 14px 0; border-bottom: 1px solid var(--color-border); line-height: 1.5; }
+  .au-rails li > span:first-child { color: var(--color-text-secondary); }
+  .au-rails li > span:last-child { color: var(--color-text-strong); }
+  .au-rails-head { padding: 10px 0 !important; }
+
+  /* ── Answers: the pill with the app's weather and score cards (mirrors voice-app/widgets.css) ── */
+  .au-answers {
+    margin: 32px 0; padding: 28px 20px; border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    background:
+      radial-gradient(120% 90% at 85% 110%, #e08a5a 0%, transparent 55%),
+      radial-gradient(90% 80% at 10% 0%, #4b3f9b 0%, transparent 60%),
+      linear-gradient(160deg, #2f2a5c, #7a4d6f 60%, #c9785a);
+  }
+  .au-answer { width: min(460px, 100%); display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 26px; background: var(--au-black); box-shadow: 0 14px 24px -10px rgba(0, 0, 0, 0.55); }
+  .au-answer > .au-slot { margin-top: 10px; }
+  .au .wd { flex: 1; min-width: 0; border-radius: 16px; padding: 12px 14px 11px; color: #fff; font: 12px/1.3 -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  .au .wd-head { display: flex; justify-content: space-between; gap: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; color: rgba(255, 255, 255, 0.72); }
+  .au .wd-weather { background: linear-gradient(160deg, #2E4259, #52687F); } /* light rain, by day */
+  .au .wd-now { display: flex; align-items: center; gap: 10px; }
+  .au .wd-now > .wi { flex: none; margin: -4px -2px -4px -6px; }
+  .au .wd-main { flex: 1; min-width: 0; }
+  .au .wd-place { font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.78); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .au .wd-temp { font-size: 34px; font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; }
+  .au .wd-unit { font-size: 14px; font-weight: 500; vertical-align: 15px; margin-left: 1px; opacity: 0.8; }
+  .au .wd-desc { font-size: 12px; font-weight: 500; }
+  .au .wd-side { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 12px; font-weight: 600; }
+  .au .wd-rain { color: #BFE3FF; }
+  .au .wd-hours { display: flex; justify-content: space-between; margin-top: 9px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.16); }
+  .au .wd-hour { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 40px; font-size: 11px; color: rgba(255, 255, 255, 0.78); }
+  .au .wd-hour b { font-size: 13px; color: #fff; }
+  .au .wi .wi-cloud { animation: au-wi-drift 5s ease-in-out infinite alternate; }
+  .au .wi .wi-drop { animation: au-wi-fall 0.9s linear infinite; }
+  .au .wi .wi-drop:nth-child(2) { animation-delay: 0.3s; }
+  .au .wi .wi-drop:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes au-wi-drift { from { transform: translateX(-1.5px); } to { transform: translateX(1.5px); } }
+  @keyframes au-wi-fall { from { transform: translateY(-4px); opacity: 0; } 30% { opacity: 1; } to { transform: translateY(5px); opacity: 0; } }
+  .au .wd-score { --wd-team: #C8102E; background: linear-gradient(150deg, color-mix(in srgb, var(--wd-team) 82%, white 6%), color-mix(in srgb, var(--wd-team) 55%, black)); }
+  .au .wd-match { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin: 9px 0 2px; }
+  .au .wd-team { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.82); }
+  .au .wd-team--r { flex-direction: row-reverse; text-align: right; }
+  .au .wd-win { color: #fff; }
+  .au .wd-win .wd-name { font-weight: 700; }
+  .au .wd-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .au .wd-crest { flex: none; display: grid; place-items: center; width: var(--s); height: var(--s); border-radius: 50%; background: rgba(255, 255, 255, 0.94); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25); font-size: calc(var(--s) * 0.38); font-weight: 700; color: #333; }
+  .au .wd-crest--big { --s: 34px; }
+  .au .wd-crest--small { --s: 16px; }
+  .au .wd-score-mid { text-align: center; }
+  .au .wd-points { font-size: 30px; font-weight: 300; letter-spacing: 0.02em; white-space: nowrap; }
+  .au .wd-points i { font-style: normal; opacity: 0.6; margin: 0 6px; }
+  .au .wd-next { display: flex; align-items: center; gap: 5px; margin-top: 8px; padding-top: 7px; border-top: 1px solid rgba(255, 255, 255, 0.18); font-size: 11px; color: rgba(255, 255, 255, 0.78); white-space: nowrap; overflow: hidden; }
+  .au .wd-next b { color: #fff; }
+
   /* ── Harness ── */
-  .au-tries { list-style: none; counter-reset: tries; display: flex; flex-direction: column; gap: 14px; margin: 24px 0 32px; padding: 0; }
-  .au-tries li { counter-increment: tries; display: grid; grid-template-columns: 28px 1fr; gap: 2px 12px; }
-  .au-tries li::before { content: "0" counter(tries); grid-row: span 2; font: 10px/2 var(--font-sans); color: var(--color-text-accent); }
   .au-harness { display: flex; flex-direction: column; gap: 10px; }
   .au-step { padding: 18px 20px; border-radius: 12px; background: var(--color-cool-bg); display: flex; flex-direction: column; gap: 10px; transition: opacity 0.4s, transform 0.4s cubic-bezier(.2, .8, .25, 1); }
   .au-harness.is-armed .au-step:not(.is-on) { opacity: 0.18; transform: translateY(6px); }
@@ -582,34 +678,25 @@ const states = [
   .au-oldpill-text span { color: var(--au-soft); }
   .au-oldpill-side { color: var(--au-rec); font: 13px var(--font-sans); }
   .au-oldpill-side::before { content: "● "; font-size: 9px; vertical-align: 1px; }
-  .au-anatomy { display: flex; flex-direction: column; gap: 14px; }
-  .au-callouts { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .au-callouts li { font: 13px/1.45 var(--font-sans); color: var(--color-text-secondary); }
-  .au-callouts b { display: block; color: var(--color-text-strong); margin-bottom: 2px; }
-
-  /* ── Bugs and learnings ── */
+  /* ── Bugs ── */
   .au-bugs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .au-bug { padding: 22px 22px 24px; border-radius: 12px; background: var(--color-cool-bg); display: flex; flex-direction: column; gap: 8px; }
   .au-bug p { line-height: 1.55; }
-  .au-learnings { display: flex; flex-direction: column; gap: 28px; }
-  .au-learning { display: flex; gap: 20px; align-items: flex-start; }
-  .au-learning-num { flex-shrink: 0; margin-top: 5px; font: 10px var(--font-sans); color: var(--color-text-accent); }
-  .au-learning strong { display: block; margin-bottom: 4px; }
-
   /* ── Small screens ── */
   @media (max-width: 760px) {
     .au-meta { grid-template-columns: 1fr 1fr; }
-    .au-flow { flex-direction: column; }
-    .au-flow-pipe { flex-basis: 20px; width: 2px; height: 20px; align-self: center; }
-    .au-flow-pipe i { display: none; }
-    .au-numbers { grid-template-columns: 1fr; }
     .au-two, .au-version { grid-template-columns: 1fr; }
     .au-shot--app { max-width: 300px; }
     .au-states { grid-template-columns: 1fr 1fr; }
-    .au-bugs, .au-callouts { grid-template-columns: 1fr; }
+    .au-bugs, .au-rails li { grid-template-columns: 1fr; }
+    .au-rails-head { display: none !important; }
+    .au-tools { grid-template-columns: repeat(3, 1fr); }
+    .au-said { font-size: 20px; }
+    .au-answers { padding: 20px 12px; }
+    .au-answer > .au-slot { display: none; }
+    .au .wd-team, .au .wd-team--r { flex-direction: column; text-align: center; gap: 5px; }
     .au-desk--hero { height: 400px; }
     .au-menubar-left i, .au-menubar-right .au-dot { display: none; }
-    .au-live { font-size: 21px; }
     .au-oldpill { gap: 10px; }
   }
 
