@@ -94,7 +94,7 @@ async function wait(ms, g) {
   return g === gen
 }
 
-// ── Live transcript passes (the same note everywhere on the page) ──
+// ── Live transcript passes (the hero's note) ──
 
 const PASSES = [
   'Trip to',
@@ -223,22 +223,34 @@ function states(root, g) {
   })()
 }
 
-// ── Transcript card: Whisper's passes, one every ~1.5 s ──
+// ── Router: one spoken note at a time, the signals it sees, the job it picks (voice-app/modules/router.js) ──
 
-async function transcript(card, g) {
-  const live = card.querySelector('.au-live')
-  const pass = card.querySelector('.au-pass')
-  if (reduced()) { live.textContent = PASSES.at(-1); pass.textContent = 'Final pass'; return }
-  while (await onScreen(card, g)) {
-    let prev = []
-    for (const [i, text] of PASSES.entries()) {
-      prev = draw(live, text, prev)
-      pass.textContent = `Whisper pass ${i + 1}`
-      if (!await wait(1500, g)) return
-    }
-    draw(live, PASSES.at(-1), PASSES.at(-1).split(' '))
-    pass.textContent = 'Final pass'
-    if (!await wait(3000, g)) return
+const ROUTES = [
+  { said: 'Can you send me the deck before Friday?', app: 'Mail', site: '—', box: 'yes', tool: 'type', why: 'Written to someone, with the cursor in a message: typed there.' },
+  { said: 'Augie, what’s 18% of 240?', app: 'Finder', site: '—', box: 'no', tool: 'ask', why: 'Called by name, so Augie answers in the pill: 43.2, worked out in code.' },
+  { said: 'Will it rain in Paris tomorrow?', app: 'Notes', site: '—', box: 'no', tool: 'weather', why: 'A question about the weather: Augment answers it with a forecast card.' },
+  { said: 'What’s the capital of Australia?', app: 'Claude', site: '—', box: 'yes', tool: 'type', why: 'Claude is a chatbot, so the question is typed as a prompt.' },
+  { said: 'Search for flights to Lisbon', app: 'Arc', site: 'google.com', box: 'no', tool: 'search', why: '“Search for…” always searches, in the browser in front.' },
+  { said: 'Did Liverpool win?', app: 'Safari', site: 'bbc.co.uk', box: 'no', tool: 'scores', why: 'A question about a match: answered from the scoreboard, as a card.' },
+]
+
+async function router(root, g) {
+  const said = root.querySelector('.au-said')
+  const why = root.querySelector('.au-why')
+  const sigs = [...root.querySelectorAll('[data-sig]')]
+  const tools = [...root.querySelectorAll('.au-tool')]
+  if (reduced()) return // the markup already shows the first note, routed
+  for (let i = 1; await onScreen(root, g); i++) { // the markup shows ROUTES[0]; start with the next one
+    const r = ROUTES[i % ROUTES.length]
+    said.textContent = `“${r.said}”`
+    sigs.forEach(s => { s.textContent = r[s.dataset.sig] })
+    tools.forEach(t => t.classList.remove('is-on'))
+    why.textContent = 'Deciding…'
+    root.classList.remove('is-new'); void root.offsetWidth; root.classList.add('is-new')
+    if (!await wait(1000, g)) return
+    tools.forEach(t => t.classList.toggle('is-on', t.dataset.tool === r.tool))
+    why.textContent = r.why
+    if (!await wait(3200, g)) return
   }
 }
 
@@ -333,16 +345,15 @@ document.addEventListener('astro:page-load', () => {
   viewer = new IntersectionObserver(entries => entries.forEach(e => seen.set(e.target, e.isIntersecting)), { threshold: 0.25 })
 
   const el = name => root.querySelector(`[data-au="${name}"]`)
-  for (const name of ['hero', 'transcript', 'apps', 'harness', 'notch', 'flow']) watch(el(name))
+  for (const name of ['hero', 'router', 'apps', 'harness', 'notch']) watch(el(name))
   root.querySelectorAll('.au-state [data-mascot]').forEach(watch)
 
   hero(el('hero'), g)
   states(root, g)
-  transcript(el('transcript'), g)
+  router(el('router'), g)
   apps(el('apps'), g)
   harness(el('harness'), g)
   notch(el('notch'), g)
-  root.querySelectorAll('.au-oldpill [data-mascot], .au-anatomy [data-mascot]').forEach(slot => mascot(slot).state(slot.dataset.mascot))
-  el('flow').classList.add('is-playing')
+  root.querySelectorAll('.au-oldpill [data-mascot], .au-desk--still [data-mascot], .au-answer [data-mascot]').forEach(slot => mascot(slot).state(slot.dataset.mascot))
   habits(g)
 })
