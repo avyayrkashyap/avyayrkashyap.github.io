@@ -1,70 +1,306 @@
 ---
 // src/components/Hero.astro
+// Backdrop photos; pixel-field.js reads each scene off its dot.
+// horizon: waterline as a fraction of the photo's height.
+// top: the row of the photo (fraction of its height) that sits at the top
+// edge of the band when the photo is taller than the band; set just above the
+// tallest tower so the skyline fills the frame.
+// zoom (optional): crop in further than a plain cover, trimming the sides,
+// for wide-angle shots whose buildings read small.
+// hour: roughly when it was shot (0-24); the page opens on the photo closest
+// to the visitor's local time.
+// at: [lat, lon, heading] where the camera stood and the compass direction it
+// faced, for the little map under the photo.
+const scenes = [
+  {
+    src: '/assets/index/hero-skyline.jpg',
+    hour: 12,
+    horizon: 0.572,
+    top: 0.33,
+    at: [40.787, -73.9625, 195],
+    meta: ['Central Park Reservoir, New York', '40.7870° N, 73.9625° W'],
+  },
+  {
+    src: '/assets/index/hero-hudson.jpg',
+    hour: 20,
+    horizon: 0.667,
+    top: 0.21,
+    at: [40.745, -74.024, 68],
+    meta: ['Hudson River at dusk, Hoboken', '40.7450° N, 74.0240° W'],
+  },
+  {
+    src: '/assets/index/hero-brooklyn-bridge.jpg',
+    hour: 14,
+    horizon: 0.594,
+    top: 0.42,
+    zoom: 1.35,
+    at: [40.699, -73.999, 345],
+    meta: ['Brooklyn Bridge from the East River', '40.6990° N, 73.9990° W'],
+  },
+];
+
+// Simplified shorelines as [lat, lon]: Manhattan as a closed outline, the
+// facing edges of Brooklyn and Jersey City/Hoboken as open lines
+const manhattan = [
+  [40.7003, -74.0153], [40.712, -74.018], [40.722, -74.012], [40.735, -74.01], [40.747, -74.008],
+  [40.757, -74.005], [40.772, -73.993], [40.787, -73.982], [40.8, -73.972], [40.815, -73.962],
+  [40.83, -73.952], [40.85, -73.946], [40.865, -73.933], [40.877, -73.925], [40.873, -73.911],
+  [40.865, -73.915], [40.85, -73.928], [40.835, -73.934], [40.818, -73.933], [40.805, -73.93],
+  [40.795, -73.929], [40.785, -73.94], [40.775, -73.943], [40.765, -73.952], [40.757, -73.958],
+  [40.748, -73.969], [40.733, -73.974], [40.722, -73.972], [40.711, -73.979], [40.708, -73.999],
+  [40.704, -74.005],
+];
+const brooklyn = [
+  [40.739, -73.958], [40.725, -73.962], [40.714, -73.968], [40.703, -73.975], [40.704, -73.99],
+  [40.701, -73.997], [40.69, -74.001], [40.676, -74.016],
+];
+const jersey = [
+  [40.785, -73.998], [40.776, -74.008], [40.761, -74.02], [40.753, -74.024], [40.737, -74.027],
+  [40.727, -74.031], [40.712, -74.033], [40.705, -74.04], [40.69, -74.05],
+];
+// Equirectangular projection (1 unit = 100 m), then turned TURN degrees
+// clockwise so Manhattan's long axis (about 29° east of north) runs left to
+// right: the Battery on the left, Jersey City above, Brooklyn below
+const TURN = 61;
+const [lat0, lon0] = [40.78, -73.97];
+const kx = 1113.2 * Math.cos(lat0 * (Math.PI / 180)), ky = 1105.7;
+const [cos, sin] = [Math.cos(TURN * (Math.PI / 180)), Math.sin(TURN * (Math.PI / 180))];
+const xy = ([lat, lon]: number[]) => {
+  const x = (lon - lon0) * kx, y = (lat0 - lat) * ky;
+  return [x * cos - y * sin, x * sin + y * cos].map((v) => +v.toFixed(1));
+};
+const line = (pts: number[][], close = false) => 'M' + pts.map((p) => xy(p).join(' ')).join('L') + (close ? 'Z' : '');
+const all = [...manhattan, ...brooklyn, ...jersey].map(xy);
+const [minX, minY] = [Math.min(...all.map((p) => p[0])), Math.min(...all.map((p) => p[1]))];
+const [maxX, maxY] = [Math.max(...all.map((p) => p[0])), Math.max(...all.map((p) => p[1]))];
+const viewBox = [minX, minY, maxX - minX, maxY - minY].map((v) => Math.round(v)).join(' ');
 ---
 <section class="hero">
   <div class="hero-card">
-    <div class="hero-intro">
-      <div class="hero-photo" role="img" aria-label="Avyay in front of the Golden Gate Bridge"></div>
-      <div class="hero-copy">
-        <p class="hero-eyebrow type-body-md">Hi, I am Avyay</p>
-        <h1 class="hero-title type-title" aria-label="I am a designer. builder. tinkerer. human.">
-          <span aria-hidden="true">I am a <span id="heroWord">designer.</span><span class="hero-caret" id="heroCaret"></span></span>
-        </h1>
-        <p class="hero-lead type-body-md" id="heroLead">I solve problems that make every day better.</p>
+    <canvas class="hero-pixels" aria-hidden="true"></canvas>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-scene">
+      <div class="hero-dots" role="group" aria-label="Background photo">
+        {scenes.map((s, i) => (
+          <button
+            class="hero-dot"
+            type="button"
+            aria-label={`Photo ${i + 1}: ${s.meta[0]}`}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+            data-src={s.src}
+            data-horizon={s.horizon}
+            data-top={s.top}
+            data-zoom={s.zoom ?? 1}
+            data-hour={s.hour}
+            data-meta={s.meta.join('\n')}
+          ></button>
+        ))}
       </div>
+    </div>
+  </div>
+
+  <!-- Below the photo: intro on the left, the photo's caption on the right -->
+  <div class="hero-below">
+    <div class="hero-copy">
+      <p class="hero-eyebrow type-body-md">Hi, I am Avyay</p>
+      <h1 class="hero-title type-title" aria-label="I am a designer. builder. tinkerer. human.">
+        <span aria-hidden="true">I am a <span id="heroWord">designer.</span><span class="hero-caret" id="heroCaret"></span></span>
+      </h1>
+      <p class="hero-lead type-body-md" id="heroLead">I solve problems that make every day better.</p>
+    </div>
+    <div class="hero-where">
+      <p class="hero-meta type-body-xs" id="heroMeta">{scenes[0].meta.join('\n')}</p>
+      <!-- Where each photo was taken; pixel-field.js marks the current one -->
+      <svg class="hero-map" viewBox={viewBox} aria-hidden="true">
+        <path class="hero-map-land" d={line(manhattan, true)} />
+        <path class="hero-map-shore" d={line(brooklyn)} />
+        <path class="hero-map-shore" d={line(jersey)} />
+        {scenes.map((s, i) => {
+          const [x, y] = xy(s.at);
+          return (
+            <g class:list={['hero-map-spot', { 'is-on': i === 0 }]} transform={`translate(${x} ${y})`}>
+              <path class="hero-map-view" d="M0 0L-11 -28A30 30 0 0 1 11 -28Z" transform={`rotate(${s.at[2] + TURN})`} />
+              <circle r="5" />
+            </g>
+          );
+        })}
+      </svg>
     </div>
   </div>
 </section>
 
 <script src="../scripts/hero.js"></script>
+<script src="../scripts/pixel-field.js"></script>
 
 <style>
   /* Full-bleed: opts out of the .main > * content column */
   .hero {
     max-width: none;
-    height: 100vh;
-    height: 100svh;
-    min-height: 560px;
-    padding: 24px;
-    display: flex;
   }
 
+  /* The photo band */
   .hero-card {
     position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* Equal top/bottom room clears the fixed dock and keeps the intro centered */
-    padding: 72px clamp(24px, 8.3vw, 120px);
-    border-radius: 24px;
+    height: 70vh;
+    height: 70svh;
+    min-height: 360px;
     overflow: clip;
-    background-image: linear-gradient(in oklab 180deg, var(--color-warm-bg) 0%, var(--color-cool-bg) 100%);
+    /* Read by pixel-field.js; the photo is the no-JS fallback.
+       --scene-tint multiplies the photo (white = untouched) */
+    --scene-tint: #FFFFFF;
+    background: url(/assets/index/hero-skyline.jpg) center 49% / cover;
   }
 
-  .hero-intro {
+  :global(html[data-theme='dark']) .hero-card {
+    --scene-tint: #4A5680;
+  }
+
+  /* Photo switcher, bottom right over the water */
+  .hero-scene {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    color: #FFFFFF;
+  }
+
+  .hero-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  /* 24px hit area around an 8px dot */
+  .hero-dot {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .hero-dot::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.45;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .hero-dot:hover::before {
+    opacity: 0.75;
+  }
+
+  .hero-dot[aria-pressed='true']::before {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+
+  .hero-dot:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+    border-radius: 50%;
+  }
+
+  .hero-below {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 48px clamp(24px, 5vw, 72px) 64px;
+  }
+
+  /* Caption with the map under it, right aligned */
+  .hero-where {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    text-align: center;
+    align-items: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
   }
 
-  .hero-photo {
-    width: 172px;
-    height: 102px;
-    flex-shrink: 0;
-    border-radius: 24px;
-    background-image: url(/assets/index/hero-photo.jpg);
-    background-position: 49.855% 52.168%;
-    background-repeat: no-repeat;
-    background-size: 200.291%;
+  .hero-map {
+    width: 160px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .hero-map-land,
+  .hero-map-shore {
+    fill: none;
+    stroke: var(--color-text-secondary);
+    stroke-width: 1px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.5;
+  }
+
+  .hero-map-land {
+    fill: var(--color-text-secondary);
+    fill-opacity: 0.08;
+  }
+
+  .hero-map-spot circle {
+    fill: var(--color-text-secondary);
+    opacity: 0.45;
+    transition: opacity 0.2s ease, fill 0.2s ease;
+  }
+
+  /* The current photo: an accent dot with a cone the way the camera faced */
+  .hero-map-view {
+    fill: var(--color-text-accent);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .hero-map-spot.is-on circle {
+    fill: var(--color-text-accent);
+    opacity: 1;
+  }
+
+  .hero-map-spot.is-on .hero-map-view {
+    opacity: 0.3;
+  }
+
+  .hero-meta {
+    margin: 0;
+    text-align: right;
+    white-space: pre-line;
+  }
+
+  /* Low-res canvas scaled up; pixel-field.js sizes it to whole cells */
+  .hero-pixels {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+
+  /* Hairline grid on the pixel edges, so the pixels read as deliberate.
+     --cell comes from pixel-field.js */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    --grid-line: rgba(255, 255, 255, 0.14);
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--cell, 7px) var(--cell, 7px);
   }
 
   .hero-copy {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 8px;
     min-width: 0;
   }
@@ -76,6 +312,7 @@
   }
 
   .hero-title {
+    font-weight: 700;
     text-wrap: pretty;
   }
 
@@ -113,17 +350,24 @@
   }
 
   @media (max-width: 640px) {
-    .hero {
-      padding: 12px;
+    .hero-scene {
+      right: 16px;
+      bottom: 16px;
     }
 
-    .hero-card {
-      justify-content: center;
-      padding-bottom: 120px;
-    }
-
-    .hero-intro {
+    /* Caption first, right under the photo, then the intro */
+    .hero-below {
+      flex-direction: column-reverse;
       gap: 20px;
+      padding: 16px 16px 56px;
+    }
+
+    .hero-where {
+      align-self: flex-end;
+    }
+
+    .hero-map {
+      width: 120px;
     }
   }
 </style>

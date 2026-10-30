@@ -17,7 +17,6 @@
 // (touch) the first tap selects and the second opens. Projects without a page
 // yet only select.
 import Laptop from './Laptop.astro';
-import SpringTuner from './SpringTuner.astro';
 
 interface Project {
   label: string;
@@ -122,8 +121,6 @@ const projects: Project[] = [
     </div>
   </div>
 </section>
-
-{import.meta.env.DEV && <SpringTuner />}
 
 <script src="../scripts/projects.js"></script>
 
