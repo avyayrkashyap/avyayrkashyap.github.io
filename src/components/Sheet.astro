@@ -41,7 +41,7 @@ const { open = false, label } = Astro.props;
   .sheet {
     position: fixed;
     inset: 0;
-    /* Below the dock (50), so the nav stays usable above the sheet */
+    /* Below the sidebar (50), so the nav stays usable above the sheet */
     z-index: 40;
     visibility: hidden;
     pointer-events: none;
@@ -68,12 +68,11 @@ const { open = false, label } = Astro.props;
 
   .sheet-panel {
     position: absolute;
-    /* Clears the dock once it's at the top. sheet.js keeps --sheet-top in sync
-       with the dock's live height, so the mobile menu pushes the sheet down */
-    top: var(--sheet-top, 72px);
+    /* Starts right of the sidebar, which stays on top of the backdrop */
+    top: 24px;
     right: 24px;
     bottom: 0;
-    left: 24px;
+    left: var(--sidebar-width);
     display: flex;
     flex-direction: column;
     border-radius: 24px 24px 0 0;
@@ -141,7 +140,7 @@ const { open = false, label } = Astro.props;
 
   @media (max-width: 640px) {
     .sheet-panel {
-      top: var(--sheet-top, 80px);
+      top: 24px;
       right: 0;
       left: 0;
     }

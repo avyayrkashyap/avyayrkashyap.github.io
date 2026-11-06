@@ -14,6 +14,7 @@ const SLIDE = 1.2; // seconds a switch takes
 const SHRINK = 0.8; // how small the photo gets while it slides
 const GAP = 0.06; // space between the two photos mid-slide, as a share of the band width
 const BLUR = 3; // blur (cells) at the smallest point of a switch, easing with the shrink
+const GLIDE = 0.28; // seconds a swipe takes to finish (or spring back) after letting go
 const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
@@ -29,14 +30,12 @@ document.addEventListener('astro:page-load', () => {
   const ctx = canvas.getContext('2d');
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const dots = [...card.querySelectorAll('.hero-dot')];
-  const metaEl = document.getElementById('heroMeta');
-  const spots = [...document.querySelectorAll('.hero-map-spot')];
   let w = 0, h = 0, o, lt, img, base, wet, hy = 0, tint, paper, raf = 0, visible = true;
-  let ripples = [], scene = null, pending = null, slide = null;
+  let ripples = [], scene = null, pending = null, slide = null, pan = null;
 
   const scenes = dots.map((dot) => {
     const d = dot.dataset;
-    return { dot, src: d.src, meta: d.meta, horizon: +d.horizon, top: +d.top, zoom: +d.zoom, hour: +d.hour };
+    return { dot, src: d.src, horizon: +d.horizon, top: +d.top, zoom: +d.zoom, hour: +d.hour };
   });
 
   // One Image per photo, loaded on first use
@@ -111,18 +110,48 @@ document.addEventListener('astro:page-load', () => {
     const p = Math.min(1, (t - slide.t0) / SLIDE);
     const s = 1 - (1 - SHRINK) * ease(clamp(p / 0.3, 0, 1)) * ease(clamp((1 - p) / 0.3, 0, 1));
     const step = w * s + w * GAP;
-    const dx = -step * ease(clamp((p - 0.3) / 0.4, 0, 1));
+    const dx = -step * slide.dir * ease(clamp((p - 0.3) / 0.4, 0, 1));
     o.fillStyle = `rgb(${paper.join(',')})`;
     o.fillRect(0, 0, w, h);
     // Blur tracks the shrink: none at full size, most while small
     const b = (BLUR * (1 - s)) / (1 - SHRINK);
     frame(slide.prev, s, dx, b);
-    frame(slide.next, s, dx + step, b);
+    frame(slide.next, s, dx + step * slide.dir, b);
     base = o.getImageData(0, 0, w, h);
     if (p >= 1) {
       slide = null;
       settle();
     }
+  }
+
+  // One frame of a swipe: the photo sits wherever the finger has it (pan.dx,
+  // CSS px), with its neighbour on that side alongside, both at full size.
+  // After letting go it glides to pan.glide.to: a whole step (switch) or 0.
+  function stepPan(t) {
+    let dx = pan.dx;
+    const g = pan.glide;
+    if (g) {
+      const p = Math.min(1, (t - g.t0) / GLIDE);
+      dx = g.from + (g.to - g.from) * (1 - (1 - p) ** 3);
+      if (p >= 1) return endPan();
+    }
+    pan.shown = dx;
+    const dir = dx < 0 ? 1 : -1, c = Math.round(dx / CELL), n = neighbour(dir);
+    o.fillStyle = `rgb(${paper.join(',')})`;
+    o.fillRect(0, 0, w, h);
+    frame(scene, 1, c, 0);
+    if (c && n.photo) frame(n, 1, c + w * (1 + GAP) * dir, 0);
+    base = o.getImageData(0, 0, w, h);
+  }
+
+  function endPan() {
+    const g = pan.glide;
+    if (g?.to) {
+      scene = neighbour(g.dir);
+      dots.forEach((d) => d.setAttribute('aria-pressed', String(d === scene.dot)));
+    }
+    pan = null;
+    settle();
   }
 
   // Screen cell -> point on the water's surface, seen from just above it.
@@ -135,11 +164,11 @@ document.addEventListener('astro:page-load', () => {
     return [((x - w / 2) * E) / e, (SQUASH * E * E) / e];
   }
 
-  async function show(sc) {
+  // dir: 1 slides the new photo in from the right, -1 from the left
+  async function show(sc, dir = 1) {
     pending = sc;
+    pan = null;
     dots.forEach((d) => d.setAttribute('aria-pressed', String(d === sc.dot)));
-    spots.forEach((m, i) => m.classList.toggle('is-on', scenes[i] === sc));
-    metaEl.textContent = sc.meta;
     await ready(sc);
     if (pending !== sc) return; // a later click won
     if (!scene || !base || still || sc === scene) {
@@ -149,7 +178,7 @@ document.addEventListener('astro:page-load', () => {
       return;
     }
     // The water stays calm while the photos slide
-    slide = { prev: scene, next: sc, t0: performance.now() / 1000 };
+    slide = { prev: scene, next: sc, dir, t0: performance.now() / 1000 };
     scene = sc;
     ripples = [];
     wet = new Uint8Array(w * h);
@@ -159,6 +188,7 @@ document.addEventListener('astro:page-load', () => {
   function draw(now) {
     const t = now / 1000;
     if (slide) stepSlide(t);
+    if (pan) stepPan(t);
     const d = img.data, src = base.data;
     const [tr, tg, tb] = tint;
     ripples = ripples.filter((r) => t - r.t < LIFE);
@@ -242,7 +272,7 @@ document.addEventListener('astro:page-load', () => {
   }
 
   function onPointer(e) {
-    if (e.target.closest('button')) return;
+    if (e.target.closest('button, .hero-bar, .hero-draw')) return;
     const b = card.getBoundingClientRect();
     const x = (e.clientX - b.left) / CELL, y = (e.clientY - b.top) / CELL;
     if (still || !wet?.[Math.floor(y) * w + Math.floor(x)]) return; // only the water ripples
@@ -251,7 +281,89 @@ document.addEventListener('astro:page-load', () => {
     kick();
   }
 
-  const onDot = (e) => show(scenes.find((sc) => sc.dot === e.currentTarget));
+  const at = () => scenes.indexOf(pending ?? scene);
+  const onDot = (e) => {
+    const i = scenes.findIndex((sc) => sc.dot === e.currentTarget);
+    show(scenes[i], i < at() ? -1 : 1);
+  };
+
+  // Swipe: the photo follows a finger, mouse drag or two-finger trackpad
+  // swipe 1:1 (stepPan), and letting go finishes the switch if it went a
+  // quarter of the way or was flicked, else springs back. Vertical drags are
+  // left alone: touch-action: pan-y on the card hands them to the page.
+  const neighbour = (dir) => scenes[(at() + dir + scenes.length) % scenes.length];
+  const maxPx = () => w * (1 + GAP) * CELL;
+  // Take hold: from rest, or mid-glide from wherever the photo has got to
+  function grab() {
+    if (pan) {
+      pan.dx = pan.shown ?? pan.dx;
+      pan.glide = null;
+    } else {
+      slide = null;
+      pending = null;
+      ripples = [];
+      wet = new Uint8Array(w * h); // the water stays calm while it moves
+      pan = { dx: 0 };
+    }
+    kick();
+    return pan.dx;
+  }
+  // vx: release speed in px/ms, for flicks
+  function release(vx) {
+    if (!pan || pan.glide) return;
+    const dx = pan.dx, dir = dx < 0 ? 1 : -1;
+    const flick = Math.abs(dx) > 20 && Math.abs(vx) > 0.3 && Math.sign(vx) === -dir;
+    const go = dx && neighbour(dir).photo && (Math.abs(dx) > (w * CELL) / 4 || flick);
+    pan.glide = { from: pan.shown ?? dx, to: go ? -dir * maxPx() : 0, dir, t0: performance.now() / 1000 };
+    if (still) endPan();
+    else kick();
+  }
+
+  const swipe = new AbortController();
+  const on = (type, fn, opts) => card.addEventListener(type, fn, { ...opts, signal: swipe.signal });
+  let drag = null;
+  on('pointerdown', (e) => {
+    if (e.button !== 0 || !base || e.target.closest('button, .hero-bar, .hero-draw')) return;
+    drag = { x: e.clientX, y: e.clientY, id: e.pointerId, from: null, lx: e.clientX, t: e.timeStamp, vx: 0 };
+    // A mouse can let go outside the card; touches are captured already
+    if (e.pointerType === 'mouse') card.setPointerCapture(e.pointerId);
+  });
+  on('pointermove', (e) => {
+    if (e.pointerId !== drag?.id) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (drag.from === null) {
+      if (Math.hypot(dx, dy) < 6) return;
+      if (Math.abs(dy) > Math.abs(dx)) return void (drag = null); // a scroll, not a swipe
+      drag.from = grab();
+      card.classList.add('is-dragging');
+    }
+    if (e.timeStamp > drag.t) drag.vx = (e.clientX - drag.lx) / (e.timeStamp - drag.t);
+    drag.lx = e.clientX;
+    drag.t = e.timeStamp;
+    pan.dx = clamp(drag.from + dx, -maxPx(), maxPx());
+    kick();
+  });
+  const letGo = (e) => {
+    if (e.pointerId !== drag?.id) return;
+    // A pause before letting go is a place, not a flick
+    if (drag.from !== null) release(e.timeStamp - drag.t > 80 ? 0 : drag.vx);
+    card.classList.remove('is-dragging');
+    drag = null;
+  };
+  on('pointerup', letGo);
+  on('pointercancel', letGo);
+  // Trackpads: the gesture (momentum included) ends after a short quiet spell
+  let wheelEnd = 0;
+  on('wheel', (e) => {
+    // Vertical scrolls pass through, and so does everything in draw mode
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || !base || card.classList.contains('is-drawing')) return;
+    e.preventDefault(); // and keeps the browser from going back/forward
+    if (!pan || pan.glide) grab();
+    pan.dx = clamp(pan.dx - e.deltaX, -maxPx(), maxPx());
+    kick();
+    clearTimeout(wheelEnd);
+    wheelEnd = setTimeout(() => release(0), 150);
+  }, { passive: false });
 
   // Open on the photo shot closest to the visitor's time of day (wrapping
   // around midnight), then fetch the rest so switches start straight away
@@ -282,6 +394,8 @@ document.addEventListener('astro:page-load', () => {
     viewObs.disconnect();
     card.removeEventListener('pointerdown', onPointer);
     dots.forEach((d) => d.removeEventListener('click', onDot));
+    swipe.abort();
+    clearTimeout(wheelEnd);
     cleanup = null;
   };
 });

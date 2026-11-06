@@ -1,0 +1,260 @@
+---
+// src/components/Sidebar.astro
+// Site-wide primary navigation: a fixed left column on desktop, a plain row
+// at the top on phones. Matches the Paper "intro" artboard.
+import ChapterPill from './ChapterPill.astro';
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Playground', href: '/experiments' },
+  { label: 'Now', href: '/now' },
+  { label: 'Resume', href: '/resume' },
+];
+
+const socials = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/avyay-kashyap-4236635b/' },
+  { label: 'X', href: 'https://x.com/avyayrkashyap' },
+  { label: 'Substack', href: 'https://avyaykashyap.substack.com/' },
+];
+---
+<aside class="sidebar" id="sidebar">
+  <nav class="sidebar-nav" id="sidebarNav" aria-label="Primary">
+    {navItems.map(({ label, href }) => (
+      <a
+        class:list={['sidebar-link', { 'is-active': pathname === href }]}
+        href={href}
+        aria-current={pathname === href ? 'page' : undefined}
+      >{label}.</a>
+    ))}
+  </nav>
+
+  {/* Case studies and About: tracks the section being read (chapters.js) */}
+  <div class="sidebar-chapter"><ChapterPill /></div>
+
+  <div class="sidebar-foot">
+    <button class="sidebar-small sidebar-theme" id="themeToggle" type="button" aria-pressed="false">Lights off.</button>
+    <ul class="sidebar-socials">
+      {socials.map(({ label, href }) => (
+        <li>
+          <a class="sidebar-small sidebar-social" href={href} target="_blank" rel="noopener">
+            {label}
+            <svg viewBox="-1 6 12 12" width="12" height="12" aria-hidden="true">
+              <path d="M1.7 16L1 15.3 6.8 9.5H3.5V8.5H8.5V13.5H7.5V10.2L1.7 16Z" />
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="sidebar-small sidebar-made">Made with love,<br />from NYC.</p>
+  </div>
+</aside>
+
+<script>
+  // Rebinds on every ClientRouter navigation, since the sidebar is swapped in
+  // with each page. astro:page-load also fires once on the initial hard load.
+  document.addEventListener('astro:page-load', () => {
+    // ── Theme toggle ──
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+      const root = document.documentElement;
+      const sync = () => {
+        const dark = root.getAttribute('data-theme') === 'dark';
+        toggle.setAttribute('aria-pressed', String(dark));
+        toggle.textContent = dark ? 'Lights on.' : 'Lights off.';
+      };
+      sync();
+      toggle.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        const apply = () => {
+          root.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          sync();
+        };
+        if (typeof document.startViewTransition !== 'function' || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          apply();
+          return;
+        }
+        // A circle grows from the toggle out past the farthest corner,
+        // revealing the new theme (see .theme-transition in global.css)
+        const { left, top, width, height } = toggle.getBoundingClientRect();
+        const x = left + width / 2;
+        const y = top + height / 2;
+        const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        root.classList.add('theme-transition');
+        const t = document.startViewTransition(apply);
+        t.ready.then(() => root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
+          { duration: 500, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' },
+        ));
+        t.finished.finally(() => root.classList.remove('theme-transition'));
+      });
+    }
+
+    // ── Active link: opening a sheet changes the current page without a
+    // navigation (sheet.js sends dock:set-active) ──
+    window.__sidebarAbort?.abort();
+    window.__sidebarAbort = new AbortController();
+    document.addEventListener('dock:set-active', (e) => {
+      document.querySelectorAll('.sidebar-link').forEach((link) => {
+        const on = link.getAttribute('href') === e.detail.href;
+        link.classList.toggle('is-active', on);
+        if (on) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      });
+    }, { signal: window.__sidebarAbort.signal });
+  });
+</script>
+
+<style>
+  .sidebar {
+    position: fixed;
+    /* Above the sheet (40), so the nav stays usable while one is open */
+    z-index: 50;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    padding: 48px 16px 48px 36px;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-ui);
+    line-height: 1.3;
+    color: var(--color-text-strong);
+    pointer-events: none;
+  }
+
+  .sidebar > * {
+    pointer-events: auto;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .sidebar-link {
+    font-size: 16px;
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .sidebar-link:hover,
+  .sidebar-link.is-active {
+    color: var(--color-text-accent);
+  }
+
+  .sidebar-chapter {
+    margin-top: 24px;
+  }
+
+  /* The pill's text sized so the whole pill (113px of picture, gaps and
+     button around it) fills the column; never clipped if the column is
+     narrower than that */
+  .sidebar-chapter :global(.chapter-text) {
+    width: clamp(60px, calc(var(--sidebar-width) - 165px), 140px);
+  }
+
+  .sidebar-chapter :global(.chapter-clip) {
+    flex-shrink: 0;
+  }
+
+  .sidebar-foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .sidebar-small {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.3;
+    color: inherit;
+  }
+
+  .sidebar-theme {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .sidebar-theme:hover {
+    color: var(--color-text-accent);
+  }
+
+  .sidebar-socials {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar-social {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .sidebar-social svg {
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
+  .sidebar-social:hover {
+    color: var(--color-text-accent);
+  }
+
+  .sidebar-made {
+    color: var(--color-text-faint);
+  }
+
+  .sidebar :focus-visible {
+    outline: 2px solid var(--color-text-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Phones: a row of links at the top of the page, scrolling with it. The
+     footer carries the socials; the chapter pill is desktop only for now. */
+  @media (max-width: 640px) {
+    .sidebar {
+      position: static;
+      width: auto;
+      padding: 20px 16px 0;
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .sidebar-nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+    }
+
+    .sidebar-chapter,
+    .sidebar-socials,
+    .sidebar-made {
+      display: none;
+    }
+
+    .sidebar-foot {
+      margin-top: 0;
+      flex-shrink: 0;
+    }
+  }
+</style>

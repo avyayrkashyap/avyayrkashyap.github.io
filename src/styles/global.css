@@ -14,6 +14,10 @@
   --font-sans: 'Manrope', system-ui, sans-serif;
   /* Headings in the Paper primitives (Title, H1 to H3) */
   --font-serif: 'Platypi', Georgia, serif;
+  /* The sidebar and homepage hero (Paper intro artboard) */
+  --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* The fixed nav column on the left; content starts past it */
+  --sidebar-width: clamp(170px, 18.4vw, 265px);
 
   --color-bg: #F8F6F1;
   /* Page background for every route */
@@ -41,6 +45,9 @@
   --color-text-secondary: #2E4153;
   --color-text-disabled: #B9B9B9;
   --color-text-accent: #155ED3;
+  /* Quiet labels (the hero greeting, "Made with love"). Paper uses
+     text-neutral-secondary-dark for these in light mode */
+  --color-text-faint: #B4BFCB;
   /* Text/icon color for content sitting directly on an accent-filled surface
      (e.g. a button's fill), not on the page background. Unlike every other
      token here it doesn't just flip light/dark: the dark-mode accent is a
@@ -74,6 +81,7 @@ html[data-theme='dark'] {
   --color-text-secondary: #B4BFCB;
   --color-text-disabled: #62666F;
   --color-text-accent: #5C97FF;
+  --color-text-faint: #62666F;
   --color-on-accent: #01060E;
   color-scheme: dark;
 }
@@ -91,7 +99,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Theme toggle's circular reveal (dock.js). Scoped to this class, set only
+/* Theme toggle's circular reveal (Sidebar.astro). Scoped to this class, set only
    for the transition's duration, so it doesn't touch Astro's own
    page-navigation view transitions elsewhere on the site. */
 html.theme-transition::view-transition-old(root),
@@ -275,15 +283,14 @@ html.sheet-open {
 
 .main {
   position: relative;
-  /* Room under the footer so the fixed dock never covers it */
-  padding-bottom: 96px;
+  padding-left: var(--sidebar-width);
   background-color: var(--color-bg-default);
   transition: background-color 0.3s ease;
 }
 
 @media (max-width: 640px) {
   .main {
-    padding-bottom: 128px;
+    padding-left: 0;
   }
 }
 

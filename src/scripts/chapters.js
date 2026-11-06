@@ -37,7 +37,7 @@
 // case study (gate:unlocked) — never on a raw timer or MutationObserver,
 // since each of those events already knows exactly when content appeared.
 // Finding no chapters hides everything back down to the plain
-// Home/About/Now/Resume dock.
+// sidebar nav.
 
 // What a page must supply: the container, a chapter inside it, and the
 // heading a chapter falls back to for its name
@@ -171,8 +171,7 @@ function buildRow(label, index) {
 
 function renderRows() {
   const { dropdown, sheetPanel } = els();
-  if (!dropdown || !sheetPanel) return;
-  [dropdown, sheetPanel].forEach((container) => {
+  [dropdown, sheetPanel].filter(Boolean).forEach((container) => {
     container.innerHTML = '';
     chapters.forEach(({ label }, index) => container.appendChild(buildRow(label, index)));
   });
