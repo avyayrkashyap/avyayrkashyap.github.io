@@ -8,8 +8,8 @@ import RefRateAnimation from '../components/RefRateAnimation.astro';
 const themes = [
   {
     id: 'building-swan',
-    /* What the dock's chapter pill types out: the title below is a sentence,
-       and the pill types a character at a time behind a short truncation */
+    /* The section's name in the sidebar's chapter list: the title below is
+       a sentence, too long to list */
     chapter: 'Building Swan',
     title: 'Building Swan from 0 → 1',
     body: "Swan is Moody's structured finance platform. For much of the past two years, I've been one of its foundational designers, defining the interaction patterns, analytical process flows, and information representation that later features would inherit. With no existing product to reference, early decisions here often became the default answer for everything that came after.",
@@ -111,11 +111,11 @@ const themes = [
       />
     </header>
 
-    {/* data-chapters marks this as the page the dock's chapter pill tracks;
+    {/* data-chapters marks this as the page the sidebar's chapter list tracks;
         each data-chapter inside is one chapter (see src/scripts/chapters.js).
         The intro names itself, since the first .type-h4 in it belongs to the
         meta list rather than to the section. */}
-    <div class="ms-content" data-chapters>
+    <div class="ms-content" data-chapters="Moody's Ratings">
     <section class="ms-intro" id="overview" data-chapter="Overview">
       <div class="ms-intro-main">
         <h1 class="type-title">Moody's Ratings</h1>

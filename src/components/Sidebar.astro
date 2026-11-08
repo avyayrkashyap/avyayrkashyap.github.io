@@ -1,8 +1,11 @@
 ---
 // src/components/Sidebar.astro
-// Site-wide primary navigation: a fixed left column on desktop, a plain row
-// at the top on phones. Matches the Paper "intro" artboard.
-import ChapterPill from './ChapterPill.astro';
+// Site-wide primary navigation. Desktop: a fixed left column (Paper "intro"
+// artboard), the wrappers below all display: contents. Phones: a bar along
+// the top with a two-bar menu button that morphs into an X and drops a panel
+// down from the top. The panel holds the same links and, on pages with
+// chapters, a second page of sections to swipe (or tap "Sections.") over to.
+import ChapterList from './ChapterList.astro';
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
@@ -19,36 +22,66 @@ const socials = [
   { label: 'X', href: 'https://x.com/avyayrkashyap' },
   { label: 'Substack', href: 'https://avyaykashyap.substack.com/' },
 ];
+
+// The phone bar names the page; case studies get their own title from the
+// script once their chapters are found
+const current = navItems.find(({ href }) => href === pathname)?.label;
 ---
 <aside class="sidebar" id="sidebar">
-  <nav class="sidebar-nav" id="sidebarNav" aria-label="Primary">
-    {navItems.map(({ label, href }) => (
-      <a
-        class:list={['sidebar-link', { 'is-active': pathname === href }]}
-        href={href}
-        aria-current={pathname === href ? 'page' : undefined}
-      >{label}.</a>
-    ))}
-  </nav>
+  {/* Phones: dims the page under the open menu; a tap closes it */}
+  <div class="sidebar-scrim" id="sidebarScrim" aria-hidden="true"></div>
 
-  {/* Case studies and About: tracks the section being read (chapters.js) */}
-  <div class="sidebar-chapter"><ChapterPill /></div>
+  {/* Phones: the bar along the top */}
+  <div class="sidebar-bar">
+    <a class="sidebar-current" id="sidebarCurrent" href="/">{current ? `${current}.` : 'Avyay.'}</a>
+    <button class="sidebar-menu" id="sidebarMenu" type="button" aria-expanded="false" aria-controls="sidebarPanel" aria-label="Open menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
 
-  <div class="sidebar-foot">
-    <button class="sidebar-small sidebar-theme" id="themeToggle" type="button" aria-pressed="false">Lights off.</button>
-    <ul class="sidebar-socials">
-      {socials.map(({ label, href }) => (
-        <li>
-          <a class="sidebar-small sidebar-social" href={href} target="_blank" rel="noopener">
-            {label}
-            <svg viewBox="-1 6 12 12" width="12" height="12" aria-hidden="true">
-              <path d="M1.7 16L1 15.3 6.8 9.5H3.5V8.5H8.5V13.5H7.5V10.2L1.7 16Z" />
-            </svg>
-          </a>
-        </li>
-      ))}
-    </ul>
-    <p class="sidebar-small sidebar-made">Made with love,<br />from NYC.</p>
+  <div class="sidebar-panel" id="sidebarPanel">
+    <div class="sidebar-track" id="sidebarTrack">
+      <div class="sidebar-page sidebar-page--links">
+        <nav class="sidebar-nav" id="sidebarNav" aria-label="Primary">
+          {navItems.map(({ label, href }) => (
+            <a
+              class:list={['sidebar-link', { 'is-active': pathname === href }]}
+              href={href}
+              aria-current={pathname === href ? 'page' : undefined}
+            >{label}.</a>
+          ))}
+        </nav>
+
+        <div class="sidebar-foot">
+          <button class="sidebar-small sidebar-theme" id="themeToggle" type="button" aria-pressed="false">Lights off.</button>
+          <ul class="sidebar-socials">
+            {socials.map(({ label, href }) => (
+              <li>
+                <a class="sidebar-small sidebar-social" href={href} target="_blank" rel="noopener">
+                  {label}
+                  <svg viewBox="-1 6 12 12" width="12" height="12" aria-hidden="true">
+                    <path d="M1.7 16L1 15.3 6.8 9.5H3.5V8.5H8.5V13.5H7.5V10.2L1.7 16Z" />
+                  </svg>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="sidebar-small sidebar-made">Made with love,<br />from NYC.</p>
+        </div>
+      </div>
+
+      {/* Case studies and About: their sections, tracking the one being read */}
+      <div class="sidebar-page sidebar-page--chapters">
+        <div class="sidebar-chapter"><ChapterList /></div>
+      </div>
+    </div>
+
+    {/* Phones, on pages with chapters: which page of the panel is showing */}
+    <div class="sidebar-pager">
+      <button class="sidebar-small sidebar-pager-btn" type="button" data-page="0" aria-pressed="true">Pages.</button>
+      <button class="sidebar-small sidebar-pager-btn" type="button" data-page="1" aria-pressed="false">Sections.</button>
+    </div>
   </div>
 </aside>
 
@@ -56,6 +89,12 @@ const socials = [
   // Rebinds on every ClientRouter navigation, since the sidebar is swapped in
   // with each page. astro:page-load also fires once on the initial hard load.
   document.addEventListener('astro:page-load', () => {
+    window.__sidebarAbort?.abort();
+    window.__sidebarAbort = new AbortController();
+    const { signal } = window.__sidebarAbort;
+    const on = (el: EventTarget | null, type: string, fn: (e: any) => void, opts: AddEventListenerOptions = {}) =>
+      el?.addEventListener(type, fn, { ...opts, signal });
+
     // ── Theme toggle ──
     const toggle = document.getElementById('themeToggle');
     if (toggle) {
@@ -66,7 +105,7 @@ const socials = [
         toggle.textContent = dark ? 'Lights on.' : 'Lights off.';
       };
       sync();
-      toggle.addEventListener('click', () => {
+      on(toggle, 'click', () => {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         const apply = () => {
           root.setAttribute('data-theme', next);
@@ -93,18 +132,152 @@ const socials = [
       });
     }
 
-    // ── Active link: opening a sheet changes the current page without a
-    // navigation (sheet.js sends dock:set-active) ──
-    window.__sidebarAbort?.abort();
-    window.__sidebarAbort = new AbortController();
-    document.addEventListener('dock:set-active', (e) => {
-      document.querySelectorAll('.sidebar-link').forEach((link) => {
-        const on = link.getAttribute('href') === e.detail.href;
-        link.classList.toggle('is-active', on);
-        if (on) link.setAttribute('aria-current', 'page');
+    const sidebar = document.getElementById('sidebar');
+    const current = document.getElementById('sidebarCurrent');
+    const chapterNav = document.getElementById('chapterNav');
+    if (!sidebar || !current) return;
+
+    // ── The phone bar's label: the current nav page, else the case study's
+    // title once chapters.js has found it ──
+    const label = () => {
+      const active = sidebar.querySelector('.sidebar-link.is-active');
+      const title = chapterNav && !chapterNav.hidden ? document.getElementById('chapterTitle')?.textContent : '';
+      current.textContent = active?.textContent || (title ? `${title}.` : 'Avyay.');
+    };
+
+    // Opening a sheet changes the current page without a navigation
+    // (sheet.js sends dock:set-active)
+    on(document, 'dock:set-active', (e) => {
+      sidebar.querySelectorAll('.sidebar-link').forEach((link) => {
+        const isOn = link.getAttribute('href') === e.detail.href;
+        link.classList.toggle('is-active', isOn);
+        if (isOn) link.setAttribute('aria-current', 'page');
         else link.removeAttribute('aria-current');
       });
-    }, { signal: window.__sidebarAbort.signal });
+      label();
+    });
+
+    // ── Phone menu ──
+    const menu = document.getElementById('sidebarMenu');
+    const panel = document.getElementById('sidebarPanel');
+    const track = document.getElementById('sidebarTrack');
+    const pager = [...sidebar.querySelectorAll<HTMLButtonElement>('.sidebar-pager-btn')];
+    if (!menu || !panel || !track) return;
+    const phone = () => matchMedia('(max-width: 640px)').matches;
+    const isOpen = () => sidebar.classList.contains('is-open');
+
+    let page = 0;
+    function setPage(p: number) {
+      page = p;
+      track!.style.setProperty('--page', String(p));
+      pager.forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.page) === p)));
+    }
+
+    function setOpen(open: boolean) {
+      if (open) {
+        // Always opens on the links; the sections are a swipe away
+        track!.classList.add('is-dragging');
+        setPage(0);
+        void track!.offsetWidth;
+        track!.classList.remove('is-dragging');
+      }
+      sidebar!.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('menu-open', open);
+      menu!.setAttribute('aria-expanded', String(open));
+      menu!.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    on(menu, 'click', () => setOpen(!isOpen()));
+    on(document.getElementById('sidebarScrim'), 'click', () => setOpen(false));
+    on(document, 'keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        menu.focus();
+      }
+    });
+    pager.forEach((b) => on(b, 'click', () => setPage(Number(b.dataset.page))));
+    // Going somewhere (a page, a sheet, a section) puts the menu away
+    on(panel, 'click', (e) => {
+      if (phone() && e.target.closest('.sidebar-link, .chapter-row')) setOpen(false);
+    });
+    // Back on a wide screen with the menu open: let go of the page lock
+    on(window, 'resize', () => {
+      if (!phone() && isOpen()) setOpen(false);
+    });
+
+    // Chapters come and go as sheets open and close (chapters.js shows or
+    // hides #chapterNav): the Sections page and its pager follow
+    const syncChapters = () => {
+      const has = Boolean(chapterNav && !chapterNav.hidden);
+      sidebar.classList.toggle('has-chapters', has);
+      if (!has && page) setPage(0);
+      label();
+    };
+    syncChapters();
+    if (chapterNav) {
+      const obs = new MutationObserver(syncChapters);
+      obs.observe(chapterNav, { attributes: true, attributeFilter: ['hidden'] });
+      signal.addEventListener('abort', () => obs.disconnect());
+    }
+
+    // ── Swipe between Pages and Sections: the track follows the finger,
+    // then snaps to whichever page it was dragged or flicked toward ──
+    let drag: { x: number; y: number; id: number; live: boolean; lx: number; t: number; vx: number; off: number } | null = null;
+    let swallowClick = false;
+    on(panel, 'pointerdown', (e) => {
+      if (!phone() || !sidebar.classList.contains('has-chapters') || e.button !== 0) return;
+      drag = { x: e.clientX, y: e.clientY, id: e.pointerId, live: false, lx: e.clientX, t: e.timeStamp, vx: 0, off: 0 };
+    });
+    on(panel, 'pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!drag.live) {
+        if (Math.hypot(dx, dy) < 6) return;
+        if (Math.abs(dy) > Math.abs(dx)) {
+          drag = null; // scrolling the panel, not swiping
+          return;
+        }
+        drag.live = true;
+        track.classList.add('is-dragging');
+      }
+      const w = panel.clientWidth;
+      let off = -page * w + dx;
+      // Past either end it gives a little, like a rubber band
+      if (off > 0) off *= 0.3;
+      if (off < -w) off = -w + (off + w) * 0.3;
+      drag.off = off;
+      if (e.timeStamp > drag.t) drag.vx = (e.clientX - drag.lx) / (e.timeStamp - drag.t);
+      drag.lx = e.clientX;
+      drag.t = e.timeStamp;
+      track.style.transform = `translateX(${off}px)`;
+    });
+    const letGo = (e: PointerEvent) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      if (drag.live) {
+        const w = panel.clientWidth;
+        const at = -drag.off / w; // 0 = Pages, 1 = Sections
+        const vx = e.timeStamp - drag.t > 80 ? 0 : drag.vx; // a pause is a place, not a flick
+        // A quarter of the way over is enough to switch
+        let next = Math.abs(at - page) > 0.25 ? 1 - page : page;
+        if (Math.abs(vx) > 0.3) next = vx < 0 ? 1 : 0;
+        track.classList.remove('is-dragging');
+        track.style.transform = '';
+        setPage(next);
+        // The lift shouldn't also tap a link. Browsers don't always send that
+        // click after a swipe, so stop waiting for it right after
+        swallowClick = true;
+        setTimeout(() => { swallowClick = false; }, 50);
+      }
+      drag = null;
+    };
+    on(panel, 'pointerup', letGo);
+    on(panel, 'pointercancel', letGo);
+    on(panel, 'click', (e) => {
+      if (!swallowClick) return;
+      swallowClick = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }, { capture: true });
   });
 </script>
 
@@ -130,7 +303,22 @@ const socials = [
     pointer-events: auto;
   }
 
+  /* Desktop: the phone-only parts are gone and the wrappers step aside, so
+     nav, chapters and foot lay out as the column's own children */
+  .sidebar-scrim,
+  .sidebar-bar,
+  .sidebar-pager {
+    display: none;
+  }
+
+  .sidebar-panel,
+  .sidebar-track,
+  .sidebar-page {
+    display: contents;
+  }
+
   .sidebar-nav {
+    order: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -149,22 +337,16 @@ const socials = [
     color: var(--color-text-accent);
   }
 
+  /* Scrolls on its own if a long list would run into the foot */
   .sidebar-chapter {
+    order: 1;
     margin-top: 24px;
-  }
-
-  /* The pill's text sized so the whole pill (113px of picture, gaps and
-     button around it) fills the column; never clipped if the column is
-     narrower than that */
-  .sidebar-chapter :global(.chapter-text) {
-    width: clamp(60px, calc(var(--sidebar-width) - 165px), 140px);
-  }
-
-  .sidebar-chapter :global(.chapter-clip) {
-    flex-shrink: 0;
+    min-height: 0;
+    overflow-y: auto;
   }
 
   .sidebar-foot {
+    order: 2;
     margin-top: auto;
     display: flex;
     flex-direction: column;
@@ -227,34 +409,187 @@ const socials = [
     border-radius: 2px;
   }
 
-  /* Phones: a row of links at the top of the page, scrolling with it. The
-     footer carries the socials; the chapter pill is desktop only for now. */
+  /* ── Phones ── */
   @media (max-width: 640px) {
     .sidebar {
-      position: static;
+      --ease: cubic-bezier(0.32, 0.72, 0, 1);
+      right: 0;
+      bottom: auto;
       width: auto;
-      padding: 20px 16px 0;
-      flex-direction: row;
-      align-items: baseline;
+      padding: 0;
+      display: block;
+    }
+
+    .sidebar-bar {
+      position: relative;
+      z-index: 2;
+      height: var(--mobile-bar);
+      padding: 0 4px 0 16px;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      background: var(--color-bg-default);
+    }
+
+    .sidebar-current {
+      font-size: 16px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Two bars in a 44px target; open, they turn into an X */
+    .sidebar-menu {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .sidebar-menu span {
+      position: absolute;
+      left: 12px;
+      width: 20px;
+      height: 2px;
+      border-radius: 1px;
+      background: currentColor;
+      transition: transform 0.3s var(--ease);
+    }
+
+    .sidebar-menu span:first-child {
+      top: 18px;
+    }
+
+    .sidebar-menu span:last-child {
+      top: 24px;
+    }
+
+    .sidebar.is-open .sidebar-menu span:first-child {
+      transform: translateY(3px) rotate(45deg);
+    }
+
+    .sidebar.is-open .sidebar-menu span:last-child {
+      transform: translateY(-3px) rotate(-45deg);
+    }
+
+    .sidebar-scrim {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: var(--color-scrim);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0s 0.3s;
+    }
+
+    .sidebar.is-open .sidebar-scrim {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s ease, visibility 0s;
+    }
+
+    /* Unrolls downward from under the bar */
+    .sidebar-panel {
+      position: absolute;
+      z-index: 1;
+      top: var(--mobile-bar);
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100dvh - var(--mobile-bar));
+      overflow: hidden;
+      background: var(--color-bg-default);
+      clip-path: inset(0 0 100% 0);
+      visibility: hidden;
+      /* Horizontal drags are swipes; vertical ones scroll the panel */
+      touch-action: pan-y;
+      transition: clip-path 0.35s var(--ease), visibility 0s 0.35s;
+    }
+
+    .sidebar.is-open .sidebar-panel {
+      clip-path: inset(0);
+      visibility: visible;
+      transition: clip-path 0.35s var(--ease), visibility 0s;
+    }
+
+    /* Two pages side by side; --page picks one */
+    .sidebar-track {
+      display: flex;
+      min-height: 0;
+      transform: translateX(calc(var(--page, 0) * -100%));
+      transition: transform 0.35s var(--ease);
+    }
+
+    .sidebar-track.is-dragging {
+      transition: none;
+    }
+
+    .sidebar-page {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 100%;
+      min-width: 0;
+      overflow-y: auto;
+      padding: 16px 16px 24px;
     }
 
     .sidebar-nav {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 4px 12px;
+      gap: 0;
     }
 
-    .sidebar-chapter,
-    .sidebar-socials,
-    .sidebar-made {
-      display: none;
+    /* Taller rows for fingers, same type as the desktop column */
+    .sidebar-link {
+      padding-block: 6px;
     }
 
     .sidebar-foot {
+      margin-top: 32px;
+    }
+
+    .sidebar-chapter {
       margin-top: 0;
-      flex-shrink: 0;
+      overflow: visible;
+    }
+
+    .sidebar-chapter :global(.chapter-row) {
+      padding-block: 4px;
+    }
+
+    /* Only with chapters: "Pages. Sections." under the panel */
+    .sidebar.has-chapters .sidebar-pager {
+      display: flex;
+      gap: 6px;
+      padding: 8px 16px 16px;
+    }
+
+    .sidebar:not(.has-chapters) .sidebar-page--chapters {
+      display: none;
+    }
+
+    .sidebar-pager-btn {
+      padding: 4px 0;
+      border: 0;
+      background: none;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .sidebar-pager-btn[aria-pressed='true'] {
+      font-weight: 700;
+    }
+  }
+
+  @media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+    .sidebar-menu span,
+    .sidebar-scrim,
+    .sidebar-panel,
+    .sidebar-track {
+      transition: none;
     }
   }
 </style>

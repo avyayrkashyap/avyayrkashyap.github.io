@@ -140,7 +140,8 @@ const { open = false, label } = Astro.props;
 
   @media (max-width: 640px) {
     .sheet-panel {
-      top: 24px;
+      /* Under the phone nav bar, which stays on top */
+      top: calc(var(--mobile-bar) + 8px);
       right: 0;
       left: 0;
     }

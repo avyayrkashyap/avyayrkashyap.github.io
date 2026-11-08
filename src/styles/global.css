@@ -18,6 +18,8 @@
   --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   /* The fixed nav column on the left; content starts past it */
   --sidebar-width: clamp(170px, 18.4vw, 265px);
+  /* Phones: the nav is a bar along the top instead */
+  --mobile-bar: 56px;
 
   --color-bg: #F8F6F1;
   /* Page background for every route */
@@ -291,6 +293,12 @@ html.sheet-open {
 @media (max-width: 640px) {
   .main {
     padding-left: 0;
+    padding-top: var(--mobile-bar);
+  }
+
+  /* The page holds still under the open menu */
+  html.menu-open {
+    overflow: hidden;
   }
 }
 

@@ -1,0 +1,88 @@
+---
+// src/components/ChapterList.astro
+// The sections of whatever is being read (a case study, or About in its
+// sheet), under the sidebar nav: the page's name, then its sections beside a
+// ruler of ticks whose blue lens follows the reading position. Hidden until
+// chapters.js finds sections; it fills in the title, rows and ticks.
+---
+<div class="chapters" id="chapterNav" hidden>
+  <p class="chapters-title" id="chapterTitle"></p>
+  <div class="chapters-body">
+    <div class="chapters-ruler" id="chapterRuler" aria-hidden="true"></div>
+    <nav class="chapters-list" id="chapterList" aria-label="Sections"></nav>
+  </div>
+</div>
+
+<script src="../scripts/chapters.js"></script>
+
+<style>
+  .chapters {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .chapters[hidden] {
+    display: none;
+  }
+
+  .chapters-title {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--color-text-disabled);
+  }
+
+  .chapters-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  /* 1px ticks on a 2px pitch, as tall as the list; chapters.js sizes the
+     lens ticks (wider, accent) and the trail under it */
+  .chapters-ruler {
+    flex-shrink: 0;
+    width: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    padding-block: 4px;
+  }
+
+  .chapters-ruler :global(span) {
+    width: 2px;
+    height: 1px;
+    border-radius: 1px;
+    background: var(--color-text-strong);
+  }
+
+  .chapters-list {
+    /* Rows' offsetTop is measured against this */
+    position: relative;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  /* :global, since chapters.js builds the rows at runtime */
+  .chapters-list :global(.chapter-row) {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.3;
+    text-align: left;
+    color: var(--color-text-strong);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .chapters-list :global(.chapter-row:hover) {
+    color: var(--color-text-accent);
+  }
+</style>
