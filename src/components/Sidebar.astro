@@ -196,10 +196,13 @@ const current = navItems.find(({ href }) => href === pathname)?.label;
       }
     });
     pager.forEach((b) => on(b, 'click', () => setPage(Number(b.dataset.page))));
-    // Going somewhere (a page, a sheet, a section) puts the menu away
-    on(panel, 'click', (e) => {
-      if (phone() && e.target.closest('.sidebar-link, .chapter-row')) setOpen(false);
-    });
+    // Going somewhere (a page, a sheet, a section) puts the menu away. On
+    // the window in the capture phase, ahead of sheet.js, which swallows
+    // clicks on sheet links (About, Now, Resume) to open them in place.
+    on(window, 'click', (e) => {
+      if (!phone() || !isOpen() || swallowClick) return;
+      if (panel.contains(e.target) && e.target.closest('.sidebar-link, .chapter-row')) setOpen(false);
+    }, { capture: true });
     // Back on a wide screen with the menu open: let go of the page lock
     on(window, 'resize', () => {
       if (!phone() && isOpen()) setOpen(false);
