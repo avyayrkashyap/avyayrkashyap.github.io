@@ -1,0 +1,294 @@
+---
+// src/components/Shapes.astro
+// Geometric diagrams for the Moody's work. One visual language across all of
+// them:
+//   solid ink = made, outline = not yet (the design or spec),
+//   tint (ink at low fill-opacity) = copies or context; overlaps darken by
+//   themselves, which reads as layering in light and dark mode alike,
+//   accent blue = the one outcome each card is about.
+// A "halo" is a stroke in the card colour drawn under a solid shape's fill,
+// cutting a clean gap where it sits over something else.
+//
+// Each part plays a short entrance the first time the diagram scrolls into
+// view. Parts carry the entrance as data-a (an attribute, because Astro's
+// scoping replaces a class passed in a spread), a delay, a duration, and for
+// slide/unfold the offset or scale it starts from. Start times overlap so each
+// step begins while the last is still settling. Only the "ongoing" ideas
+// (1 → n, the AI ecosystem) keep a slow idle motion afterwards.
+interface Props {
+  kind: 'zero-to-one' | 'one-to-n' | 'primitives' | 'ecosystem' | 'pipeline' | 'zero-one-n';
+  label: string;
+}
+
+const { kind, label } = Astro.props;
+// The homepage cover runs 0 → 1 → n in one line with labels, cropped tight
+// so it reads large on the cover
+const viewBox = kind === 'zero-one-n' ? '110 30 340 180' : '0 0 400 200';
+
+const durations: Record<string, number> = { pop: 0.6, draw: 0.8, slide: 0.8, unfold: 0.8, sweep: 0.7 };
+const a = (anim: string, d: number, o: { dx?: number; dy?: number; s?: number; dur?: number; origin?: string } = {}) => ({
+  'data-a': anim,
+  style: [
+    `--d: ${d}s`,
+    `--dur: ${o.dur ?? durations[anim]}s`,
+    o.dx !== undefined || o.dy !== undefined ? `--dx: ${o.dx ?? 0}px; --dy: ${o.dy ?? 0}px` : '',
+    o.s !== undefined ? `--s: ${o.s}` : '',
+    o.origin ? `transform-origin: ${o.origin}` : '',
+  ].filter(Boolean).join('; '),
+});
+const line = { fill: 'none', stroke: 'currentColor', 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' };
+const solid = { fill: 'currentColor' };
+const tint = (o: number) => ({ fill: 'currentColor', 'fill-opacity': o });
+// Outlines trace themselves on as one stroke
+const trace = (d: number) => ({ pathLength: 1, ...line, ...a('draw', d) });
+// A slow loop on a wrapper group, so it never fights the entrance underneath
+const idle = (kind: 'shift' | 'sway', d: number, extra = '') => ({ 'data-idle': kind, style: `--d: ${d}s; ${extra}` });
+---
+<svg class="shapes" viewBox={viewBox} role="img" aria-label={label}>
+  {kind === 'zero-to-one' && (
+    <>
+      {/* An empty frame, an accent seed, then each layer unfolds out of the
+          seed, inheriting its axis */}
+      <rect x="130" y="30" width="140" height="140" rx="6" {...trace(0)} />
+      <rect x="148" y="57" width="104" height="104" rx="6" {...tint(0.1)} {...a('unfold', 0.7, { s: 0.31, dur: 0.9, origin: '200px 127px' })} />
+      <rect x="166" y="84" width="68" height="68" rx="6" {...tint(0.1)} {...a('unfold', 0.55, { s: 0.47, origin: '200px 127px' })} />
+      <rect x="184" y="111" width="32" height="32" rx="6" class="accent" {...a('pop', 0.35)} />
+    </>
+  )}
+  {kind === 'one-to-n' && (
+    <>
+      {/* One solid sends tinted copies out from behind itself, then a
+          selection encloses them all: many, acted on as one */}
+      <g {...idle('shift', 1.6, '--ix: -3px')}>
+        <circle cx="124" cy="100" r="32" {...tint(0.18)} {...a('slide', 0.28, { dx: 76, dur: 0.85 })} />
+      </g>
+      <circle cx="162" cy="100" r="32" {...tint(0.18)} {...a('slide', 0.2, { dx: 38 })} />
+      <circle cx="238" cy="100" r="32" {...tint(0.18)} {...a('slide', 0.2, { dx: -38 })} />
+      <g {...idle('shift', 1.6, '--ix: 3px')}>
+        <circle cx="276" cy="100" r="32" {...tint(0.18)} {...a('slide', 0.28, { dx: -76, dur: 0.85 })} />
+      </g>
+      <circle cx="200" cy="100" r="32" class="halo" {...solid} {...a('pop', 0)} />
+      <path d="M200 58H276A42 42 0 0 1 276 142H124A42 42 0 0 1 124 58Z" class="accent-line" {...trace(0.75)} />
+    </>
+  )}
+  {kind === 'primitives' && (
+    <>
+      {/* Circle, square and triangle of one module height slide together
+          into a pattern, resting on a shared foundation */}
+      <rect x="112" y="131" width="176" height="12" rx="6" class="accent" {...a('sweep', 0)} />
+      <circle cx="146" cy="91" r="34" {...tint(0.2)} {...a('slide', 0.25, { dx: -36, dur: 0.85 })} />
+      <rect x="164" y="57" width="68" height="68" rx="6" class="halo" {...solid} {...a('slide', 0.15, { dy: -28 })} />
+      <path d="M210 125L288 125L249 57Z" class="knock" {...line} {...a('slide', 0.35, { dx: 36, dur: 0.85 })} />
+    </>
+  )}
+  {kind === 'pipeline' && (
+    <>
+      {/* The design is a fixed outline; the build glides in to meet it, and
+          where they overlap (what ships) turns accent */}
+      <defs>
+        <clipPath id="shapes-design">
+          <circle cx="170" cy="100" r="54" />
+        </clipPath>
+      </defs>
+      <rect x="184" y="50" width="100" height="100" rx="6" {...solid} {...a('slide', 0.25, { dx: 72, dur: 1 })} />
+      <g clip-path="url(#shapes-design)">
+        <rect x="184" y="50" width="100" height="100" rx="6" class="accent" {...a('slide', 0.25, { dx: 72, dur: 1 })} />
+      </g>
+      <circle cx="170" cy="100" r="54" {...trace(0)} />
+    </>
+  )}
+  {kind === 'ecosystem' && (
+    <>
+      {/* Design system, domain and judgement as overlapping context; the
+          agent's output lands only where all three meet */}
+      <g {...idle('sway', 1.4)}>
+        <rect x="126" y="40" width="88" height="88" rx="6" {...tint(0.17)} {...a('slide', 0, { dx: -30, dy: -18, dur: 0.9 })} />
+        <circle cx="228" cy="86" r="46" {...tint(0.17)} {...a('slide', 0.12, { dx: 30, dy: -18, dur: 0.9 })} />
+        <path d="M148 159L252 159L200 67Z" {...tint(0.17)} {...a('slide', 0.24, { dy: 30, dur: 0.9 })} />
+      </g>
+      <circle cx="200" cy="98" r="10" class="accent halo" {...a('pop', 0.8)} />
+    </>
+  )}
+  {kind === 'zero-one-n' && (
+    <>
+      {/* The cover: a blank outline (0), the first solid made in front of
+          it (1), then copies spreading out from behind it under one
+          selection (n). The solid sits over both, cut clear by its halo */}
+      <circle cx="181" cy="100" r="32" {...trace(0)} />
+      <circle cx="293" cy="100" r="32" {...tint(0.18)} {...a('slide', 0.55, { dx: -62 })} />
+      <circle cx="331" cy="100" r="32" {...tint(0.18)} {...a('slide', 0.62, { dx: -100, dur: 0.85 })} />
+      <g {...idle('shift', 1.9, '--ix: 3px')}>
+        <circle cx="369" cy="100" r="32" {...tint(0.18)} {...a('slide', 0.69, { dx: -138, dur: 0.9 })} />
+      </g>
+      <path d="M331 60H369A40 40 0 0 1 369 140H293A40 40 0 0 1 293 60Z" class="accent-line" {...trace(0.95)} />
+      <circle cx="231" cy="100" r="32" class="halo" {...solid} {...a('pop', 0.35)} />
+      <g class="labels">
+        <text x="181" y="166" {...a('pop', 0.15)}>0</text>
+        <text x="231" y="166" {...a('pop', 0.45)}>1</text>
+        <text x="331" y="166" {...a('pop', 0.95)}>n</text>
+      </g>
+    </>
+  )}
+</svg>
+
+<script>
+  // Plays each diagram once, the first time most of it is on screen
+  document.addEventListener('astro:page-load', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.shapes:not(.is-in)').forEach((el) => observer.observe(el));
+  });
+</script>
+
+<style>
+  .shapes {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    color: var(--color-text-strong);
+  }
+
+  /* Paint roles. Classes rather than var() in presentation attributes,
+     which browsers don't resolve reliably */
+  .accent {
+    fill: var(--color-text-accent);
+  }
+
+  .accent-line {
+    fill: none;
+    stroke: var(--color-text-accent);
+  }
+
+  .halo {
+    stroke: var(--shape-bg);
+    stroke-width: 6;
+    paint-order: stroke;
+  }
+
+  .knock {
+    fill: var(--shape-bg);
+  }
+
+  .labels {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    text-anchor: middle;
+    fill: var(--color-text-secondary);
+  }
+
+  /* ── Entrances ──
+     Held on the first frame until the diagram scrolls into view. Keyframes
+     only define `from`, so with no animation the final frame shows */
+  [data-a] {
+    animation-duration: var(--dur);
+    animation-delay: var(--d);
+    animation-fill-mode: both;
+    animation-play-state: paused;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .shapes.is-in [data-a] {
+    animation-play-state: running;
+  }
+
+  /* The one spring per card */
+  [data-a='pop'] {
+    animation-name: pop;
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  [data-a='draw'] {
+    /* The gap is longer than the path, so no round-capped dot shows at the
+       start point before the stroke begins */
+    stroke-dasharray: 1 2;
+    animation-name: draw;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  [data-a='slide'] {
+    animation-name: slide;
+  }
+
+  /* Scales out from a shared point (set inline), not each shape's centre */
+  [data-a='unfold'] {
+    animation-name: unfold;
+    transform-box: view-box;
+  }
+
+  [data-a='sweep'] {
+    animation-name: sweep;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0); opacity: 0; }
+  }
+
+  @keyframes draw {
+    from { stroke-dashoffset: 1; }
+  }
+
+  @keyframes slide {
+    from { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+  }
+
+  @keyframes unfold {
+    from { transform: scale(var(--s)); opacity: 0; }
+  }
+
+  @keyframes sweep {
+    from { transform: scaleX(0); }
+  }
+
+  /* ── Idle loops ──
+     Start once the entrance has landed, from rest, so there's no jump */
+  [data-idle] {
+    animation-delay: var(--d);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+  }
+
+  .shapes.is-in [data-idle] {
+    animation-play-state: running;
+  }
+
+  /* A row of copies breathing outward */
+  [data-idle='shift'] {
+    animation-name: shift;
+    animation-duration: 5s;
+  }
+
+  /* Context swaying about the point where all three overlap */
+  [data-idle='sway'] {
+    animation-name: sway;
+    animation-duration: 10s;
+    transform-box: view-box;
+    transform-origin: 200px 98px;
+  }
+
+  @keyframes shift {
+    0%, 100% { transform: none; }
+    50% { transform: translateX(var(--ix)); }
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: none; }
+    50% { transform: rotate(6deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-a],
+    [data-idle] {
+      animation: none;
+    }
+  }
+</style>

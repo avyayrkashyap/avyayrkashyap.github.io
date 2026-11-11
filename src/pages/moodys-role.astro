@@ -1,0 +1,368 @@
+---
+// src/pages/moodys-role.astro
+// The public Moody's case study. The product work is under NDA, so this page
+// is about the role: what it covered, how it was done, and what it taught.
+// The detailed, password-gated version stays at /moodys.
+import Layout from '../layouts/Layout.astro';
+import Shapes from '../components/Shapes.astro';
+
+const sfg = [
+  {
+    sketch: 'zero-to-one',
+    title: '0 → 1',
+    lede: 'Starting from nothing',
+    body: "I was one of the foundational designers on a new structured finance platform, with no existing product to reference. Most of the work meant turning workflows that lived in spreadsheets into interactions only the web could offer, which first meant understanding what analysts were actually trying to do. One example: replacing a list where analysts typed in priority numbers with a flow where they build each step in the order it runs. Early decisions like that became the default answer for every feature that followed.",
+  },
+  {
+    sketch: 'one-to-n',
+    title: '1 → n',
+    lede: 'From one to many',
+    body: "Once single-item workflows worked, the next problem was scale: letting analysts work across many items at once. That meant defining what a bulk action should even mean, how defaults differ between one item and many, and where the line sat between what engineering could build and what would feel natural to an analyst. It took several rounds of negotiation, and a toolbar that grew to 20 actions before I categorised it and cut its footprint by over 60%.",
+  },
+  {
+    sketch: 'primitives',
+    title: 'Design system',
+    lede: 'Shared primitives',
+    body: "Patterns that worked in SFG fed back into the shared design system: dense data tables, feedback for bulk edits, and progressive disclosure that prevents invalid inputs instead of flagging them afterwards. Contributing meant generalising a solution beyond the problem it was born in, and documenting it clearly enough that other designers and developers could use it without me.",
+  },
+  {
+    sketch: 'pipeline',
+    title: 'LLM-assisted front-end',
+    lede: 'From design to shipped',
+    body: "I took ownership of front-end implementation for parts of the product, using LLM-assisted coding to turn designs into production UI that developers reviewed and merged. On one redesign this cut dev effort by 70%, and across the work it sped up UI implementation by about 3x. Owning the code also closed the gap between what was designed and what shipped.",
+  },
+] as const;
+
+const ecosystem = [
+  {
+    title: 'Design skills',
+    body: 'Design process and judgement written down as skills agents can follow, from using the design system correctly to reviewing a screen.',
+  },
+  {
+    title: 'Tools and MCPs',
+    body: 'Connections that give agents direct access to sources of truth, like design system tokens and components, so their output starts on-system instead of being corrected later.',
+  },
+  {
+    title: 'Adoption',
+    body: 'Bringing these workflows to product and development teams, so agentic design became part of how they work rather than a side experiment.',
+  },
+];
+
+const lessons = [
+  {
+    title: 'Early decisions compound.',
+    body: 'In a 0 → 1 product, every decision becomes a default. I learnt to make them as if they were permanent, because most of them were.',
+  },
+  {
+    title: "Prevent errors, don't just catch them.",
+    body: 'Designing out invalid states builds more confidence than any error message can.',
+  },
+  {
+    title: 'Systemise when patterns appear.',
+    body: 'Adding actions as they were needed kept us moving, until the toolbar sprawled. Now I watch for the moment a pattern repeats and give it a system then.',
+  },
+  {
+    title: 'Domain depth makes better questions.',
+    body: 'The more I understood the analysis, the sharper discovery got, and the more confidently the team could scope the work.',
+  },
+  {
+    title: 'Owning the code changes the design.',
+    body: 'When I build what I design, the handoff gap disappears, and I weigh ideas by what they cost to make real.',
+  },
+  {
+    title: 'Agents are users too.',
+    body: 'They need the right context at the right moment, just like people. Writing skills for them forced me to put my own design judgement into words.',
+  },
+];
+---
+<Layout title="Moody's Ratings — Avyay">
+  <article class="case-study">
+    <div class="mr-content" data-chapters="Moody's Ratings">
+
+    <section class="mr-intro" id="overview" data-chapter="Overview">
+      <div class="mr-intro-main">
+        <h1 class="type-title">Moody's Ratings</h1>
+        <p class="mr-prose type-body-md">Since September 2024, my role at Moody's has had two halves: designing structured finance tools from the ground up, and building the AI ecosystem that lets agents do design work across the organisation.</p>
+        <p class="mr-callout type-body-sm">The product work is under NDA, so this page is about how I worked and what I learnt rather than what I shipped. I'm happy to walk through the work itself in person.</p>
+      </div>
+
+      <dl class="mr-meta">
+        <div class="mr-meta-item">
+          <dt class="type-h4">Role</dt>
+          <dd class="type-body-sm">Sr. UX Designer</dd>
+        </div>
+        <div class="mr-meta-item">
+          <dt class="type-h4">Team</dt>
+          <dd class="type-body-sm">Structured Finance Group, XD</dd>
+        </div>
+        <div class="mr-meta-item">
+          <dt class="type-h4">Timeline</dt>
+          <dd class="type-body-sm">Sep 2024 - present</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="mr-section" id="context" data-chapter>
+      <h2 class="mr-section-label type-h4">Context</h2>
+      <div class="mr-columns">
+        <div class="mr-col">
+          <h3 class="type-h2">What does Moody's do?</h3>
+          <p class="mr-prose type-body-md">Moody's is one of the world's leading credit rating agencies, assessing the creditworthiness of companies, governments and financial instruments. I work within Structured Finance, where Moody's rates securities backed by pooled assets.</p>
+        </div>
+        <div class="mr-col">
+          <h3 class="type-h2">Who I design for</h3>
+          <p class="mr-prose type-body-md">Analysts who rate and monitor those securities. Their work is dense, high-stakes and shaped by regulation, and before the tools I worked on, much of it lived in spreadsheets.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mr-section" id="sfg" data-chapter="Designing for SFG">
+      <h2 class="mr-section-label type-h4">Part 1</h2>
+      <h3 class="mr-heading type-h1">Designing the product</h3>
+      <p class="mr-prose type-body-md">On the Structured Finance Group (SFG), the work moved through four modes, often at the same time.</p>
+
+      <div class="mr-cards">
+        {sfg.map(({ sketch, title, lede, body }) => (
+          <div class="mr-item">
+            <div class="mr-card">
+              <Shapes kind={sketch} label={`Diagram: ${lede.toLowerCase()}`} />
+            </div>
+            <div class="mr-card-text">
+              <p class="mr-card-lede type-h4">{lede}</p>
+              <h4 class="type-h2">{title}</h4>
+              <p class="mr-card-body type-body-sm">{body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mr-section" id="agents" data-chapter="Designing for agents">
+      <h2 class="mr-section-label type-h4">Part 2</h2>
+      <h3 class="mr-heading type-h1">Designing for the agents</h3>
+      <p class="mr-prose type-body-md">As Moody's moved to an agent-first way of working, agents started producing UI without the context a designer carries: the design system, the domain and the judgement calls. My role grew to include building that context for them.</p>
+
+      <div class="mr-item mr-item-wide">
+        <div class="mr-card">
+          <Shapes kind="ecosystem" label="Diagram: overlapping shapes forming an ecosystem" />
+        </div>
+        <div class="mr-ecosystem">
+          {ecosystem.map(({ title, body }) => (
+            <div class="mr-ecosystem-item">
+              <h4 class="type-h3">{title}</h4>
+              <p class="mr-card-body type-body-sm">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="mr-section" id="lessons" data-chapter="What I learnt">
+      <h2 class="mr-section-label type-h4">What I learnt</h2>
+      <ol class="mr-lessons">
+        {lessons.map(({ title, body }) => (
+          <li class="mr-lesson">
+            <h3 class="type-h3">{title}</h3>
+            <p class="mr-card-body type-body-sm">{body}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    </div>
+  </article>
+</Layout>
+
+<style>
+  /* The same centred column as the other case studies */
+  .case-study {
+    max-width: 860px;
+    padding: 96px clamp(40px, 8vw, 100px) 120px;
+  }
+
+  .mr-prose {
+    max-width: 680px;
+    line-height: 1.6;
+  }
+
+  /* ── Intro ── */
+  .mr-intro {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 64px;
+    padding-bottom: 48px;
+  }
+
+  .mr-intro-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mr-callout {
+    background: var(--color-cool-bg);
+    border-radius: 12px;
+    padding: 20px 24px;
+    max-width: 680px;
+    line-height: 1.5;
+  }
+
+  .mr-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+    padding-top: 8px;
+  }
+
+  .mr-meta-item dt {
+    margin-bottom: 6px;
+  }
+
+  .mr-meta-item dd {
+    max-width: 220px;
+    line-height: 1.4;
+    color: var(--color-text-strong);
+  }
+
+  /* ── Sections ── */
+  .mr-section {
+    margin-top: 56px;
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mr-section-label {
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .mr-heading {
+    max-width: 560px;
+    margin-bottom: 16px;
+  }
+
+  .mr-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .mr-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ── Cards ──
+     Each diagram sits alone on a soft, deeply rounded panel, with its text
+     underneath rather than inside */
+  .mr-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 24px;
+    margin-top: 40px;
+  }
+
+  .mr-card {
+    --shape-bg: var(--color-cool-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 3;
+    padding: 0 2%;
+    background: var(--shape-bg);
+    border-radius: 28px;
+  }
+
+  .mr-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 4px 0;
+  }
+
+  .mr-card-lede {
+    color: var(--color-text-secondary);
+  }
+
+  .mr-card-body {
+    line-height: 1.55;
+  }
+
+  .mr-item-wide {
+    margin-top: 40px;
+  }
+
+  .mr-item-wide .mr-card {
+    aspect-ratio: 2 / 1;
+    padding: 0 20%;
+  }
+
+  .mr-ecosystem {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding: 24px 4px 0;
+  }
+
+  .mr-ecosystem-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* ── Lessons ── */
+  .mr-lessons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 48px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: lesson;
+  }
+
+  .mr-lesson {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    counter-increment: lesson;
+  }
+
+  .mr-lesson::before {
+    content: counter(lesson, decimal-leading-zero);
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--color-text-accent);
+  }
+
+  @media (max-width: 768px) {
+    .case-study {
+      padding-top: 48px;
+    }
+
+    .mr-intro {
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .mr-meta-item dd {
+      max-width: none;
+    }
+
+    .mr-columns,
+    .mr-cards,
+    .mr-ecosystem,
+    .mr-lessons {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .mr-item-wide .mr-card {
+      aspect-ratio: 4 / 3;
+      padding: 0 2%;
+    }
+  }
+</style>

@@ -7,15 +7,12 @@
 }
 
 :root {
-  /* Type stacks. Lexend carries headings and display text, Manrope carries
-     body and UI. Sizes and weights stay with the components that use them,
-     since those genuinely differ per page. */
-  --font-display: 'Lexend', system-ui, sans-serif;
-  --font-sans: 'Manrope', system-ui, sans-serif;
-  /* Headings in the Paper primitives (Title, H1 to H3) */
-  --font-serif: 'Platypi', Georgia, serif;
-  /* The sidebar and homepage hero (Paper intro artboard) */
-  --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* One typeface everywhere: Helvetica, per the Paper typography artboard.
+     The older names stay as aliases so components that use them follow. */
+  --font-sans: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-serif: var(--font-sans);
+  --font-ui: var(--font-sans);
   /* The fixed nav column on the left; content starts past it */
   --sidebar-width: clamp(170px, 18.4vw, 265px);
   /* Phones: the nav is a bar along the top instead */
@@ -50,6 +47,8 @@
   /* Quiet labels (the hero greeting, "Made with love"). Paper uses
      text-neutral-secondary-dark for these in light mode */
   --color-text-faint: #B4BFCB;
+  /* Project tags on the homepage */
+  --color-tag-bg: #F1F0EC;
   /* Text/icon color for content sitting directly on an accent-filled surface
      (e.g. a button's fill), not on the page background. Unlike every other
      token here it doesn't just flip light/dark: the dark-mode accent is a
@@ -84,6 +83,7 @@ html[data-theme='dark'] {
   --color-text-disabled: #62666F;
   --color-text-accent: #5C97FF;
   --color-text-faint: #62666F;
+  --color-tag-bg: #212227;
   --color-on-accent: #01060E;
   color-scheme: dark;
 }
@@ -97,6 +97,7 @@ body {
 }
 
 body {
+  font-family: var(--font-sans);
   background-color: var(--color-bg-default);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -117,8 +118,8 @@ html.theme-transition::view-transition-new(root) {
 
 .type-title {
   font-family: var(--font-serif);
-  font-size: 36px;
-  font-weight: 400;
+  font-size: 48px;
+  font-weight: 700;
   line-height: 1.3;
   color: var(--color-text-strong);
 }
@@ -155,6 +156,7 @@ html.theme-transition::view-transition-new(root) {
   color: var(--color-text-strong);
 }
 
+.type-body-lg,
 .type-body-md,
 .type-body-sm,
 .type-body-xs {
@@ -162,6 +164,10 @@ html.theme-transition::view-transition-new(root) {
   font-weight: 400;
   line-height: 1.3;
   color: var(--color-text-secondary);
+}
+
+.type-body-lg {
+  font-size: 20px;
 }
 
 .type-body-md {
