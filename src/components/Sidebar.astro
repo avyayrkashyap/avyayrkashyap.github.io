@@ -7,6 +7,12 @@
 // chapters, a second page of sections to swipe (or tap "Sections.") over to.
 import ChapterList from './ChapterList.astro';
 
+interface Props {
+  links?: { label: string; title: string; href: string }[];
+}
+
+const { links = [] } = Astro.props;
+
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const navItems = [
@@ -74,6 +80,22 @@ const current = navItems.find(({ href }) => href === pathname)?.label;
       {/* Case studies and About: their sections, tracking the one being read */}
       <div class="sidebar-page sidebar-page--chapters">
         <div class="sidebar-chapter"><ChapterList /></div>
+        {links.length > 0 && (
+          <div class="sidebar-cards">
+            <p class="sidebar-small sidebar-cards-title">Links.</p>
+            {links.map(({ label, title, href }) => (
+              <a class="sidebar-card" href={href} target="_blank" rel="noopener">
+                <span class="sidebar-card-label">
+                  {label}
+                  <svg viewBox="-1 6 12 12" width="12" height="12" aria-hidden="true">
+                    <path d="M1.7 16L1 15.3 6.8 9.5H3.5V8.5H8.5V13.5H7.5V10.2L1.7 16Z" />
+                  </svg>
+                </span>
+                <span class="sidebar-card-title">{title}</span>
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
 
@@ -346,6 +368,72 @@ const current = navItems.find(({ href }) => href === pathname)?.label;
     margin-top: 24px;
     min-height: 0;
     overflow-y: auto;
+  }
+
+  /* A page's links out, as small cards under its sections */
+  .sidebar-cards {
+    order: 1;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidebar-small.sidebar-cards-title {
+    color: var(--color-text-disabled);
+  }
+
+  .sidebar-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 200px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-cool-bg);
+    color: var(--color-text-strong);
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .sidebar-card:hover {
+    border-color: var(--color-accent-outline);
+    transform: translateY(-1px);
+  }
+
+  .sidebar-card:focus-visible {
+    outline: 2px solid var(--color-accent-outline);
+    outline-offset: 2px;
+  }
+
+  .sidebar-card-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--color-text-secondary);
+  }
+
+  .sidebar-card-label svg {
+    flex-shrink: 0;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar-card:hover .sidebar-card-label {
+    color: var(--color-text-accent);
+  }
+
+  .sidebar-card:hover .sidebar-card-label svg {
+    transform: translate(1px, -1px);
+  }
+
+  .sidebar-card-title {
+    font-size: 14px;
+    line-height: 1.25;
   }
 
   .sidebar-foot {

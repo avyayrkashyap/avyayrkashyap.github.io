@@ -13,9 +13,12 @@ interface Props {
      sheet content goes in slot="sheet". Paths must match SHEET_PATHS in sheet.js */
   sheetOpen?: boolean;
   sheetLabel?: string;
+  /* Case studies: links out (the live site, a write-up), shown as cards
+     under the sections in the sidebar */
+  links?: { label: string; title: string; href: string }[];
 }
 
-const { title, sheetOpen = false, sheetLabel } = Astro.props;
+const { title, sheetOpen = false, sheetLabel, links = [] } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -56,7 +59,7 @@ const { title, sheetOpen = false, sheetLabel } = Astro.props;
   </script>
 </head>
 <body>
-  <Sidebar />
+  <Sidebar links={links} />
   <main class="main" inert={sheetOpen}>
     <slot />
     <Footer />
@@ -66,5 +69,10 @@ const { title, sheetOpen = false, sheetLabel } = Astro.props;
   </Sheet>
   {/* Dev only: click-to-edit paragraph copy, written back to src/ */}
   {import.meta.env.DEV && <TextEditor />}
+  <script>
+    // Site-wide so their listeners exist before any in-site navigation
+    import '../scripts/clips.js';
+    import '../scripts/zoom.js';
+  </script>
 </body>
 </html>

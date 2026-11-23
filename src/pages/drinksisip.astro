@@ -1,0 +1,306 @@
+---
+// src/pages/drinksisip.astro
+// Case study for drinksisip.com, a living list of hot chocolates in New York.
+// A short read: why it exists, then how it was built. Adapted from the
+// Substack post "Designing Drinks I Sip".
+import Layout from '../layouts/Layout.astro';
+
+const links = [
+  { label: 'drinksisip.com', title: 'Visit the site', href: 'https://drinksisip.com' },
+  { label: 'Substack', title: 'Designing Drinks I Sip', href: 'https://avyaykashyap.substack.com/p/designing-drinks-i-sip-build-tools' },
+];
+
+const lessons = [
+  {
+    title: 'Every decision saved time.',
+    body: 'The sandbox, the configurator and its knobs were all ways to spend less of my evenings on the parts that did not need me.',
+  },
+  {
+    title: 'When words get hard, change the medium.',
+    body: 'The moment describing a change became difficult, a knob or a slider did the job better than another prompt.',
+  },
+];
+---
+
+<Layout title="Drinks I Sip — Avyay" links={links}>
+  <article class="case-study dk" data-chapters="Drinks I Sip">
+
+    <header class="dk-hero">
+      <span class="type-body-sm text-disabled">/Side project</span>
+      <h1 class="type-title">Drinks I Sip</h1>
+      <p class="dk-prose type-body-md">A living list of the hot chocolates I've had in New York and Jersey City. Every place gets a score, a pin on the map and a cup of its own. <a href="https://drinksisip.com" target="_blank" rel="noopener">Visit drinksisip.com</a>.</p>
+      <figure class="dk-media">
+        <video class="clip" src="/assets/drinksisip/drinksisip-site.mp4" poster="/assets/drinksisip/drinksisip-site-poster.jpg" preload="none" muted loop playsinline aria-label="Screen recording of drinksisip.com: picking a place from the list flips the split-flap header to its name, flies the map to it and swaps in its cup"></video>
+      </figure>
+    </header>
+
+    <section class="dk-meta">
+      <div class="dk-meta-item"><span class="type-h4">Role</span><span class="type-body-sm">Design & build</span></div>
+      <div class="dk-meta-item"><span class="type-h4">Built with</span><span class="type-body-sm">Claude Code, Paper</span></div>
+      <div class="dk-meta-item"><span class="type-h4">Stack</span><span class="type-body-sm">MapLibre, three.js</span></div>
+      <div class="dk-meta-item"><span class="type-h4">Timeline</span><span class="type-body-sm">Aug - Oct 2026</span></div>
+    </section>
+
+    <section id="why" class="dk-section" data-chapter="Why">
+      <h2 class="dk-label type-h4">Why I built it</h2>
+      <h3 class="dk-statement type-h1">A spreadsheet is a clumsy way to recommend a drink.</h3>
+      <p class="dk-prose type-body-md">Seasonal drinks are my favourite, and hot chocolate is the most permanent of them. Inspired by Rachel Brotman's list, I started ranking my own, with a rubric that leans toward the dark, rich cups I like.</p>
+      <p class="dk-prose type-body-md">Friends and colleagues kept asking where to go. Sending them a spreadsheet full of my methodology changes and metadata felt like the wrong answer, so I built a site anyone could open: the list, where each place is, and what the cup looks like.</p>
+    </section>
+
+    <section id="cups" class="dk-section" data-chapter="The cups">
+      <h2 class="dk-label type-h4">How: the cups</h2>
+      <h3 class="dk-statement type-h1">One paper cup for everyone was unmemorable.</h3>
+      <p class="dk-prose type-body-md">The first idea was a single 3D paper cup with a 2D sleeve. But places like Max Brenner and MarieBelle serve in beautiful cups, and a generic one erased that. Prompting each cup or modelling them in Blender would have taken forever, so I asked Claude to build a three.js sandbox, starting with five vessels.</p>
+
+      <div class="dk-pair">
+        <figure class="dk-media">
+          <video class="clip" src="/assets/drinksisip/vessels-sandbox.mp4" poster="/assets/drinksisip/vessels-sandbox-poster.jpg" preload="none" muted loop playsinline aria-label="Screen recording of the vessels sandbox: a goblet, mug, bell glass, tumbler and paper cup with marshmallows, switching between shapes and spinning"></video>
+        </figure>
+        <figure class="dk-media">
+          <img src="/assets/drinksisip/vessels-wireframe.jpg" alt="The same five vessels in wireframe, showing each lathe profile and the heart-shaped marshmallows" width="2000" height="1140" loading="lazy" />
+        </figure>
+      </div>
+
+      <p class="dk-prose type-body-md">The sandbox grew into a configurator: glass, finish, label style, marshmallows, size, tilt and chocolate colour, saved per place. For tiny adjustments I asked for knobs, because describing them in words would have burned through my token limit. Configurations save as JSON that I upload by hand, which keeps the <a href="https://drinksisip.com/vessels.html" target="_blank" rel="noopener">configurator</a> public with no login.</p>
+
+      <figure class="dk-media">
+        <video class="clip" src="/assets/drinksisip/cup-configurator.mp4" poster="/assets/drinksisip/cup-configurator-poster.jpg" preload="none" muted loop playsinline aria-label="Screen recording of the cup configurator: choosing a place, then changing the glass, finish, label and marshmallows with buttons and sliders"></video>
+      </figure>
+
+      <p class="dk-prose type-body-md">The labels I drew in Paper. Since most places pour into plain white paper cups, I put each logo on the cup rather than copying their packaging.</p>
+    </section>
+
+    <section id="hold" class="dk-section" data-chapter="Holding the cup">
+      <h2 class="dk-label type-h4">How: holding the cup</h2>
+      <div class="dk-two">
+        <figure class="dk-media">
+          <video class="clip" src="/assets/drinksisip/hold-cup.mp4" poster="/assets/drinksisip/hold-cup-poster.jpg" preload="none" muted loop playsinline aria-label="Screen recording on a phone: scrolling through places swaps the cup, then Hold cup turns on the camera and the No Chewing Allowed cup appears in a hand and follows it"></video>
+        </figure>
+        <div>
+          <h3 class="dk-statement type-h1">Then I wanted to hold it.</h3>
+          <p class="dk-prose type-body-md">A cup on a screen is still a picture. On a phone, Hold cup turns on the camera and uses handPose to track your fingers, so the cup sits in your grip and moves with your hand.</p>
+          <p class="dk-prose type-body-md">It's the closest the site gets to handing you the drink before you go and get it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="lessons" class="dk-section" data-chapter="What I learnt">
+      <h2 class="dk-label type-h4">What I learnt</h2>
+      <ol class="dk-lessons">
+        {lessons.map(({ title, body }) => (
+          <li class="dk-lesson">
+            <h3 class="type-h3">{title}</h3>
+            <p class="dk-body type-body-sm">{body}</p>
+          </li>
+        ))}
+      </ol>
+      <a class="dk-card" href="https://avyaykashyap.substack.com/p/designing-drinks-i-sip-build-tools" target="_blank" rel="noopener">
+        <span class="type-h4">Substack</span>
+        <span class="dk-card-title type-h2">Designing Drinks I Sip: Build tools that help you make decisions</span>
+        <span class="dk-body type-body-sm">The longer version: the research agents, the geocoding skill, the cups and the labels.</span>
+        <span class="dk-card-link type-body-sm"><span class="dk-diamond" aria-hidden="true"></span>Read the post ↗</span>
+      </a>
+    </section>
+
+  </article>
+</Layout>
+
+<style>
+  .dk {
+    max-width: 860px;
+    padding: 80px clamp(24px, 8vw, 100px) 120px;
+  }
+
+  .dk-prose {
+    max-width: 680px;
+    line-height: 1.6;
+  }
+
+  .dk-prose + .dk-prose {
+    margin-top: 12px;
+  }
+
+  .dk-prose a {
+    color: var(--color-text-accent);
+  }
+
+  .dk-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  /* Recordings and screenshots sit on a soft panel, like the homepage covers */
+  .dk-media {
+    margin: 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--color-cool-bg);
+  }
+
+  .dk-media video,
+  .dk-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  .dk-hero .dk-media {
+    margin-top: 16px;
+  }
+
+  .dk-section .dk-media,
+  .dk-pair {
+    margin: 32px 0;
+  }
+
+  .dk-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .dk-pair .dk-media {
+    margin: 0;
+  }
+
+  /* A portrait phone recording beside its text */
+  .dk-two {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .dk-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px 32px;
+  }
+
+  .dk-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .dk-meta-item .type-body-sm {
+    line-height: 1.4;
+    color: var(--color-text-strong);
+  }
+
+  .dk-section {
+    margin-top: 56px;
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .dk-label {
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .dk-statement {
+    max-width: 680px;
+    margin-bottom: 16px;
+  }
+
+  .dk-lessons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: lesson;
+  }
+
+  .dk-lesson {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    counter-increment: lesson;
+  }
+
+  .dk-lesson::before {
+    content: counter(lesson, decimal-leading-zero);
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--color-text-accent);
+  }
+
+  .dk-body {
+    line-height: 1.55;
+  }
+
+  /* The link out to the Substack post, with the homepage's "View work." hover */
+  .dk-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 48px;
+    padding: 24px;
+    border-radius: 12px;
+    background: var(--color-cool-bg);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .dk-card:focus-visible {
+    outline: 2px solid var(--color-accent-outline);
+    outline-offset: 4px;
+  }
+
+  .dk-card-title {
+    max-width: 560px;
+    color: var(--color-text-strong);
+  }
+
+  .dk-card-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    color: var(--color-text-strong);
+    transition: color 0.2s ease;
+  }
+
+  .dk-diamond {
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .dk-card:hover .dk-card-link {
+    color: var(--color-text-accent);
+  }
+
+  .dk-card:hover .dk-diamond {
+    transform: rotate(90deg);
+  }
+
+  @media (max-width: 768px) {
+    .dk {
+      padding-top: 48px;
+    }
+
+    .dk-meta {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .dk-pair,
+    .dk-two,
+    .dk-lessons {
+      grid-template-columns: 1fr;
+    }
+
+    .dk-two .dk-media {
+      max-width: 280px;
+    }
+  }
+</style>

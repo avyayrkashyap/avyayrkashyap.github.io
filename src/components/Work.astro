@@ -14,6 +14,9 @@ interface Project {
   external?: boolean;
   /* A screenshot cover; without one the project draws its own (Moody's) */
   image?: string;
+  /* A looping screen recording instead, with its first frame as the poster */
+  video?: string;
+  poster?: string;
 }
 
 const projects: Project[] = [
@@ -39,11 +42,11 @@ const projects: Project[] = [
   },
   {
     title: 'Drinks I sip.',
-    description: "My digital shelf of some cups and glasses I've liked enough to draw.",
-    tags: ['Side Project.', 'Illustration.'],
-    href: 'https://drinksisip.com',
-    external: true,
-    image: '/assets/experiments/drinksisip/drinksisip.png',
+    description: "A living list of the hot chocolates I've had in New York and Jersey City, with a map, a score and a cup of its own for every place.",
+    tags: ['Side Project.', 'Agentic Design.'],
+    href: '/drinksisip',
+    video: '/assets/drinksisip/drinksisip-site.mp4',
+    poster: '/assets/drinksisip/drinksisip-site-poster.jpg',
   },
 ];
 ---
@@ -51,10 +54,12 @@ const projects: Project[] = [
   <h2 class="work-label">Work.</h2>
 
   <div class="work-list">
-    {projects.map(({ title, description, tags, href, external, image }) => (
+    {projects.map(({ title, description, tags, href, external, image, video, poster }) => (
       <a class="work-row" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
         <div class="work-cover">
-          {image ? (
+          {video ? (
+            <video class="work-shot clip" src={video} poster={poster} preload="none" muted loop playsinline aria-label={`Screen recording of ${title}`}></video>
+          ) : image ? (
             <img class="work-shot" src={image} alt="" loading="lazy" />
           ) : (
             <>

@@ -384,3 +384,35 @@ html.sheet-open {
     max-width: none;
   }
 }
+
+/* ── Image and video viewer (src/scripts/zoom.js) ── */
+.case-study .zoomable {
+  cursor: zoom-in;
+}
+
+.zoom-viewer {
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+.zoom-viewer[open] {
+  display: grid;
+  place-items: center;
+}
+
+.zoom-viewer::backdrop {
+  background: rgb(0 0 0 / 0.8);
+}
+
+.zoom-viewer img,
+.zoom-viewer video {
+  max-width: 92vw;
+  max-height: 90vh;
+  border-radius: 8px;
+}
