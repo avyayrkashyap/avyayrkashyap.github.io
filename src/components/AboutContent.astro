@@ -197,9 +197,10 @@ const teams = [
   /* Only pin the intro when the viewport can show all of it; on shorter
      screens a pinned intro would hide the end of the blurb */
   @media (min-width: 1024px) and (min-height: 760px) {
+    /* Level with the sidebar's nav links (its 48px top padding) */
     .ab-intro {
       position: sticky;
-      top: 12px;
+      top: 48px;
     }
   }
 
@@ -238,7 +239,7 @@ const teams = [
     max-width: 420px;
     padding: 2px;
     box-sizing: border-box;
-    border-radius: 22px;
+    border-radius: 0;
     background: conic-gradient(
       from var(--ab-glow-angle, 0deg),
       transparent 0deg,
@@ -257,7 +258,7 @@ const teams = [
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 22px;
+    border-radius: 0;
     background: conic-gradient(
       from var(--ab-glow-angle, 0deg),
       transparent 0deg,
@@ -282,7 +283,7 @@ const teams = [
     width: 100%;
     height: auto;
     aspect-ratio: 2534 / 1292;
-    border-radius: 20px;
+    border-radius: 0;
     object-fit: cover;
   }
 
@@ -441,7 +442,7 @@ const teams = [
     flex-direction: column;
     gap: 10px;
     background: var(--color-cool-bg);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 24px;
   }
 
