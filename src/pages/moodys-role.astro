@@ -80,8 +80,8 @@ const lessons = [
     <div class="mr-content" data-chapters="Moody's Ratings">
 
     <section class="mr-intro" id="overview" data-chapter="Overview">
+      <h1 class="mr-title type-title">Moody's Ratings</h1>
       <div class="mr-intro-main">
-        <h1 class="type-title">Moody's Ratings</h1>
         <p class="mr-prose type-body-md">Since September 2024, my role at Moody's has had two halves: designing structured finance tools from the ground up, and building the AI ecosystem that lets agents do design work across the organisation.</p>
         <p class="mr-callout type-body-sm">The product work is under NDA, so this page is about how I worked and what I learnt rather than what I shipped.</p>
       </div>
@@ -144,7 +144,7 @@ const lessons = [
 
       <div class="mr-item mr-item-wide">
         <div class="mr-card">
-          <Shapes kind="ecosystem" label="Diagram: overlapping shapes forming an ecosystem" />
+          <Shapes kind="ecosystem" label="Diagram: scattered blocks snapping into place on a shared grid" />
         </div>
         <div class="mr-ecosystem">
           {ecosystem.map(({ title, body }) => (
@@ -186,12 +186,18 @@ const lessons = [
   }
 
   /* ── Intro ── */
+  /* The title spans the full width, so the meta column starts level with
+     the paragraph rather than the heading */
   .mr-intro {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 64px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 20px 64px;
     padding-bottom: 48px;
+  }
+
+  .mr-title {
+    grid-column: 1 / -1;
   }
 
   .mr-intro-main {
@@ -212,8 +218,9 @@ const lessons = [
     display: flex;
     flex-direction: column;
     gap: 20px;
-    flex-shrink: 0;
-    padding-top: 8px;
+    /* Lines the first label's text up with the paragraph's first line,
+       which sits lower in its taller line box */
+    padding-top: 3px;
   }
 
   .mr-meta-item dt {
@@ -344,8 +351,11 @@ const lessons = [
     }
 
     .mr-intro {
-      flex-direction: column;
-      gap: 32px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mr-meta {
+      padding-top: 12px;
     }
 
     .mr-meta-item dd {
