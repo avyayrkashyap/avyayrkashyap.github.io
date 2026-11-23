@@ -1,0 +1,489 @@
+---
+// src/pages/prep.astro
+// Private interview prep: reachable only by typing /prep. Nothing links here,
+// there's no sitemap, and noindex keeps it out of search. It is still public
+// to anyone with the URL (and in the repo), so keep nothing sensitive here.
+import '../styles/global.css';
+
+const role = {
+  company: 'D. E. Shaw',
+  title: 'Product Designer, Human Capital',
+  posting: 'https://www.deshaw.com/careers/product-designer-5994',
+};
+
+// Each paragraph is a beat; pause between them when speaking
+const intros = {
+  long: [
+    "Hi, I'm Avyay. I'm a senior product designer at Moody's Ratings in New York, with about five years designing complex, data-heavy tools.",
+    "At Moody's I own end-to-end design for structured finance analysis tools, both new products and older ones rebuilt on modern frameworks. I've also contributed patterns back to our shared design system and documented them so other teams can use them without me.",
+    "Lately, the bigger part of my work has been building a design harness for the org. It has three parts. Skills capture our design process and judgement in a form AI can follow. MCPs connect AI tools directly to our design system's tokens and components. And guardrails keep the output on-system and up to our quality bar. The goal is to democratise design, so product managers and developers can produce good, consistent design work without a designer in every loop, and designers can focus on the hard problems.",
+    "Before that, I led JioMart's consumer redesign at Reliance Jio and set up the UX foundation for an internal employee service portal used across the company. During my Master's in HCI at Indiana, I designed sourcing tools at GEP for multiple user types, from cost engineers to category managers.",
+    "That's why this role stood out to me. Design systems, AI-powered workflows and internal platforms for many kinds of users are exactly where my work has been heading.",
+  ],
+  short: [
+    "I'm a senior product designer at Moody's Ratings. I design structured finance tools, and I've been building a design harness for the org: skills, MCPs and guardrails that let product and dev teams use AI to produce on-system design work.",
+    "Before that I led JioMart's redesign at Reliance Jio and built the UX foundation for its internal employee portal. Design systems, AI workflows and internal tools are where my work is heading, which is why this role caught my eye.",
+  ],
+};
+
+// What the posting asks for, and the proof I can point to
+const fit = [
+  { ask: 'Design systems in Figma', proof: "Contributed dense tables, bulk-edit feedback and progressive disclosure to Moody's shared system, documented for other teams." },
+  { ask: 'AI-consumable resources', proof: 'The design harness: skills, MCPs to tokens and components, guardrails. This is their exact ask.' },
+  { ask: 'AI-powered design workflows', proof: 'Build with Claude daily. LLM-assisted front-end cut dev effort 70% on one redesign, about 3x faster UI overall.' },
+  { ask: 'Multiple user types and workflows', proof: 'GEP: cost engineers and category managers. Moody\'s: analysts across rating and monitoring.' },
+  { ask: 'Internal platforms (Human Capital)', proof: "Jio's internal employee service portal, used across the company." },
+  { ask: 'Several projects at once', proof: "Moody's product work and the harness, run side by side." },
+  { ask: '4 to 7 years of experience', proof: 'About five years: Jio, GEP, Moody\'s.' },
+];
+
+const followUps = [
+  {
+    q: "What's a design harness?",
+    a: "It's everything that sits around an AI tool so it designs the way our team would. Skills teach it our process, MCPs give it our real components and tokens, and guardrails catch what's off-system before it ships. That way more people across the org can do design work well.",
+  },
+  {
+    q: 'What do you mean by AI-native?',
+    a: "Two things. I build with AI directly, so I design inside real code and components instead of handing off mockups. And I design for agents: they're users too, and like people they need the right context at the right moment.",
+  },
+  {
+    q: 'Do you code?',
+    a: "Yes, with LLM assistance. At Moody's I shipped production front-end that developers reviewed and merged. On one redesign that cut dev effort by 70 percent, and overall it made UI work about three times faster.",
+  },
+  {
+    q: 'Why Human Capital?',
+    a: "Internal tools are where design compounds, because everyone in the firm touches them. At Jio I set up the foundation for an employee service portal, and I like the challenge of many user types sharing one platform. Pairing that with a design system and AI workflows is the exact mix I'm working in now.",
+  },
+  {
+    q: 'How do you juggle multiple projects?',
+    a: "At Moody's I run product work and the harness in parallel. I keep the product work on a weekly rhythm with PMs, and treat the harness like a product of its own, with its own users and roadmap.",
+  },
+  {
+    q: 'Code Connect, slots, semantic tokens, Figma Make?',
+    a: 'Write your honest one-liner for each before the call: where you used it, or how you would.',
+    todo: true,
+  },
+  {
+    q: 'What are your salary expectations?',
+    a: 'Posted base is $130K to $170K, plus a year-end bonus guaranteed in year one. Decide your number before the call.',
+    todo: true,
+  },
+];
+
+// Drafts from the portfolio, in STAR order. Brackets mark what only I know.
+const behavioural = [
+  {
+    q: "Tell me about a project you're most proud of.",
+    a: "Situation: Moody's started moving to an agent-first way of working.\nTask: Make AI produce design work that's on-system, so more people across the org could do design well.\nAction: I built a design harness. I wrote our design process and judgement as skills, connected AI tools to our tokens and components through MCPs, added guardrails, and brought it to product and dev teams.\nResult: Agentic design became part of how those teams work rather than a side experiment. [Add an adoption number.]",
+  },
+  {
+    q: 'Tell me about a time you disagreed with a PM or engineer.',
+    a: "Situation: Once single-item workflows worked in our structured finance tool, we needed analysts to act on many items at once.\nTask: Define what a bulk action should mean, and how defaults differ between one item and many.\nAction: We went through several rounds on where the line sat between what engineering could build and what would feel natural to an analyst. I [what you brought: prototypes, analyst feedback, edge cases].\nResult: [What you agreed on, and what shipped.]",
+  },
+  {
+    q: "Tell me about a mistake, or something you'd do differently.",
+    a: "Situation: We added toolbar actions as each one was needed, which kept us moving.\nTask: By the time it reached 20 actions, the toolbar had sprawled and was hard to scan.\nAction: I categorised the actions and restructured the toolbar.\nResult: Its footprint shrank by over 60%. Now I watch for the moment a pattern repeats and give it a system then, not after it sprawls.",
+  },
+  {
+    q: 'Tell me about working through ambiguity.',
+    a: "Situation: Moody's structured finance tools were a 0 to 1 product, so every early decision became a default.\nTask: Make good calls without a precedent to lean on.\nAction: I went deep on the domain. The more I understood the analysis, the sharper my discovery questions got. I made decisions as if they were permanent, because most of them were.\nResult: The team could scope work more confidently. [Add an example decision.]",
+  },
+  {
+    q: 'Tell me about influencing without authority.',
+    a: "Situation: Design-to-dev handoff was slowing UI work down.\nTask: Close the gap between what was designed and what shipped.\nAction: I took on front-end implementation for parts of the product, using LLM-assisted coding, with developers reviewing and merging my code. [How you earned their trust.]\nResult: On one redesign it cut dev effort by 70%, and overall UI implementation got about 3x faster.",
+  },
+  {
+    q: 'Tell me about using research or data to change direction.',
+    a: "Situation: [Jio, JioMart consumer experience.]\nTask: [What problem the research was meant to answer.]\nAction: [What you learnt, and what it changed in the design.]\nResult: The redesign contributed to a 42% increase in customer satisfaction.",
+    todo: true,
+  },
+  {
+    q: 'Tell me about presenting to leadership or a tough stakeholder.',
+    a: 'Situation: [ ]\nTask: [ ]\nAction: [How you framed the design rationale for them.]\nResult: [ ]',
+    todo: true,
+  },
+  {
+    q: 'Tell me about receiving tough feedback.',
+    a: 'Situation: [ ]\nTask: [ ]\nAction: [What you changed.]\nResult: [What you do differently now.]',
+    todo: true,
+  },
+];
+
+// Both answer lists render the same way; each answer is an editable textarea
+// saved to this browser under prep:<slug>
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const answerSections = [
+  { label: 'If they ask', items: followUps },
+  { label: 'Behavioural', note: 'Answer in STAR: situation, task, action, result. Aim for about two minutes each.', items: behavioural },
+];
+
+const questions = [
+  'How is the team\'s design system set up today, and how far along is Code Connect?',
+  'Which AI workflows is the team already using, and where do they break down?',
+  'Who are the main user types on the Human Capital platforms?',
+  'What do the next steps in the process look like?',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Prep · Avyay</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script is:inline>
+    document.documentElement.setAttribute('data-theme',
+      localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  </script>
+</head>
+<body>
+  <main class="pp">
+    <header class="pp-head">
+      <span class="type-h4 text-accent">Screener prep</span>
+      <h1 class="type-title pp-title">{role.company}</h1>
+      <p class="type-body-md text-secondary">
+        {role.title} · <a href={role.posting} target="_blank" rel="noopener">Posting</a> · <a href="/intro">Slideshow</a>
+      </p>
+    </header>
+
+    <section class="pp-section">
+      <div class="pp-bar">
+        <h2 class="type-h4">The intro</h2>
+        <div class="pp-tabs" role="group" aria-label="Length">
+          <button type="button" class="pp-tab" data-show="long" aria-pressed="true">75 sec</button>
+          <button type="button" class="pp-tab" data-show="short" aria-pressed="false">30 sec</button>
+        </div>
+      </div>
+      {Object.entries(intros).map(([key, beats]) => (
+        <div class="pp-script pp-answer" data-version={key} hidden={key !== 'long'}>
+          <textarea class="pp-textarea pp-textarea--intro type-body-lg" data-key={`intro-${key}`} aria-label={key === 'long' ? '75 second intro' : '30 second intro'} spellcheck="true">{beats.join('\n\n')}</textarea>
+          <div class="pp-answer-foot type-body-xs">
+            <span class="pp-status text-secondary" aria-live="polite"></span>
+            <button type="button" class="pp-reset">Reset to draft</button>
+          </div>
+        </div>
+      ))}
+      <div class="pp-timer">
+        <button type="button" class="pp-timer-btn" id="timerBtn">Start timer</button>
+        <span class="pp-timer-time" id="timerTime" aria-live="off">0:00</span>
+        <span class="type-body-xs text-secondary" id="timerTarget">Aim for 60 to 75 seconds</span>
+      </div>
+      <p class="pp-note type-body-sm text-secondary">Add one adoption number after the harness beat if you have it: teams using it, time saved, fewer review cycles.</p>
+    </section>
+
+    <section class="pp-section">
+      <h2 class="type-h4">What they want, what I have</h2>
+      <dl class="pp-fit">
+        {fit.map(({ ask, proof }) => (
+          <div>
+            <dt class="type-h3">{ask}</dt>
+            <dd class="type-body-sm text-secondary">{proof}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    {answerSections.map(({ label, note, items }) => (
+      <section class="pp-section">
+        <h2 class="type-h4">{label}</h2>
+        {note && <p class="pp-lede type-body-sm text-secondary">{note}</p>}
+        <div class="pp-qa">
+          {items.map(({ q, a, todo }) => (
+            <details class="pp-answer">
+              <summary class="type-h3">{q}{todo && <span class="pp-todo type-body-xs">To prep</span>}</summary>
+              <textarea class="pp-textarea type-body-md" data-key={slug(q)} aria-label={q} spellcheck="true">{a}</textarea>
+              <div class="pp-answer-foot type-body-xs">
+                <span class="pp-status text-secondary" aria-live="polite"></span>
+                <button type="button" class="pp-reset">Reset to draft</button>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="pp-section">
+      <h2 class="type-h4">Questions for them</h2>
+      <ol class="pp-questions">
+        {questions.map((q) => <li class="type-body-md">{q}</li>)}
+      </ol>
+    </section>
+  </main>
+
+  <script>
+    // Textareas grow with their text. Only measurable while shown: a closed
+    // <details> or hidden intro reports no height, so those refit on reveal.
+    const fit = (area: HTMLTextAreaElement) => {
+      if (!area.offsetParent) return;
+      area.style.height = 'auto';
+      area.style.height = `${area.scrollHeight + 2}px`;
+    };
+
+    // Length toggle
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.pp-tab')];
+    const scripts = [...document.querySelectorAll<HTMLElement>('.pp-script')];
+    const target = document.getElementById('timerTarget')!;
+    tabs.forEach((tab) => tab.addEventListener('click', () => {
+      tabs.forEach((t) => t.setAttribute('aria-pressed', String(t === tab)));
+      scripts.forEach((s) => {
+        s.hidden = s.dataset.version !== tab.dataset.show;
+        fit(s.querySelector('textarea')!);
+      });
+      target.textContent = tab.dataset.show === 'long' ? 'Aim for 60 to 75 seconds' : 'Aim for about 30 seconds';
+    }));
+
+    // Practice timer: start, stop, and start again from zero
+    const btn = document.getElementById('timerBtn')!;
+    const time = document.getElementById('timerTime')!;
+    let started = 0;
+    let tick = 0;
+    btn.addEventListener('click', () => {
+      if (tick) {
+        clearInterval(tick);
+        tick = 0;
+        btn.textContent = 'Start timer';
+        return;
+      }
+      started = Date.now();
+      time.textContent = '0:00';
+      tick = window.setInterval(() => {
+        const s = Math.floor((Date.now() - started) / 1000);
+        time.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+      }, 250);
+      btn.textContent = 'Stop';
+    });
+
+    // Editable answers: saved to this browser as you type. Storage can be
+    // blocked (private windows, cleared site data), so every call is guarded
+    // and the drafts still render without it.
+    const store = {
+      get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
+      set: (k: string, v: string) => { try { localStorage.setItem(k, v); return true; } catch { return false; } },
+      del: (k: string) => { try { localStorage.removeItem(k); } catch { /* nothing to undo */ } },
+    };
+
+    // The intro versions and every <details> answer share this
+    document.querySelectorAll<HTMLElement>('.pp-answer').forEach((box) => {
+      const area = box.querySelector('textarea')!;
+      const status = box.querySelector('.pp-status')!;
+      const key = `prep:${area.dataset.key}`;
+      const draft = area.defaultValue;
+      const saved = store.get(key);
+      if (saved !== null && saved !== draft) {
+        area.value = saved;
+        status.textContent = 'Your edit';
+      }
+      fit(area);
+      box.addEventListener('toggle', () => fit(area));
+      area.addEventListener('input', () => {
+        fit(area);
+        status.textContent = store.set(key, area.value) ? 'Saved' : 'Not saved: this browser is blocking storage';
+      });
+      box.querySelector('.pp-reset')!.addEventListener('click', () => {
+        if (area.value !== draft && !confirm('Replace your edit with the original draft?')) return;
+        area.value = draft;
+        store.del(key);
+        fit(area);
+        status.textContent = 'Back to draft';
+      });
+    });
+  </script>
+
+  <style is:global>
+    .pp {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: clamp(48px, 10vh, 120px) 16px 120px;
+      color: var(--color-text-strong);
+    }
+
+    .pp a {
+      color: var(--color-text-accent);
+    }
+
+    .pp-head {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    .pp-title {
+      font-size: clamp(32px, 6vw, 48px);
+      line-height: 1.15;
+    }
+
+    .pp-section {
+      padding-top: 40px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .pp-section + .pp-section {
+      margin-top: 48px;
+    }
+
+    .pp-section > .type-h4,
+    .pp-bar {
+      margin-bottom: 24px;
+    }
+
+    .pp-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .pp-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--color-cool-bg);
+    }
+
+    .pp-tab,
+    .pp-timer-btn {
+      border: 0;
+      padding: 6px 12px;
+      font: 700 13px var(--font-sans);
+      color: var(--color-text-secondary);
+      background: none;
+      cursor: pointer;
+    }
+
+    .pp-tab[aria-pressed='true'] {
+      color: var(--color-text-strong);
+      background: var(--color-bg-default);
+    }
+
+    .pp-script {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .pp-script[hidden] {
+      display: none;
+    }
+
+    /* The intro reads like the script it is: larger type, no box until focus */
+    .pp-textarea--intro {
+      border-color: transparent;
+      background: var(--color-warm-bg);
+      line-height: 1.6;
+    }
+
+    .pp-timer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .pp-timer-btn {
+      color: var(--color-on-accent);
+      background: var(--color-text-accent);
+    }
+
+    .pp-timer-time {
+      min-width: 3ch;
+      font: 700 20px var(--font-sans);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pp-note {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: var(--color-warm-bg);
+    }
+
+    .pp-fit {
+      display: grid;
+      gap: 20px;
+    }
+
+    .pp-fit dt {
+      margin-bottom: 4px;
+    }
+
+    .pp-qa details {
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .pp-qa summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 0;
+      cursor: pointer;
+    }
+
+    .pp-lede {
+      margin: -12px 0 16px;
+    }
+
+    .pp-textarea {
+      display: block;
+      width: 100%;
+      min-height: 96px;
+      padding: 12px 14px;
+      border: 1px solid var(--color-border);
+      background: var(--color-bg-secondary);
+      color: var(--color-text-strong);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    .pp-textarea:focus {
+      outline: none;
+      border-color: var(--color-text-accent);
+    }
+
+    .pp-answer-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0 20px;
+    }
+
+    .pp-reset {
+      border: 0;
+      background: none;
+      font: inherit;
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+
+    .pp-reset:hover {
+      color: var(--color-text-accent);
+    }
+
+    .pp-todo {
+      padding: 2px 8px;
+      color: var(--color-text-accent);
+      background: var(--color-accent-soft);
+      border: 1px solid var(--color-accent-outline);
+    }
+
+    .pp-questions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-left: 20px;
+    }
+
+    .pp-tab:focus-visible,
+    .pp-timer-btn:focus-visible,
+    .pp-qa summary:focus-visible,
+    .pp-reset:focus-visible {
+      outline: 2px solid var(--color-accent-outline);
+      outline-offset: 2px;
+    }
+  </style>
+</body>
+</html>
