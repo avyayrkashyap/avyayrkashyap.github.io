@@ -1,38 +1,11 @@
 ---
 // src/components/Footer.astro
-const socials = [
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/avyay-kashyap-4236635b/',
-    path: 'M4.98 3.5C4.98 4.88 3.94 6 2.5 6S0 4.88 0 3.5 1.04 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.8v2.05h.06c.53-1 1.83-2.05 3.77-2.05C19.5 8 21 10.2 21 14.02V23h-4v-7.9c0-1.9-.03-4.34-2.65-4.34-2.65 0-3.06 2.07-3.06 4.2V23h-4V8z',
-  },
-  {
-    label: 'X',
-    href: 'https://x.com/avyayrkashyap',
-    path: 'M17.53 3H21l-7.5 8.57L22 21h-6.9l-5.4-6.62L3.5 21H0l8.02-9.17L0 3h7.06l4.88 6.05L17.53 3zm-1.2 16.17h1.9L6.75 4.72H4.7l11.63 14.45z',
-  },
-];
 ---
 <footer class="site-footer">
-  <div class="footer-top">
-    <div class="footer-contact">
-      {/* At Title size the address is wider than a phone; <wbr> lets it wrap after the @ instead of overflowing */}
-      <a class="footer-email type-title" href="mailto:avyayrk@gmail.com">avyayrk@<wbr />gmail.com</a>
-      <span class="footer-caption type-body-xs">Get in touch</span>
-    </div>
-
-    <div class="footer-social">
-      <span class="footer-caption type-body-xs">Find me on</span>
-      <div class="footer-social-links">
-        {socials.map(({ label, href, path }) => (
-          <a class="footer-icon-btn" href={href} target="_blank" rel="noopener" aria-label={label}>
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d={path} />
-            </svg>
-          </a>
-        ))}
-      </div>
-    </div>
+  <div class="footer-contact">
+    {/* At Title size the address is wider than a phone; <wbr> lets it wrap after the @ instead of overflowing */}
+    <a class="footer-email type-title" href="mailto:avyayrk@gmail.com">avyayrk@<wbr />gmail.com</a>
+    <span class="footer-caption type-body-xs">Get in touch</span>
   </div>
 
   <p class="footer-bottom type-body-xs">Made with <span aria-hidden="true">❤️</span> from New York, NY&nbsp;|&nbsp;Avyay Ravi Kashyap © 2026</p>
@@ -45,14 +18,6 @@ const socials = [
     flex-direction: column;
     gap: 40px;
     border-top: 1px solid var(--color-border);
-  }
-
-  .footer-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 32px;
-    flex-wrap: wrap;
   }
 
   .footer-contact {
@@ -68,50 +33,5 @@ const socials = [
 
   .footer-email:hover {
     color: var(--color-text-accent);
-  }
-
-  .footer-social {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
-  }
-
-  .footer-social-links {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .footer-icon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 9999px;
-    background: transparent;
-    color: var(--color-text-strong);
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .footer-icon-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .footer-icon-btn:hover {
-    background: var(--color-cool-bg);
-    color: var(--color-text-accent);
-  }
-
-  @media (max-width: 768px) {
-    .footer-top {
-      flex-direction: column;
-    }
-
-    .footer-social {
-      align-items: flex-start;
-    }
   }
 </style>
