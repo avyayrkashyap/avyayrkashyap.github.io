@@ -1,0 +1,616 @@
+---
+// src/pages/intro.astro
+// The About page as a full-screen slideshow, for interviews. Reached from the
+// "Play my intro." link on About; not in the nav.
+//
+// Moving: → / Space / click the right of the screen / swipe left goes forward,
+// ← / click the left / swipe right goes back, Esc returns to About. Slides
+// build in steps: anything tagged data-step="n" appears on the nth advance.
+import '../styles/global.css';
+import PhilosophyLoop from '../components/PhilosophyLoop.astro';
+import { values } from '../data/philosophy';
+
+const interests = [
+  { src: '/assets/about/claude-code-logo.png', alt: 'Claude Code' },
+  { src: '/assets/about/eafc26-logo.png', alt: 'EA Sports FC 26' },
+  { src: '/assets/about/beli-logo.png', alt: 'Beli' },
+  { src: '/assets/about/nrc-logo.png', alt: 'Nike Run Club', badge: true },
+];
+
+const journey = [
+  { year: '2015', place: 'IIT Bombay', note: 'Fell in love with design', logo: '/assets/about/iitb-logo.png' },
+  { year: '2018', place: 'Philips', note: 'First studio', logo: '/assets/index/logo-philips.png' },
+  { year: '2020', place: 'Reliance Jio', note: 'JioMart, +42% CSAT', logo: '/assets/index/logo-jio.png', logoDark: '/assets/index/logo-jio-dark.png' },
+  { year: '2022', place: 'Indiana University', note: 'MS, HCI', logo: '/assets/about/iu-logo.png' },
+  { year: '2023', place: 'GEP', note: 'Sourcing tools, weeks to hours', logo: '/assets/index/logo-gep.png', logoDark: '/assets/index/logo-gep-dark.png' },
+  { year: '2024', place: "Moody's Ratings", note: 'Structured finance and AI', logo: '/assets/index/logo-moodys.png', logoDark: '/assets/index/logo-moodys-dark.png' },
+];
+
+// My role, growing outward: each group is one build step
+const role = [
+  ['Execution', 'Craft', 'Experiences'],
+  ['Design as a service', 'Drive decisions', 'Collaboration', 'Advocate for design'],
+  ['Build the harness', 'Scale design across the org'],
+];
+
+const harness = [
+  { title: 'Skills', body: 'Our process and judgement, written for AI.' },
+  { title: 'MCPs', body: 'A direct line to real tokens and components.' },
+  { title: 'Guardrails', body: 'Output stays on-system, at our bar.' },
+];
+
+const SLIDES = 6;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intro · Avyay</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script is:inline>
+    document.documentElement.setAttribute('data-theme',
+      localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  </script>
+</head>
+<body class="in-body">
+  <header class="in-chrome">
+    <a class="in-back" href="/about"><span class="in-diamond" aria-hidden="true"></span>About.</a>
+    <span class="in-count type-body-xs" id="count" aria-live="polite">1 / {SLIDES}</span>
+  </header>
+
+  <main class="in-deck" id="deck">
+    {/* 1 · Hello */}
+    <section class="in-slide" aria-label="Hello">
+      <div class="in-hello">
+        <img class="in-photo" src="/assets/about/about-avyay.png" alt="Avyay standing in front of the Golden Gate Bridge" width="2534" height="1292" />
+        <h1 class="type-title in-title">Avyay Ravi Kashyap</h1>
+        <p class="type-body-md text-secondary">Senior Product Designer, Moody's Ratings · New York</p>
+        <ul class="in-interests" aria-label="Off hours">
+          {interests.map(({ src, alt, badge }) => (
+            <li><img class:list={['in-interest', { 'in-interest--badge': badge }]} src={src} alt={alt} /></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* 2 · Journey */}
+    <section class="in-slide" aria-label="My design journey">
+      <h2 class="type-h4 in-eyebrow">My design journey</h2>
+      <ol class="in-journey">
+        {journey.map(({ year, place, note, logo, logoDark }, n) => (
+          <li class="in-stop" data-step={n || undefined}>
+            <span class="in-stop-logo">
+              <img class:list={[{ 'in-logo--light': logoDark }]} src={logo} alt="" />
+              {logoDark && <img class="in-logo--dark" src={logoDark} alt="" />}
+            </span>
+            <span class="in-stop-dot" aria-hidden="true"></span>
+            <span class="type-body-xs text-accent">{year}</span>
+            <strong class="type-h3">{place}</strong>
+            <span class="type-body-xs text-secondary">{note}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    {/* 3 · Philosophy */}
+    <section class="in-slide" aria-label="My design philosophy">
+      <h2 class="type-h4 in-eyebrow">My design philosophy</h2>
+      <div class="in-loop"><PhilosophyLoop stepped /></div>
+      <ul class="in-values" data-step="4">
+        {values.map(({ value }) => <li>{value.toLowerCase()}</li>)}
+      </ul>
+    </section>
+
+    {/* 4 · Role */}
+    <section class="in-slide" aria-label="My role as a designer">
+      <h2 class="type-h4 in-eyebrow">My role as a designer</h2>
+      <div class="in-role">
+        <div class="in-venn" aria-hidden="true">
+          <span class="in-circle in-circle--a">Tech</span>
+          <span class="in-circle in-circle--b">Business</span>
+          <span class="in-venn-mid">Design</span>
+        </div>
+        <ul class="in-duties">
+          {role.flatMap((group, g) => group.map((duty) => (
+            <li class:list={{ 'is-new': g === 2 }} data-step={g || undefined}>{duty}</li>
+          )))}
+        </ul>
+      </div>
+    </section>
+
+    {/* 5 · Design harness */}
+    <section class="in-slide" aria-label="What I'm building now">
+      <h2 class="type-h4 in-eyebrow">What I'm building now</h2>
+      <h3 class="type-title in-title">A design harness</h3>
+      <div class="in-harness">
+        {harness.map(({ title, body }, n) => (
+          <div class="in-card" data-step={n + 1}>
+            <strong class="type-h2">{title}</strong>
+            <p class="type-body-sm text-secondary">{body}</p>
+          </div>
+        ))}
+      </div>
+      <p class="in-outcome" data-step="4">
+        <strong class="type-h2 text-accent">Design, democratised.</strong>
+        <span class="type-body-md text-secondary">PMs and engineers ship on-system work. Designers take the hard problems.</span>
+      </p>
+    </section>
+
+    {/* 6 · Close */}
+    <section class="in-slide" aria-label="Closing thought">
+      <blockquote class="in-quote">“Design is a <span class="text-accent">skillset</span>, not a job.”</blockquote>
+      <p class="type-body-md text-secondary" data-step="1">Thank you.</p>
+    </section>
+  </main>
+
+  <nav class="in-dots" aria-label="Slides">
+    {Array.from({ length: SLIDES }, (_, n) => (
+      <button class="in-dot" type="button" aria-label={`Slide ${n + 1}`}></button>
+    ))}
+  </nav>
+  <p class="in-hint type-body-xs" aria-hidden="true">← → to move · Esc to leave</p>
+
+  <script>
+    const slides = [...document.querySelectorAll<HTMLElement>('.in-slide')];
+    const dots = [...document.querySelectorAll<HTMLButtonElement>('.in-dot')];
+    const count = document.getElementById('count')!;
+    const deck = document.getElementById('deck')!;
+    let i = 0;
+    let step = 0;
+
+    const steps = (s: HTMLElement) =>
+      Math.max(0, ...[...s.querySelectorAll<HTMLElement>('[data-step]')].map((e) => +e.dataset.step!));
+
+    function render() {
+      slides.forEach((s, n) => {
+        s.classList.toggle('is-current', n === i);
+        s.classList.toggle('is-past', n < i);
+        s.inert = n !== i;
+      });
+      slides[i].querySelectorAll<HTMLElement>('[data-step]').forEach((e) =>
+        e.classList.toggle('is-shown', +e.dataset.step! <= step));
+      dots.forEach((d, n) => d.toggleAttribute('aria-current', n === i));
+      count.textContent = `${i + 1} / ${slides.length}`;
+      history.replaceState(null, '', `#${i + 1}`);
+    }
+
+    function go(n: number, atEnd = false) {
+      i = Math.min(Math.max(n, 0), slides.length - 1);
+      step = atEnd ? steps(slides[i]) : 0;
+      render();
+    }
+
+    const next = () => (step < steps(slides[i]) ? (step++, render()) : i < slides.length - 1 && go(i + 1));
+    const prev = () => (step > 0 ? (step--, render()) : i > 0 && go(i - 1, true));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const onControl = (e.target as HTMLElement).closest('a, button');
+      if (['ArrowRight', 'PageDown'].includes(e.key) || (e.key === ' ' && !onControl)) next();
+      else if (['ArrowLeft', 'PageUp'].includes(e.key)) prev();
+      else if (e.key === 'Home') go(0);
+      else if (e.key === 'End') go(slides.length - 1, true);
+      else if (e.key === 'Escape') location.href = '/about';
+      else return;
+      e.preventDefault();
+    });
+
+    // One pointer handler covers both: a swipe moves by direction, a tap by
+    // which side of the screen it landed on
+    let startX = 0;
+    deck.addEventListener('pointerdown', (e) => (startX = e.clientX));
+    deck.addEventListener('pointerup', (e) => {
+      if (e.button !== 0 || getSelection()?.toString()) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+      else (e.clientX > innerWidth / 3 ? next : prev)();
+    });
+
+    dots.forEach((d, n) => d.addEventListener('click', () => go(n)));
+
+    go((parseInt(location.hash.slice(1)) || 1) - 1);
+  </script>
+
+  <style is:global>
+    .in-body {
+      overflow: hidden;
+      color: var(--color-text-strong);
+    }
+
+    /* ── Chrome: back link and counter on top, dots below ── */
+    .in-chrome {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px clamp(16px, 4vw, 48px);
+    }
+
+    .in-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 16px;
+      color: var(--color-text-strong);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .in-diamond {
+      width: 4px;
+      height: 4px;
+      background: currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+    .in-back:hover {
+      color: var(--color-text-accent);
+    }
+
+    .in-back:hover .in-diamond {
+      transform: rotate(90deg);
+    }
+
+    .in-count,
+    .in-hint {
+      color: var(--color-text-muted);
+    }
+
+    .in-dots {
+      position: fixed;
+      inset: auto 0 24px;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .in-dot {
+      width: 24px;
+      height: 24px;
+      border: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    .in-dot::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      margin: auto;
+      background: var(--color-tick-idle);
+      transform: rotate(45deg);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .in-dot[aria-current]::before {
+      background: var(--color-text-accent);
+      transform: rotate(90deg) scale(1.3);
+    }
+
+    .in-back:focus-visible,
+    .in-dot:focus-visible {
+      outline: 2px solid var(--color-accent-outline);
+      outline-offset: 4px;
+    }
+
+    .in-hint {
+      position: fixed;
+      right: clamp(16px, 4vw, 48px);
+      bottom: 30px;
+    }
+
+    @media (hover: none), (max-width: 720px) {
+      .in-hint {
+        display: none;
+      }
+    }
+
+    /* ── Slides ── */
+    .in-deck {
+      position: fixed;
+      inset: 0;
+      user-select: none;
+    }
+
+    .in-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: safe center;
+      gap: clamp(24px, 5vh, 48px);
+      padding: 88px clamp(16px, 6vw, 96px) 88px;
+      overflow-y: auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .in-slide.is-past {
+      transform: translateX(-32px);
+    }
+
+    .in-slide.is-current {
+      opacity: 1;
+      transform: none;
+    }
+
+    [data-step] {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    [data-step].is-shown {
+      opacity: 1;
+      transform: none;
+    }
+
+    .in-eyebrow {
+      color: var(--color-text-muted);
+    }
+
+    .in-title {
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.15;
+    }
+
+    /* 1 · Hello */
+    .in-hello {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .in-photo {
+      width: min(420px, 80vw);
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .in-interests {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      list-style: none;
+    }
+
+    .in-interest {
+      display: block;
+      height: 24px;
+      width: auto;
+    }
+
+    .in-interest--badge {
+      height: 28px;
+      border-radius: 6px;
+    }
+
+    /* 2 · Journey: logos sit above a line, each stop marked by a diamond */
+    .in-journey {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 32px 16px;
+      width: min(1100px, 100%);
+      list-style: none;
+    }
+
+    .in-journey::before {
+      content: '';
+      position: absolute;
+      inset: 60px 0 auto;
+      height: 1px;
+      background: var(--color-accent-outline);
+    }
+
+    .in-stop {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .in-stop-logo {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 40px;
+    }
+
+    .in-stop-logo img {
+      max-height: 32px;
+      max-width: 96px;
+      width: auto;
+    }
+
+    .in-logo--dark {
+      display: none;
+    }
+
+    html[data-theme='dark'] .in-logo--light {
+      display: none;
+    }
+
+    html[data-theme='dark'] .in-logo--dark {
+      display: block;
+    }
+
+    .in-stop-dot {
+      width: 8px;
+      height: 8px;
+      margin: 10px 0 8px;
+      background: var(--color-text-accent);
+      transform: rotate(45deg);
+    }
+
+    @media (max-width: 720px) {
+      .in-journey {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .in-journey::before,
+      .in-stop-dot {
+        display: none;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .in-journey {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    /* 3 · Philosophy */
+    .in-loop {
+      width: min(320px, 70vw);
+    }
+
+    .in-values {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 32px;
+      list-style: none;
+    }
+
+    .in-values li,
+    .in-duties li {
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--color-accent-outline);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    /* 4 · Role: two overlapping circles, with design where they meet */
+    .in-role {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 48px clamp(32px, 6vw, 96px);
+    }
+
+    .in-venn {
+      --d: clamp(150px, 20vw, 240px);
+      position: relative;
+      width: calc(var(--d) * 1.6);
+      height: var(--d);
+    }
+
+    .in-circle {
+      position: absolute;
+      top: 0;
+      display: flex;
+      align-items: center;
+      width: var(--d);
+      height: var(--d);
+      padding: 0 12%;
+      border: 1.5px solid var(--color-text-accent);
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--color-text-accent) 12%, transparent);
+      /* Scales with the circle so "Business" never reaches the overlap */
+      font-size: clamp(12px, calc(var(--d) * 0.07), 18px);
+      font-weight: 700;
+    }
+
+    .in-circle--a {
+      left: 0;
+    }
+
+    .in-circle--b {
+      right: 0;
+      justify-content: flex-end;
+    }
+
+    .in-venn-mid {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-text-accent);
+    }
+
+    .in-duties {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      list-style: none;
+    }
+
+    .in-duties li {
+      font-size: 16px;
+    }
+
+    .in-duties li.is-new {
+      color: var(--color-text-accent);
+      border-color: var(--color-text-accent);
+    }
+
+    @media (max-width: 720px) {
+      .in-duties {
+        align-items: center;
+      }
+    }
+
+    /* 5 · Harness */
+    .in-harness {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      width: min(960px, 100%);
+      text-align: left;
+    }
+
+    .in-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 24px;
+      background: var(--color-cool-bg);
+    }
+
+    .in-outcome {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    @media (max-width: 720px) {
+      .in-harness {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 6 · Close */
+    .in-quote {
+      max-width: 14ch;
+      font-size: clamp(36px, 7vw, 80px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .in-slide,
+      [data-step],
+      .in-dot::before {
+        transition: none;
+      }
+    }
+  </style>
+</body>
+</html>

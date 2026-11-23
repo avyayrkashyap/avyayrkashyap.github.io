@@ -1,0 +1,51 @@
+---
+// src/components/PhilosophyLoop.astro
+// The learn → enact → impact triangle. `stepped` tags each corner with
+// data-step so the /intro slideshow can build it one corner at a time.
+import { loop } from '../data/philosophy';
+
+interface Props {
+  stepped?: boolean;
+}
+
+const { stepped = false } = Astro.props;
+// Corners: top, bottom-left, bottom-right (clockwise reading order)
+const corners = [
+  { x: 120, y: 16, anchor: 'middle' },
+  { x: 36, y: 206, anchor: 'middle' },
+  { x: 204, y: 206, anchor: 'middle' },
+];
+---
+<svg class="ploop" viewBox="0 0 240 216" role="img" aria-label={`A loop: ${loop.map((l) => l.title).join(', then ')}, and back again`}>
+  <polygon class="ploop-shape" points="120,34 40,182 200,182" />
+  {loop.map(({ title }, n) => (
+    <text
+      class="ploop-label"
+      x={corners[n].x}
+      y={corners[n].y}
+      text-anchor={corners[n].anchor}
+      data-step={stepped ? n + 1 : undefined}
+    >{title.toLowerCase()}</text>
+  ))}
+</svg>
+
+<style>
+  .ploop {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .ploop-shape {
+    fill: color-mix(in srgb, var(--color-text-accent) 14%, transparent);
+    stroke: var(--color-text-accent);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+
+  .ploop-label {
+    font: italic 700 15px var(--font-sans);
+    fill: var(--color-text-strong);
+  }
+</style>

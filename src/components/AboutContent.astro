@@ -1,6 +1,8 @@
 ---
 // src/components/AboutContent.astro
 // The About page body.
+import PhilosophyLoop from './PhilosophyLoop.astro';
+import { loop, values } from '../data/philosophy';
 
 // Ordered reverse-chronologically by start year — schools and jobs
 // interleaved, most recent first, as a single "journey" rather than two
@@ -56,20 +58,6 @@ const timeline = [
   },
 ];
 
-const philosophy = [
-  {
-    title: 'Tools should never hinder thought',
-    body: "The interface should keep pace with how someone is already thinking, not force them to think in the shape of the tool.",
-  },
-  {
-    title: 'Simple, until it isn’t',
-    body: "Simplicity is the default. Complexity only earns its place once it's clearly doing something simplicity can't.",
-  },
-  {
-    title: 'Verify before you design',
-    body: "Assumptions are cheap to check and expensive to build around. I'd rather spend a day confirming than a sprint unwinding.",
-  },
-];
 
 // All three play in red, hence the section heading.
 const teams = [
@@ -90,6 +78,11 @@ const teams = [
       <p class="ab-lead type-body-md">
         Off hours, you can find me deep in <img class="ab-inline-logo" src="/assets/about/claude-code-logo.png" alt="Claude Code" /> making apps to engage me and my friends asynchronously, playing <img class="ab-inline-logo" src="/assets/about/eafc26-logo.png" alt="EA Sports FC 26" />, adding items to my <img class="ab-inline-logo" src="/assets/about/beli-logo.png" alt="Beli" /> list, and logging runs on <img class="ab-inline-logo ab-inline-logo--badge" src="/assets/about/nrc-logo.png" alt="Nike Run Club" /> at the Jersey City waterfront, gawking at the Empire State Building.
       </p>
+      {/* data-astro-reload: /intro is a standalone full-screen page without the
+          ClientRouter, so load it fresh rather than swapping it in */}
+      <a class="ab-intro-link" href="/intro" data-astro-reload>
+        <span class="ab-intro-link-diamond" aria-hidden="true"></span>Play my intro.
+      </a>
     </div>
   </section>
 
@@ -107,9 +100,21 @@ const teams = [
 
     <section class="ab-section" id="design-philosophy" data-chapter>
       <h2 class="ab-section-label type-h4">Design philosophy</h2>
+      <div class="ab-loop">
+        <div class="ab-loop-figure"><PhilosophyLoop /></div>
+        <dl class="ab-loop-list">
+          {loop.map(({ title, body }) => (
+            <div>
+              <dt class="type-h3">{title}</dt>
+              <dd class="type-body-sm">{body}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
       <div class="ab-philosophy">
-        {philosophy.map(({ title, body }) => (
+        {values.map(({ value, title, body }) => (
           <div class="ab-principle">
+            <span class="type-h4 text-accent">{value}</span>
             <h3 class="ab-row-title type-h2">{title}</h3>
             <p class="type-body-sm">{body}</p>
           </div>
@@ -302,6 +307,40 @@ const teams = [
     max-width: 640px;
   }
 
+  /* The homepage's Paper "Link Button" (as on Resume): a diamond and a
+     full-stop label; on hover both go blue and the diamond squares up */
+  .ab-intro-link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    color: var(--color-text-strong);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .ab-intro-link-diamond {
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .ab-intro-link:hover {
+    color: var(--color-text-accent);
+  }
+
+  .ab-intro-link:hover .ab-intro-link-diamond {
+    transform: rotate(90deg);
+  }
+
+  .ab-intro-link:focus-visible {
+    outline: 2px solid var(--color-accent-outline);
+    outline-offset: 4px;
+  }
+
   .ab-lead-wide {
     max-width: 760px;
   }
@@ -425,6 +464,29 @@ const teams = [
   /* auto-fit rather than a fixed 3 columns: between the mobile breakpoint and
      full width, three tracks squeeze the copy to a few words per line, so let
      the cards drop to two (then one) on their own. */
+  /* The learn / enact / impact loop, beside its one-liners */
+  .ab-loop {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+
+  .ab-loop-figure {
+    flex-shrink: 0;
+    width: 200px;
+  }
+
+  .ab-loop-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ab-loop-list dt {
+    margin-bottom: 4px;
+  }
+
   .ab-philosophy {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -478,6 +540,12 @@ const teams = [
   }
 
   @container (max-width: 560px) {
+    .ab-loop {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
     .ab-row {
       flex-direction: column;
       gap: 8px;
