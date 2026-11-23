@@ -167,18 +167,6 @@ const current = navItems.find(({ href }) => href === pathname)?.label;
       current.textContent = active?.textContent || (title ? `${title}.` : 'Avyay.');
     };
 
-    // Opening a sheet changes the current page without a navigation
-    // (sheet.js sends dock:set-active)
-    on(document, 'dock:set-active', (e) => {
-      sidebar.querySelectorAll('.sidebar-link').forEach((link) => {
-        const isOn = link.getAttribute('href') === e.detail.href;
-        link.classList.toggle('is-active', isOn);
-        if (isOn) link.setAttribute('aria-current', 'page');
-        else link.removeAttribute('aria-current');
-      });
-      label();
-    });
-
     // ── Phone menu ──
     const menu = document.getElementById('sidebarMenu');
     const panel = document.getElementById('sidebarPanel');
@@ -218,9 +206,8 @@ const current = navItems.find(({ href }) => href === pathname)?.label;
       }
     });
     pager.forEach((b) => on(b, 'click', () => setPage(Number(b.dataset.page))));
-    // Going somewhere (a page, a sheet, a section) puts the menu away. On
-    // the window in the capture phase, ahead of sheet.js, which swallows
-    // clicks on sheet links (About, Now, Resume) to open them in place.
+    // Going somewhere (a page or a section) puts the menu away. On the
+    // window in the capture phase, so it runs before the click navigates.
     on(window, 'click', (e) => {
       if (!phone() || !isOpen() || swallowClick) return;
       if (panel.contains(e.target) && e.target.closest('.sidebar-link, .chapter-row')) setOpen(false);
@@ -230,8 +217,8 @@ const current = navItems.find(({ href }) => href === pathname)?.label;
       if (!phone() && isOpen()) setOpen(false);
     });
 
-    // Chapters come and go as sheets open and close (chapters.js shows or
-    // hides #chapterNav): the Sections page and its pager follow
+    // Chapters come and go with the page (chapters.js shows or hides
+    // #chapterNav): the Sections page and its pager follow
     const syncChapters = () => {
       const has = Boolean(chapterNav && !chapterNav.hidden);
       sidebar.classList.toggle('has-chapters', has);
@@ -309,7 +296,6 @@ const current = navItems.find(({ href }) => href === pathname)?.label;
 <style>
   .sidebar {
     position: fixed;
-    /* Above the sheet (40), so the nav stays usable while one is open */
     z-index: 50;
     top: 0;
     bottom: 0;

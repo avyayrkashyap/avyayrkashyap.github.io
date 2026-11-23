@@ -1,16 +1,9 @@
 ---
 // src/pages/about.astro
-// About is a sheet, not a standalone page. Loaded directly, it opens over the
-// homepage; from anywhere else, sheet.js fetches this page and pulls the sheet
-// content over whatever page is already showing.
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import Work from '../components/Work.astro';
 import AboutContent from '../components/AboutContent.astro';
 ---
 
-<Layout title="About — Avyay" sheetOpen sheetLabel="About">
-  <Hero />
-  <Work />
-  <AboutContent slot="sheet" />
+<Layout title="About — Avyay">
+  <AboutContent />
 </Layout>

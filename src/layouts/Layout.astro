@@ -4,25 +4,20 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Sidebar from '../components/Sidebar.astro';
 import TextEditor from '../components/TextEditor.astro';
-import Sheet from '../components/Sheet.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
-  /* Server-render the sheet open (with the homepage behind it). The page's
-     sheet content goes in slot="sheet". Paths must match SHEET_PATHS in sheet.js */
-  sheetOpen?: boolean;
-  sheetLabel?: string;
   /* Case studies: links out (the live site, a write-up), shown as cards
      under the sections in the sidebar */
   links?: { label: string; title: string; href: string }[];
 }
 
-const { title, sheetOpen = false, sheetLabel, links = [] } = Astro.props;
+const { title, links = [] } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class:list={{ 'sheet-open': sheetOpen }}>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,17 +26,6 @@ const { title, sheetOpen = false, sheetLabel, links = [] } = Astro.props;
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- Material Symbols subset: call_made (experiment card arrow). Google requires icon_names in alphabetical order -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=call_made" />
-  <script is:inline>
-    // Registered before the ClientRouter's own popstate listener, so the sheet
-    // (sheet.js) can claim Back/Forward moves that only open, swap or close it
-    // before the router swaps the page. Bound once per document.
-    if (!window.__sheetPopBound) {
-      window.__sheetPopBound = true;
-      addEventListener('popstate', function (e) {
-        if (window.__sheetPopState) window.__sheetPopState(e);
-      });
-    }
-  </script>
   <ClientRouter />
   <script is:inline>
     (function () {
@@ -60,13 +44,10 @@ const { title, sheetOpen = false, sheetLabel, links = [] } = Astro.props;
 </head>
 <body>
   <Sidebar links={links} />
-  <main class="main" inert={sheetOpen}>
+  <main class="main">
     <slot />
     <Footer />
   </main>
-  <Sheet open={sheetOpen} label={sheetLabel}>
-    <slot name="sheet" />
-  </Sheet>
   {/* Dev only: click-to-edit paragraph copy, written back to src/ */}
   {import.meta.env.DEV && <TextEditor />}
   <script>

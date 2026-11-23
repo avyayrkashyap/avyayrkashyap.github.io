@@ -3,15 +3,7 @@
 // reading position, sitting beside the current section's name and sliding
 // toward the next as it gets near. Clicking a name scrolls there.
 //
-// "Whatever is being read" is either an ordinary page (the case studies) or
-// the sheet (About). For a sheet the container lives inside #sheetBody and
-// #sheetBody does the scrolling; otherwise the page's own container is used
-// and the document scrolls. Everything below runs against whichever of the
-// two `scroller` holds.
-//
-// Rescans when sheet.js says the sheet's content changed or closed
-// (sheet:content-changed / sheet:closed), and when a password gate reveals a
-// case study (gate:unlocked).
+// Rescans when a password gate reveals a case study (gate:unlocked).
 
 // What a page supplies: the container (its value names the page in the
 // list's title), a chapter inside it, and the heading a chapter falls back
@@ -59,9 +51,6 @@ let lensFrame = 0;
 let sizeObserver = null;
 let measureFrame = 0;
 let scrollFrame = 0;
-// Whether a sheet is the thing being read, from sheet.js's own events: a
-// closed sheet keeps its last content in the DOM, so containment can't say.
-let sheetActive = false;
 
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -71,28 +60,13 @@ const els = () => ({
   title: document.getElementById('chapterTitle'),
   list: document.getElementById('chapterList'),
   ruler: document.getElementById('chapterRuler'),
-  sheetBody: document.getElementById('sheetBody'),
 });
 
-// ── Scrollers ── The two kinds of page behind one shape. `root` is where a
-// chapter is looked up by id at measure time; `originTop` is where the
-// scrolled content's top sits in viewport coordinates.
-
-// A sheet body holds its place while its content scrolls inside it
-const sheetScroller = (body) => ({
-  root: body,
-  get top() { return body.scrollTop; },
-  set top(value) { body.scrollTop = value; },
-  get max() { return Math.max(1, body.scrollHeight - body.clientHeight); },
-  originTop: () => body.getBoundingClientRect().top - body.scrollTop,
-});
-
-// The document itself moves, so its content starts scrollTop above the
-// viewport
+// The document scrolls; `originTop` is where its content's top sits in
+// viewport coordinates
 const pageScroller = () => {
   const el = document.scrollingElement ?? document.documentElement;
   return {
-    root: document,
     get top() { return el.scrollTop; },
     // html has scroll-behavior: smooth, which would chase every frame of the
     // tween below; 'instant' opts these writes out of it
@@ -102,13 +76,9 @@ const pageScroller = () => {
   };
 };
 
-// The container being tracked: the sheet's while one is open, else the
-// page's own (skipping anything still behind a password gate)
+// The page's container, skipping anything still behind a password gate
 function findContainer() {
-  const { sheetBody } = els();
-  if (sheetActive && sheetBody) return sheetBody.querySelector(CONTAINER_SELECTOR);
-  return [...document.querySelectorAll(CONTAINER_SELECTOR)]
-    .find((el) => !sheetBody?.contains(el) && !el.closest('[hidden]')) ?? null;
+  return [...document.querySelectorAll(CONTAINER_SELECTOR)].find((el) => !el.closest('[hidden]')) ?? null;
 }
 
 function labelFor(el) {
@@ -199,12 +169,7 @@ function aim() {
 function measure() {
   if (!scroller) return;
   const originTop = scroller.originTop();
-  // Looked up by id rather than trusting the node from scan time: a sheet
-  // page loaded directly swaps its body's content after the first scan
-  offsets = chapters.map(({ id, el }) => {
-    const node = scroller.root.querySelector(`[id="${CSS.escape(id)}"]`) ?? el;
-    return node.getBoundingClientRect().top - originTop;
-  });
+  offsets = chapters.map(({ el }) => el.getBoundingClientRect().top - originTop);
   layoutRuler();
 }
 
@@ -254,17 +219,16 @@ function scan() {
   const sections = container ? [...container.querySelectorAll(SECTION_SELECTOR)] : [];
   if (!sections.length) return hide();
 
-  const { sheetBody } = els();
-  scroller = sheetBody?.contains(container) ? sheetScroller(sheetBody) : pageScroller();
-  chapters = sections.map((el) => ({ id: el.id, label: labelFor(el), el }));
+  scroller = pageScroller();
+  chapters = sections.map((el) => ({ label: labelFor(el), el }));
   render(container.dataset.chapters?.trim() ?? '');
   watchSize(container);
   measure();
   onScroll();
 }
 
-// Driven by hand rather than scrollTo({ behavior: 'smooth' }): a scroller
-// resized mid-animation (the sheet does this) makes the browser abandon a
+// Driven by hand rather than scrollTo({ behavior: 'smooth' }): a page that
+// reflows mid-animation (lazy images landing) makes the browser abandon a
 // smooth scroll it was running
 function tweenScroll(to) {
   cancelAnimationFrame(scrollFrame);
@@ -291,20 +255,15 @@ function scrollToChapter(index) {
 }
 
 document.addEventListener('astro:page-load', () => {
-  // A sheet page loaded directly renders with its sheet already open
-  sheetActive = document.documentElement.classList.contains('sheet-open');
   scan();
 
   window.__chaptersAbort?.abort();
   const controller = new AbortController();
   window.__chaptersAbort = controller;
   const { signal } = controller;
-  const { sheetBody, list } = els();
+  const { list } = els();
 
-  // Scroll events don't bubble out of a sheet body, and which scroller is
-  // live changes as sheets open and close, so both are always listened to
   window.addEventListener('scroll', onScroll, { signal, passive: true });
-  sheetBody?.addEventListener('scroll', onScroll, { signal, passive: true });
   const refresh = () => {
     measure();
     onScroll();
@@ -313,17 +272,6 @@ document.addEventListener('astro:page-load', () => {
   // Web fonts arriving after first paint reflow the page and the list
   document.fonts?.ready.then(refresh);
 
-  document.addEventListener('sheet:content-changed', () => {
-    sheetActive = true;
-    scan();
-  }, { signal });
-  document.addEventListener('sheet:closed', () => {
-    sheetActive = false;
-    hide();
-    // The page underneath may have chapters of its own; sheet.js announces
-    // the close before acting on it, so wait a frame for it to be gone
-    requestAnimationFrame(scan);
-  }, { signal });
   document.addEventListener('gate:unlocked', scan, { signal });
 
   // Over the list, the lens follows the pointer; leaving hands it back

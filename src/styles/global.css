@@ -282,11 +282,6 @@ html.theme-transition::view-transition-new(root) {
   color: var(--color-text-muted);
 }
 
-/* The About sheet owns scrolling while it's open */
-html.sheet-open {
-  overflow: hidden;
-}
-
 /* ── Main ── */
 
 .main {

@@ -1,7 +1,6 @@
 ---
 // src/components/AboutContent.astro
-// The About page body. Rendered inside the sheet, both when /about is loaded
-// directly and when the sheet fetches it over another page.
+// The About page body.
 
 // Ordered reverse-chronologically by start year — schools and jobs
 // interleaved, most recent first, as a single "journey" rather than two
@@ -165,8 +164,7 @@ const teams = [
 
   /* ── Two columns ──
      The intro (photo + blurb) pins on the left while the sections scroll past
-     on the right. The page only renders inside the sheet, whose body is the
-     scroll container, so sticky offsets are measured from the sheet's top. */
+     on the right. */
   @media (min-width: 1024px) {
     .about {
       display: grid;
