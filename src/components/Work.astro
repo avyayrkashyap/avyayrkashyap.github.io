@@ -62,9 +62,10 @@ const homeProjects: Project[] = [
 
 const { label = 'Work.', projects = homeProjects } = Astro.props;
 
-// A function child draws each cover itself, in the caller's scoped styles
+// A function child draws each cover itself, in the caller's scoped styles.
+// Where it draws nothing, the project falls back to its own image or video.
 const covers = Astro.slots.has('default')
-  ? await Promise.all(projects.map((project) => Astro.slots.render('default', [project])))
+  ? await Promise.all(projects.map(async (project) => (await Astro.slots.render('default', [project])).trim()))
   : [];
 ---
 <section id="work" class="work">

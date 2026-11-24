@@ -4,9 +4,9 @@ import Layout from '../layouts/Layout.astro';
 import { ThinkingOrb } from 'thinking-orbs';
 import Work from '../components/Work.astro';
 
-// Drawn as the homepage's Work rows. Each app's cover is one of three
-// layouts: 'quad' is 2x2 for landscape drawings, 'clip' a screen recording in
-// a phone, and 'phone' the same phone cycling through its screenshots.
+// Drawn as the homepage's Work rows. A cover is a phone holding a screen
+// recording ('clip') or cycling through screenshots ('phone'); with neither,
+// Work draws its own `video` cover, as Drinks I Sip shares the homepage's.
 const apps = [
   {
     name: 'Points Are Really Bad',
@@ -36,22 +36,14 @@ const apps = [
   {
     name: 'Drinks I Sip',
     href: 'https://drinksisip.com',
-    blurb: "My digital shelf of some cups and glasses I've liked enough to draw.",
-    context: "I've had some really good drinks around the world, and on a completely different note, had been looking for a reason to get back to drawing things on ProCreate, leading to the birth of DrinksISip.",
-    // Each file is a finished tile, colour and label baked in, so they mosaic
-    // straight onto the card.
-    layout: 'quad',
-    shots: [
-      { src: '/assets/experiments/drinksisip/amorino.png', alt: 'Amorino hot chocolate, drawn on a grey tile' },
-      { src: '/assets/experiments/drinksisip/caffe-panna.png', alt: 'Caffè Panna hot chocolate, drawn on an orange tile' },
-      { src: '/assets/experiments/drinksisip/the-cocoa-store.png', alt: 'The Cocoa Store hot chocolate, drawn on a pink tile' },
-      { src: '/assets/experiments/drinksisip/breads-bakery.png', alt: 'Breads Bakery hot chocolate, drawn on a cream tile' },
-    ],
+    blurb: "A living list of the hot chocolates I've had in New York and Jersey City, with a map, a score and a cup of its own for every place.",
+    video: '/assets/drinksisip/drinksisip-site.mp4',
+    poster: '/assets/drinksisip/drinksisip-site-poster.jpg',
   },
 ].map((app) => ({
   ...app,
   title: `${app.name}.`,
-  description: [app.blurb, app.context],
+  description: [app.blurb, app.context].filter(Boolean),
   external: true,
 }));
 
@@ -111,7 +103,7 @@ const notifications = [
 
     <div class="exp-reveal">
       <Work label="Apps made with AI." projects={apps}>
-        {(app) => app.layout !== 'quad' ? (
+        {(app) => app.layout && (
           <span class={`exp-phone${app.clip ? '' : ' exp-phone--slides'}`}>
             {app.clip ? (
               /* preload="none": nothing downloads until the clip scrolls
@@ -121,10 +113,6 @@ const notifications = [
               <img class="exp-slide" src={src} alt={alt} loading="lazy" />
             ))}
           </span>
-        ) : (
-          <div class={`exp-shots exp-shots--${app.layout}`}>
-            {app.shots.map(({ src, alt }) => <img class="exp-tile" src={src} alt={alt} loading="lazy" />)}
-          </div>
         )}
       </Work>
     </div>
@@ -229,31 +217,6 @@ const notifications = [
   }
 
   /* ── App covers, drawn inside Work's 4:3 cover ── */
-  .exp-shots {
-    position: absolute;
-    inset: 32px;
-    display: grid;
-    gap: 4px;
-  }
-
-  /* Four landscape drawings, two up and two across */
-  .exp-shots--quad {
-    grid-template: repeat(2, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr));
-  }
-
-  .exp-tile {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-
-  /* That corner holds the drink's name; the headroom above each cup goes */
-  .exp-shots--quad .exp-tile {
-    object-position: left bottom;
-  }
-
   /* A phone standing in the cover, run off its bottom edge by the cover's
      overflow */
   .exp-phone {
