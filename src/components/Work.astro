@@ -1,15 +1,20 @@
 ---
 // src/components/Work.astro
 // The projects section, from the "Work." group on the Paper "projects"
-// artboard: a 4:3 cover (the ratio of the cards inside the projects) with the title, summary, tags and a "View work."
-// link beside it. Each project is one row, and the whole row is the link.
-// Below 960px the text drops under the cover.
+// artboard: a 4:3 cover (the ratio of the cards inside the projects) with the
+// title, summary, tags and a "View work." link beside it. Each project is one
+// row, and the whole row is the link. Below 960px the text drops under the
+// cover.
+//
+// Experiments reuses it with its own `label` and `projects`, and draws its
+// covers through a function child: <Work>{(project) => <cover />}</Work>.
 import Shapes from './Shapes.astro';
 
-interface Project {
+export interface Project {
   title: string;
-  description: string;
-  tags: string[];
+  /* Several strings render as several paragraphs */
+  description: string | string[];
+  tags?: string[];
   href: string;
   external?: boolean;
   /* A screenshot cover; without one the project draws its own (Moody's) */
@@ -19,7 +24,12 @@ interface Project {
   poster?: string;
 }
 
-const projects: Project[] = [
+interface Props {
+  label?: string;
+  projects?: Project[];
+}
+
+const homeProjects: Project[] = [
   {
     title: "Moody's Ratings.",
     description: 'Two years as a Senior UX Designer in Moody’s structured finance group: designing new tools from scratch, scaling them, contributing to the design system and shipping front-ends with AI-assisted code.',
@@ -49,15 +59,24 @@ const projects: Project[] = [
     poster: '/assets/drinksisip/drinksisip-site-poster.jpg',
   },
 ];
+
+const { label = 'Work.', projects = homeProjects } = Astro.props;
+
+// A function child draws each cover itself, in the caller's scoped styles
+const covers = Astro.slots.has('default')
+  ? await Promise.all(projects.map((project) => Astro.slots.render('default', [project])))
+  : [];
 ---
 <section id="work" class="work">
-  <h2 class="work-label">Work.</h2>
+  <h2 class="work-label">{label}</h2>
 
   <div class="work-list">
-    {projects.map(({ title, description, tags, href, external, image, video, poster }) => (
+    {projects.map(({ title, description, tags = [], href, external, image, video, poster }, i) => (
       <a class="work-row" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
         <div class="work-cover">
-          {video ? (
+          {covers[i] ? (
+            <Fragment set:html={covers[i]} />
+          ) : video ? (
             <video class="work-shot clip" src={video} poster={poster} preload="none" muted loop playsinline aria-label={`Screen recording of ${title}`}></video>
           ) : image ? (
             <img class="work-shot" src={image} alt="" loading="lazy" />
@@ -77,12 +96,14 @@ const projects: Project[] = [
         <div class="work-text">
           <div class="work-summary">
             <h3 class="work-title">{title}</h3>
-            <p class="work-desc">{description}</p>
-            <ul class="work-tags">
-              {tags.map((tag) => <li class="work-tag">{tag}</li>)}
-            </ul>
+            {[description].flat().map((text) => <p class="work-desc">{text}</p>)}
+            {tags.length > 0 && (
+              <ul class="work-tags">
+                {tags.map((tag) => <li class="work-tag">{tag}</li>)}
+              </ul>
+            )}
           </div>
-          <span class="work-view"><span class="work-diamond" aria-hidden="true"></span>View work.</span>
+          <span class="work-view"><span class="work-diamond" aria-hidden="true"></span>{external ? 'Visit site.' : 'View work.'}</span>
         </div>
       </a>
     ))}

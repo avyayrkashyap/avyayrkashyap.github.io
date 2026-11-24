@@ -24,7 +24,7 @@ document.addEventListener('astro:page-load', () => {
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     clips.forEach((clip) => {
-      const host = clip.closest('.exp-app, .exp-video') || clip;
+      const host = clip.closest('.work-row, .exp-video') || clip;
 
       host.addEventListener('pointerenter', (event) => {
         if (event.pointerType === 'touch') return;
