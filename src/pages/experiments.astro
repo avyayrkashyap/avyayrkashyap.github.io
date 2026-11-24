@@ -5,8 +5,8 @@ import { ThinkingOrb } from 'thinking-orbs';
 import Work from '../components/Work.astro';
 
 // Drawn as the homepage's Work rows. Each app's cover is one of three
-// layouts: 'quad' is 2x2 for landscape drawings, 'trio' a row of portrait app
-// screens, and 'clip' a screen recording in a phone.
+// layouts: 'quad' is 2x2 for landscape drawings, 'clip' a screen recording in
+// a phone, and 'phone' the same phone cycling through its screenshots.
 const apps = [
   {
     name: 'Points Are Really Bad',
@@ -25,10 +25,11 @@ const apps = [
     href: 'https://avyayrk.com/trip-itinerary',
     blurb: 'Asynchronous trip planner that ensures the trip makes it out of the group chat.',
     context: 'I was going to go on a trip to New Orleans, but planning the itinerary with friends across timezones was tough - until I built Trip Itinerary, freeing us to coordinate asynchronously and have a well planned trip.',
-    layout: 'trio',
+    layout: 'phone',
+    // Plan first: it's the one left showing under reduced motion
     shots: [
-      { src: '/assets/experiments/trip-itinerary/places.png', alt: 'The Places tab of Trip Itinerary' },
       { src: '/assets/experiments/trip-itinerary/plan.png', alt: 'The Plan tab of Trip Itinerary, showing a New Orleans trip laid out by day' },
+      { src: '/assets/experiments/trip-itinerary/places.png', alt: 'The Places tab of Trip Itinerary' },
       { src: '/assets/experiments/trip-itinerary/people.png', alt: 'The People tab of Trip Itinerary' },
     ],
   },
@@ -110,11 +111,15 @@ const notifications = [
 
     <div class="exp-reveal">
       <Work label="Apps made with AI." projects={apps}>
-        {(app) => app.clip ? (
-          /* preload="none": nothing downloads until the clip scrolls into
-             view, and clips.js plays and pauses it from there */
-          <span class="exp-phone">
-            <video class="exp-clip" src={app.clip.src} poster={app.clip.poster} aria-label={app.clip.alt} preload="none" muted loop playsinline></video>
+        {(app) => app.layout !== 'quad' ? (
+          <span class={`exp-phone${app.clip ? '' : ' exp-phone--slides'}`}>
+            {app.clip ? (
+              /* preload="none": nothing downloads until the clip scrolls
+                 into view, and clips.js plays and pauses it from there */
+              <video class="exp-clip" src={app.clip.src} poster={app.clip.poster} aria-label={app.clip.alt} preload="none" muted loop playsinline></video>
+            ) : app.shots.map(({ src, alt }) => (
+              <img class="exp-slide" src={src} alt={alt} loading="lazy" />
+            ))}
           </span>
         ) : (
           <div class={`exp-shots exp-shots--${app.layout}`}>
@@ -236,11 +241,6 @@ const notifications = [
     grid-template: repeat(2, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr));
   }
 
-  /* Three portrait app screens in a row */
-  .exp-shots--trio {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .exp-tile {
     display: block;
     width: 100%;
@@ -252,11 +252,6 @@ const notifications = [
   /* That corner holds the drink's name; the headroom above each cup goes */
   .exp-shots--quad .exp-tile {
     object-position: left bottom;
-  }
-
-  /* App screens crop from the bottom, so each keeps its header */
-  .exp-shots--trio .exp-tile {
-    object-position: center top;
   }
 
   /* A phone standing in the cover, run off its bottom edge by the cover's
@@ -284,6 +279,35 @@ const notifications = [
     border-radius: 27px;
     object-fit: cover;
     object-position: center bottom;
+  }
+
+  /* Screenshots stacked in the phone, each fading in for 3s of a 9s loop.
+     Three of them: a fourth needs the loop and the delays stretched. */
+  /* The screenshots' own shape, so their sides aren't cropped. Contain takes
+     up the last few pixels the 7px bezel leaves, against the black glass. */
+  .exp-phone--slides {
+    aspect-ratio: 870 / 1532;
+  }
+
+  .exp-slide {
+    position: absolute;
+    inset: 7px;
+    width: calc(100% - 14px);
+    height: calc(100% - 14px);
+    border-radius: 27px;
+    object-fit: contain;
+    object-position: center top;
+    opacity: 0;
+    animation: exp-slide 9s infinite;
+  }
+
+  .exp-slide:nth-child(2) { animation-delay: 3s; }
+  .exp-slide:nth-child(3) { animation-delay: 6s; }
+
+  @keyframes exp-slide {
+    0% { opacity: 0; }
+    6%, 33% { opacity: 1; }
+    39%, 100% { opacity: 0; }
   }
 
   /* ── Really Live notifications ── */
@@ -365,8 +389,13 @@ const notifications = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .exp-title.is-typing::after {
+    .exp-title.is-typing::after,
+    .exp-slide {
       animation: none;
+    }
+
+    .exp-slide:first-child {
+      opacity: 1;
     }
   }
 </style>
