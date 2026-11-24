@@ -74,7 +74,9 @@ const covers = Astro.slots.has('default')
   <div class="work-list">
     {projects.map(({ title, description, tags = [], href, external, image, video, poster }, i) => (
       <a class="work-row" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
-        <div class="work-cover">
+        {/* Morphs into the case study's hero, which carries the same
+            data-cover (Layout.astro pairs them) */}
+        <div class="work-cover" data-cover={external ? undefined : href.replace(/\W/g, '')}>
           {covers[i] ? (
             <Fragment set:html={covers[i]} />
           ) : video ? (

@@ -6,10 +6,12 @@ import Work from '../components/Work.astro';
 
 <Layout title="Avyay — Product Designer">
   {/* Before the content parses, so it never flashes in: hide the blocks for
-      sketch.js to draw in. Hard loads only (window.__sketched survives
-      in-site navigation). The timeout is a backstop if the script never runs */}
+      sketch.js to draw in. Hard loads only: the document is still parsing
+      then, and window.__sketched survives in-site navigation. Coming home
+      from a case study, the card morphs into place instead. The timeout is a
+      backstop if the script never runs */}
   <script is:inline>
-    if (!window.__sketched && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (document.readyState === 'loading' && !window.__sketched && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.documentElement.classList.add('sketching');
       setTimeout(function () { document.documentElement.classList.remove('sketching'); }, 8000);
     }

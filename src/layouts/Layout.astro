@@ -55,6 +55,39 @@ const { title, links = [] } = Astro.props;
     // Site-wide so their listeners exist before any in-site navigation
     import '../scripts/clips.js';
     import '../scripts/zoom.js';
+
+    // A homepage cover and its case study's hero share a data-cover. Name
+    // them for the view transition only when both ends have one, so the card
+    // morphs into place; unpaired covers just fade with the page instead of
+    // floating over it on their own.
+    let incoming: HTMLElement | null = null; // the card on the page being opened
+    document.addEventListener('astro:before-preparation', (e) => {
+      const load = e.loader;
+      e.loader = async () => {
+        await load();
+        incoming = null;
+        for (const el of document.querySelectorAll<HTMLElement>('[data-cover]')) {
+          // Left over from the transition that brought us here
+          el.style.viewTransitionName = '';
+          const twin = e.newDocument.querySelector<HTMLElement>(`[data-cover="${el.dataset.cover}"]`);
+          if (!twin) continue;
+          el.style.viewTransitionName = twin.style.viewTransitionName = `cover-${el.dataset.cover}`;
+          incoming = twin;
+        }
+      };
+    });
+
+    // The new page is captured right after the swap, so the card has to be on
+    // screen by then. On Back, Astro's scroll restore glides (html scrolls
+    // smoothly) and lands too late; a link home opens at the top, with the
+    // card further down. Jump there instantly instead.
+    document.addEventListener('astro:after-swap', () => {
+      if (!incoming) return;
+      scrollTo({ top: history.state?.scrollY ?? 0, behavior: 'instant' });
+      const r = incoming.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) incoming.scrollIntoView({ block: 'center', behavior: 'instant' });
+      incoming = null;
+    });
   </script>
 </body>
 </html>
