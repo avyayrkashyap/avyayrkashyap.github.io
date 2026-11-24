@@ -24,6 +24,12 @@ document.addEventListener('astro:page-load', async () => {
   if (!root.classList.contains('sketching')) return;
   window.__sketched = true;
 
+  // On a reload ClientRouter scrolls back to where you were (it keeps the
+  // spot in history.state), but html's scroll-behavior: smooth makes that a
+  // glide that lands after we measure. Jump there now so the cursors draw
+  // what's actually on screen.
+  scrollTo({ top: history.state?.scrollY ?? scrollY, behavior: 'instant' });
+
   // Blocks on screen get drawn; the rest just show
   const blocks = [];
   for (const el of document.querySelectorAll(BLOCKS)) {
