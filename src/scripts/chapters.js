@@ -1,6 +1,6 @@
 // The sidebar's chapter list (ChapterList.astro): the sections of whatever is
-// being read, with a ruler of ticks beside them whose blue lens follows the
-// reading position, sitting beside the current section's name and sliding
+// being read, with a column of small diamonds beside them whose blue lens
+// follows the reading position, sitting beside the current section's name and sliding
 // toward the next as it gets near. Clicking a name scrolls there.
 //
 // Rescans when a password gate reveals a case study (gate:unlocked).
@@ -16,19 +16,19 @@ const LABEL_SELECTOR = '.type-h4';
 const ACTIVATE_OFFSET = 24;
 // How long a jump to a chapter takes to fly there
 const SCROLL_MS = 420;
-// The ruler (Paper: Chapters, desktop): 1px ticks on a 2px pitch inside 4px
-// of padding, 2px wide, swelling to 8px around the reading position. Both
-// the swell and the accent colour follow a smooth bell (raised cosine) of
-// each tick's distance from the lens centre, which moves continuously
-// rather than tick to tick. The colour fades out further below than above,
-// a trail like the one in the Paper design.
-const PITCH = 2;
+// The ruler: small diamonds (the "View work." link's) on an 8px pitch inside
+// 4px of padding. Around the reading position they grow and turn, step by
+// step, into full 6px squares. Size, turn and the accent colour all follow
+// a smooth bell (raised cosine) of each diamond's distance from the lens
+// centre, which moves continuously rather than diamond to diamond. The
+// colour fades out further below than above, a trail.
+const PITCH = 8;
 const PAD = 4;
-const TICK = 2; // plain tick width, px
-const SWELL = 6; // extra width at the centre, px
-const SWELL_REACH = 9; // ticks either side the swell reaches
-const COLOR_ABOVE = 8; // ticks the accent reaches above the centre
-const COLOR_BELOW = 16; // and below
+const SIZE = 6; // a full square, px
+const MIN = 0.4; // a plain diamond's scale of that
+const SWELL_REACH = 4; // diamonds either side the morph reaches
+const COLOR_ABOVE = 2; // diamonds the accent reaches above the centre
+const COLOR_BELOW = 4; // and below
 // The lens eases toward where it's headed (the reading position, or the
 // pointer while it's over the list): this share of the gap closes per frame
 const FOLLOW = 0.16;
@@ -118,11 +118,11 @@ function hide() {
   if (nav) nav.hidden = true;
 }
 
-// As many ticks as fit the list's height, and where each row sits
+// As many diamonds as fit the list's height, and where each row sits
 function layoutRuler() {
   const { list, ruler } = els();
   if (!list || !ruler || !chapters.length) return;
-  const n = Math.max(0, Math.floor((list.offsetHeight - 2 * PAD + 1) / PITCH));
+  const n = Math.max(0, Math.floor((list.offsetHeight - 2 * PAD - SIZE) / PITCH) + 1);
   if (ruler.children.length !== n) {
     ruler.replaceChildren(...Array.from({ length: n }, () => document.createElement('span')));
     lensAt = null;
@@ -135,16 +135,19 @@ function layoutRuler() {
 function paint(y) {
   const { ruler } = els();
   if (!ruler) return;
-  const c = (y - PAD) / PITCH;
-  if (lensAt !== null && Math.abs(c - lensAt) < 0.02) return;
+  const c = (y - PAD - SIZE / 2) / PITCH;
+  if (lensAt !== null && Math.abs(c - lensAt) < 0.01) return;
   lensAt = c;
   [...ruler.children].forEach((tick, k) => {
     const d = k - c;
-    const w = TICK + SWELL * bell(Math.abs(d), SWELL_REACH);
+    // 0 is a small diamond, 1 a full square: a 45° turn on, like the link's hover
+    const m = bell(Math.abs(d), SWELL_REACH);
     // Full accent through the middle of the lens, easing out into ink
     const a = Math.min(1, 1.3 * bell(Math.abs(d), d < 0 ? COLOR_ABOVE : COLOR_BELOW));
-    // Empty strings fall back to the plain 2px ink tick in the stylesheet
-    tick.style.width = w > TICK + 0.05 ? `${w.toFixed(2)}px` : '';
+    // Empty strings fall back to the plain ink diamond in the stylesheet
+    tick.style.transform = m > 0.005
+      ? `rotate(${(45 + 45 * m).toFixed(1)}deg) scale(${(MIN + (1 - MIN) * m).toFixed(3)})`
+      : '';
     tick.style.background = a > 0.01
       ? `color-mix(in srgb, var(--color-text-accent) ${(a * 100).toFixed(1)}%, var(--color-text-strong))`
       : '';

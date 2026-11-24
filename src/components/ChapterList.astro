@@ -2,7 +2,8 @@
 // src/components/ChapterList.astro
 // The sections of the page being read (a case study, About, Now), under
 // the sidebar nav: the page's name, then its sections beside a
-// ruler of ticks whose blue lens follows the reading position. Hidden until
+// column of small diamonds that grow into squares, in blue, around the
+// reading position. Hidden until
 // chapters.js finds sections; it fills in the title, rows and ticks.
 ---
 <div class="chapters" id="chapterNav" hidden>
@@ -39,23 +40,25 @@
     gap: 8px;
   }
 
-  /* 1px ticks on a 2px pitch, as tall as the list; chapters.js sizes the
-     lens ticks (wider, accent) and the trail under it */
+  /* Small diamonds on an 8px pitch (chapters.js: PITCH, SIZE, MIN), as
+     tall as the list; chapters.js turns the ones around the lens into blue
+     squares */
   .chapters-ruler {
     flex-shrink: 0;
     width: 8px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1px;
+    align-items: center;
+    gap: 2px;
     padding-block: 4px;
   }
 
   .chapters-ruler :global(span) {
-    width: 2px;
-    height: 1px;
-    border-radius: 1px;
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
     background: var(--color-text-strong);
+    transform: rotate(45deg) scale(0.4);
   }
 
   .chapters-list {
