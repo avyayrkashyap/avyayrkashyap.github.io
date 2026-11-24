@@ -286,14 +286,18 @@ html.theme-transition::view-transition-new(root) {
 
 .main {
   position: relative;
+  /* A matching gutter on the right, so pages centre on the window rather
+     than on the space beside the fixed sidebar. It grows in from 1024px
+     (full by ~1260px) so tablets keep their width. */
   padding-left: var(--sidebar-width);
+  padding-right: clamp(0px, 100vw - 1024px, var(--sidebar-width));
   background-color: var(--color-bg-default);
   transition: background-color 0.3s ease;
 }
 
 @media (max-width: 640px) {
   .main {
-    padding-left: 0;
+    padding-inline: 0;
     padding-top: var(--mobile-bar);
   }
 
