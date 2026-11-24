@@ -1,7 +1,7 @@
 ---
 // src/components/Work.astro
 // The projects section, from the "Work." group on the Paper "projects"
-// artboard: a square cover with the title, summary, tags and a "View work."
+// artboard: a 4:3 cover (the ratio of the cards inside the projects) with the title, summary, tags and a "View work."
 // link beside it. Each project is one row, and the whole row is the link.
 // Below 960px the text drops under the cover.
 import Shapes from './Shapes.astro';
@@ -130,7 +130,7 @@ const projects: Project[] = [
     --shape-bg: var(--color-cool-bg);
     position: relative;
     flex: 0 1 680px;
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
     background: var(--color-cool-bg);
   }
