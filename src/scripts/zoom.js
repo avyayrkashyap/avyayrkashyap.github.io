@@ -2,7 +2,7 @@
 // they could be. One counts as "too small" when the viewer would show it at
 // least 1.5x bigger than it appears on the page (capped by its own pixels and
 // the window). That's re-checked whenever it resizes, which also covers media
-// inside content that starts hidden (the Moody's password gate). Videos ship
+// inside content that starts hidden. Videos ship
 // with preload="none", so they're checked once their size is known.
 // The viewer is a native <dialog>: Esc closes it, and so does any click.
 
