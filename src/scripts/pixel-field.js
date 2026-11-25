@@ -1,20 +1,23 @@
 // Pixelated photo band at the top of the hero: the current scene is drawn into
 // a low-res canvas scaled up with image-rendering: pixelated. The water sways
 // gently and clicks on it send a ring outward. Scenes come from the
-// .hero-dot buttons; switching shrinks the photo until the page shows around
-// it, slides it off to the left as the next comes in from the right, then
-// grows the new one back to fill the band. --scene-tint follows the theme.
+// .hero-dot buttons or a sideways swipe; switching turns every square of the
+// grid away like a tile, in a wave that sweeps the way you swiped, to show
+// the next photo lying underneath. --scene-tint follows the theme.
 const CELL = 7; // CSS px per pixel
 const SPEED = 30; // ring speed, cells per second
 const LIFE = 2.6; // seconds a ripple lasts
 const WIDTH = 4; // ring thickness, cells
 const SQUASH = 2.5; // how flat rings look at the bottom edge; flatter toward the horizon
 const NEAR = 1.2; // perspective softness: 0 = true horizon (far rings vanish), higher = more uniform
-const SLIDE = 1.2; // seconds a switch takes
-const SHRINK = 0.8; // how small the photo gets while it slides
-const GAP = 0.06; // space between the two photos mid-slide, as a share of the band width
-const BLUR = 3; // blur (cells) at the smallest point of a switch, easing with the shrink
-const GLIDE = 0.28; // seconds a swipe takes to finish (or spring back) after letting go
+const FLIP = 0.42; // seconds one square takes to turn away
+const SWEEP = 0.75; // seconds the wave takes to cross the band
+const JITTER = 0.12; // random lag per square (seconds), so the wave front isn't a ruler
+const SWIPE = 40; // reduced motion: px of swipe that switches photos outright
+const REACH = 0.6; // share of the band's width a swipe covers to turn every square
+const COMMIT = 0.3; // share of the way a swipe has to get for letting go to finish the turn
+const BACK = 1.5; // how much faster than forward the squares turn back when it doesn't
+const WAVE = SWEEP + JITTER + FLIP; // seconds from the first square starting to the last finishing
 const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
@@ -30,8 +33,8 @@ document.addEventListener('astro:page-load', () => {
   const ctx = canvas.getContext('2d');
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const dots = [...card.querySelectorAll('.hero-dot')];
-  let w = 0, h = 0, o, lt, img, base, wet, hy = 0, tint, paper, raf = 0, visible = true;
-  let ripples = [], scene = null, pending = null, slide = null, pan = null;
+  let w = 0, h = 0, o, img, base, wet, hy = 0, tint, raf = 0, visible = true;
+  let ripples = [], scene = null, pending = null, flip = null;
 
   const scenes = dots.map((dot) => {
     const d = dot.dataset;
@@ -56,11 +59,8 @@ document.addEventListener('astro:page-load', () => {
     const n = parseInt(v, 16);
     return [n >> 16, (n >> 8) & 255, n & 255];
   };
-  // The tint is applied to every pixel later, so the page colour showing
-  // around a sliding photo is stored pre-divided by it to come out exact
   const readColors = () => {
     tint = hex('--scene-tint').map((c) => c / 255);
-    paper = hex('--color-bg-default').map((c, j) => clamp(c / (tint[j] || 1), 0, 255));
   };
 
   // Where a scene's photo lands in the band: a cover crop (pushed in by its
@@ -73,85 +73,104 @@ document.addEventListener('astro:page-load', () => {
     return [(w - pw) / 2, clamp(-sc.top * ph, h - ph, 0), pw, ph];
   }
 
+  // A scene's photo at one cell a pixel
+  function pixels(sc) {
+    o.clearRect(0, 0, w, h);
+    const [x, y, pw, ph] = cover(sc);
+    o.drawImage(sc.photo, x, y, pw, ph);
+    return o.getImageData(0, 0, w, h);
+  }
+
   // Resting on a scene: its pixels, plus the water map (below the waterline)
   function settle() {
     if (!scene?.photo || !w) return;
-    o.clearRect(0, 0, w, h);
-    const [x, y, pw, ph] = cover(scene);
-    o.drawImage(scene.photo, x, y, pw, ph);
-    base = o.getImageData(0, 0, w, h);
+    base = pixels(scene);
+    const [, y, , ph] = cover(scene);
     hy = Math.ceil(y + scene.horizon * ph);
     wet = new Uint8Array(w * h).fill(1, clamp(hy, 0, h) * w);
     kick();
   }
 
-  // Draw a scene as a band-sized frame scaled by s about the band's centre
-  // and shifted dx cells, then blur it by b cells. It's cropped on its own
-  // layer first, so the blur softens the frame's edges into the page too.
-  function frame(sc, s, dx, b) {
-    const fx = w / 2 - (w / 2) * s + dx, fy = h / 2 - (h / 2) * s;
-    if (fx - b * 3 > w || fx + w * s + b * 3 < 0) return;
-    const [x, y, pw, ph] = cover(sc);
-    lt.clearRect(0, 0, w, h);
-    lt.save();
-    lt.beginPath();
-    lt.rect(fx, fy, w * s, h * s);
-    lt.clip();
-    lt.drawImage(sc.photo, fx + x * s, fy + y * s, pw * s, ph * s);
-    lt.restore();
-    o.filter = b > 0.05 ? `blur(${b}px)` : 'none';
-    o.drawImage(lt.canvas, 0, 0);
-    o.filter = 'none';
+  // A switch is a wave of the old photo's squares turning away, over the next
+  // photo lying underneath. flip.at is how far along the wave is (seconds of
+  // it, 0 to WAVE). While a swipe holds it (flip.held), the swipe sets it;
+  // otherwise it runs on from where it was let go at flip.rate: forward to
+  // land on the next photo, or backward to settle back on this one.
+  function startFlip(next, dir, held, from) {
+    const lag = new Float32Array(w * h);
+    for (let i = 0; i < w * h; i++) {
+      const x = i % w, along = dir > 0 ? (w - 1 - x) / (w - 1 || 1) : x / (w - 1 || 1);
+      lag[i] = along * SWEEP + Math.random() * JITTER;
+    }
+    // The water stays calm until it's settled again
+    ripples = [];
+    wet = new Uint8Array(w * h);
+    canvas.width = w * CELL;
+    canvas.height = h * CELL;
+    flip = { from, to: pixels(next), next, dir, lag, held, at: 0, t0: performance.now() / 1000, rate: 1 };
+    kick();
   }
 
-  // One frame of a switch: shrink (first 30%), slide left (middle 40%),
-  // grow back (last 30%)
-  function stepSlide(t) {
-    const p = Math.min(1, (t - slide.t0) / SLIDE);
-    const s = 1 - (1 - SHRINK) * ease(clamp(p / 0.3, 0, 1)) * ease(clamp((1 - p) / 0.3, 0, 1));
-    const step = w * s + w * GAP;
-    const dx = -step * slide.dir * ease(clamp((p - 0.3) / 0.4, 0, 1));
-    o.fillStyle = `rgb(${paper.join(',')})`;
-    o.fillRect(0, 0, w, h);
-    // Blur tracks the shrink: none at full size, most while small
-    const b = (BLUR * (1 - s)) / (1 - SHRINK);
-    frame(slide.prev, s, dx, b);
-    frame(slide.next, s, dx + step * slide.dir, b);
-    base = o.getImageData(0, 0, w, h);
-    if (p >= 1) {
-      slide = null;
-      settle();
-    }
+  // What's on screen now (a flip part-way included), for the squares the
+  // next flip turns away. A flip that was heading forward counts as landed.
+  function takeOver() {
+    const from = img.data.slice();
+    if (flip && !flip.held && flip.rate > 0) scene = flip.next;
+    return from;
   }
 
-  // One frame of a swipe: the photo sits wherever the finger has it (pan.dx,
-  // CSS px), with its neighbour on that side alongside, both at full size.
-  // After letting go it glides to pan.glide.to: a whole step (switch) or 0.
-  function stepPan(t) {
-    let dx = pan.dx;
-    const g = pan.glide;
-    if (g) {
-      const p = Math.min(1, (t - g.t0) / GLIDE);
-      dx = g.from + (g.to - g.from) * (1 - (1 - p) ** 3);
-      if (p >= 1) return endPan();
-    }
-    pan.shown = dx;
-    const dir = dx < 0 ? 1 : -1, c = Math.round(dx / CELL), n = neighbour(dir);
-    o.fillStyle = `rgb(${paper.join(',')})`;
-    o.fillRect(0, 0, w, h);
-    frame(scene, 1, c, 0);
-    if (c && n.photo) frame(n, 1, c + w * (1 + GAP) * dir, 0);
-    base = o.getImageData(0, 0, w, h);
-  }
-
-  function endPan() {
-    const g = pan.glide;
-    if (g?.to) {
-      scene = neighbour(g.dir);
-      dots.forEach((d) => d.setAttribute('aria-pressed', String(d === scene.dot)));
-    }
-    pan = null;
+  // Back to the low-res canvas on whichever photo the wave ended on
+  function endFlip(landed) {
+    if (landed) scene = flip.next;
+    flip = null;
+    pending = null;
+    dots.forEach((d) => d.setAttribute('aria-pressed', String(d === scene.dot)));
+    canvas.width = w;
+    canvas.height = h;
     settle();
+  }
+
+  // One frame of a switch, drawn at full size (CELL px a square) so each
+  // square can turn: the old photo's square narrows to its edge, shaded as it
+  // goes and leaning the way the wave travels, uncovering the next photo
+  // beneath. The low-res layer carries the old photo where squares haven't
+  // started and the next everywhere else; only the ones mid-turn are then
+  // drawn over it one by one.
+  // Returns false once the wave has finished, so draw() renders the settled
+  // photo that same frame and the band never shows empty.
+  function stepFlip(t) {
+    const f = flip;
+    if (!f.held) {
+      const at = f.at + (t - f.t0) * f.rate;
+      if (at >= WAVE || at <= 0) return endFlip(at >= WAVE), false;
+      f.at = at;
+      f.t0 = t;
+    }
+    const d = img.data, from = f.from, src = f.to.data, [tr, tg, tb] = tint;
+    const turning = [];
+    for (let i = 0; i < w * h; i++) {
+      const p = clamp((f.at - f.lag[i]) / FLIP, 0, 1), q = i * 4;
+      if (p > 0 && p < 1) turning.push(i, p);
+      if (p === 0) {
+        d[q] = from[q]; d[q + 1] = from[q + 1]; d[q + 2] = from[q + 2];
+      } else {
+        d[q] = src[q] * tr; d[q + 1] = src[q + 1] * tg; d[q + 2] = src[q + 2] * tb;
+      }
+      d[q + 3] = 255;
+    }
+    o.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(o.canvas, 0, 0, w * CELL, h * CELL);
+    for (let k = 0; k < turning.length; k += 2) {
+      const i = turning[k], p = turning[k + 1], q = i * 4;
+      const x = (i % w) * CELL, y = Math.floor(i / w) * CELL;
+      const c = Math.cos((ease(p) * Math.PI) / 2); // 1 flat, 0 edge-on and gone
+      const shade = 0.55 + 0.45 * c;
+      const sw = CELL * c;
+      ctx.fillStyle = `rgb(${from[q] * shade},${from[q + 1] * shade},${from[q + 2] * shade})`;
+      ctx.fillRect(x + (CELL - sw) / 2 - f.dir * (1 - c) * CELL * 0.2, y, sw, CELL);
+    }
+    return true;
   }
 
   // Screen cell -> point on the water's surface, seen from just above it.
@@ -164,31 +183,28 @@ document.addEventListener('astro:page-load', () => {
     return [((x - w / 2) * E) / e, (SQUASH * E * E) / e];
   }
 
-  // dir: 1 slides the new photo in from the right, -1 from the left
+  // A dot: the wave runs on its own. dir: 1 sweeps it right to left (the
+  // next photo), -1 left to right
   async function show(sc, dir = 1) {
     pending = sc;
-    pan = null;
     dots.forEach((d) => d.setAttribute('aria-pressed', String(d === sc.dot)));
     await ready(sc);
     if (pending !== sc) return; // a later click won
-    if (!scene || !base || still || sc === scene) {
+    const from = scene && base ? takeOver() : null;
+    if (!from || still || sc === scene) {
       scene = sc;
-      slide = null;
+      flip = null;
+      canvas.width = w;
+      canvas.height = h;
       settle();
       return;
     }
-    // The water stays calm while the photos slide
-    slide = { prev: scene, next: sc, dir, t0: performance.now() / 1000 };
-    scene = sc;
-    ripples = [];
-    wet = new Uint8Array(w * h);
-    kick();
+    startFlip(sc, dir, false, from);
   }
 
   function draw(now) {
     const t = now / 1000;
-    if (slide) stepSlide(t);
-    if (pan) stepPan(t);
+    if (flip && stepFlip(t)) return;
     const d = img.data, src = base.data;
     const [tr, tg, tb] = tint;
     ripples = ripples.filter((r) => t - r.t < LIFE);
@@ -260,14 +276,11 @@ document.addEventListener('astro:page-load', () => {
     canvas.style.width = `${w * CELL}px`;
     canvas.style.height = `${h * CELL}px`;
     img = ctx.createImageData(w, h);
-    // A buffer to compose in, plus a layer to crop each sliding photo on
-    [o, lt] = [0, 1].map(() => {
-      const c = new OffscreenCanvas(w, h).getContext('2d', { willReadFrequently: true });
-      c.imageSmoothingQuality = 'high';
-      return c;
-    });
+    // A buffer to compose in
+    o = new OffscreenCanvas(w, h).getContext('2d', { willReadFrequently: true });
+    o.imageSmoothingQuality = 'high';
     base = null;
-    slide = null;
+    flip = null;
     settle();
   }
 
@@ -287,36 +300,46 @@ document.addEventListener('astro:page-load', () => {
     show(scenes[i], i < at() ? -1 : 1);
   };
 
-  // Swipe: the photo follows a finger, mouse drag or two-finger trackpad
-  // swipe 1:1 (stepPan), and letting go finishes the switch if it went a
-  // quarter of the way or was flicked, else springs back. Vertical drags are
-  // left alone: touch-action: pan-y on the card hands them to the page.
+  // Swipe: a sideways drag (finger or mouse) or two-finger trackpad swipe
+  // turns the squares over toward the neighbouring photo that way, as far as
+  // it has gone (REACH of the band's width turns them all), and holds them
+  // there until it lets go. Then they finish turning if it got COMMIT of the
+  // way or was flicked, else turn back. Swiping back past where it started
+  // turns toward the other neighbour instead. Vertical drags are left alone:
+  // touch-action: pan-y on the card hands them to the page.
   const neighbour = (dir) => scenes[(at() + dir + scenes.length) % scenes.length];
-  const maxPx = () => w * (1 + GAP) * CELL;
-  // Take hold: from rest, or mid-glide from wherever the photo has got to
-  function grab() {
-    if (pan) {
-      pan.dx = pan.shown ?? pan.dx;
-      pan.glide = null;
-    } else {
-      slide = null;
-      pending = null;
-      ripples = [];
-      wet = new Uint8Array(w * h); // the water stays calm while it moves
-      pan = { dx: 0 };
+  const turn = (dir) => show(neighbour(dir), dir);
+
+  // dx: px swiped so far, negative to the left. False if the photo that way
+  // isn't loaded yet.
+  function grab(dx) {
+    const dir = dx < 0 ? 1 : -1;
+    const from = takeOver();
+    pending = null;
+    const next = neighbour(dir);
+    if (!next.photo) return false;
+    startFlip(next, dir, true, from);
+    return true;
+  }
+  function hold(dx) {
+    if (!flip?.held || !dx) return;
+    const dir = dx < 0 ? 1 : -1;
+    if (dir !== flip.dir) {
+      const next = neighbour(dir);
+      if (!next.photo) return;
+      startFlip(next, dir, true, flip.from);
     }
+    flip.at = clamp((Math.abs(dx) / (w * CELL * REACH)) * WAVE, 0, WAVE);
     kick();
-    return pan.dx;
   }
   // vx: release speed in px/ms, for flicks
   function release(vx) {
-    if (!pan || pan.glide) return;
-    const dx = pan.dx, dir = dx < 0 ? 1 : -1;
-    const flick = Math.abs(dx) > 20 && Math.abs(vx) > 0.3 && Math.sign(vx) === -dir;
-    const go = dx && neighbour(dir).photo && (Math.abs(dx) > (w * CELL) / 4 || flick);
-    pan.glide = { from: pan.shown ?? dx, to: go ? -dir * maxPx() : 0, dir, t0: performance.now() / 1000 };
-    if (still) endPan();
-    else kick();
+    if (!flip?.held) return;
+    const flick = Math.abs(vx) > 0.3 && Math.sign(vx) === -flip.dir;
+    flip.held = false;
+    flip.rate = flip.at > WAVE * COMMIT || flick ? 1 : -BACK;
+    flip.t0 = performance.now() / 1000;
+    kick();
   }
 
   const swipe = new AbortController();
@@ -324,45 +347,63 @@ document.addEventListener('astro:page-load', () => {
   let drag = null;
   on('pointerdown', (e) => {
     if (e.button !== 0 || !base || e.target.closest('button, .hero-bar, .hero-draw')) return;
-    drag = { x: e.clientX, y: e.clientY, id: e.pointerId, from: null, lx: e.clientX, t: e.timeStamp, vx: 0 };
+    drag = { x: e.clientX, y: e.clientY, id: e.pointerId, lx: e.clientX, t: e.timeStamp, vx: 0 };
     // A mouse can let go outside the card; touches are captured already
     if (e.pointerType === 'mouse') card.setPointerCapture(e.pointerId);
   });
   on('pointermove', (e) => {
     if (e.pointerId !== drag?.id) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (drag.from === null) {
+    if (!drag.held) {
       if (Math.hypot(dx, dy) < 6) return;
       if (Math.abs(dy) > Math.abs(dx)) return void (drag = null); // a scroll, not a swipe
-      drag.from = grab();
       card.classList.add('is-dragging');
+      if (still) {
+        if (Math.abs(dx) >= SWIPE) {
+          drag = null;
+          turn(dx < 0 ? 1 : -1);
+        }
+        return;
+      }
+      if (!grab(dx)) return;
+      drag.held = true;
     }
     if (e.timeStamp > drag.t) drag.vx = (e.clientX - drag.lx) / (e.timeStamp - drag.t);
     drag.lx = e.clientX;
     drag.t = e.timeStamp;
-    pan.dx = clamp(drag.from + dx, -maxPx(), maxPx());
-    kick();
+    hold(dx);
   });
   const letGo = (e) => {
     if (e.pointerId !== drag?.id) return;
     // A pause before letting go is a place, not a flick
-    if (drag.from !== null) release(e.timeStamp - drag.t > 80 ? 0 : drag.vx);
+    if (drag.held) release(e.timeStamp - drag.t > 80 ? 0 : drag.vx);
     card.classList.remove('is-dragging');
     drag = null;
   };
   on('pointerup', letGo);
   on('pointercancel', letGo);
-  // Trackpads: the gesture (momentum included) ends after a short quiet spell
-  let wheelEnd = 0;
+  // Trackpads: the gesture (momentum included) ends after a short quiet spell.
+  // A swipe left scrolls right (deltaX > 0), so it counts as dx < 0.
+  let wheelEnd = 0, wheel = { dx: 0 };
   on('wheel', (e) => {
     // Vertical scrolls pass through, and so does everything in draw mode
     if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || !base || card.classList.contains('is-drawing')) return;
     e.preventDefault(); // and keeps the browser from going back/forward
-    if (!pan || pan.glide) grab();
-    pan.dx = clamp(pan.dx - e.deltaX, -maxPx(), maxPx());
-    kick();
+    wheel.dx -= e.deltaX;
+    if (still) {
+      if (!wheel.done && Math.abs(wheel.dx) >= SWIPE) {
+        wheel.done = true;
+        turn(wheel.dx < 0 ? 1 : -1);
+      }
+    } else if (!wheel.held && Math.abs(wheel.dx) >= 6) {
+      wheel.held = grab(wheel.dx);
+    }
+    if (wheel.held) hold(wheel.dx);
     clearTimeout(wheelEnd);
-    wheelEnd = setTimeout(() => release(0), 150);
+    wheelEnd = setTimeout(() => {
+      if (wheel.held) release(0);
+      wheel = { dx: 0 };
+    }, 150);
   }, { passive: false });
 
   // Open on the photo shot closest to the visitor's time of day (wrapping
