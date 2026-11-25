@@ -1,12 +1,14 @@
-// Homepage intro: a few cursors drag out the page's layout as boxes, then the
-// content fades in over them from the top down. Hard loads only: the inline
-// script in index.astro sets html.sketching before first paint (and skips it
-// for reduced motion or an in-site navigation back home).
-const BLOCKS = [
-  '.sidebar-current', '.sidebar-nav', '.sidebar-foot > *', '.sidebar-pager',
-  '.hero-hello', '.hero-card', '.hero-title', '.hero-lead',
-  '.work-label', '.work-cover', '.work-title', '.work-desc', '.work-tags', '.work-view',
-].join(',');
+// The first time a page is opened in a session, a few cursors drag out its
+// layout as boxes, then the content fades in over them from the top down.
+// The pages already drawn are kept in sessionStorage ('sketched').
+//
+// A fresh load: the inline script in Layout.astro sets html.sketching before
+// first paint, which hides the page outright (global.css) until we've found
+// the blocks to draw. A page change inside the site: we hide the incoming
+// page's blocks right after the swap, before the browser shows it. Either
+// way each block waits behind .sketch-wait until its box is drawn. A card
+// morphing in from the page before (data-cover, Layout.astro) is left out:
+// it lands visible while the cursors draw around it. Reduced motion skips it.
 
 // The hero's pen colours, named after the hero lead's last line
 const CURSORS = [
@@ -16,27 +18,88 @@ const CURSORS = [
 ];
 const MOVE = 200; // ms to glide to a box's corner
 const DRAW = 240; // ms to drag it out
-const STAGGER = 45; // ms between blocks fading in
+const BUDGET = 1800; // ms the drawing may take at most; busy pages draw faster
+const STAGGER = 45; // ms between blocks fading in (less on busy pages)
+const SMALL = 48; // px: a container this short is drawn as one box, not opened up
 const EASE = 'cubic-bezier(.65, 0, .35, 1)';
+const MEDIA = new Set(['IMG', 'VIDEO', 'CANVAS', 'SVG', 'PICTURE', 'FIGURE', 'IFRAME']);
+
+const root = document.documentElement;
+const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+let waiting = null; // the blocks hidden for this page, once found
+
+const seen = () => {
+  try { return JSON.parse(sessionStorage.getItem('sketched') || '[]'); } catch { return []; }
+};
+const markSeen = () => {
+  try { sessionStorage.setItem('sketched', JSON.stringify([...new Set([...seen(), location.pathname])])); } catch { /* private mode: draw again next time */ }
+};
+
+// The boxes to draw: walking down from `el`, anything that reads as one
+// thing (media, decoration, a picture box with a fixed ratio, an element
+// with text of its own, an empty shape, or anything short) is a block; anything else is
+// opened up to look at its children.
+function blocksIn(el, out = []) {
+  for (const c of el?.children ?? []) {
+    if (c.matches('script, style, template, .sketch-layer')) continue;
+    // A wrapper with no box of its own (the desktop sidebar's): look inside
+    if (getComputedStyle(c).display === 'contents') {
+      blocksIn(c, out);
+      continue;
+    }
+    if (c.checkVisibility && !c.checkVisibility({ visibilityProperty: true })) continue;
+    const r = c.getBoundingClientRect();
+    if (!r.width || !r.height) continue;
+    if (c.matches('[data-cover]') && c.style.viewTransitionName) continue; // morphing in on its own
+    // Decoration (aria-hidden, like the chapter ruler) is one box, not dozens
+    const block = MEDIA.has(c.tagName.toUpperCase()) || c.getAttribute('role') === 'img' || c.getAttribute('aria-hidden') === 'true'
+      || !c.children.length
+      || [...c.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())
+      || getComputedStyle(c).aspectRatio !== 'auto'
+      || r.height <= SMALL;
+    if (block) out.push(c);
+    else blocksIn(c, out);
+  }
+  return out;
+}
+
+// Hide this page's blocks and show the rest (section backgrounds and the
+// like stay up, as the layout the boxes are drawn on)
+function hide(withSidebar) {
+  waiting = blocksIn(document.querySelector('.main'));
+  if (withSidebar) waiting.push(...blocksIn(document.querySelector('.sidebar-bar')), ...blocksIn(document.querySelector('.sidebar-panel')));
+  waiting.forEach((el) => el.classList.add('sketch-wait'));
+  root.classList.add('sketching', 'sketch-ready');
+}
+
+// The page around the sidebar changes; the sidebar itself is only drawn on a
+// fresh load
+document.addEventListener('astro:after-swap', () => {
+  if (!still() && !seen().includes(location.pathname)) hide(false);
+});
 
 document.addEventListener('astro:page-load', async () => {
-  const root = document.documentElement;
   if (!root.classList.contains('sketching')) return;
-  window.__sketched = true;
-
-  // On a reload ClientRouter scrolls back to where you were (it keeps the
-  // spot in history.state), but html's scroll-behavior: smooth makes that a
-  // glide that lands after we measure. Jump there now so the cursors draw
-  // what's actually on screen.
-  scrollTo({ top: history.state?.scrollY ?? scrollY, behavior: 'instant' });
+  markSeen();
+  const fresh = !waiting;
+  if (fresh) {
+    // On a reload ClientRouter scrolls back to where you were (it keeps the
+    // spot in history.state), but html's scroll-behavior: smooth makes that
+    // a glide that lands after we measure. Jump there now so the cursors
+    // draw what's actually on screen.
+    scrollTo({ top: history.state?.scrollY ?? scrollY, behavior: 'instant' });
+    hide(true);
+  }
+  const all = waiting;
+  waiting = null;
 
   // Blocks on screen get drawn; the rest just show
   const blocks = [];
-  for (const el of document.querySelectorAll(BLOCKS)) {
+  for (const el of all) {
     const r = el.getBoundingClientRect();
-    const onScreen = r.width && r.height && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
+    const onScreen = r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
     if (onScreen) blocks.push({ el, r });
-    else el.classList.add('sketched');
+    else el.classList.remove('sketch-wait');
   }
   blocks.sort((a, b) => a.r.top - b.r.top || a.r.left - b.r.left);
 
@@ -60,6 +123,10 @@ document.addEventListener('astro:page-load', async () => {
   blocks.forEach((b, i) => cursors[i % cursors.length].queue.push(b));
   document.body.append(layer);
 
+  // A long queue draws each box faster so the whole thing fits the budget
+  const pace = Math.min(1, BUDGET / ((MOVE + DRAW) * Math.ceil(blocks.length / cursors.length) || 1));
+  const stagger = STAGGER * Math.min(1, 12 / (blocks.length || 1));
+
   const move = (c, x, y, duration) => {
     const a = c.node.animate(
       [{ transform: `translate(${c.x}px, ${c.y}px)` }, { transform: `translate(${x}px, ${y}px)` }],
@@ -74,16 +141,16 @@ document.addEventListener('astro:page-load', async () => {
   await Promise.all(cursors.map(async (c) => {
     for (const b of c.queue) {
       const { left, top, width, height } = b.r;
-      await move(c, left, top, MOVE);
+      await move(c, left, top, MOVE * pace);
       const box = document.createElement('div');
       box.className = 'sketch-box';
       box.style.cssText = `left:${left}px; top:${top}px; --c:${c.color}`;
       layer.append(box);
       b.box = box;
       await Promise.all([
-        move(c, left + width, top + height, DRAW),
+        move(c, left + width, top + height, DRAW * pace),
         box.animate([{ width: '0px', height: '0px' }, { width: `${width}px`, height: `${height}px` }],
-          { duration: DRAW, easing: EASE, fill: 'forwards' }).finished,
+          { duration: DRAW * pace, easing: EASE, fill: 'forwards' }).finished,
       ]);
     }
   }));
@@ -94,14 +161,14 @@ document.addEventListener('astro:page-load', async () => {
     c.node.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, fill: 'forwards' });
   });
   await Promise.all(blocks.map(({ el, box }, i) => {
-    const delay = i * STAGGER;
+    const delay = i * stagger;
     box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, delay, fill: 'forwards' });
-    setTimeout(() => el.classList.add('sketched'), delay);
+    setTimeout(() => el.classList.remove('sketch-wait'), delay);
     return el.animate([{ opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0)' }],
       { duration: 450, delay, easing: 'ease-out', fill: 'backwards' }).finished;
   }));
 
   layer.remove();
-  root.classList.remove('sketching');
-  document.querySelectorAll('.sketched').forEach((el) => el.classList.remove('sketched'));
+  // Unless a page change has already hidden the next page's blocks
+  if (!waiting) root.classList.remove('sketching', 'sketch-ready');
 });
