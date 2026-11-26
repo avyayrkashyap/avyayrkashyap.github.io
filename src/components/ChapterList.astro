@@ -85,7 +85,12 @@
     transition: color 0.2s ease;
   }
 
-  .chapters-list :global(.chapter-row:hover) {
+  .chapters-list :global(.chapter-row:hover),
+  .chapters-list :global(.chapter-row[aria-current]) {
     color: var(--color-text-accent);
+  }
+
+  .chapters-list :global(.chapter-row[aria-current]) {
+    font-weight: 700;
   }
 </style>
