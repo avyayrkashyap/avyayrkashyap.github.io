@@ -1,6 +1,6 @@
 // Draw mode for the hero photo band. "Draw." in the strip swaps the photo for
 // a plain surface to draw on (mouse, finger or stylus) and writes a cursive
-// hello across it; "Photos." swaps back, keeping the drawing for next time.
+// hello across it; "See." swaps back, keeping the drawing for next time.
 // pixel-field.js stands down (no swipes or ripples) while .is-drawing is on.
 const WIDTH = 3.5; // pen width, CSS px
 const GLOW = 9; // width of the stroke under it that blurs into the glow, CSS px
