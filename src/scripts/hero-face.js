@@ -40,6 +40,7 @@ const COLORS = ['--color-text-accent', '#8B5CF6', '--color-error']; // the draw-
 const VIEW = 1.2; // resting eye distance from the band, in band widths
 const GAIN = 0.9; // head travel across the camera frame → eye travel, in band sizes
 const REF_EYES = 0.17; // eye-corner gap, as a fraction of the frame width, at the resting distance
+const DEPTH = 0.3; // how much leaning in or out counts: 1 is true-to-life (the back wall races away), 0 ignores it
 const FLIP = 1; // -1 makes leaning left reveal the left (a camera pan, not a window)
 const EASE = 0.2; // how fast the eye follows the head, per frame
 
@@ -136,7 +137,7 @@ document.addEventListener('astro:page-load', () => {
         // Your right is the frame's left, so x flips to put the eye where you are
         x: -nx * GAIN * w * FLIP,
         y: ny * GAIN * h,
-        z: rest.z * Math.min(3, Math.max(0.4, REF_EYES / gap)),
+        z: rest.z * Math.min(3, Math.max(0.4, REF_EYES / gap)) ** DEPTH,
       };
     }
     eye ??= to;
