@@ -1,7 +1,7 @@
 // The sidebar's chapter list (ChapterList.astro): the sections of whatever is
 // being read, with a column of small diamonds beside them whose blue lens
-// follows the reading position, sitting beside the current section's name and sliding
-// toward the next as it gets near. Clicking a name scrolls there.
+// sits beside the current section's name, gliding to the next when it's
+// reached. Clicking a name scrolls there.
 //
 // Rescans when a password gate reveals a case study (gate:unlocked).
 
@@ -11,9 +11,9 @@
 const CONTAINER_SELECTOR = '[data-chapters]';
 const SECTION_SELECTOR = '[data-chapter][id]';
 const LABEL_SELECTOR = '.type-h4';
-// A section counts as reached once its top is this far past the scroller's
-// top edge: a little early feels more natural than exact-0
-const ACTIVATE_OFFSET = 24;
+// A section counts as reached once its top crosses this line, as a share of
+// the viewport's height from the top: where the eye is, not the top edge
+const ACTIVATE_AT = 0.6;
 // How long a jump to a chapter takes to fly there
 const SCROLL_MS = 420;
 // The ruler: small diamonds (the "View work." link's) on an 8px pitch inside
@@ -41,12 +41,15 @@ let offsets = [];
 let rows = [];
 let lineHeight = 20.8;
 let scroller = null;
-let lensAt = null; // where the lens was last painted, in ticks (fractional)
-// Where the lens is headed (px from the top of the list): the reading
-// position, or the pointer while it hovers the list; and where it is now
+let lensAt = null; // [centre, half-span] the lens was last painted at, in ticks
+// Where the lens is headed (px from the top of the list): the current row,
+// or the pointer while it hovers the list; and where it is now. The spans
+// are how far it stays full either side of its centre
 let readY = null;
+let readSpan = 0;
 let hoverY = null;
 let lensY = null;
+let lensSpan = 0;
 let lensFrame = 0;
 let sizeObserver = null;
 let measureFrame = 0;
@@ -107,6 +110,7 @@ function hide() {
   cancelAnimationFrame(lensFrame);
   lensFrame = 0;
   readY = hoverY = lensY = null;
+  readSpan = lensSpan = 0;
   chapters = [];
   offsets = [];
   rows = [];
@@ -131,15 +135,17 @@ function layoutRuler() {
   if (list.firstElementChild) lineHeight = parseFloat(getComputedStyle(list.firstElementChild).lineHeight) || lineHeight;
 }
 
-// Centre the lens at y (px from the top of the list)
-function paint(y) {
+// Centre the lens at y (px from the top of the list), held full for `span` px
+// either side of it, so it covers every line of a wrapped name
+function paint(y, span) {
   const { ruler } = els();
   if (!ruler) return;
   const c = (y - PAD - SIZE / 2) / PITCH;
-  if (lensAt !== null && Math.abs(c - lensAt) < 0.01) return;
-  lensAt = c;
+  const h = span / PITCH;
+  if (lensAt !== null && Math.abs(c - lensAt[0]) < 0.01 && Math.abs(h - lensAt[1]) < 0.01) return;
+  lensAt = [c, h];
   [...ruler.children].forEach((tick, k) => {
-    const d = k - c;
+    const d = Math.sign(k - c) * Math.max(0, Math.abs(k - c) - h);
     // 0 is a small diamond, 1 a full square: a 45° turn on, like the link's hover
     const m = bell(Math.abs(d), SWELL_REACH);
     // Full accent through the middle of the lens, easing out into ink
@@ -161,10 +167,12 @@ function aim() {
     lensFrame = 0;
     const target = hoverY ?? readY;
     if (target === null) return;
-    const gap = target - (lensY ?? target);
-    lensY = reduceMotion() || Math.abs(gap) < 0.1 ? target : lensY + gap * FOLLOW;
-    paint(lensY);
-    if (lensY !== target) lensFrame = requestAnimationFrame(step);
+    const targetSpan = hoverY === null ? readSpan : 0;
+    const ease = (from, to) => (reduceMotion() || Math.abs(to - from) < 0.1 ? to : from + (to - from) * FOLLOW);
+    lensY = ease(lensY ?? target, target);
+    lensSpan = ease(lensSpan, targetSpan);
+    paint(lensY, lensSpan);
+    if (lensY !== target || lensSpan !== targetSpan) lensFrame = requestAnimationFrame(step);
   };
   lensFrame = requestAnimationFrame(step);
 }
@@ -190,23 +198,22 @@ function watchSize(container) {
     });
   });
   sizeObserver.observe(container);
+  // The current row is bold, so a long name can wrap onto a second line
+  const { list } = els();
+  if (list) sizeObserver.observe(list);
 }
 
-// The lens travels from the middle of the current row's first line to the
-// next row's, in step with progress through the current section
+// The lens covers the current row, from the middle of its first line to the
+// middle of its last
 function onScroll() {
   if (!scroller || !offsets.length || rows.length !== offsets.length) return;
-  const top = scroller.top;
+  const line = scroller.top + window.innerHeight * ACTIVATE_AT;
   let i = 0;
   for (let k = 0; k < offsets.length; k++) {
-    if (top + ACTIVATE_OFFSET >= offsets[k]) i = k;
+    if (line >= offsets[k]) i = k;
   }
-  const start = offsets[i];
-  const end = i + 1 < offsets.length ? offsets[i + 1] : scroller.max;
-  const p = end > start ? clamp((top - start) / (end - start), 0, 1) : 1;
-  const from = rows[i][0] + lineHeight / 2;
-  const to = i + 1 < rows.length ? rows[i + 1][0] + lineHeight / 2 : rows[i][0] + rows[i][1] - lineHeight / 2;
-  readY = from + (to - from) * p;
+  readY = rows[i][0] + rows[i][1] / 2;
+  readSpan = Math.max(0, (rows[i][1] - lineHeight) / 2);
   aim();
 
   const { list } = els();
