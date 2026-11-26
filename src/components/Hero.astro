@@ -42,12 +42,20 @@ const pens = [
           <path pathLength="1" d="M20 142C48 122 88 72 94 42C98 22 82 14 73 34C62 60 58 110 56 150C62 120 80 101 96 101C112 101 113 120 110 136C108 148 118 153 131 145C151 134 172 121 170 108C168 96 148 98 144 115C140 135 152 152 172 150C190 148 205 135 215 120C231 95 245 50 240 30C236 15 220 20 218 40C215 70 212 120 222 145C230 156 248 150 258 135C272 110 290 55 285 32C281 16 264 22 262 42C259 72 256 122 266 146C274 157 292 150 302 138C312 120 325 104 340 102C325 102 314 118 318 135C322 152 345 154 354 138C362 122 355 102 340 102C350 98 365 100 385 96" />
         </svg>
       </div>
+      <!-- Face mode (hero-face.js): the webcam with ml5 FaceMesh drawn over it -->
+      <div class="hero-face">
+        <video class="hero-face-video" muted playsinline></video>
+        <canvas class="hero-face-room" aria-label="A room that shifts as you move your head"></canvas>
+        <canvas class="hero-face-preview" aria-hidden="true"></canvas>
+        <p class="hero-face-status" aria-live="polite"></p>
+      </div>
     </div>
     <!-- Revealed under the photo on hover (always shown on touch screens) -->
     <div class="hero-bar">
       <div class="hero-modes">
         <button class="hero-mode" type="button" data-mode="draw" aria-pressed="false">Draw.</button>
         <button class="hero-mode" type="button" data-mode="photos" aria-pressed="true">Photos.</button>
+        <button class="hero-mode" type="button" data-mode="face" aria-pressed="false">Face.</button>
       </div>
       <!-- Draw mode only: wipe the surface, and pick a pen -->
       <div class="hero-pens" role="group" aria-label="Pen colour">
@@ -86,6 +94,7 @@ const pens = [
 
 <script src="../scripts/pixel-field.js"></script>
 <script src="../scripts/hero-draw.js"></script>
+<script src="../scripts/hero-face.js"></script>
 
 <script>
   // Greeting: types out each language in turn, morning/afternoon/evening by
@@ -408,6 +417,70 @@ const pens = [
     .hero-ink.is-writing path {
       animation: none;
     }
+  }
+
+  /* ── Face mode ── Same strip as draw mode, with no photo dots */
+  .hero-card.is-face .hero-photo {
+    clip-path: inset(0 0 var(--bar) 0);
+  }
+
+  .hero-card.is-face .hero-bar {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .hero-card.is-face .hero-dots {
+    display: none;
+  }
+
+  .hero-face {
+    position: absolute;
+    inset: 0 0 var(--bar);
+    display: grid;
+    place-items: center;
+    background: var(--draw-bg, #F6F6F6);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0s 0.25s;
+  }
+
+  :global(html[data-theme='dark']) .hero-face {
+    background: var(--color-bg-secondary);
+  }
+
+  .hero-card.is-face .hero-face {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s ease, visibility 0s;
+  }
+
+  .hero-face-video {
+    display: none;
+  }
+
+  .hero-face-room {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The camera with its face outlines, small in the corner. Mirrored, so it
+     moves like a mirror */
+  .hero-face-preview {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 80px;
+    aspect-ratio: 4 / 3;
+    transform: scaleX(-1);
+  }
+
+  .hero-face-status {
+    position: relative;
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-text-faint);
   }
 
   .hero-dots {

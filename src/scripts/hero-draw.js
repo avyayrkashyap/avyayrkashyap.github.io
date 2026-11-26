@@ -51,16 +51,19 @@ document.addEventListener('astro:page-load', () => {
     ink.classList.add('is-writing');
   }
 
-  function setMode(draw) {
-    card.classList.toggle('is-drawing', draw);
-    modes.forEach((m) => m.setAttribute('aria-pressed', String((m.dataset.mode === 'draw') === draw)));
-    if (!draw) return;
+  // hero-face.js listens for the 'hero-mode' event to start and stop the camera
+  function setMode(mode) {
+    card.classList.toggle('is-drawing', mode === 'draw');
+    card.classList.toggle('is-face', mode === 'face');
+    modes.forEach((m) => m.setAttribute('aria-pressed', String(m.dataset.mode === mode)));
+    card.dispatchEvent(new CustomEvent('hero-mode', { detail: mode }));
+    if (mode !== 'draw') return;
     size();
     if (!ink.classList.contains('is-gone')) write();
   }
 
   modes.forEach((m) => on(m, 'click', () => {
-    if (m.getAttribute('aria-pressed') !== 'true') setMode(m.dataset.mode === 'draw');
+    if (m.getAttribute('aria-pressed') !== 'true') setMode(m.dataset.mode);
   }));
 
   pens.forEach((p) => on(p, 'click', () => {
@@ -129,6 +132,7 @@ document.addEventListener('astro:page-load', () => {
   on(pad, 'pointercancel', lift);
 
   cleanup = () => {
+    setMode('photos'); // stops the camera if it's on
     ac.abort();
     cleanup = null;
   };

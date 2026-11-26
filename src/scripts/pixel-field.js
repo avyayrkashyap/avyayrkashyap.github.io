@@ -285,7 +285,7 @@ document.addEventListener('astro:page-load', () => {
   }
 
   function onPointer(e) {
-    if (e.target.closest('button, .hero-bar, .hero-draw')) return;
+    if (e.target.closest('button, .hero-bar, .hero-draw, .hero-face')) return;
     const b = card.getBoundingClientRect();
     const x = (e.clientX - b.left) / CELL, y = (e.clientY - b.top) / CELL;
     if (still || !wet?.[Math.floor(y) * w + Math.floor(x)]) return; // only the water ripples
@@ -346,7 +346,7 @@ document.addEventListener('astro:page-load', () => {
   const on = (type, fn, opts) => card.addEventListener(type, fn, { ...opts, signal: swipe.signal });
   let drag = null;
   on('pointerdown', (e) => {
-    if (e.button !== 0 || !base || e.target.closest('button, .hero-bar, .hero-draw')) return;
+    if (e.button !== 0 || !base || e.target.closest('button, .hero-bar, .hero-draw, .hero-face')) return;
     drag = { x: e.clientX, y: e.clientY, id: e.pointerId, lx: e.clientX, t: e.timeStamp, vx: 0 };
     // A mouse can let go outside the card; touches are captured already
     if (e.pointerType === 'mouse') card.setPointerCapture(e.pointerId);
@@ -387,7 +387,7 @@ document.addEventListener('astro:page-load', () => {
   let wheelEnd = 0, wheel = { dx: 0 };
   on('wheel', (e) => {
     // Vertical scrolls pass through, and so does everything in draw mode
-    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || !base || card.classList.contains('is-drawing')) return;
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || !base || card.matches('.is-drawing, .is-face')) return;
     e.preventDefault(); // and keeps the browser from going back/forward
     wheel.dx -= e.deltaX;
     if (still) {
