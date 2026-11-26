@@ -55,7 +55,9 @@ const pens = [
       <div class="hero-modes">
         <button class="hero-mode" type="button" data-mode="draw" aria-pressed="false">Draw.</button>
         <button class="hero-mode" type="button" data-mode="photos" aria-pressed="true">Photos.</button>
-        <button class="hero-mode" type="button" data-mode="face" aria-pressed="false">Face.</button>
+        <button class="hero-mode" type="button" data-mode="face" aria-pressed="false">Immerse.</button>
+        <!-- Immerse mode only: flat until this brings the depth in (hero-face.js) -->
+        <button class="hero-3d" type="button" aria-pressed="false">3D.</button>
       </div>
       <!-- Draw mode only: wipe the surface, and pick a pen -->
       <div class="hero-pens" role="group" aria-label="Pen colour">
@@ -84,6 +86,12 @@ const pens = [
           data-hour={s.hour}
         ></button>
       ))}
+      </div>
+      <!-- Immerse mode only: which room you're looking into (hero-face.js);
+           swiping across the band does the same -->
+      <div class="hero-rooms" role="group" aria-label="Room">
+        <button class="hero-room-dot" type="button" aria-label="Subway car" aria-pressed="true"></button>
+        <button class="hero-room-dot" type="button" aria-label="Living room" aria-pressed="false"></button>
       </div>
     </div>
   </div>
@@ -299,7 +307,44 @@ const pens = [
     color: var(--color-text-strong);
   }
 
+  /* The 3D toggle: a square that fills in when it's on, like the photo dots */
+  .hero-3d {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    margin-left: 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 12px;
+    line-height: var(--bar);
+    color: var(--color-text-strong);
+    cursor: pointer;
+  }
+
+  .hero-card.is-face .hero-3d {
+    display: inline-flex;
+  }
+
+  .hero-3d::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--dot-off);
+    transition: background-color 0.2s ease;
+  }
+
+  .hero-3d:hover {
+    color: var(--color-text-accent);
+  }
+
+  .hero-3d[aria-pressed='true']::before {
+    background: var(--color-text-accent);
+  }
+
   .hero-mode:focus-visible,
+  .hero-3d:focus-visible,
   .hero-clear:focus-visible {
     outline: 2px solid var(--color-text-accent);
     outline-offset: 2px;
@@ -429,8 +474,14 @@ const pens = [
     visibility: visible;
   }
 
-  .hero-card.is-face .hero-dots {
+  .hero-card.is-face .hero-dots,
+  .hero-rooms {
     display: none;
+  }
+
+  .hero-card.is-face .hero-rooms {
+    display: flex;
+    margin-right: -4px;
   }
 
   .hero-face {
@@ -492,6 +543,7 @@ const pens = [
 
   /* 12×28 hit area, 8px square on its left, so squares sit 4px apart */
   .hero-dot,
+  .hero-room-dot,
   .hero-pen {
     width: 12px;
     height: var(--bar);
@@ -503,7 +555,8 @@ const pens = [
     place-items: center start;
   }
 
-  .hero-dot::before {
+  .hero-dot::before,
+  .hero-room-dot::before {
     content: '';
     width: 8px;
     height: 8px;
@@ -511,15 +564,18 @@ const pens = [
     transition: background-color 0.2s ease;
   }
 
-  .hero-dot:hover::before {
+  .hero-dot:hover::before,
+  .hero-room-dot:hover::before {
     background: color-mix(in srgb, var(--color-text-accent) 40%, var(--dot-off));
   }
 
-  .hero-dot[aria-pressed='true']::before {
+  .hero-dot[aria-pressed='true']::before,
+  .hero-room-dot[aria-pressed='true']::before {
     background: var(--color-text-accent);
   }
 
   .hero-dot:focus-visible,
+  .hero-room-dot:focus-visible,
   .hero-pen:focus-visible {
     outline: 2px solid var(--color-text-accent);
     outline-offset: -2px;

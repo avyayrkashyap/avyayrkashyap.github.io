@@ -1,8 +1,12 @@
-// Face mode for the hero photo band: a room seen through the band as if it
-// were a window, redrawn from wherever your head is (head-coupled
-// perspective), with the camera and its ml5 FaceMesh outlines small in the
+// Immerse mode for the hero photo band: a room seen through the band as if it
+// were a window (hero-room.js), redrawn from wherever your head is
+// (head-coupled perspective), with the camera and its ml5 FaceMesh outlines small in the
 // corner (https://docs.ml5js.org/#/reference/facemesh). ml5 and the camera
-// load only when "Face." is picked, and stop when it's left.
+// load only when "Immerse." is picked, and stop when it's left. The room
+// starts flat; "3D." eases its depth in. Swiping across the band, or the
+// dots in the strip, change the room.
+import { drawRoom, SCENES } from './hero-room.js';
+
 const ML5 = 'https://unpkg.com/ml5@1/dist/ml5.min.js';
 const LINE = 1; // preview outline width, CSS px
 
@@ -19,23 +23,6 @@ const LOOPS = [
 ];
 const LINES = [[168, 6, 197, 195, 5, 4]]; // nose bridge, left open
 
-// ── The room ── The band is the room's front face. Sizes are in band
-// widths (heights for ROOM.h). Wider and taller than the band, so moving
-// your head brings what's past its edges into view.
-const ROOM = { w: 1.8, h: 1.5, d: 1.4 };
-const GRID = 0.1; // grid spacing on the walls
-// Boxes on the floor: x = centre (0 is the middle of the band), z = depth of
-// the front face, then size; c picks a colour from COLORS
-const ITEMS = [
-  { x: -0.72, z: -0.2, w: 0.14, h: 0.5, d: 0.14, c: 0 },
-  { x: -0.38, z: -0.85, w: 0.2, h: 0.24, d: 0.2, c: 1 },
-  { x: -0.12, z: -0.4, w: 0.1, h: 0.1, d: 0.1, c: 2 },
-  { x: 0.08, z: -1.05, w: 0.26, h: 0.12, d: 0.24, c: 0 },
-  { x: 0.4, z: -0.6, w: 0.12, h: 0.36, d: 0.12, c: 2 },
-  { x: 0.74, z: -0.22, w: 0.18, h: 0.18, d: 0.18, c: 1 },
-];
-const COLORS = ['--color-text-accent', '#8B5CF6', '--color-error']; // the draw-mode pens
-
 // ── Head tracking ── Calibration knobs; tune by feel on your setup.
 const VIEW = 1.2; // resting eye distance from the band, in band widths
 const GAIN = 0.9; // head travel across the camera frame → eye travel, in band sizes
@@ -43,6 +30,8 @@ const REF_EYES = 0.17; // eye-corner gap, as a fraction of the frame width, at t
 const DEPTH = 0.3; // how much leaning in or out counts: 1 is true-to-life (the back wall races away), 0 ignores it
 const FLIP = 1; // -1 makes leaning left reveal the left (a camera pan, not a window)
 const EASE = 0.2; // how fast the eye follows the head, per frame
+const SWIPE = 40; // px of horizontal drag, or of trackpad scroll, that changes the room
+const DEPTH_EASE = 0.06; // how fast "3D." brings the depth in or out, per frame
 
 let ml5Loading;
 const loadMl5 = () => ml5Loading ??= new Promise((ok, fail) => {
@@ -74,9 +63,13 @@ document.addEventListener('astro:page-load', () => {
   const roomCanvas = layer.querySelector('.hero-face-room');
   const preview = layer.querySelector('.hero-face-preview');
   const status = layer.querySelector('.hero-face-status');
+  const toggle = card.querySelector('.hero-3d');
+  const roomDots = [...card.querySelectorAll('.hero-room-dot')];
   const rtx = roomCanvas.getContext('2d');
   const ptx = preview.getContext('2d');
   let stream, faces = [], frame, on = false, eye = null;
+  let depth = 0; // 0 is flat, 1 is the full room; eases toward the toggle
+  let room = 0; // index into SCENES
 
   async function start() {
     on = true;
@@ -109,16 +102,18 @@ document.addEventListener('astro:page-load', () => {
     stream?.getTracks().forEach((t) => t.stop());
     stream = null;
     faces = [];
+    set3d(false);
+    depth = 0;
     ptx.clearRect(0, 0, preview.width, preview.height);
   }
 
   function draw() {
-    const css = getComputedStyle(card);
-    const colors = COLORS.map((v) => (v.startsWith('--') ? css.getPropertyValue(v).trim() : v));
     const [w, h] = fit(roomCanvas, rtx);
     follow(w, h);
-    drawRoom(rtx, w, h, eye, colors, css.getPropertyValue('--color-text-strong').trim(), getComputedStyle(layer).backgroundColor);
-    drawPreview(colors[0]);
+    const want = toggle.getAttribute('aria-pressed') === 'true' ? 1 : 0;
+    depth = Math.abs(want - depth) < 0.001 ? want : depth + (want - depth) * DEPTH_EASE;
+    drawRoom(rtx, w, h, eye, depth, performance.now() / 1000, SCENES[room]);
+    drawPreview(getComputedStyle(card).getPropertyValue('--color-text-accent'));
     frame = requestAnimationFrame(draw);
   }
 
@@ -165,83 +160,39 @@ document.addEventListener('astro:page-load', () => {
     }
   }
 
+  const set3d = (v) => toggle.setAttribute('aria-pressed', String(v));
+  toggle.addEventListener('click', () => set3d(toggle.getAttribute('aria-pressed') !== 'true'));
+
+  // Changing room presses the old one flat and grows the new one back out,
+  // when 3D is on
+  function goTo(n) {
+    room = (n + SCENES.length) % SCENES.length;
+    roomDots.forEach((d, i) => d.setAttribute('aria-pressed', String(i === room)));
+    depth = 0;
+  }
+  roomDots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+  // A swipe left goes to the next room, right to the one before; a trackpad
+  // swipe the same, once per gesture
+  let downX = null, wheel = 0, wheelQuiet;
+  layer.addEventListener('pointerdown', (e) => (downX = e.clientX));
+  layer.addEventListener('pointerup', (e) => {
+    const dx = e.clientX - (downX ?? e.clientX);
+    downX = null;
+    if (Math.abs(dx) > SWIPE) goTo(room + (dx < 0 ? 1 : -1));
+  });
+  layer.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // vertical: let the page scroll
+    e.preventDefault();
+    clearTimeout(wheelQuiet);
+    wheelQuiet = setTimeout(() => (wheel = 0), 200);
+    if (wheel === null) return; // already moved for this gesture
+    wheel += e.deltaX;
+    if (Math.abs(wheel) > SWIPE) {
+      goTo(room + (wheel > 0 ? 1 : -1));
+      wheel = null;
+    }
+  }, { passive: false });
+
   card.addEventListener('hero-mode', (e) => (e.detail === 'face' ? start() : on && stop()));
 });
-
-// Every point is projected from the eye onto the band (z = 0), so the room
-// shifts the way a real one would behind a window. Coordinates: x right, y
-// down, z out of the screen toward you (the room is at z < 0); origin at the
-// band's centre, in CSS px.
-function drawRoom(ctx, w, h, eye, colors, ink, bg) {
-  const { x: ex, y: ey, z: ez } = eye;
-  const P = (x, y, z) => {
-    const s = ez / (ez - z);
-    return [w / 2 + ex + (x - ex) * s, h / 2 + ey + (y - ey) * s];
-  };
-  const path = (pts, close = true) => {
-    ctx.beginPath();
-    pts.forEach((p, n) => ctx[n ? 'lineTo' : 'moveTo'](...P(...p)));
-    if (close) ctx.closePath();
-  };
-  const X = (ROOM.w * w) / 2, Y = (ROOM.h * h) / 2, D = ROOM.d * w, step = GRID * w;
-
-  // Walls, each shaded a touch differently so the corners read
-  ctx.fillStyle = ink;
-  for (const [pts, a] of [
-    [[[-X, Y, 0], [X, Y, 0], [X, Y, -D], [-X, Y, -D]], 0.07], // floor
-    [[[-X, -Y, 0], [X, -Y, 0], [X, -Y, -D], [-X, -Y, -D]], 0.02], // ceiling
-    [[[-X, -Y, 0], [-X, Y, 0], [-X, Y, -D], [-X, -Y, -D]], 0.04], // left
-    [[[X, -Y, 0], [X, Y, 0], [X, Y, -D], [X, -Y, -D]], 0.04], // right
-  ]) {
-    path(pts);
-    ctx.globalAlpha = a;
-    ctx.fill();
-  }
-
-  // Grid: rings around the walls at each depth, then lines running back
-  // along the floor, up the back wall and forward along the ceiling (and the
-  // same across the side walls)
-  ctx.strokeStyle = colors[0];
-  ctx.lineWidth = 1;
-  ctx.globalAlpha = 0.22;
-  for (let z = 0; z >= -D - 1; z -= step) {
-    path([[-X, -Y, z], [X, -Y, z], [X, Y, z], [-X, Y, z]]);
-    ctx.stroke();
-  }
-  for (let x = -X; x <= X + 1; x += step) {
-    path([[x, Y, 0], [x, Y, -D], [x, -Y, -D], [x, -Y, 0]], false);
-    ctx.stroke();
-  }
-  for (let y = -Y; y <= Y + 1; y += step) {
-    path([[-X, y, 0], [-X, y, -D], [X, y, -D], [X, y, 0]], false);
-    ctx.stroke();
-  }
-
-  // Boxes, far to near. ponytail: sorting by front face is enough for boxes
-  // that don't overlap in depth; a z-buffer if they ever crowd together.
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = bg;
-  for (const b of [...ITEMS].sort((p, q) => p.z - q.z)) {
-    const x0 = (b.x - b.w / 2) * w, x1 = (b.x + b.w / 2) * w;
-    const y1 = Y, y0 = Y - b.h * w;
-    const z0 = b.z * w, z1 = (b.z - b.d) * w;
-    // Only the faces turned toward the eye, darker for the sides
-    const faces = [];
-    if (ex < x0) faces.push([[[x0, y0, z0], [x0, y1, z0], [x0, y1, z1], [x0, y0, z1]], 0.35]);
-    if (ex > x1) faces.push([[[x1, y0, z0], [x1, y1, z0], [x1, y1, z1], [x1, y0, z1]], 0.35]);
-    if (ey < y0) faces.push([[[x0, y0, z0], [x1, y0, z0], [x1, y0, z1], [x0, y0, z1]], 0.15]);
-    faces.push([[[x0, y0, z0], [x1, y0, z0], [x1, y1, z0], [x0, y1, z0]], 0]);
-    for (const [pts, shade] of faces) {
-      path(pts);
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = colors[b.c];
-      ctx.fill();
-      ctx.globalAlpha = shade;
-      ctx.fillStyle = '#000';
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      ctx.stroke();
-    }
-  }
-  ctx.globalAlpha = 1;
-}
